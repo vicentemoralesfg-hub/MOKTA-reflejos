@@ -13,20 +13,17 @@ Video: `entregables/MOKTA_TestDeReflejos_final.mp4` (1080×1920, 30 fps, ≈57 s
 
 ## Portada
 
-El primer fotograma: "PAUSA EL VIDEO / cuando veas esta barrera" con la barrera iluminada. Es la instrucción
+El primer fotograma: "PAUSA EL VIDEO / en cuanto veas la barrera" con el auto lanzado hacia la barrera. Es la instrucción
 del juego y funciona como miniatura en el perfil y en la pestaña de reels. No elijas un fotograma de una
 lectura (revela el resultado).
 
-## Texto del post (propuesta)
+## Texto del post
 
 > ¿Cuántas rondas pasas? 🚧
-> Pausa el video en cuanto veas la barrera. Pausar = frenar.
-> Pasas si el choque no llega a 70 km/h.
-> Comenta 1, 2 o 3 👇
+> Pausa en cuanto veas la barrera. Pausar = frenar.
+> Comenta 1, 2 o 3 👇 y etiqueta a quien diga que pasa la final.
 >
-> Frenada estimada 0,8 g · 70 km/h: límite de protección en choque frontal (Sistema Seguro). En Chile, el máximo en autopista es 120 km/h.
-
-Hashtags sugeridos (pocos y relevantes): `#TestDeReflejos #SeguridadVial #Manejo #Chile #Física`
+> #TestDeReflejos #SeguridadVial #Chile #Manejo
 
 ## Primer comentario (fijarlo)
 
