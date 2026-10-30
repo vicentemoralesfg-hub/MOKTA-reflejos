@@ -24,9 +24,19 @@ v = next(s for s in probe["streams"] if s["codec_type"] == "video")
 a = next(s for s in probe["streams"] if s["codec_type"] == "audio")
 
 
+def frame_rgb(n):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", MP4, "-vf", f"select=eq(n\\,{n}),format=rgb24", "-vframes", "1", "-f", "rawvideo", "-"], capture_output=True).stdout
+    return np.frombuffer(raw, np.uint8).reshape(H, W, 3).astype(float)
+
+
 def frame(n):
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", MP4, "-vf", f"select=eq(n\\,{n}),format=gray", "-vframes", "1", "-f", "rawvideo", "-"], capture_output=True).stdout
-    return np.frombuffer(raw, np.uint8).reshape(H, W).astype(float)
+    return frame_rgb(n).mean(axis=2)
+
+
+def red_px(img):
+    """Píxeles de la lámina roja de la barrera (rojo dominante) en la zona del horizonte."""
+    z = img[600:820]
+    return int(((z[..., 0] - z[..., 1] > 30) & (z[..., 0] > 60)).sum())
 
 
 lines = ["# MOKTA · Test de reflejos (propuesta B) — control de calidad", "", f"Archivo: `out/MOKTA_TestDeReflejos_B.mp4` (copia en `entregables/`).", ""]
@@ -52,22 +62,20 @@ for name, val, exp, ok in checks:
     lines.append(f"| {name} | {val} | {exp} {'✔' if ok else '✘'} |")
 
 lines += ["", "## La barrera aparece por sorpresa y el panel no la anuncia", "",
-          "Cambio de luminancia entre fotogramas consecutivos (píxeles que cambian > 40 niveles). Zona de la barrera: franja del horizonte; panel: pantalla del instrumental.", "",
-          "| Ronda | Fotograma de aparición | Barrera: antes → aparición | Panel en la aparición | Panel 1 fotograma después |", "|---|---|---|---|---|"]
+          "Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de la pantalla del instrumental que cambian más de 40 niveles respecto del fotograma anterior.", "",
+          "| Ronda | Fotograma de aparición | Barrera 2 fot. antes / 1 antes / aparición | Panel en la aparición | Panel 1 fotograma después |", "|---|---|---|---|---|"]
 for i, r in enumerate(T["rounds"]):
     rf = round_frames(i)
     ev = L[f"r{i+1}"] + rf["event"]
-    f0, f1, f2, f3 = frame(ev - 2), frame(ev - 1), frame(ev), frame(ev + 1)
-    zone = (slice(640, 760), slice(0, W))
+    c0, c1, c2, c3 = frame_rgb(ev - 2), frame_rgb(ev - 1), frame_rgb(ev), frame_rgb(ev + 1)
+    r0, r1, r2 = red_px(c0), red_px(c1), red_px(c2)
     panel = (slice(1268, 1456), slice(204, 876))
-    pre = int((np.abs(f1 - f0)[zone] > 40).sum())
-    at_ev = int((np.abs(f2 - f1)[zone] > 40).sum())
-    pan = int((np.abs(f2 - f1)[panel] > 40).sum())
-    pan2 = int((np.abs(f3 - f2)[panel] > 40).sum())
-    ok = at_ev > 5 * max(pre, 1) and pan == 0
+    g1, g2, g3 = c1.mean(axis=2), c2.mean(axis=2), c3.mean(axis=2)
+    pan = int((np.abs(g2 - g1)[panel] > 40).sum())
+    pan2 = int((np.abs(g3 - g2)[panel] > 40).sum())
+    ok = r0 == 0 and r1 == 0 and r2 > 50 and pan == 0
     ok_all &= ok
-    lines.append(f"| {r['label']} · {r['speedKmh']} | {ev} ({ev/FPS:.2f} s) | {pre} → {at_ev} px | {pan} px {'✔' if pan == 0 else '✘'} | {pan2} px |")
-lines += ["", "La zona de la barrera también contiene líneas de la calzada en movimiento: por eso el valor \"antes\" no es cero."]
+    lines.append(f"| {r['label']} · {r['speedKmh']} | {ev} ({ev/FPS:.2f} s) | {r0} / {r1} / {r2} px {'✔' if r0 == 0 and r1 == 0 and r2 > 50 else '✘'} | {pan} px {'✔' if pan == 0 else '✘'} | {pan2} px |")
 
 lines += ["", "## Impacto y lectura", "", "| Ronda | Fotograma del impacto | Luma media en el negro |", "|---|---|---|"]
 for i, r in enumerate(T["rounds"]):

@@ -87,7 +87,7 @@ export const Reveal: React.FC = () => {
             <g key={row.kmh} opacity={Math.min(1, row.g * 3)}>
               <text x={X0} y={row.y - 14} fill={THEME.text} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 28 }}>{row.kmh} km/h</text>
               <text x={960} y={row.y - 12} textAnchor="end" fill={row.m > D ? THEME.red : THEME.text} style={{ fontFamily: THEME.display, fontWeight: 700, fontSize: 40 }}>
-                {Math.round(row.m * row.g)} m
+                {Math.round(row.m)} m
               </text>
               <rect x={X0} y={row.y} width={inside} height={22} rx={4} fill="rgba(238,241,244,0.78)" />
               {len > D * PX ? <rect x={xb} y={row.y} width={len - D * PX} height={22} rx={4} fill={THEME.red} /> : null}
