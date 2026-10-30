@@ -22,9 +22,9 @@ Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de
 
 | Ronda | Fotograma de aparición | Barrera 2 fot. antes / 1 antes / aparición | Panel en la aparición | Panel 1 fotograma después |
 |---|---|---|---|---|
-| RONDA 1 · 120 | 162 (5.40 s) | 0 / 0 / 0 px ✘ | 0 px ✔ | 2854 px |
-| RONDA 2 · 160 | 435 (14.50 s) | 0 / 0 / 0 px ✘ | 0 px ✔ | 2875 px |
-| RONDA FINAL · 210 | 637 (21.23 s) | 0 / 0 / 1 px ✘ | 0 px ✔ | 323 px |
+| RONDA 1 · 120 | 162 (5.40 s) | 0 / 0 / 529 px ✔ | 0 px ✔ | 2861 px |
+| RONDA 2 · 160 | 435 (14.50 s) | 0 / 0 / 477 px ✔ | 0 px ✔ | 2889 px |
+| RONDA FINAL · 210 | 637 (21.23 s) | 0 / 0 / 425 px ✔ | 0 px ✔ | 324 px |
 
 ## Impacto y lectura
 
@@ -34,4 +34,4 @@ Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de
 | RONDA 2 | 496 (16.53 s) | 0.00 ✔ |
 | RONDA FINAL | 684 (22.80 s) | 0.00 ✔ |
 
-**Resultado: HAY CONTROLES QUE FALLAN.**
+**Resultado: todos los controles pasan.**
