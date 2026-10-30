@@ -2,7 +2,15 @@
   "_comment": "GUION DE LA VOZ — fuente única del ritmo del reel. scripts/plan_guion.py mide cada frase (voz guía o grabación real en public/audio/voz/<id>.wav), coloca las escenas y genera timeline.json, subtitulos.json y GUION.md. Sintaxis: 120{ciento veinte} = se muestra '120' y se dice 'ciento veinte'. 'em' = palabras del subtítulo que se destacan (sin {…}). 'gap' = silencio antes de la frase (s). 'noSub' = la frase ya está escrita en pantalla (título de ronda, CTA): no se subtitula.",
   "voice": {
     "espeak": "mb-es4",
-    "wpm": 172
+    "wpm": 172,
+    "elevenlabs": {
+      "voice_id": "2LHmGJw77TBxtmz5srqw",
+      "nombre": "Ezequiel (antes listada como Alejandro) — español latinoamericano neutro",
+      "modelo": "eleven_v4",
+      "toma": "voz_elevenlabs/toma2.mp3",
+      "tempo": 1.12,
+      "flow": "https://elevenlabs.io/app/flows/P44ayvJuM4aPlPjUmGrM"
+    }
   },
   "subtitleMaxChars": 26,
   "hook": {

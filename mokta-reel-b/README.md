@@ -12,24 +12,27 @@ lectura hablada). Guion completo con tiempos: [`GUION.md`](GUION.md).
 
 | Bloque | Inicio | Contenido |
 |---|---|---|
-| Gancho | 0:00 | La voz plantea la situación y la regla ("pausar es frenar"); acercamiento lento a la barrera |
-| Ronda 1 · 120 | 0:09 | Barrera a los 0:15,5 · lectura "0,58 s para frenar a tiempo" |
-| Ronda 2 · 160 | 0:26 | Barrera a los 0:33,8 · "aunque frenaras al instante, chocabas a 85" |
-| Ronda final · 210 | 0:45 | Barrera a los 0:49,4 · "impacto a más de 160" |
-| Cierre | 0:59 | Distancia de frenado ∝ v² · "+75 % de velocidad = el triple de distancia" |
-| CTA | 1:13 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al plano del gancho |
+| Gancho | 0:00.0 | La voz plantea la situación y la regla ("pausar es frenar"); acercamiento lento a la barrera |
+| Ronda 1 · 120 | 0:10.3 | Barrera a los 0:17.4 · lectura "0,58 s para frenar a tiempo" |
+| Ronda 2 · 160 | 0:28.5 | Barrera a los 0:35.9 · "aunque frenaras al instante, chocabas a 85" |
+| Ronda final · 210 | 0:47.8 | Barrera a los 0:52.5 · "impacto a más de 160" |
+| Cierre | 1:02.5 | Distancia de frenado ∝ v² · "+75 % de velocidad = el triple de distancia" |
+| CTA | 1:17.9 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al plano del gancho |
 
-Duración 80 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
+Duración 84 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
 
-**Voz:** el MP4 actual lleva una **voz guía sintetizada** (espeak-ng + MBROLA) solo para validar ritmo y
-sincronía. Para la versión final, graba cada frase en `public/audio/voz/<ID>.wav` (ver la guía al final de
-`GUION.md`) y vuelve a ejecutar la cadena: todo se reacomoda a la duración real de cada toma.
+**Voz:** locución generada con ElevenLabs (voz `2LHmGJw77TBxtmz5srqw`, español latinoamericano neutro,
+modelo `eleven_v4`), una sola toma con pausas largas entre frases: `voz_elevenlabs/toma2.mp3`.
+`scripts/importar_voz.py voz_elevenlabs/toma2.mp3 1.12` la separa en las 21 frases (`public/audio/voz/<ID>.wav`)
+y la acelera un 12 % sin cambiar el tono. Si falta alguna frase, `plan_guion.py` usa la voz guía sintetizada.
+Para cambiar de voz o de toma: generar otra locución con el mismo texto y orden, importarla y volver a ejecutar la cadena.
 
 ## Render
 
 ```bash
 npm ci
 apt-get install espeak-ng mbrola mbrola-es4   # solo para la voz guía
+python3 scripts/importar_voz.py voz_elevenlabs/toma2.mp3 1.12   # locución → frases
 python3 scripts/plan_guion.py       # guion → timeline.json, subtitulos.json, voz.wav, GUION.md
 python3 scripts/gen_seams_reel.py   # juntas del asfalto (imagen, cámara y audio)
 python3 scripts/audio_reel.py       # diseño sonoro → public/audio/reel.wav

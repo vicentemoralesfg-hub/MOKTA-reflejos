@@ -94,6 +94,28 @@ def voice(line):
     return x, "voz guía"
 
 
+def internal_pauses(a, min_len=0.12):
+    """Pausas audibles dentro de una frase: [(inicio, fin)] en segundos."""
+    hop = int(0.01 * SR)
+    env = np.array([np.sqrt(np.mean(a[i:i + hop] ** 2)) for i in range(0, len(a) - hop, hop)])
+    if not len(env):
+        return []
+    thr = max(np.max(env) * 0.06, 1e-4)
+    q = env < thr
+    out, i = [], 0
+    while i < len(q):
+        if q[i]:
+            j = i
+            while j < len(q) and q[j]:
+                j += 1
+            if i > 3 and j < len(q) - 3 and (j - i) * 0.01 >= min_len:
+                out.append((i * 0.01, j * 0.01))
+            i = j
+        else:
+            i += 1
+    return out
+
+
 placed = []  # líneas con tiempo absoluto
 
 
@@ -170,6 +192,7 @@ json.dump(timeline, open(os.path.join(ROOT, "src", "reel", "timeline.json"), "w"
 # ---------------------------------------------------------------- subtítulos (palabra por palabra)
 MAXC = G["subtitleMaxChars"]
 subs = []
+anchored = 0
 for p in [q for q in placed if q["sub"]]:
     toks = tokens(p["text"])
     weights = []
@@ -180,13 +203,34 @@ for p in [q for q in placed if q["sub"]]:
         elif d.endswith(","):
             w += 1.2
         weights.append(w)
-    total_w = sum(weights)
-    t = p["start"]
+    # Tiempo de inicio de cada palabra. Si la frase tiene tantas pausas audibles como signos de
+    # puntuación internos, cada tramo se ancla a su pausa real y dentro del tramo se reparte por sílabas;
+    # si no coinciden, se reparte toda la frase por sílabas (más una pausa estimada por signo).
+    breaks = [i for i, (d, _) in enumerate(toks[:-1]) if re.search(r"[.?!…:,]$", d)]
+    pauses = internal_pauses(p["audio"])
+    starts = [0.0] * len(toks)
+    if breaks and len(pauses) == len(breaks):
+        anchored += 1
+        groups = [list(range(0, breaks[0] + 1))] + [list(range(breaks[k] + 1, (breaks[k + 1] + 1) if k + 1 < len(breaks) else len(toks))) for k in range(len(breaks))]
+        bounds = [0.0] + [b for b, _ in pauses] + [p["dur"]]
+        begins = [0.0] + [e for _, e in pauses]
+        for g_idx, grp in enumerate(groups):
+            t0, t1 = begins[g_idx], bounds[g_idx + 1]
+            ws = [sum(syllables(x) for x in toks[i][1].split()) for i in grp]
+            acc = t0
+            for i, w in zip(grp, ws):
+                starts[i] = acc
+                acc += (t1 - t0) * w / sum(ws)
+    else:
+        total_w = sum(weights)
+        acc = 0.0
+        for i, w in enumerate(weights):
+            starts[i] = acc
+            acc += p["dur"] * w / total_w
     words = []
-    for (d, _), w in zip(toks, weights):
+    for (d, _), st in zip(toks, starts):
         bare = re.sub(r"[¿?¡!.,:…]", "", d)
-        words.append({"w": d, "f": fr(t), "em": d in p["em"] or bare in [re.sub(r"[¿?¡!.,:…]", "", e) for e in p["em"]]})
-        t += p["dur"] * w / total_w
+        words.append({"w": d, "f": fr(p["start"] + st), "em": d in p["em"] or bare in [re.sub(r"[¿?¡!.,:…]", "", e) for e in p["em"]]})
     # trozos legibles: primero por frases (puntuación); las cortas separadas por coma se unen si caben;
     # las largas se parten en dos mitades equilibradas (nunca queda una palabra sola si se puede evitar)
     txt = lambda ws: " ".join(x["w"] for x in ws)  # noqa: E731
@@ -273,4 +317,5 @@ open(os.path.join(ROOT, "GUION.md"), "w").write("\n".join(md) + "\n")
 
 print(f"total {total_frames / FPS:.2f} s · gancho {hook_frames / FPS:.1f} s · " +
       " · ".join(f"{r['id']} barrera {r['eventAt'] / FPS:.1f} s" for r in rounds) +
-      f" · cierre {rev_frames / FPS:.1f} s · CTA {cta_frames / FPS:.1f} s · {len(subs)} subtítulos")
+      f" · cierre {rev_frames / FPS:.1f} s · CTA {cta_frames / FPS:.1f} s · {len(subs)} subtítulos"
+      f" · {anchored} frases ancladas a pausas reales")
