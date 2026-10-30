@@ -1,0 +1,45 @@
+{
+  "_comment": "Fuente única de tiempos. La leen Remotion (src/config.ts) y el generador de audio (scripts/gen_audio.py). Todo en fotogramas a 30 fps.",
+  "fps": 30,
+  "hook": {
+    "duration": 96
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "speedKmh": 120,
+      "label": "RONDA 1",
+      "eventAt": 120,
+      "reactWindow": 33,
+      "resultDuration": 84
+    },
+    {
+      "id": "r2",
+      "speedKmh": 160,
+      "label": "RONDA 2",
+      "eventAt": 171,
+      "reactWindow": 33,
+      "resultDuration": 66,
+      "decoyAt": 45
+    },
+    {
+      "id": "r3",
+      "speedKmh": 210,
+      "label": "RONDA FINAL",
+      "eventAt": 54,
+      "reactWindow": 33,
+      "resultDuration": 78
+    }
+  ],
+  "reveal": {
+    "duration": 140
+  },
+  "cta": {
+    "duration": 99
+  },
+  "barrierDistanceM": 70,
+  "thresholds": {
+    "greenMaxS": 0.5,
+    "yellowMaxS": 0.75
+  }
+}
