@@ -7,7 +7,7 @@
       "voice_id": "2LHmGJw77TBxtmz5srqw",
       "nombre": "Ezequiel (antes listada como Alejandro) — español latinoamericano neutro",
       "modelo": "eleven_v4",
-      "toma": "voz_elevenlabs/toma2.mp3",
+      "toma": "voz_elevenlabs/toma3.mp3",
       "tempo": 1.12,
       "flow": "https://elevenlabs.io/app/flows/P44ayvJuM4aPlPjUmGrM"
     }
