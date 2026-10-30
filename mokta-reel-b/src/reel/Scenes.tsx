@@ -104,12 +104,12 @@ export const Reveal: React.FC = () => {
       </AbsoluteFill>
 
       <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
-        <text x={X0} y={532} fill={THEME.dim} opacity={rows[0].g} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 26 }}>
+        <text x={X0} y={532} fill={THEME.dim} opacity={rows[0].g} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>
           Distancia para frenar (sin contar la reacción)
         </text>
         <g opacity={rows[0].g}>
           <line x1={xb} x2={xb} y1={552} y2={806} stroke={THEME.amber} strokeWidth={3} strokeDasharray="10 8" />
-          <text x={xb + 12} y={832} fill={THEME.amber} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 25 }}>barrera · {D} m</text>
+          <text x={xb + 12} y={834} fill={THEME.amber} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 28 }}>barrera · {D} m</text>
         </g>
         {rows.map((row) => {
           const len = row.m * PX * row.g;
@@ -127,14 +127,16 @@ export const Reveal: React.FC = () => {
         })}
       </svg>
 
-      <AbsoluteFill style={{ alignItems: "center", top: 870, opacity: fact }}>
+      <AbsoluteFill style={{ alignItems: "center", top: 864, opacity: fact }}>
         <div style={{ fontFamily: THEME.display, fontWeight: 700, fontSize: 56, color: THEME.text, textAlign: "center", lineHeight: 1.08, translate: `0px ${interpolate(fact, [0, 1], [10, 0])}px` }}>
           +75 % de velocidad = <span style={{ color: THEME.red }}>{fmt(ratio, 0)} veces</span>
           <br />
           la distancia para frenar
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 400, fontSize: 24, marginTop: 14, color: THEME.faint, textAlign: "center" }}>
+        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28, marginTop: 14, color: THEME.dim, textAlign: "center", lineHeight: 1.35 }}>
           Estimación: frenada constante de 0,8 g en asfalto seco.
+          <br />
+          En Chile, el máximo en autopista es 120 km/h.
         </div>
       </AbsoluteFill>
 

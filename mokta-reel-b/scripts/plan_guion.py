@@ -116,6 +116,9 @@ def internal_pauses(a, min_len=0.12):
     return out
 
 
+_pp = os.path.join(ROOT, "src", "reel", "voz_palabras.json")
+PALABRAS = json.load(open(_pp)) if os.path.exists(_pp) else {}
+
 placed = []  # líneas con tiempo absoluto
 
 
@@ -144,7 +147,7 @@ timeline = {"_comment": "GENERADO por scripts/plan_guion.py a partir de guion.js
 # ---------------------------------------------------------------- gancho
 end = lay(G["hook"]["lines"], "hook", 0.0)
 hook_frames = math.ceil((end + G["hook"]["tail"]) * FPS)
-timeline["hook"] = {"duration": hook_frames, "pausarAt": fr(rel_start("H2", 0)), "rondasAt": fr(rel_start("H3", 0))}
+timeline["hook"] = {"duration": hook_frames, "pausarAt": fr(rel_start("H2", 0)), "rondasAt": fr(rel_start("H2", 0)) + 30}  # se ajusta con palabras reales más abajo
 
 # ---------------------------------------------------------------- rondas
 t_abs = hook_frames / FPS
@@ -187,7 +190,7 @@ cta_frames = math.ceil((end + G["cta"]["tail"]) * FPS)
 timeline["cta"] = {"duration": cta_frames, "titleAt": fr(rel_start(G["cta"]["sync"]["titleWith"], A2)), "commentAt": fr(rel_start(G["cta"]["sync"]["commentWith"], A2))}
 total_frames = hook_frames + sum(r["eventAt"] + math.ceil(D / (r["speedKmh"] / 3.6) * FPS - 1e-9) + B["blackFrames"] + r["resultFrames"] for r in rounds) + rev_frames + cta_frames
 
-json.dump(timeline, open(os.path.join(ROOT, "src", "reel", "timeline.json"), "w"), ensure_ascii=False, indent=2)
+TIMELINE_PATH = os.path.join(ROOT, "src", "reel", "timeline.json")
 
 # ---------------------------------------------------------------- subtítulos (palabra por palabra)
 MAXC = G["subtitleMaxChars"]
@@ -209,7 +212,12 @@ for p in [q for q in placed if q["sub"]]:
     breaks = [i for i, (d, _) in enumerate(toks[:-1]) if re.search(r"[.?!…:,]$", d)]
     pauses = internal_pauses(p["audio"])
     starts = [0.0] * len(toks)
-    if breaks and len(pauses) == len(breaks):
+    real = PALABRAS.get(p["id"], {}) if p["src"] == "grabación" else {}
+    if len(real) == len(toks):
+        # tiempos reales de la transcripción (alinear_palabras.py)
+        starts = [real[str(i)] for i in range(len(toks))]
+        anchored += 1
+    elif breaks and len(pauses) == len(breaks):
         anchored += 1
         groups = [list(range(0, breaks[0] + 1))] + [list(range(breaks[k] + 1, (breaks[k + 1] + 1) if k + 1 < len(breaks) else len(toks))) for k in range(len(breaks))]
         bounds = [0.0] + [b for b, _ in pauses] + [p["dur"]]
@@ -271,6 +279,16 @@ for a, b in zip(subs, subs[1:]):
     a["to"] = min(a["to"], b["from"])
 json.dump(subs, open(os.path.join(ROOT, "src", "reel", "subtitulos.json"), "w"), ensure_ascii=False)
 
+# el texto "Pausar = frenar" del gancho entra exactamente cuando la voz dice "Pausar"
+pw = G["hook"].get("sync", {}).get("pausarWord")
+if pw:
+    for c in subs:
+        for wd in c["words"]:
+            if c["line"] == pw[0] and wd["w"].startswith(pw[1]):
+                timeline["hook"]["pausarAt"] = wd["f"]
+                timeline["hook"]["rondasAt"] = fr(rel_start("H2", 0)) + 12
+json.dump(timeline, open(TIMELINE_PATH, "w"), ensure_ascii=False, indent=2)
+
 # ---------------------------------------------------------------- pista de voz completa
 N = int(round(total_frames / FPS * SR))
 vox = np.zeros(N)
@@ -318,4 +336,4 @@ open(os.path.join(ROOT, "GUION.md"), "w").write("\n".join(md) + "\n")
 print(f"total {total_frames / FPS:.2f} s · gancho {hook_frames / FPS:.1f} s · " +
       " · ".join(f"{r['id']} barrera {r['eventAt'] / FPS:.1f} s" for r in rounds) +
       f" · cierre {rev_frames / FPS:.1f} s · CTA {cta_frames / FPS:.1f} s · {len(subs)} subtítulos"
-      f" · {anchored} frases ancladas a pausas reales")
+      f" · {anchored} frases con tiempos reales o anclados a pausas")

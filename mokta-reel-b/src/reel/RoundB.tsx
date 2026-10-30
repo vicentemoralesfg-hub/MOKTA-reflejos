@@ -64,7 +64,7 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
           {r.label} · {kmh} km/h · BARRERA A {D} m
         </div>
         <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30, letterSpacing: 5, marginRight: -5, marginTop: 44, color: THEME.text }}>
-          {tl !== null ? "TIEMPO PARA FRENAR A TIEMPO" : "IMPACTO AUNQUE FRENES AL INSTANTE"}
+          {tl !== null ? "TIEMPO ESTIMADO PARA FRENAR" : "IMPACTO ESTIMADO, AUNQUE FRENES AL INSTANTE"}
         </div>
         <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tl !== null ? 176 : 150, lineHeight: 1.08, color: tl !== null ? THEME.green : THEME.red }}>
           <Tab>{tl !== null ? `${fmt(tl, 2)} s` : `≈ ${impact(0)} km/h`}</Tab>
@@ -93,24 +93,24 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
         {ticks.map((t) => (
           <g key={t} opacity={late}>
             <line x1={x(t)} x2={x(t)} y1={880} y2={914} stroke="rgba(255,255,255,0.55)" strokeWidth={2} />
-            <text x={x(t)} y={866} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.text} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 26 }}>
+            <text x={x(t)} y={866} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.text} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30 }}>
               {impact(t)} km/h
             </text>
-            <text x={x(t)} y={952} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 25 }}>
+            <text x={x(t)} y={952} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>
               {t === 0 ? "0 s" : `${fmt(t, t === 0.75 ? 2 : 1)} s`}
             </text>
           </g>
         ))}
         {tl !== null ? (
           <g opacity={late}>
-            <text x={X0} y={866} fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 26 }}>te detienes</text>
-            <text x={X0} y={952} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 25 }}>0 s</text>
-            <text x={greenEnd} y={952} textAnchor="middle" fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 700, fontSize: 25 }}>
+            <text x={X0} y={866} fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30 }}>te detienes</text>
+            <text x={X0} y={952} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>0 s</text>
+            <text x={greenEnd} y={952} textAnchor="middle" fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 700, fontSize: 28 }}>
               {fmt(tl, 2)}
             </text>
           </g>
         ) : null}
-        <text x={540} y={1012} textAnchor="middle" opacity={late} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 26 }}>
+        <text x={540} y={1012} textAnchor="middle" opacity={late} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 30 }}>
           tu pausa → velocidad estimada al llegar a la barrera
         </text>
       </svg>

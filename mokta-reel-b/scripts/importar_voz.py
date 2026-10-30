@@ -63,15 +63,20 @@ for ln_id in ids:
         sr, g = wavfile.read(gp)
         guide[ln_id] = len(g) / sr
 rows = []
+segs = {}
 for k, ln_id in enumerate(ids):
     seg = x[bounds[k] * hop: bounds[k + 1] * hop]
     e = np.abs(seg) > thr * 2
     nz = np.nonzero(e)[0]
-    seg = seg[max(0, nz[0] - int(0.06 * SR)): nz[-1] + int(0.08 * SR)] if len(nz) else seg
+    a0 = max(0, nz[0] - int(0.06 * SR)) if len(nz) else 0
+    seg = seg[a0: nz[-1] + int(0.08 * SR)] if len(nz) else seg
+    segs[ln_id] = {"inicio": (bounds[k] * hop + a0) / SR}
     wavfile.write(os.path.join(ROOT, "public", "audio", "voz", f"{ln_id}.wav"), SR, (seg * 32767).astype(np.int16))
     d = len(seg) / SR
     ratio = d / guide[ln_id] if ln_id in guide else float("nan")
     rows.append((ln_id, d, ratio))
+# inicio de cada frase en la locución acelerada (para alinear la transcripción: t_original / tempo)
+json.dump({"tempo": tempo, "lineas": segs}, open(os.path.join(ROOT, "public", "audio", "voz", "segmentos.json"), "w"))
 for ln_id, d, ratio in rows:
     flag = "  ← revisar" if not (0.55 < ratio < 1.8) else ""
     print(f"{ln_id:4s} {d:5.2f} s  (×{ratio:.2f} de la voz guía){flag}")

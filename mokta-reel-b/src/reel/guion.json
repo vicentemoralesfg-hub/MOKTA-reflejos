@@ -18,30 +18,28 @@
       {
         "id": "H1",
         "gap": 0.25,
-        "text": "Vas de noche a 120{ciento veinte}… y de pronto, aparece esto.",
+        "text": "¿Alcanzarías a frenar a 120{ciento veinte}?",
         "em": [
-          "esto."
+          "frenar"
         ]
       },
       {
         "id": "H2",
         "gap": 0.35,
-        "text": "Cuando la veas, pausa el video. Pausar es frenar.",
+        "text": "Pausa el video cuando veas esta barrera. Pausar es frenar.",
         "em": [
-          "pausa",
+          "Pausa",
           "frenar."
-        ]
-      },
-      {
-        "id": "H3",
-        "gap": 0.3,
-        "text": "Tres rondas. Cada una, más rápida.",
-        "em": [
-          "rápida."
         ]
       }
     ],
-    "tail": 0.5
+    "tail": 0.4,
+    "sync": {
+      "pausarWord": [
+        "H2",
+        "Pausar"
+      ]
+    }
   },
   "rounds": [
     {
@@ -49,9 +47,12 @@
       "intro": [
         {
           "id": "R1a",
-          "gap": 0.35,
-          "text": "Ronda uno: 120{ciento veinte}.",
-          "noSub": true
+          "gap": 0.3,
+          "text": "Ronda uno de tres… y la última no se gana con reflejos.",
+          "em": [
+            "no",
+            "reflejos."
+          ]
         },
         {
           "id": "R1b",
@@ -59,12 +60,12 @@
           "text": "Ojos en la carretera… y el dedo listo."
         }
       ],
-      "silenceBeforeBarrier": 2.4,
+      "silenceBeforeBarrier": 1.8,
       "result": [
         {
           "id": "R1c",
           "gap": 0.35,
-          "text": "Tenías 0,58{cincuenta y ocho centésimas} de segundo para frenar a tiempo.",
+          "text": "Según el cálculo, tenías 0,58{cincuenta y ocho centésimas} de segundo para frenar a tiempo.",
           "em": [
             "0,58"
           ]
@@ -100,12 +101,12 @@
           "text": "Solo 40{cuarenta} más. ¿Qué tanto puede cambiar?"
         }
       ],
-      "silenceBeforeBarrier": 2.7,
+      "silenceBeforeBarrier": 2.5,
       "result": [
         {
           "id": "R2c",
           "gap": 0.35,
-          "text": "Todo. Aunque frenaras al instante, chocabas a 85{ochenta y cinco}.",
+          "text": "Todo. Aunque frenaras al instante, chocabas a unos 85{ochenta y cinco}.",
           "em": [
             "Todo.",
             "85."
@@ -148,8 +149,11 @@
         {
           "id": "R3c",
           "gap": 0.35,
-          "text": "Ni con reflejos perfectos: impacto a más de 160{ciento sesenta}.",
+          "text": "Te lo dije: ni con reflejos perfectos. Impacto a más de 160{ciento sesenta}.",
           "em": [
+            "Te",
+            "lo",
+            "dije:",
             "160."
           ]
         },
