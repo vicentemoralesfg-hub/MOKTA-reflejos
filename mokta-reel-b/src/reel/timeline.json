@@ -6,9 +6,9 @@
   "rampFrames": 24,
   "blackFrames": 9,
   "hook": {
-    "duration": 185,
-    "pausarAt": 138,
-    "rondasAt": 84
+    "duration": 160,
+    "pausarAt": 120,
+    "rondasAt": 70
   },
   "rounds": [
     {
@@ -16,47 +16,47 @@
       "speedKmh": 120,
       "label": "RONDA 1",
       "startS": 1000,
-      "eventAt": 246,
-      "resultFrames": 269,
-      "titleOut": 126,
-      "cardBigAt": 10,
-      "cardSubAt": 10,
-      "cardScaleAt": 146
+      "eventAt": 214,
+      "resultFrames": 235,
+      "titleOut": 116,
+      "cardBigAt": 6,
+      "cardSubAt": 6,
+      "cardScaleAt": 128
     },
     {
       "id": "r2",
       "speedKmh": 160,
       "label": "RONDA 2",
       "startS": 3000,
-      "eventAt": 217,
-      "resultFrames": 292,
-      "titleOut": 78,
-      "cardBigAt": 10,
-      "cardSubAt": 127,
-      "cardScaleAt": 133,
-      "decoyPassAt": 160
+      "eventAt": 177,
+      "resultFrames": 255,
+      "titleOut": 71,
+      "cardBigAt": 6,
+      "cardSubAt": 110,
+      "cardScaleAt": 116,
+      "decoyPassAt": 120
     },
     {
       "id": "r3",
       "speedKmh": 210,
       "label": "RONDA FINAL",
       "startS": 5000,
-      "eventAt": 140,
-      "resultFrames": 252,
-      "titleOut": 77,
-      "cardBigAt": 10,
-      "cardSubAt": 141,
-      "cardScaleAt": 147
+      "eventAt": 124,
+      "resultFrames": 131,
+      "titleOut": 70,
+      "cardBigAt": 6,
+      "cardSubAt": 6,
+      "cardScaleAt": 12
     }
   ],
   "reveal": {
-    "duration": 453,
-    "barsAt": 117,
-    "factAt": 216
+    "duration": 302,
+    "barsAt": 4,
+    "factAt": 93
   },
   "cta": {
-    "duration": 185,
-    "titleAt": 9,
-    "commentAt": 110
+    "duration": 162,
+    "titleAt": 4,
+    "commentAt": 96
   }
 }

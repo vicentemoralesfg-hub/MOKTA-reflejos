@@ -126,6 +126,8 @@ def lay(lines, block, t0_abs, t_rel=0.0):
     """Coloca las frases una tras otra desde t_rel (segundos relativos al bloque). Devuelve el final relativo."""
     cur = t_rel
     for ln in lines:
+        if ln.get("omit"):
+            continue
         audio, src = voice(ln)
         dur = len(audio) / SR
         start = cur + ln.get("gap", 0.3)

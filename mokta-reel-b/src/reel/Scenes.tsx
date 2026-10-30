@@ -86,7 +86,7 @@ export const Reveal: React.FC = () => {
   const xb = X0 + D * PX;
   const rows = ROUNDS.map((r, i) => {
     const m = kmhToMs(r.speedKmh) ** 2 / (2 * DECEL_G * 9.81);
-    return { kmh: r.speedKmh, m, y: 600 + i * 92, g: ramp(f, R.barsAt + i * 14, R.barsAt + 24 + i * 14) };
+    return { kmh: r.speedKmh, m, y: 600 + i * 92, g: ramp(f, R.barsAt + i * 8, R.barsAt + 18 + i * 8) };
   });
   const fact = ramp(f, R.factAt, R.factAt + 12);
   const ratio = (ROUNDS[2].speedKmh / ROUNDS[0].speedKmh) ** 2;

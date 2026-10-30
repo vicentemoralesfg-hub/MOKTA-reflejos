@@ -66,7 +66,7 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
         <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30, letterSpacing: 5, marginRight: -5, marginTop: 44, color: THEME.text }}>
           {tl !== null ? "TIEMPO ESTIMADO PARA FRENAR" : "IMPACTO ESTIMADO, AUNQUE FRENES AL INSTANTE"}
         </div>
-        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tl !== null ? 176 : 150, lineHeight: 1.08, color: tl !== null ? THEME.green : THEME.red }}>
+        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tl !== null ? 176 : 150, lineHeight: 1.08, color: tl !== null ? THEME.green : THEME.red, scale: String(interpolate(a, [0, 1], [1.12, 1])) }}>
           <Tab>{tl !== null ? `${fmt(tl, 2)} s` : `≈ ${impact(0)} km/h`}</Tab>
         </div>
         <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 38, marginTop: 12, color: THEME.dim, textAlign: "center", lineHeight: 1.3, opacity: sub, translate: `0px ${interpolate(sub, [0, 1], [8, 0])}px` }}>
