@@ -37,12 +37,21 @@ export const brakeOutcome = (kmh: number, t: number, distanceM: number, decelG: 
   return { reactionM, brakingM, totalM, stops: false, marginM: 0, impactKmh };
 };
 
-/** Último tiempo de reacción con el que aún se detiene antes de la barrera (null si es imposible). */
-export const lastStopTime = (kmh: number, distanceM: number, decelG: number) => {
+/** Último tiempo de reacción con el que llega a la barrera a `maxKmh` o menos (0 = detenerse). null si es imposible. */
+export const limitTime = (kmh: number, distanceM: number, decelG: number, maxKmh: number) => {
   const v = kmhToMs(kmh);
-  const t = (distanceM - (v * v) / (2 * decelG * G)) / v;
+  const vt = kmhToMs(maxKmh);
+  const t = (distanceM - (v * v - vt * vt) / (2 * decelG * G)) / v;
   return t >= 0 ? t : null;
 };
+
+/** Último tiempo de reacción con el que aún se detiene antes de la barrera (null si es imposible). */
+export const lastStopTime = (kmh: number, distanceM: number, decelG: number) => limitTime(kmh, distanceM, decelG, 0);
+
+/** Nivel del resultado: se detiene · choque grave (≤ umbral) · riesgo mortal (> umbral). */
+export type Tier = "stop" | "grave" | "mortal";
+export const tierOf = (o: Outcome, umbralKmh: number): Tier =>
+  o.stops ? "stop" : o.impactKmh <= umbralKmh ? "grave" : "mortal";
 
 /** Formato chileno: coma decimal. */
 export const fmt = (n: number, decimals = 1) => n.toFixed(decimals).replace(".", ",");

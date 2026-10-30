@@ -144,7 +144,7 @@ def rel_start(line_id, t0_abs):
 fr = lambda s: int(round(s * FPS))  # noqa: E731
 
 timeline = {"_comment": "GENERADO por scripts/plan_guion.py a partir de guion.json + escenas.json. No editar a mano.",
-            **{k: B[k] for k in ("fps", "barrierDistanceM", "decelG", "rampFrames", "blackFrames")}}
+            **{k: B[k] for k in ("fps", "barrierDistanceM", "decelG", "umbralKmh", "rampFrames", "blackFrames")}}
 
 # ---------------------------------------------------------------- gancho
 end = lay(G["hook"]["lines"], "hook", 0.0)

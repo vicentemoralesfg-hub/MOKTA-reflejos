@@ -1,8 +1,8 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { brakeOutcome, fmt } from "../physics";
+import { brakeOutcome, fmt, tierOf } from "../physics";
 import { THEME } from "../prototipo/theme";
-import { D, DECEL_G, FPS } from "./config";
+import { D, DECEL_G, FPS, UMBRAL } from "./config";
 
 export const Label: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 24, letterSpacing: 2.5, color: THEME.dim, ...style }}>
@@ -29,13 +29,13 @@ export const ClusterDrive: React.FC<{
   const t = live ? (f - eventAt) / FPS : 0;
   const o = brakeOutcome(kmh, t, D, DECEL_G);
   const reveal = live ? Math.min(1, (f - eventAt) / 8) : 0;
-  const outcome = !live
+  const tier = tierOf(o, UMBRAL);
+  const color = tier === "stop" ? THEME.green : tier === "grave" ? THEME.amber : THEME.red;
+  const verdict = !live
     ? ""
-    : o.stops
-      ? o.marginM < 1
-        ? "Te detienes a < 1 m"
-        : `Te detienes a ${Math.floor(o.marginM)} m`
-      : `Impacto a ≈ ${Math.round(o.impactKmh)} km/h`;
+    : tier === "stop"
+      ? "TE DETIENES"
+      : `${tier === "grave" ? "CHOQUE GRAVE" : "RIESGO MORTAL"} · ${Math.round(o.impactKmh)} km/h`;
 
   return (
     <>
@@ -53,11 +53,11 @@ export const ClusterDrive: React.FC<{
           <Tab>{fmt(t, 2)} s</Tab>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
-          <div style={{ width: 10, height: 10, borderRadius: 5, background: o.stops ? THEME.green : THEME.red, opacity: reveal }} />
+          <div style={{ width: 10, height: 10, borderRadius: 5, background: color, opacity: reveal }} />
           <Label>SI FRENAS AQUÍ</Label>
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 34, marginTop: 2, color: THEME.text, opacity: reveal, whiteSpace: "nowrap", minHeight: 44 }}>
-          <Tab>{outcome}</Tab>
+        <div style={{ fontFamily: THEME.display, fontWeight: 700, fontSize: 40, lineHeight: 1.1, marginTop: 2, color, opacity: reveal, whiteSpace: "nowrap", minHeight: 44 }}>
+          <Tab>{verdict}</Tab>
         </div>
       </div>
     </>

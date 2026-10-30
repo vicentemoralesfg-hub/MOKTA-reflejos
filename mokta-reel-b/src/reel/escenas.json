@@ -1,7 +1,7 @@
 {
-  "_comment": "Parámetros fijos de las escenas (velocidades, física, tramos de carretera). Los tiempos los calcula scripts/plan_guion.py a partir del guion y los escribe en timeline.json.",
+  "_comment": "Parámetros fijos de las escenas (velocidades, física, tramos de carretera). Los tiempos los calcula scripts/plan_guion.py a partir del guion y los escribe en timeline.json. umbralKmh: velocidad de impacto sobre la cual el choque frontal queda fuera del límite de protección del auto (Sistema Seguro, Tingvall y Haworth 1999).",
   "fps": 30,
-  "barrierDistanceM": 90,
+  "barrierDistanceM": 125,
   "decelG": 0.8,
   "rampFrames": 24,
   "blackFrames": 9,
@@ -24,5 +24,6 @@
       "label": "RONDA FINAL",
       "startS": 5000
     }
-  ]
+  ],
+  "umbralKmh": 70
 }

@@ -79,7 +79,17 @@
           "id": "R1y",
           "gap": 0.15,
           "toma": "toma4",
-          "text": "Ojos en la carretera."
+          "text": "Ojos en la carretera.",
+          "omit": true
+        },
+        {
+          "id": "R1z",
+          "gap": 0.12,
+          "toma": "toma5",
+          "text": "Frena antes de que el choque sea mortal.",
+          "em": [
+            "mortal."
+          ]
         }
       ],
       "silenceBeforeBarrier": 1.35,
@@ -90,7 +100,8 @@
           "text": "Según el cálculo, tenías 0,58{cincuenta y ocho centésimas} de segundo para frenar a tiempo.",
           "em": [
             "0,58"
-          ]
+          ],
+          "omit": true
         },
         {
           "id": "R1d",
@@ -98,13 +109,23 @@
           "text": "Si pausaste después, mira la escala: a esa velocidad chocaste.",
           "em": [
             "chocaste."
+          ],
+          "omit": true
+        },
+        {
+          "id": "R1e",
+          "gap": 0.2,
+          "toma": "toma5",
+          "text": "Fácil. A 120{ciento veinte} te sobraban metros.",
+          "em": [
+            "Fácil."
           ]
         }
       ],
       "card": {
-        "bigWith": "R1c",
-        "subWith": "R1c",
-        "scaleWith": "R1d"
+        "bigWith": "R1e",
+        "subWith": "R1e",
+        "scaleWith": "R1e"
       },
       "resultTail": 0.35
     },
@@ -120,7 +141,18 @@
         {
           "id": "R2b",
           "gap": 0.15,
-          "text": "Solo 40{cuarenta} más. ¿Qué tanto puede cambiar?"
+          "text": "Solo 40{cuarenta} más. ¿Qué tanto puede cambiar?",
+          "omit": true
+        },
+        {
+          "id": "R2e",
+          "gap": 0.12,
+          "toma": "toma5",
+          "text": "Ahora tienes medio segundo.",
+          "em": [
+            "medio",
+            "segundo."
+          ]
         }
       ],
       "silenceBeforeBarrier": 1.7,
@@ -132,7 +164,8 @@
           "em": [
             "Todo.",
             "85."
-          ]
+          ],
+          "omit": true
         },
         {
           "id": "R2d",
@@ -141,13 +174,24 @@
           "em": [
             "126",
             "90."
+          ],
+          "omit": true
+        },
+        {
+          "id": "R2f",
+          "gap": 0.2,
+          "toma": "toma5",
+          "text": "¿Menos de medio segundo? Pasaste. Si no, zona mortal.",
+          "em": [
+            "Pasaste.",
+            "mortal."
           ]
         }
       ],
       "card": {
-        "bigWith": "R2c",
-        "subWith": "R2d",
-        "scaleWith": "R2d"
+        "bigWith": "R2f",
+        "subWith": "R2f",
+        "scaleWith": "R2f"
       },
       "resultTail": 0.35
     },
@@ -163,7 +207,17 @@
         {
           "id": "R3b",
           "gap": 0.15,
-          "text": "Último intento."
+          "text": "Último intento.",
+          "omit": true
+        },
+        {
+          "id": "R3e",
+          "gap": 0.12,
+          "toma": "toma5",
+          "text": "Si pasas esta, eres el primero.",
+          "em": [
+            "primero."
+          ]
         }
       ],
       "silenceBeforeBarrier": 1.25,
@@ -177,7 +231,8 @@
             "lo",
             "dije:",
             "160."
-          ]
+          ],
+          "omit": true
         },
         {
           "id": "R3d",
@@ -189,12 +244,22 @@
             "salva."
           ],
           "omit": true
+        },
+        {
+          "id": "R3f",
+          "gap": 0.2,
+          "toma": "toma5",
+          "text": "Nadie la pasa. Ni reaccionando al instante: 137{ciento treinta y siete} km/h{kilómetros por hora}.",
+          "em": [
+            "Nadie",
+            "137"
+          ]
         }
       ],
       "card": {
-        "bigWith": "R3c",
-        "subWith": "R3c",
-        "scaleWith": "R3c"
+        "bigWith": "R3f",
+        "subWith": "R3f",
+        "scaleWith": "R3f"
       },
       "resultTail": 0.35
     }
@@ -210,6 +275,17 @@
         ],
         "noSub": true,
         "omit": true
+      },
+      {
+        "id": "V5",
+        "gap": 0.15,
+        "toma": "toma5",
+        "text": "Misma barrera, misma distancia. A 210{doscientos diez}, tus reflejos ya no importan.",
+        "em": [
+          "ya",
+          "no",
+          "importan."
+        ]
       },
       {
         "id": "V2",
@@ -235,6 +311,17 @@
           "física",
           "no",
           "negocia."
+        ],
+        "omit": true
+      },
+      {
+        "id": "V6",
+        "gap": 0.15,
+        "toma": "toma5",
+        "text": "Sobre 70{setenta}, el auto ya no puede protegerte.",
+        "em": [
+          "70,",
+          "protegerte."
         ]
       }
     ],
@@ -254,18 +341,34 @@
           "ronda",
           "final?"
         ],
-        "noSub": true
+        "noSub": true,
+        "omit": true
       },
       {
         "id": "C2",
         "gap": 0.15,
         "text": "Y mándaselo a quien maneja rápido.",
+        "noSub": true,
+        "omit": true
+      },
+      {
+        "id": "C3",
+        "gap": 0.15,
+        "toma": "toma5",
+        "text": "¿Cuántas rondas pasaste? Comenta 1{uno}, 2{dos} o 3{tres}.",
+        "noSub": true
+      },
+      {
+        "id": "C4",
+        "gap": 0.15,
+        "toma": "toma5",
+        "text": "Y si alguien te dice 3{tres}, mándale esto.",
         "noSub": true
       }
     ],
     "sync": {
-      "titleWith": "C1",
-      "commentWith": "C2"
+      "titleWith": "C3",
+      "commentWith": "C4"
     },
     "tail": 0.6
   }

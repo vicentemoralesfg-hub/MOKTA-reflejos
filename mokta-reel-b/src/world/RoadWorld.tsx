@@ -135,6 +135,7 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
     const reflW = makeLitMaterial({ color: [1.0, 1.0, 0.96], retro: 1.1, minLight: 0.15 });
     const reflA = makeLitMaterial({ color: [1.0, 0.55, 0.1], retro: 1.1, minLight: 0.15 });
     const bush = makeLitMaterial({ color: [0.07, 0.085, 0.06] });
+    const concrete = makeLitMaterial({ color: [0.5, 0.5, 0.47], minLight: 0.08 });
     const stripes = makeStripeTexture();
     const rail = makeLitMaterial({ color: [0.86, 0.86, 0.84], retro: 0.42, minLight: 0.4, map: stripes });
     const bPost = makeLitMaterial({ color: [0.62, 0.62, 0.6], retro: 0.12, minLight: 0.12 });
@@ -148,11 +149,12 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
       reflW,
       reflA,
       bush,
+      concrete,
       rail,
       bPost,
       glow,
       mountains,
-      mats: [road, guard, post, delBody, reflW, reflA, bush, rail, bPost],
+      mats: [road, guard, post, delBody, reflW, reflA, bush, concrete, rail, bPost],
     };
   }, []);
 
@@ -257,9 +259,16 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
         </mesh>
       ))}
 
-      {/* Cierre total: cuatro barreras tipo III escalonadas, de berma a berma (≈10,7 m) */}
+      {/* Cierre total: cuatro barreras tipo III escalonadas, de berma a berma (≈10,7 m), y detrás un muro
+          de hormigón de obras (obstáculo rígido: el choque es frontal contra algo que no cede) */}
       {barrierS !== null ? (
         <group>
+          <mesh position={[0, 0.55, -barrierS - 2.6]} material={assets.concrete}>
+            <boxGeometry args={[11.4, 1.1, 0.6]} />
+          </mesh>
+          <mesh position={[0, 0.88, -barrierS - 2.29]} material={assets.reflA}>
+            <boxGeometry args={[11.2, 0.12, 0.02]} />
+          </mesh>
           {[-3.9, -1.3, 1.3, 3.9].map((bx, i) => (
             <Barricade
               key={bx}

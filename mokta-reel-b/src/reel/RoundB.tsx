@@ -3,11 +3,11 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { DriveView } from "../world/DriveView";
 import { rideAt } from "../lib/ride";
 import { inOut, ramp } from "../lib/anim";
-import { brakeOutcome, fmt, kmhToMs } from "../physics";
+import { brakeOutcome, fmt, kmhToMs, tierOf } from "../physics";
 import { Cockpit } from "../prototipo/Cockpit";
 import { THEME } from "../prototipo/theme";
 import { ClusterDrive, ClusterHazard, Tab } from "./Hud";
-import { D, DECEL_G, FPS, ROUNDS, SEAMS, kmhAt, lastStop, roundFrames, sAt } from "./config";
+import { D, DECEL_G, FPS, ROUNDS, SEAMS, UMBRAL, kmhAt, lastPass, lastStop, roundFrames, sAt } from "./config";
 
 /**
  * Una ronda. Pausar = frenar.
@@ -35,27 +35,33 @@ const RoundTitle: React.FC<{ f: number; label: string; kmh: number; out: number 
 };
 
 /**
- * Lectura de la ronda, en tres tiempos sincronizados con la voz (timeline.json):
- *  cardBigAt   cifra principal (con la primera frase)
- *  cardSubAt   explicación breve
- *  cardScaleAt escala "tu pausa → velocidad al llegar" (cuando la voz la menciona)
+ * Lectura de la ronda, sincronizada con la voz (timeline.json: cardBigAt, cardSubAt, cardScaleAt).
+ * Se pasa la ronda si el choque queda bajo el umbral de protección (UMBRAL km/h). La escala muestra
+ * los tres niveles según el momento de la pausa: verde te detienes · ámbar choque grave · rojo riesgo mortal.
  */
+const TIER_COLOR = { stop: THEME.green, grave: THEME.amber, mortal: THEME.red };
+
 const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
   const r = ROUNDS[index];
   const kmh = r.speedKmh;
-  const tl = lastStop(kmh);
+  const ts = lastStop(kmh);
+  const tp = lastPass(kmh);
   const a = ramp(k, r.cardBigAt - 4, r.cardBigAt + 6);
-  const sub = ramp(k, r.cardSubAt, r.cardSubAt + 10);
-  const grow = ramp(k, r.cardScaleAt, r.cardScaleAt + 16);
-  const late = ramp(k, r.cardScaleAt + 10, r.cardScaleAt + 20);
+  const sub = ramp(k, r.cardSubAt + 6, r.cardSubAt + 16);
+  const grow = ramp(k, r.cardScaleAt + 8, r.cardScaleAt + 26);
+  const late = ramp(k, r.cardScaleAt + 18, r.cardScaleAt + 28);
   const X0 = 120;
   const W = 840;
   const TMAX = 1.5;
-  const x = (t: number) => X0 + (t / TMAX) * W;
-  const impact = (t: number) => Math.round(brakeOutcome(kmh, t, D, DECEL_G).impactKmh);
-  const brakingM = Math.round(kmhToMs(kmh) ** 2 / (2 * DECEL_G * 9.81));
-  const ticks = tl !== null ? [0.75, 1.0, 1.5] : [0, 0.5, 1.0, 1.5];
-  const greenEnd = tl !== null ? x(tl) : X0;
+  const x = (t: number) => X0 + (Math.min(t, TMAX) / TMAX) * W;
+  const at = (t: number) => brakeOutcome(kmh, t, D, DECEL_G);
+  const segs = [
+    { tier: "stop" as const, t0: 0, t1: ts ?? 0 },
+    { tier: "grave" as const, t0: ts ?? 0, t1: tp ?? 0 },
+    { tier: "mortal" as const, t0: tp ?? 0, t1: TMAX },
+  ].filter((sg) => sg.t1 > sg.t0 && sg.t0 < TMAX);
+  const ticks = [0.5, 1.0, 1.5];
+  const passColor = tp === null ? THEME.red : ts !== null && ts >= TMAX ? THEME.green : THEME.amber;
 
   return (
     <AbsoluteFill style={{ opacity: a }}>
@@ -64,57 +70,59 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
           {r.label} · {kmh} km/h · BARRERA A {D} m
         </div>
         <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30, letterSpacing: 5, marginRight: -5, marginTop: 44, color: THEME.text }}>
-          {tl !== null ? "TIEMPO ESTIMADO PARA FRENAR" : "IMPACTO ESTIMADO, AUNQUE FRENES AL INSTANTE"}
+          {tp !== null ? "PASAS SI FRENAS ANTES DE" : "IMPACTO AUNQUE FRENES AL INSTANTE"}
         </div>
-        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tl !== null ? 176 : 150, lineHeight: 1.08, color: tl !== null ? THEME.green : THEME.red, scale: String(interpolate(a, [0, 1], [1.12, 1])) }}>
-          <Tab>{tl !== null ? `${fmt(tl, 2)} s` : `≈ ${impact(0)} km/h`}</Tab>
+        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tp !== null ? 176 : 150, lineHeight: 1.08, color: passColor, scale: String(interpolate(a, [0, 1], [1.12, 1])) }}>
+          <Tab>{tp !== null ? `${fmt(tp, 2)} s` : `${Math.round(at(0).impactKmh)} km/h`}</Tab>
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 38, marginTop: 12, color: THEME.dim, textAlign: "center", lineHeight: 1.3, opacity: sub, translate: `0px ${interpolate(sub, [0, 1], [8, 0])}px` }}>
-          {tl !== null ? null : (
-            <>
-              Frenar a {kmh}: <span style={{ color: THEME.text }}>{brakingM} m</span> · Barrera: <span style={{ color: THEME.text }}>{D} m</span>
-            </>
-          )}
+        <div style={{ display: "flex", gap: 26, marginTop: 16, opacity: sub, translate: `0px ${interpolate(sub, [0, 1], [8, 0])}px` }}>
+          {(
+            [
+              ["stop", "TE DETIENES"],
+              ["grave", `CHOQUE GRAVE ≤ ${UMBRAL}`],
+              ["mortal", `RIESGO MORTAL > ${UMBRAL}`],
+            ] as const
+          ).map(([tier, txt]) => (
+            <div key={tier} style={{ display: "flex", alignItems: "center", gap: 9, fontFamily: THEME.ui, fontWeight: 600, fontSize: 25, color: THEME.text }}>
+              <div style={{ width: 14, height: 14, borderRadius: 7, background: TIER_COLOR[tier] }} />
+              {txt}
+            </div>
+          ))}
         </div>
       </AbsoluteFill>
 
       <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
-        {tl !== null ? (
-          <rect x={X0} y={890} width={(greenEnd - X0) * Math.min(1, grow * 2.6)} height={14} rx={7} fill={THEME.green} />
-        ) : null}
-        <rect
-          x={greenEnd + (tl !== null ? 4 : 0)}
-          y={890}
-          width={Math.max(0, (X0 + W - greenEnd - (tl !== null ? 4 : 0)) * interpolate(grow, [tl !== null ? 0.38 : 0, 1], [0, 1], { extrapolateLeft: "clamp" }))}
-          height={14}
-          rx={7}
-          fill={THEME.red}
-        />
-        {ticks.map((t) => (
-          <g key={t} opacity={late}>
-            <line x1={x(t)} x2={x(t)} y1={880} y2={914} stroke="rgba(255,255,255,0.55)" strokeWidth={2} />
-            <text x={x(t)} y={866} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.text} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30 }}>
-              {impact(t)} km/h
-            </text>
-            <text x={x(t)} y={952} textAnchor={t === 0 ? "start" : t === 1.5 ? "end" : "middle"} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>
-              {t === 0 ? "0 s" : `${fmt(t, t === 0.75 ? 2 : 1)} s`}
-            </text>
-          </g>
+        {segs.map((sg, i) => (
+          <rect
+            key={sg.tier}
+            x={x(sg.t0) + (i > 0 ? 3 : 0)}
+            y={890}
+            width={Math.max(0, (x(sg.t1) - x(sg.t0) - (i > 0 ? 3 : 0)) * Math.min(1, Math.max(0, grow * segs.length - i)))}
+            height={14}
+            rx={7}
+            fill={TIER_COLOR[sg.tier]}
+          />
         ))}
-        {tl !== null ? (
-          <g opacity={late}>
-            <text x={X0} y={866} fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30 }}>te detienes</text>
-            <text x={X0} y={952} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>0 s</text>
-            <text x={greenEnd} y={952} textAnchor="middle" fill={THEME.green} style={{ fontFamily: THEME.ui, fontWeight: 700, fontSize: 28 }}>
-              {fmt(tl, 2)}
-            </text>
-          </g>
-        ) : null}
+        {ticks.map((t) => {
+          const o = at(t);
+          const tier = tierOf(o, UMBRAL);
+          return (
+            <g key={t} opacity={late}>
+              <line x1={x(t)} x2={x(t)} y1={880} y2={914} stroke="rgba(255,255,255,0.55)" strokeWidth={2} />
+              <text x={x(t)} y={866} textAnchor={t === 1.5 ? "end" : "middle"} fill={TIER_COLOR[tier]} style={{ fontFamily: THEME.ui, fontWeight: 700, fontSize: 30 }}>
+                {tier === "stop" ? "te detienes" : `${Math.round(o.impactKmh)} km/h`}
+              </text>
+              <text x={x(t)} y={952} textAnchor={t === 1.5 ? "end" : "middle"} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>
+                {fmt(t, 1)} s
+              </text>
+            </g>
+          );
+        })}
+        <text x={X0} y={952} opacity={late} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28 }}>0 s</text>
         <text x={540} y={1012} textAnchor="middle" opacity={late} fill={THEME.dim} style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 30 }}>
-          tu pausa → velocidad estimada al llegar a la barrera
+          tu pausa → cómo llegas a la barrera
         </text>
       </svg>
-
     </AbsoluteFill>
   );
 };

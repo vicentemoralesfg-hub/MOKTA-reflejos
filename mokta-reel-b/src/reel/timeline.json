@@ -1,8 +1,9 @@
 {
   "_comment": "GENERADO por scripts/plan_guion.py a partir de guion.json + escenas.json. No editar a mano.",
   "fps": 30,
-  "barrierDistanceM": 90,
+  "barrierDistanceM": 125,
   "decelG": 0.8,
+  "umbralKmh": 70,
   "rampFrames": 24,
   "blackFrames": 9,
   "hook": {
@@ -16,33 +17,33 @@
       "speedKmh": 120,
       "label": "RONDA 1",
       "startS": 1000,
-      "eventAt": 103,
-      "resultFrames": 235,
+      "eventAt": 123,
+      "resultFrames": 90,
       "titleOut": 37,
       "cardBigAt": 6,
       "cardSubAt": 6,
-      "cardScaleAt": 128
+      "cardScaleAt": 12
     },
     {
       "id": "r2",
       "speedKmh": 160,
       "label": "RONDA 2",
       "startS": 3000,
-      "eventAt": 177,
-      "resultFrames": 255,
+      "eventAt": 154,
+      "resultFrames": 114,
       "titleOut": 71,
       "cardBigAt": 6,
-      "cardSubAt": 110,
-      "cardScaleAt": 116,
-      "decoyPassAt": 120
+      "cardSubAt": 6,
+      "cardScaleAt": 12,
+      "decoyPassAt": 97
     },
     {
       "id": "r3",
       "speedKmh": 210,
       "label": "RONDA FINAL",
       "startS": 5000,
-      "eventAt": 124,
-      "resultFrames": 131,
+      "eventAt": 151,
+      "resultFrames": 146,
       "titleOut": 70,
       "cardBigAt": 6,
       "cardSubAt": 6,
@@ -50,12 +51,12 @@
     }
   ],
   "reveal": {
-    "duration": 302,
-    "barsAt": 4,
-    "factAt": 93
+    "duration": 400,
+    "barsAt": 130,
+    "factAt": 218
   },
   "cta": {
-    "duration": 162,
+    "duration": 173,
     "titleAt": 4,
     "commentAt": 96
   }

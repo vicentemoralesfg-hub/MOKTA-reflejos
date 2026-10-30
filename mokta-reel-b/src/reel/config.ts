@@ -1,6 +1,6 @@
 import timeline from "./timeline.json";
 import seamsJson from "./seams.json";
-import { kmhToMs, lastStopTime } from "../physics";
+import { kmhToMs, lastStopTime, limitTime } from "../physics";
 
 /**
  * Reel completo (propuesta B). Mismas fórmulas que scripts/reel_timing.py: el audio se genera
@@ -10,6 +10,8 @@ export const T = timeline;
 export const FPS = T.fps;
 export const D = T.barrierDistanceM;
 export const DECEL_G = T.decelG;
+/** Velocidad de impacto sobre la cual el choque frontal queda fuera del límite de protección del auto. */
+export const UMBRAL = T.umbralKmh;
 
 export type RoundCfg = (typeof T.rounds)[number] & { decoyPassAt?: number };
 export const ROUNDS: RoundCfg[] = T.rounds;
@@ -58,3 +60,5 @@ export const LAYOUT = (() => {
 })();
 
 export const lastStop = (kmh: number) => lastStopTime(kmh, D, DECEL_G);
+/** Último tiempo con el que el choque queda bajo el umbral (pasas la ronda). null = imposible. */
+export const lastPass = (kmh: number) => limitTime(kmh, D, DECEL_G, UMBRAL);

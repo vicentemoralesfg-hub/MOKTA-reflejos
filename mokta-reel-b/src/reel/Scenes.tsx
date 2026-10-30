@@ -7,7 +7,7 @@ import { fmt, kmhToMs } from "../physics";
 import { Cockpit } from "../prototipo/Cockpit";
 import { THEME } from "../prototipo/theme";
 import { ClusterBrand } from "./Hud";
-import { D, DECEL_G, FPS, ROUNDS, T } from "./config";
+import { D, DECEL_G, FPS, ROUNDS, T, UMBRAL } from "./config";
 
 /**
  * Gancho: el auto ya va a toda velocidad de noche y la barrera está a la vista (a HOOK_D m). La cámara
@@ -107,8 +107,8 @@ export const Hook: React.FC = () => {
 
 /**
  * Cierre: misma barrera, misma distancia; solo cambia la velocidad (distancia de frenado ∝ v²).
- * Título con V1, barras con V2 ("crece con el cuadrado"), dato ×3 con V3. Todo sobre y = 1060
- * para dejar libre la banda de subtítulos.
+ * Título con la primera frase, barras con V2 ("crece con el cuadrado"), dato ×3 con V3. Todo sobre
+ * y = 1060 para dejar libre la banda de subtítulos.
  */
 export const Reveal: React.FC = () => {
   const f = useCurrentFrame();
@@ -167,9 +167,9 @@ export const Reveal: React.FC = () => {
           la distancia para frenar
         </div>
         <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 28, marginTop: 14, color: THEME.dim, textAlign: "center", lineHeight: 1.35 }}>
-          Estimación: frenada constante de 0,8 g en asfalto seco.
+          {UMBRAL} km/h: límite de protección en choque frontal (Sistema Seguro).
           <br />
-          En Chile, el máximo en autopista es 120 km/h.
+          Frenada estimada 0,8 g · En Chile, el máximo es 120 km/h.
         </div>
       </AbsoluteFill>
 
@@ -180,7 +180,7 @@ export const Reveal: React.FC = () => {
   );
 };
 
-/** CTA: la pregunta entra con la voz (C1) y la invitación a compartir con C2; termina en el plano del gancho. */
+/** CTA: la pregunta entra con la voz (C3) y la invitación a compartir con C4; termina en el primer plano del gancho. */
 export const Cta: React.FC = () => {
   const f = useCurrentFrame();
   const C = T.cta;
@@ -192,21 +192,43 @@ export const Cta: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <BarrierStill distance={HOOK_D} />
       <AbsoluteFill style={{ background: "rgba(2,3,6,0.6)", opacity: dim }} />
-      <AbsoluteFill style={{ alignItems: "center", top: 236, opacity: title }}>
-        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: 108, lineHeight: 1.0, color: THEME.text, textAlign: "center" }}>
-          ¿A cuántos km/h
+      <AbsoluteFill style={{ alignItems: "center", top: 250, opacity: title }}>
+        <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: 120, lineHeight: 1.0, color: THEME.text, textAlign: "center" }}>
+          ¿Cuántas rondas
           <br />
-          chocaste en la
-          <br />
-          <span style={{ color: THEME.red }}>ronda final</span>?
+          <span style={{ color: THEME.amber }}>pasaste</span>?
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 42, marginTop: 26, color: THEME.amber }}>Coméntalo</div>
+        <div style={{ display: "flex", gap: 22, marginTop: 34 }}>
+          {["1", "2", "3"].map((n, i) => (
+            <div
+              key={n}
+              style={{
+                width: 120,
+                height: 120,
+                borderRadius: 26,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: THEME.display,
+                fontWeight: 800,
+                fontSize: 84,
+                color: THEME.text,
+                background: "rgba(5,7,11,0.75)",
+                border: "2px solid rgba(255,255,255,0.18)",
+                scale: String(interpolate(f, [C.titleAt + 4 + i * 4, C.titleAt + 12 + i * 4], [0.6, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_OUT })),
+              }}
+            >
+              {n}
+            </div>
+          ))}
+        </div>
+        <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 40, marginTop: 24, color: THEME.amber }}>Coméntalo</div>
       </AbsoluteFill>
-      <AbsoluteFill style={{ alignItems: "center", top: 900, opacity: comment }}>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 40, color: THEME.text, textAlign: "center", lineHeight: 1.3 }}>
-          Y mándaselo a quien
+      <AbsoluteFill style={{ alignItems: "center", top: 930, opacity: comment }}>
+        <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 42, color: THEME.text, textAlign: "center", lineHeight: 1.3, textShadow: "0 2px 14px rgba(0,0,0,0.85)" }}>
+          Si alguien te dice <span style={{ color: THEME.red }}>3</span>,
           <br />
-          maneja rápido
+          mándale esto
         </div>
       </AbsoluteFill>
       <Cockpit>
