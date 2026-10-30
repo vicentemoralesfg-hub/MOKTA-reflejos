@@ -22,9 +22,9 @@ Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de
 
 | Ronda | Fotograma de aparición | Barrera 2 fot. antes / 1 antes / aparición | Panel en la aparición | Panel 1 fotograma después |
 |---|---|---|---|---|
-| RONDA 1 · 120 | 191 (6.37 s) | 0 / 0 / 54 px ✔ | 0 px ✔ | 325 px |
-| RONDA 2 · 160 | 557 (18.57 s) | 0 / 0 / 31 px ✘ | 0 px ✔ | 321 px |
-| RONDA FINAL · 210 | 916 (30.53 s) | 0 / 0 / 21 px ✘ | 2 px ✔ | 327 px |
+| RONDA 1 · 120 | 191 (6.37 s) | 0 / 0 / 663 px ✔ | 0 px ✔ | 326 px |
+| RONDA 2 · 160 | 557 (18.57 s) | 0 / 0 / 525 px ✔ | 0 px ✔ | 318 px |
+| RONDA FINAL · 210 | 916 (30.53 s) | 0 / 0 / 290 px ✔ | 4 px ✔ | 322 px |
 
 ## Impacto y lectura
 
@@ -44,4 +44,4 @@ Pico de la pista de voz desde 1,2 s antes de la aparición hasta el impacto (deb
 | RONDA 2 | 17.37–21.40 s | 0.0000 ✔ |
 | RONDA FINAL | 29.33–32.70 s | 0.0000 ✔ |
 
-**Resultado: HAY CONTROLES QUE FALLAN.**
+**Resultado: todos los controles pasan.**

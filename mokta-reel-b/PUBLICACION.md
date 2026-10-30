@@ -1,6 +1,6 @@
 # MOKTA · Test de reflejos — guía de publicación
 
-Video: `entregables/MOKTA_TestDeReflejos_final.mp4` (1080×1920, 30 fps, ≈59 s, subtítulos incrustados).
+Video: `entregables/MOKTA_TestDeReflejos_final.mp4` (1080×1920, 30 fps, ≈57 s, subtítulos incrustados).
 
 ## Antes de publicar (5 minutos)
 
@@ -19,34 +19,31 @@ lectura (revela el resultado).
 
 ## Texto del post (propuesta)
 
-> ¿Alcanzarías a frenar? 🚧
-> Pausa el video cuando aparezca la barrera. Son 3 rondas: 120, 160 y 210 km/h.
-> Comenta a cuántos km/h chocaste en la ronda final 👇
+> ¿Cuántas rondas pasas? 🚧
+> Pausa el video en cuanto veas la barrera. Pausar = frenar.
+> Pasas si el choque no llega a 70 km/h.
+> Comenta 1, 2 o 3 👇
 >
-> Estimación con física de frenado (0,8 g, asfalto seco). En Chile, el máximo en autopista es 120 km/h.
+> Frenada estimada 0,8 g · 70 km/h: límite de protección en choque frontal (Sistema Seguro). En Chile, el máximo en autopista es 120 km/h.
 
 Hashtags sugeridos (pocos y relevantes): `#TestDeReflejos #SeguridadVial #Manejo #Chile #Física`
 
 ## Primer comentario (fijarlo)
 
-> Ronda final: ¿cuánto te marcó el panel al pausar? 👀
-
-Un comentario fijado con una pregunta concreta y fácil de responder con un número baja la barrera para comentar.
+> ¿Alguien pasó la ronda final? Muestra tu pausa 👀
 
 ## Por qué está construido así (palancas de retención)
 
 | Momento | Palanca | Cómo está en el video |
 |---|---|---|
-| 0–2 s | Interrupción + pregunta directa | Texto grande "PAUSA EL VIDEO" + la voz: "¿Alcanzarías a frenar a 120?" (desafío personal) |
-| 2–6 s | Regla simple y acción | "Pausar es frenar": una sola instrucción, fácil de ejecutar |
-| 6–12 s | Intriga abierta | "La última no se gana con reflejos": promesa que solo se cierra al final |
-| Rondas | Participación y sorpresa | El espectador juega; la barrera aparece en momentos distintos y sin aviso (ni voz ni sonido) |
-| Lecturas | Recompensa inmediata | Cada pausa tiene resultado en el panel; la voz lo interpreta |
-| Ronda 2 | Giro | "¿Qué tanto puede cambiar?" → "Todo": rompe la expectativa |
-| Ronda final | Cierre de la intriga | "Te lo dije: ni con reflejos perfectos" |
-| Cierre | Idea compartible | "75 % más rápido = el triple de distancia. La física no negocia." |
-| CTA | Comentario de baja fricción + etiqueta | Responder con un número; "mándaselo a quien maneja rápido" (motivo para compartir) |
-| Final | Bucle | El último plano empalma con el primero: la repetición se ve continua |
+| 0–2,3 s | Movimiento + instrucción | A toda velocidad hacia la barrera, "PAUSA EL VIDEO en cuanto veas la barrera", impacto |
+| Ronda 1 | Regla clara y victoria fácil | "Frena antes de que el choque sea mortal" · casi todos pasan: sensación de competencia |
+| Al pausar | Recompensa inmediata | Veredicto en el panel: TE DETIENES / CHOQUE GRAVE / RIESGO MORTAL |
+| Ronda 2 | Meta concreta | "Ahora tienes medio segundo": unos pasan y otros no |
+| Ronda final | Reto al ego + giro | "Si pasas esta, eres el primero" → "Nadie la pasa: 137 km/h" |
+| Cierre | Idea que se comparte | "A 210, tus reflejos ya no importan" · el triple de distancia para frenar |
+| CTA | Comentario de un dígito + etiqueta | "¿Cuántas rondas pasaste? 1, 2 o 3" · "si alguien te dice 3, mándale esto" |
+| Final | Bucle | El último plano empalma con el primero |
 
 No usamos cifras de audiencia inventadas ("el 90 % falla") ni afirmaciones absolutas: todas las cifras salen
 del modelo de frenado y se presentan como estimación (`MODELO_FRENADO.md`).

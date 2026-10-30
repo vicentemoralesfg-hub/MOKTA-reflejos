@@ -2,24 +2,22 @@
 
 Versión separada del proyecto original (`../mokta-reel`, sin cambios).
 
-**Mecánica:** pausar = frenar. En cada ronda la barrera aparece a 90 m; cada fotograma pausado muestra en el
-instrumental el tiempo de reacción y el resultado estimado de frenar en ese instante (te detienes / impacto a X km/h).
-Sin frenar, el auto llega a la barrera (2,70 / 2,03 / 1,54 s), corte a negro, y una lectura para todos.
-
-**El guion manda el ritmo.** `src/reel/guion.json` contiene la voz; `scripts/plan_guion.py` mide cada frase y
-coloca las escenas a su alrededor (presentación hablada → silencio → barrera → ventana sin voz → impacto →
-lectura hablada). Guion completo con tiempos: [`GUION.md`](GUION.md).
+**Mecánica:** pausar = frenar. La barrera aparece a 125 m en las tres rondas. Se **pasa** la ronda si, frenando en
+el instante de la pausa, el auto se detiene o choca a 70 km/h o menos (límite de protección en choque frontal del
+enfoque Sistema Seguro; detrás de la barrera hay un muro de hormigón). El panel da el veredicto en cada fotograma:
+**TE DETIENES** (verde) · **CHOQUE GRAVE** ≤ 70 km/h (ámbar) · **RIESGO MORTAL** > 70 km/h (rojo).
+Ronda 1: pasas antes de 2,35 s · Ronda 2: antes de 0,52 s · Ronda final: imposible (137 km/h aun frenando al instante).
 
 | Bloque | Inicio | Contenido |
 |---|---|---|
-| Gancho | 0:00.0 | Auto a ~186 km/h hacia la barrera, estelas de velocidad · "Pausa el video en cuanto veas la barrera" · impacto |
-| Ronda 1 · 120 | 0:02.3 | "Ronda uno. Ojos en la carretera." · barrera a los 0:05.7 · "según el cálculo, tenías 0,58 s" |
-| Ronda 2 · 160 | 0:16.5 | Barrera a los 0:22.4 · "chocabas a unos 85" |
-| Ronda final · 210 | 0:33.3 | Barrera a los 0:37.4 · "Te lo dije: ni con reflejos perfectos" |
-| Cierre | 0:43.6 | Distancia de frenado ∝ v² · "75 % más rápido, el triple de distancia" |
-| CTA | 0:53.7 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al primer plano del gancho |
+| Gancho | 0:00.0 | Auto a ~186 km/h hacia la barrera · "Pausa el video en cuanto veas la barrera" · impacto |
+| Ronda 1 · 120 | 0:02.3 | "Ronda uno. Frena antes de que el choque sea mortal." · barrera a los 0:06.4 · "Fácil." |
+| Ronda 2 · 160 | 0:13.4 | "Ahora tienes medio segundo." · barrera a los 0:18.6 · "¿Menos de medio segundo? Pasaste." |
+| Ronda final · 210 | 0:25.5 | "Si pasas esta, eres el primero." · barrera a los 0:30.5 · "Nadie la pasa: 137 km/h." |
+| Cierre | 0:37.9 | "A 210, tus reflejos ya no importan" · distancia de frenado ∝ v² · "Sobre 70, el auto ya no puede protegerte." |
+| CTA | 0:51.2 | "¿Cuántas rondas pasaste? Comenta 1, 2 o 3. Y si alguien te dice 3, mándale esto." |
 
-Duración 59 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
+Duración 57 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
 
 **Video final:** `entregables/MOKTA_TestDeReflejos_final.mp4` · guía de publicación en [`PUBLICACION.md`](PUBLICACION.md).
 
@@ -36,6 +34,7 @@ npm ci
 apt-get install espeak-ng mbrola mbrola-es4   # solo para la voz guía
 python3 scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.2   # locución → frases
 python3 scripts/importar_voz.py voz_elevenlabs/toma4.mp3 1.2   # frases nuevas del inicio
+python3 scripts/importar_voz.py voz_elevenlabs/toma5.mp3 1.2   # frases de la mecánica de umbral
 python3 scripts/alinear_palabras.py voz_elevenlabs/toma3_palabras.json   # tiempos reales por palabra
 python3 scripts/plan_guion.py       # guion → timeline.json, subtitulos.json, voz.wav, GUION.md
 python3 scripts/gen_seams_reel.py   # juntas del asfalto (imagen, cámara y audio)
