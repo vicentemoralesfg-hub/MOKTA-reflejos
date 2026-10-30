@@ -12,14 +12,14 @@ lectura hablada). Guion completo con tiempos: [`GUION.md`](GUION.md).
 
 | Bloque | Inicio | Contenido |
 |---|---|---|
-| Gancho | 0:00.0 | "¿Alcanzarías a frenar a 120?" + la regla ("pausar es frenar") |
-| Ronda 1 · 120 | 0:05.3 | Intriga: "la última no se gana con reflejos" · barrera a los 0:12.5 · "según el cálculo, tenías 0,58 s" |
-| Ronda 2 · 160 | 0:23.3 | Barrera a los 0:29.2 · "chocabas a unos 85" |
-| Ronda final · 210 | 0:40.0 | Barrera a los 0:44.2 · "Te lo dije: ni con reflejos perfectos" |
-| Cierre | 0:50.4 | Distancia de frenado ∝ v² · "75 % más rápido, el triple de distancia" |
-| CTA | 1:00.5 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al plano del gancho |
+| Gancho | 0:00.0 | Auto a ~186 km/h hacia la barrera, estelas de velocidad · "Pausa el video en cuanto veas la barrera" · impacto |
+| Ronda 1 · 120 | 0:02.3 | "Ronda uno. Ojos en la carretera." · barrera a los 0:05.7 · "según el cálculo, tenías 0,58 s" |
+| Ronda 2 · 160 | 0:16.5 | Barrera a los 0:22.4 · "chocabas a unos 85" |
+| Ronda final · 210 | 0:33.3 | Barrera a los 0:37.4 · "Te lo dije: ni con reflejos perfectos" |
+| Cierre | 0:43.6 | Distancia de frenado ∝ v² · "75 % más rápido, el triple de distancia" |
+| CTA | 0:53.7 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al primer plano del gancho |
 
-Duración 66 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
+Duración 59 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
 
 **Video final:** `entregables/MOKTA_TestDeReflejos_final.mp4` · guía de publicación en [`PUBLICACION.md`](PUBLICACION.md).
 
@@ -35,6 +35,7 @@ Para cambiar de voz o de toma: generar otra locución con el mismo texto y orden
 npm ci
 apt-get install espeak-ng mbrola mbrola-es4   # solo para la voz guía
 python3 scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.2   # locución → frases
+python3 scripts/importar_voz.py voz_elevenlabs/toma4.mp3 1.2   # frases nuevas del inicio
 python3 scripts/alinear_palabras.py voz_elevenlabs/toma3_palabras.json   # tiempos reales por palabra
 python3 scripts/plan_guion.py       # guion → timeline.json, subtitulos.json, voz.wav, GUION.md
 python3 scripts/gen_seams_reel.py   # juntas del asfalto (imagen, cámara y audio)

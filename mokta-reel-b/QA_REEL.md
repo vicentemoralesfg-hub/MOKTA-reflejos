@@ -8,13 +8,13 @@ Archivo: `out/MOKTA_TestDeReflejos_B.mp4` (copia en `entregables/`).
 |---|---|---|
 | Resolución | 1080×1920 | 1080×1920 (9:16) ✔ |
 | Fotogramas por segundo | 30/1 | 30/1 constante ✔ |
-| Fotogramas | 1976 | 1976 ✔ |
-| Duración video / audio | 65.867 / 65.866 s | 65.867 s ✔ |
+| Fotogramas | 1773 | 1773 ✔ |
+| Duración video / audio | 59.100 / 59.100 s | 59.100 s ✔ |
 | Video | h264 High yuv420p bt709 | h264 High yuv420p bt709 ✔ |
 | Audio | aac 48000 Hz 2 canales | aac 48000 Hz estéreo ✔ |
-| Tamaño | 24.8 MB | < 100 MB ✔ |
-| Sonoridad integrada | -14.6 LUFS | ≈ −14 LUFS ✔ |
-| Pico real | -1.3 dBFS | ≤ −1 dBFS ✔ |
+| Tamaño | 21.5 MB | < 100 MB ✔ |
+| Sonoridad integrada | -14.7 LUFS | ≈ −14 LUFS ✔ |
+| Pico real | -1.9 dBFS | ≤ −1 dBFS ✔ |
 
 ## La barrera aparece por sorpresa y el panel no la anuncia
 
@@ -22,17 +22,17 @@ Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de
 
 | Ronda | Fotograma de aparición | Barrera 2 fot. antes / 1 antes / aparición | Panel en la aparición | Panel 1 fotograma después |
 |---|---|---|---|---|
-| RONDA 1 · 120 | 374 (12.47 s) | 0 / 0 / 478 px ✔ | 0 px ✔ | 323 px |
-| RONDA 2 · 160 | 876 (29.20 s) | 0 / 0 / 545 px ✔ | 0 px ✔ | 332 px |
-| RONDA FINAL · 210 | 1325 (44.17 s) | 0 / 0 / 474 px ✔ | 0 px ✔ | 325 px |
+| RONDA 1 · 120 | 171 (5.70 s) | 0 / 0 / 589 px ✔ | 0 px ✔ | 323 px |
+| RONDA 2 · 160 | 673 (22.43 s) | 0 / 0 / 496 px ✔ | 0 px ✔ | 324 px |
+| RONDA FINAL · 210 | 1122 (37.40 s) | 0 / 0 / 442 px ✔ | 0 px ✔ | 324 px |
 
 ## Impacto y lectura
 
 | Ronda | Fotograma del impacto | Luma media en el negro |
 |---|---|---|
-| RONDA 1 | 455 (15.17 s) | 0.00 ✔ |
-| RONDA 2 | 937 (31.23 s) | 0.00 ✔ |
-| RONDA FINAL | 1372 (45.73 s) | 0.00 ✔ |
+| RONDA 1 | 252 (8.40 s) | 0.00 ✔ |
+| RONDA 2 | 734 (24.47 s) | 0.00 ✔ |
+| RONDA FINAL | 1169 (38.97 s) | 0.00 ✔ |
 
 ## La voz no anuncia la barrera
 
@@ -40,8 +40,8 @@ Pico de la pista de voz desde 1,2 s antes de la aparición hasta el impacto (deb
 
 | Ronda | Ventana | Pico de voz |
 |---|---|---|
-| RONDA 1 | 11.27–15.17 s | 0.0000 ✔ |
-| RONDA 2 | 28.00–31.23 s | 0.0000 ✔ |
-| RONDA FINAL | 42.97–45.73 s | 0.0000 ✔ |
+| RONDA 1 | 4.50–8.40 s | 0.0000 ✔ |
+| RONDA 2 | 21.23–24.47 s | 0.0000 ✔ |
+| RONDA FINAL | 36.20–38.97 s | 0.0000 ✔ |
 
 **Resultado: todos los controles pasan.**
