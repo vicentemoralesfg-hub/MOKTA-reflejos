@@ -278,7 +278,7 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
         <group position={[-1.8, 0, -decoyS]}>
           <mesh position={[0, 0.7, -2.2]}>
             <boxGeometry args={[1.8, 0.9, 4.4]} />
-            <meshBasicMaterial color={new THREE.Color(0.02, 0.022, 0.026)} />
+            <meshBasicMaterial color={new THREE.Color(0.002, 0.0022, 0.0026)} />
           </mesh>
           {[-0.62, 0.62].map((hx) => (
             <sprite key={hx} position={[hx, 0.68, 0.05]} scale={[2.4, 2.4, 1]}>

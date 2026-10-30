@@ -15,11 +15,13 @@ const bump = (dt: number, amp: number) =>
 export const rideAt = (tSec: number, s: number, v: number, seams: number[]): Ride => {
   let dy = 0.0035 * Math.sin(2 * Math.PI * 1.17 * tSec) + 0.0015 * Math.sin(2 * Math.PI * 2.3 * tSec + 1.1);
   let pitch = 0.035 * Math.sin(2 * Math.PI * 0.9 * tSec + 0.4);
+  // a más velocidad las juntas golpean más seco (amplitud ∝ √v, referencia 120 km/h)
+  const k = Math.sqrt(v / 33.33);
   for (const p of seams) {
     const dFront = (s + FRONT_AXLE_M - p) / v; // segundos desde que el eje delantero pisó la junta
     const dRear = (s + FRONT_AXLE_M - WHEELBASE_M - p) / v;
-    dy += bump(dFront, -0.0045) + bump(dRear, -0.003);
-    pitch += bump(dFront, 0.06) - bump(dRear, 0.04);
+    dy += k * (bump(dFront, -0.0045) + bump(dRear, -0.003));
+    pitch += k * (bump(dFront, 0.06) - bump(dRear, 0.04));
   }
   return {
     dx: 0.002 * Math.sin(2 * Math.PI * 0.43 * tSec + 2.0),
