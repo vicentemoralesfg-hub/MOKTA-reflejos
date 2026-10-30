@@ -79,7 +79,8 @@ const Barricade: React.FC<{
   railMat: THREE.ShaderMaterial;
   postMat: THREE.ShaderMaterial;
   glow: THREE.Texture;
-}> = ({ x, z, railMat, postMat, glow }) => {
+  glowScale: number;
+}> = ({ x, z, railMat, postMat, glow, glowScale }) => {
   const W = 2.95;
   const rails = [0.52, 0.98, 1.44];
   return (
@@ -101,7 +102,7 @@ const Barricade: React.FC<{
             <sphereGeometry args={[0.085, 16, 12]} />
             <meshBasicMaterial color={new THREE.Color(1.0, 0.62, 0.12)} toneMapped={false} />
           </mesh>
-          <sprite position={[px, 1.82, 0.12]} scale={[1.5, 1.5, 1]}>
+          <sprite position={[px, 1.82, 0.12]} scale={[glowScale, glowScale, 1]}>
             <spriteMaterial
               map={glow}
               color={new THREE.Color(1.0, 0.55, 0.1)}
@@ -137,7 +138,7 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
     const bush = makeLitMaterial({ color: [0.07, 0.085, 0.06] });
     const concrete = makeLitMaterial({ color: [0.5, 0.5, 0.47], minLight: 0.08 });
     const stripes = makeStripeTexture();
-    const rail = makeLitMaterial({ color: [0.86, 0.86, 0.84], retro: 0.42, minLight: 0.4, map: stripes });
+    const rail = makeLitMaterial({ color: [0.86, 0.86, 0.84], retro: 0.42, minLight: 0.62, map: stripes });
     const bPost = makeLitMaterial({ color: [0.62, 0.62, 0.6], retro: 0.12, minLight: 0.12 });
     const glow = makeGlowTexture();
     const mountains = makeMountainTexture();
@@ -277,6 +278,7 @@ export const RoadWorld: React.FC<RoadWorldProps> = ({
               railMat={assets.rail}
               postMat={assets.bPost}
               glow={assets.glow}
+              glowScale={1.5 + Math.max(0, barrierS - s - 40) * 0.014}
             />
           ))}
         </group>
