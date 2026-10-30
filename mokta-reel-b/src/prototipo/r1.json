@@ -1,0 +1,12 @@
+{
+  "_comment": "Prototipo ronda 1 (propuesta B). Fuente única de tiempos para video (Remotion) y audio (scripts/audio_r1.py). Fotogramas a 30 fps.",
+  "fps": 30,
+  "speedKmh": 120,
+  "startS": 1000,
+  "introEnd": 84,
+  "eventAt": 174,
+  "barrierDistanceM": 90,
+  "decelG": 0.8,
+  "blackFrames": 9,
+  "resultFrames": 126
+}
