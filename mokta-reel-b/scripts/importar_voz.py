@@ -3,7 +3,9 @@
 Importa una locución completa (una sola toma con pausas largas entre frases, en el orden de guion.json)
 y la separa en public/audio/voz/<ID>.wav, que plan_guion.py usa en lugar de la voz guía.
 
-  python3 scripts/importar_voz.py locucion.mp3 [tempo]
+  python3 scripts/importar_voz.py voz_elevenlabs/<toma>.mp3 [tempo]
+
+Separa solo las frases del guion cuyo campo "toma" coincide con el nombre del archivo (por defecto toma3).
 
 tempo (opcional, por defecto 1.0): acelera la locución sin cambiar el tono (ffmpeg atempo).
 
@@ -21,13 +23,12 @@ from scipy.io import wavfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 G = json.load(open(os.path.join(ROOT, "src", "reel", "guion.json")))
 SR = 48000
-ids = [ln["id"] for ln in G["hook"]["lines"]]
-for r in G["rounds"]:
-    ids += [ln["id"] for ln in r["intro"]] + [ln["id"] for ln in r["result"]]
-ids += [ln["id"] for ln in G["reveal"]["lines"]] + [ln["id"] for ln in G["cta"]["lines"]]
-
 src = sys.argv[1]
 tempo = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
+# solo las frases que pertenecen a esta toma (campo "toma" del guion; por defecto toma3)
+TOMA = os.path.splitext(os.path.basename(src))[0]
+_all = G["hook"]["lines"] + [ln for r in G["rounds"] for ln in r["intro"] + r["result"]] + G["reveal"]["lines"] + G["cta"]["lines"]
+ids = [ln["id"] for ln in _all if ln.get("toma", "toma3") == TOMA]
 raw = subprocess.run(["ffmpeg", "-v", "error", "-i", src, "-af", f"atempo={tempo}", "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"],
                      capture_output=True, check=True).stdout
 x = np.frombuffer(raw, np.int16).astype(np.float64) / 32768.0
@@ -76,7 +77,7 @@ for k, ln_id in enumerate(ids):
     ratio = d / guide[ln_id] if ln_id in guide else float("nan")
     rows.append((ln_id, d, ratio))
 # inicio de cada frase en la locución acelerada (para alinear la transcripción: t_original / tempo)
-json.dump({"tempo": tempo, "lineas": segs}, open(os.path.join(ROOT, "public", "audio", "voz", "segmentos.json"), "w"))
+json.dump({"tempo": tempo, "lineas": segs}, open(os.path.join(ROOT, "public", "audio", "voz", f"segmentos_{TOMA}.json"), "w"))
 for ln_id, d, ratio in rows:
     flag = "  ← revisar" if not (0.55 < ratio < 1.8) else ""
     print(f"{ln_id:4s} {d:5.2f} s  (×{ratio:.2f} de la voz guía){flag}")

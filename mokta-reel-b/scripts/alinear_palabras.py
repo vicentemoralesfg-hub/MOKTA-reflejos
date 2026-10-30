@@ -17,7 +17,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 G = json.load(open(os.path.join(ROOT, "src", "reel", "guion.json")))
-SEG = json.load(open(os.path.join(ROOT, "public", "audio", "voz", "segmentos.json")))
+_toma = os.path.basename(sys.argv[1]).split("_palabras")[0]  # voz_elevenlabs/toma3_palabras.json → toma3
+SEG = json.load(open(os.path.join(ROOT, "public", "audio", "voz", f"segmentos_{_toma}.json")))
 TOKEN = re.compile(r"(\S+?)\{([^}]*)\}(\S*)|(\S+)")
 
 
@@ -26,6 +27,7 @@ def norm(w):
 
 
 lines = G["hook"]["lines"] + [ln for r in G["rounds"] for ln in r["intro"] + r["result"]] + G["reveal"]["lines"] + G["cta"]["lines"]
+lines = [ln for ln in lines if ln["id"] in SEG["lineas"]]
 # Unidades del guion: un número en pantalla ("120", "75%") se compara con la cifra que escribe la
 # transcripción; el resto, palabra por palabra de lo dicho.
 script = []  # (id de frase, índice de token, unidad normalizada)
@@ -80,5 +82,8 @@ for lid, n in ntok.items():
         else:
             d[str(k)] = round(max(0.0, nxt[1] - 0.25 * (nxt[0] - k)), 3)
         filled += 1
-json.dump(out, open(os.path.join(ROOT, "src", "reel", "voz_palabras.json"), "w"), ensure_ascii=False)
+_vp = os.path.join(ROOT, "src", "reel", "voz_palabras.json")
+prev = json.load(open(_vp)) if os.path.exists(_vp) else {}
+prev.update(out)
+json.dump(prev, open(_vp, "w"), ensure_ascii=False)
 print(f"unidades del guion alineadas con la voz: {matched}/{len(script)} · tokens interpolados: {filled}")

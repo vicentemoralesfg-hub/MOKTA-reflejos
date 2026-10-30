@@ -168,7 +168,28 @@ def relay(t0, t1, gain):
 
 
 # ------------------------------------------------------------------ gancho
-add(idle(T["hook"]["duration"] / FPS, 101), 0)
+# gancho: el auto ya va a toda velocidad hacia la barrera (Scenes.tsx: HOOK_D m en duración − HOOK_BLACK
+# fotogramas) y el gancho termina con el impacto
+HOOK_D, HOOK_BLACK = 110, 4
+h_run = (T["hook"]["duration"] - HOOK_BLACK) / FPS
+h_kmh = HOOK_D / h_run * 3.6
+nh = at(h_run)
+rel_h = h_kmh / 120.0
+eh = engine(np.full(nh, 2450 * rel_h), np.zeros(nh), 99)
+eh /= np.max(np.abs(eh))
+th, wh = noise_bed(nh, 98)
+lg = np.log10(rel_h)
+bedh = db(-12) * eh * db(8 * lg) + db(-10) * th * db(22 * lg) + db(-22) * wh * db(50 * lg)
+fade = int(0.004 * SR)
+bedh[:fade] *= np.linspace(0, 1, fade)
+bedh[-fade:] *= np.linspace(1, 0, fade)
+add(bedh, 0)
+_il, _ir = impact()
+_i = at(h_run)
+_j = min(N, _i + len(_il))
+out_l[_i:_j] += _il[: _j - _i]
+out_r[_i:_j] += _ir[: _j - _i]
+print(f"gancho: {h_kmh:.0f} km/h, impacto a los {h_run:.2f} s")
 
 event_times = []
 for i, r in enumerate(T["rounds"]):

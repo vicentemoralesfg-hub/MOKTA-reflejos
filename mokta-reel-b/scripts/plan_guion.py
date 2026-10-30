@@ -149,7 +149,9 @@ timeline = {"_comment": "GENERADO por scripts/plan_guion.py a partir de guion.js
 # ---------------------------------------------------------------- gancho
 end = lay(G["hook"]["lines"], "hook", 0.0)
 hook_frames = math.ceil((end + G["hook"]["tail"]) * FPS)
-timeline["hook"] = {"duration": hook_frames, "pausarAt": fr(rel_start("H2", 0)), "rondasAt": fr(rel_start("H2", 0)) + 30}  # se ajusta con palabras reales más abajo
+_hook_first = next(ln["id"] for ln in G["hook"]["lines"] if not ln.get("omit"))
+# "Pausar = frenar" entra 1 s después de que empieza la instrucción (se ajusta con palabras reales si hay sync)
+timeline["hook"] = {"duration": hook_frames, "pausarAt": fr(rel_start(_hook_first, 0) + 1.0), "rondasAt": fr(rel_start(_hook_first, 0) + 1.0)}
 
 # ---------------------------------------------------------------- rondas
 t_abs = hook_frames / FPS
@@ -164,7 +166,7 @@ for base, g in zip(B["rounds"], G["rounds"]):
     result = impact + B["blackFrames"]
     res_end = lay(g["result"], base["id"], A, result / FPS)
     duration = math.ceil((res_end + g["resultTail"]) * FPS)
-    first_intro_end = next(p for p in placed if p["id"] == g["intro"][0]["id"])
+    first_intro_end = next(p for p in placed if p["id"] == next(ln["id"] for ln in g["intro"] if not ln.get("omit")))
     r = {**base, "eventAt": event, "resultFrames": duration - result,
          "titleOut": fr(first_intro_end["start"] - A + first_intro_end["dur"] + 0.3),
          "cardBigAt": fr(rel_start(g["card"]["bigWith"], A) - result / FPS),
@@ -286,9 +288,9 @@ pw = G["hook"].get("sync", {}).get("pausarWord")
 if pw:
     for c in subs:
         for wd in c["words"]:
-            if c["line"] == pw[0] and wd["w"].startswith(pw[1]):
+            if c["line"] == pw[0] and wd["w"] == pw[1]:
                 timeline["hook"]["pausarAt"] = wd["f"]
-                timeline["hook"]["rondasAt"] = fr(rel_start("H2", 0)) + 12
+                timeline["hook"]["rondasAt"] = wd["f"]
 json.dump(timeline, open(TIMELINE_PATH, "w"), ensure_ascii=False, indent=2)
 
 # ---------------------------------------------------------------- pista de voz completa

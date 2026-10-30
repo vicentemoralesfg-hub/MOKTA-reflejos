@@ -1,5 +1,5 @@
 {
-  "_comment": "GUION DE LA VOZ — fuente única del ritmo del reel. scripts/plan_guion.py mide cada frase (voz guía o grabación real en public/audio/voz/<id>.wav), coloca las escenas y genera timeline.json, subtitulos.json y GUION.md. Sintaxis: 120{ciento veinte} = se muestra '120' y se dice 'ciento veinte'. 'em' = palabras del subtítulo que se destacan (sin {…}). 'gap' = silencio antes de la frase (s). 'noSub' = la frase ya está escrita en pantalla (título de ronda, CTA): no se subtitula. 'omit' = la frase está en la locución grabada pero no se usa en el montaje (se conserva para que el corte por pausas siga coincidiendo).",
+  "_comment": "GUION DE LA VOZ — fuente única del ritmo del reel. scripts/plan_guion.py mide cada frase (voz guía o grabación real en public/audio/voz/<id>.wav), coloca las escenas y genera timeline.json, subtitulos.json y GUION.md. Sintaxis: 120{ciento veinte} = se muestra '120' y se dice 'ciento veinte'. 'em' = palabras del subtítulo que se destacan (sin {…}). 'gap' = silencio antes de la frase (s). 'noSub' = la frase ya está escrita en pantalla (título de ronda, CTA): no se subtitula. 'omit' = la frase está en la locución grabada pero no se usa en el montaje (se conserva para que el corte por pausas siga coincidiendo). 'toma' = archivo de locución del que sale la frase (por defecto toma3).",
   "voice": {
     "espeak": "mb-es4",
     "wpm": 172,
@@ -21,7 +21,8 @@
         "text": "¿Alcanzarías a frenar a 120{ciento veinte}?",
         "em": [
           "frenar"
-        ]
+        ],
+        "omit": true
       },
       {
         "id": "H2",
@@ -30,16 +31,22 @@
         "em": [
           "Pausa",
           "frenar."
-        ]
+        ],
+        "omit": true
+      },
+      {
+        "id": "HK",
+        "gap": 0.05,
+        "toma": "toma4",
+        "text": "Pausa el video en cuanto veas la barrera.",
+        "em": [
+          "Pausa",
+          "barrera."
+        ],
+        "noSub": true
       }
     ],
-    "tail": 0.25,
-    "sync": {
-      "pausarWord": [
-        "H2",
-        "Pausar"
-      ]
-    }
+    "tail": 0.35
   },
   "rounds": [
     {
@@ -52,12 +59,27 @@
           "em": [
             "no",
             "reflejos."
-          ]
+          ],
+          "omit": true
         },
         {
           "id": "R1b",
           "gap": 0.15,
-          "text": "Ojos en la carretera… y el dedo listo."
+          "text": "Ojos en la carretera… y el dedo listo.",
+          "omit": true
+        },
+        {
+          "id": "R1x",
+          "gap": 0.2,
+          "toma": "toma4",
+          "text": "Ronda uno.",
+          "noSub": true
+        },
+        {
+          "id": "R1y",
+          "gap": 0.15,
+          "toma": "toma4",
+          "text": "Ojos en la carretera."
         }
       ],
       "silenceBeforeBarrier": 1.35,

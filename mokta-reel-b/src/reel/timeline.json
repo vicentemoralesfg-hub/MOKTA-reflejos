@@ -6,9 +6,9 @@
   "rampFrames": 24,
   "blackFrames": 9,
   "hook": {
-    "duration": 160,
-    "pausarAt": 120,
-    "rondasAt": 70
+    "duration": 68,
+    "pausarAt": 32,
+    "rondasAt": 32
   },
   "rounds": [
     {
@@ -16,9 +16,9 @@
       "speedKmh": 120,
       "label": "RONDA 1",
       "startS": 1000,
-      "eventAt": 214,
+      "eventAt": 103,
       "resultFrames": 235,
-      "titleOut": 116,
+      "titleOut": 37,
       "cardBigAt": 6,
       "cardSubAt": 6,
       "cardScaleAt": 128
