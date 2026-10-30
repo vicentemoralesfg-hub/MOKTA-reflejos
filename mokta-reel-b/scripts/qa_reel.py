@@ -33,6 +33,17 @@ def frame(n):
     return frame_rgb(n).mean(axis=2)
 
 
+def content_change(a, b):
+    """Píxeles del instrumental que cambian de contenido. El tablero se mueve con la suspensión (±2 px);
+    se compara con el mejor desplazamiento vertical para no confundir ese movimiento con un cambio."""
+    y0, y1, x0, x1 = 1272, 1452, 204, 876
+    best = None
+    for dy in range(-3, 4):
+        d = int((np.abs(b[y0:y1, x0:x1] - a[y0 + dy:y1 + dy, x0:x1]) > 40).sum())
+        best = d if best is None else min(best, d)
+    return best
+
+
 def red_px(img):
     """Píxeles de la lámina roja de la barrera (rojo dominante) en la zona del horizonte."""
     z = img[600:820]
@@ -62,7 +73,7 @@ for name, val, exp, ok in checks:
     lines.append(f"| {name} | {val} | {exp} {'✔' if ok else '✘'} |")
 
 lines += ["", "## La barrera aparece por sorpresa y el panel no la anuncia", "",
-          "Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles de la pantalla del instrumental que cambian más de 40 niveles respecto del fotograma anterior.", "",
+          "Barrera: píxeles de lámina roja en la franja del horizonte. Panel: píxeles del instrumental que cambian más de 40 niveles respecto del fotograma anterior, compensando el leve movimiento del tablero con la suspensión. Umbral ≤ 20 px (ruido de compresión); cuando el cronómetro arranca cambian más de 300.", "",
           "| Ronda | Fotograma de aparición | Barrera 2 fot. antes / 1 antes / aparición | Panel en la aparición | Panel 1 fotograma después |", "|---|---|---|---|---|"]
 for i, r in enumerate(T["rounds"]):
     rf = round_frames(i)
@@ -71,11 +82,11 @@ for i, r in enumerate(T["rounds"]):
     r0, r1, r2 = red_px(c0), red_px(c1), red_px(c2)
     panel = (slice(1268, 1456), slice(204, 876))
     g1, g2, g3 = c1.mean(axis=2), c2.mean(axis=2), c3.mean(axis=2)
-    pan = int((np.abs(g2 - g1)[panel] > 40).sum())
-    pan2 = int((np.abs(g3 - g2)[panel] > 40).sum())
-    ok = r0 == 0 and r1 == 0 and r2 > 50 and pan == 0
+    pan = content_change(g1, g2)
+    pan2 = content_change(g2, g3)
+    ok = r0 == 0 and r1 == 0 and r2 > 50 and pan <= 20
     ok_all &= ok
-    lines.append(f"| {r['label']} · {r['speedKmh']} | {ev} ({ev/FPS:.2f} s) | {r0} / {r1} / {r2} px {'✔' if r0 == 0 and r1 == 0 and r2 > 50 else '✘'} | {pan} px {'✔' if pan == 0 else '✘'} | {pan2} px |")
+    lines.append(f"| {r['label']} · {r['speedKmh']} | {ev} ({ev/FPS:.2f} s) | {r0} / {r1} / {r2} px {'✔' if r0 == 0 and r1 == 0 and r2 > 50 else '✘'} | {pan} px {'✔' if pan <= 20 else '✘'} | {pan2} px |")
 
 lines += ["", "## Impacto y lectura", "", "| Ronda | Fotograma del impacto | Luma media en el negro |", "|---|---|---|"]
 for i, r in enumerate(T["rounds"]):
