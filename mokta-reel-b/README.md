@@ -13,20 +13,20 @@ lectura hablada). Guion completo con tiempos: [`GUION.md`](GUION.md).
 | Bloque | Inicio | Contenido |
 |---|---|---|
 | Gancho | 0:00.0 | "¿Alcanzarías a frenar a 120?" + la regla ("pausar es frenar") |
-| Ronda 1 · 120 | 0:06.2 | Intriga: "la última no se gana con reflejos" · barrera a los 0:14.4 · "según el cálculo, tenías 0,58 s" |
-| Ronda 2 · 160 | 0:26.3 | Barrera a los 0:33.6 · "chocabas a unos 85" |
-| Ronda final · 210 | 0:45.6 | Barrera a los 0:50.3 · "Te lo dije: ni con reflejos perfectos" |
-| Cierre | 1:00.6 | Distancia de frenado ∝ v² · "75 % más rápido, el triple de distancia" |
-| CTA | 1:15.7 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al plano del gancho |
+| Ronda 1 · 120 | 0:05.3 | Intriga: "la última no se gana con reflejos" · barrera a los 0:12.5 · "según el cálculo, tenías 0,58 s" |
+| Ronda 2 · 160 | 0:23.3 | Barrera a los 0:29.2 · "chocabas a unos 85" |
+| Ronda final · 210 | 0:40.0 | Barrera a los 0:44.2 · "Te lo dije: ni con reflejos perfectos" |
+| Cierre | 0:50.4 | Distancia de frenado ∝ v² · "75 % más rápido, el triple de distancia" |
+| CTA | 1:00.5 | "¿A cuántos km/h chocaste en la ronda final?" · vuelve al plano del gancho |
 
-Duración 82 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
+Duración 66 s · 1080×1920 · 30 fps. Subtítulos palabra por palabra (`src/reel/Subtitles.tsx`).
 
 **Video final:** `entregables/MOKTA_TestDeReflejos_final.mp4` · guía de publicación en [`PUBLICACION.md`](PUBLICACION.md).
 
 **Voz:** locución generada con ElevenLabs (voz `2LHmGJw77TBxtmz5srqw`, español latinoamericano neutro,
 modelo `eleven_v4`), una sola toma con pausas largas entre frases: `voz_elevenlabs/toma3.mp3`.
-`scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.12` la separa en las 21 frases (`public/audio/voz/<ID>.wav`)
-y la acelera un 12 % sin cambiar el tono. Si falta alguna frase, `plan_guion.py` usa la voz guía sintetizada.
+`scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.2` la separa en las 21 frases (`public/audio/voz/<ID>.wav`)
+y la acelera un 20 % sin cambiar el tono. Si falta alguna frase, `plan_guion.py` usa la voz guía sintetizada.
 Para cambiar de voz o de toma: generar otra locución con el mismo texto y orden, importarla y volver a ejecutar la cadena.
 
 ## Render
@@ -34,7 +34,7 @@ Para cambiar de voz o de toma: generar otra locución con el mismo texto y orden
 ```bash
 npm ci
 apt-get install espeak-ng mbrola mbrola-es4   # solo para la voz guía
-python3 scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.12   # locución → frases
+python3 scripts/importar_voz.py voz_elevenlabs/toma3.mp3 1.2   # locución → frases
 python3 scripts/alinear_palabras.py voz_elevenlabs/toma3_palabras.json   # tiempos reales por palabra
 python3 scripts/plan_guion.py       # guion → timeline.json, subtitulos.json, voz.wav, GUION.md
 python3 scripts/gen_seams_reel.py   # juntas del asfalto (imagen, cámara y audio)

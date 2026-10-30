@@ -1,6 +1,6 @@
 # MOKTA · Test de reflejos — guía de publicación
 
-Video: `entregables/MOKTA_TestDeReflejos_final.mp4` (1080×1920, 30 fps, ≈82 s, subtítulos incrustados).
+Video: `entregables/MOKTA_TestDeReflejos_final.mp4` (1080×1920, 30 fps, ≈66 s, subtítulos incrustados).
 
 ## Antes de publicar (5 minutos)
 
