@@ -1,0 +1,28 @@
+{
+  "_comment": "Parámetros fijos de las escenas (velocidades, física, tramos de carretera). Los tiempos los calcula scripts/plan_guion.py a partir del guion y los escribe en timeline.json.",
+  "fps": 30,
+  "barrierDistanceM": 90,
+  "decelG": 0.8,
+  "rampFrames": 24,
+  "blackFrames": 9,
+  "rounds": [
+    {
+      "id": "r1",
+      "speedKmh": 120,
+      "label": "RONDA 1",
+      "startS": 1000
+    },
+    {
+      "id": "r2",
+      "speedKmh": 160,
+      "label": "RONDA 2",
+      "startS": 3000
+    },
+    {
+      "id": "r3",
+      "speedKmh": 210,
+      "label": "RONDA FINAL",
+      "startS": 5000
+    }
+  ]
+}

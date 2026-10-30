@@ -1,16 +1,62 @@
 {
-  "_comment": "Reel completo (propuesta B). Fuente única de tiempos para video (Remotion) y audio (scripts/audio_reel.py). Fotogramas a 30 fps. Ventana = hasta llegar a la barrera sin frenar (se calcula, no se fija).",
+  "_comment": "GENERADO por scripts/plan_guion.py a partir de guion.json + escenas.json. No editar a mano.",
   "fps": 30,
   "barrierDistanceM": 90,
   "decelG": 0.8,
-  "hook": { "duration": 57 },
   "rampFrames": 24,
   "blackFrames": 9,
+  "hook": {
+    "duration": 278,
+    "pausarAt": 104,
+    "rondasAt": 196
+  },
   "rounds": [
-    { "id": "r1", "speedKmh": 120, "label": "RONDA 1", "startS": 1000, "eventAt": 105, "resultFrames": 75 },
-    { "id": "r2", "speedKmh": 160, "label": "RONDA 2", "startS": 3000, "eventAt": 108, "resultFrames": 69, "decoyPassAt": 48 },
-    { "id": "r3", "speedKmh": 210, "label": "RONDA FINAL", "startS": 5000, "eventAt": 63, "resultFrames": 78 }
+    {
+      "id": "r1",
+      "speedKmh": 120,
+      "label": "RONDA 1",
+      "startS": 1000,
+      "eventAt": 187,
+      "resultFrames": 238,
+      "titleOut": 59,
+      "cardBigAt": 11,
+      "cardSubAt": 11,
+      "cardScaleAt": 121
+    },
+    {
+      "id": "r2",
+      "speedKmh": 160,
+      "label": "RONDA 2",
+      "startS": 3000,
+      "eventAt": 220,
+      "resultFrames": 268,
+      "titleOut": 65,
+      "cardBigAt": 10,
+      "cardSubAt": 117,
+      "cardScaleAt": 123,
+      "decoyPassAt": 163
+    },
+    {
+      "id": "r3",
+      "speedKmh": 210,
+      "label": "RONDA FINAL",
+      "startS": 5000,
+      "eventAt": 131,
+      "resultFrames": 225,
+      "titleOut": 69,
+      "cardBigAt": 11,
+      "cardSubAt": 120,
+      "cardScaleAt": 126
+    }
   ],
-  "reveal": { "duration": 150 },
-  "cta": { "duration": 81 }
+  "reveal": {
+    "duration": 443,
+    "barsAt": 122,
+    "factAt": 224
+  },
+  "cta": {
+    "duration": 194,
+    "titleAt": 9,
+    "commentAt": 123
+  }
 }

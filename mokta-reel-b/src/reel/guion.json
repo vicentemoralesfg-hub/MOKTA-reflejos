@@ -1,0 +1,236 @@
+{
+  "_comment": "GUION DE LA VOZ — fuente única del ritmo del reel. scripts/plan_guion.py mide cada frase (voz guía o grabación real en public/audio/voz/<id>.wav), coloca las escenas y genera timeline.json, subtitulos.json y GUION.md. Sintaxis: 120{ciento veinte} = se muestra '120' y se dice 'ciento veinte'. 'em' = palabras del subtítulo que se destacan (sin {…}). 'gap' = silencio antes de la frase (s). 'noSub' = la frase ya está escrita en pantalla (título de ronda, CTA): no se subtitula.",
+  "voice": {
+    "espeak": "mb-es4",
+    "wpm": 172
+  },
+  "subtitleMaxChars": 26,
+  "hook": {
+    "lines": [
+      {
+        "id": "H1",
+        "gap": 0.25,
+        "text": "Vas de noche a 120{ciento veinte}… y de pronto, aparece esto.",
+        "em": [
+          "esto."
+        ]
+      },
+      {
+        "id": "H2",
+        "gap": 0.35,
+        "text": "Cuando la veas, pausa el video. Pausar es frenar.",
+        "em": [
+          "pausa",
+          "frenar."
+        ]
+      },
+      {
+        "id": "H3",
+        "gap": 0.3,
+        "text": "Tres rondas. Cada una, más rápida.",
+        "em": [
+          "rápida."
+        ]
+      }
+    ],
+    "tail": 0.5
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "intro": [
+        {
+          "id": "R1a",
+          "gap": 0.35,
+          "text": "Ronda uno: 120{ciento veinte}.",
+          "noSub": true
+        },
+        {
+          "id": "R1b",
+          "gap": 0.3,
+          "text": "Ojos en la carretera… y el dedo listo."
+        }
+      ],
+      "silenceBeforeBarrier": 2.4,
+      "result": [
+        {
+          "id": "R1c",
+          "gap": 0.35,
+          "text": "Tenías 0,58{cincuenta y ocho centésimas} de segundo para frenar a tiempo.",
+          "em": [
+            "0,58"
+          ]
+        },
+        {
+          "id": "R1d",
+          "gap": 0.3,
+          "text": "Si pausaste después, mira la escala: a esa velocidad chocaste.",
+          "em": [
+            "chocaste."
+          ]
+        }
+      ],
+      "card": {
+        "bigWith": "R1c",
+        "subWith": "R1c",
+        "scaleWith": "R1d"
+      },
+      "resultTail": 0.7
+    },
+    {
+      "id": "r2",
+      "intro": [
+        {
+          "id": "R2a",
+          "gap": 0.3,
+          "text": "Ronda dos: 160{ciento sesenta}.",
+          "noSub": true
+        },
+        {
+          "id": "R2b",
+          "gap": 0.3,
+          "text": "Solo 40{cuarenta} más. ¿Qué tanto puede cambiar?"
+        }
+      ],
+      "silenceBeforeBarrier": 2.7,
+      "result": [
+        {
+          "id": "R2c",
+          "gap": 0.35,
+          "text": "Todo. Aunque frenaras al instante, chocabas a 85{ochenta y cinco}.",
+          "em": [
+            "Todo.",
+            "85."
+          ]
+        },
+        {
+          "id": "R2d",
+          "gap": 0.3,
+          "text": "A 160{ciento sesenta}, frenar toma 126{ciento veintiséis} metros. La barrera estaba a 90{noventa}.",
+          "em": [
+            "126",
+            "90."
+          ]
+        }
+      ],
+      "card": {
+        "bigWith": "R2c",
+        "subWith": "R2d",
+        "scaleWith": "R2d"
+      },
+      "resultTail": 0.7
+    },
+    {
+      "id": "r3",
+      "intro": [
+        {
+          "id": "R3a",
+          "gap": 0.3,
+          "text": "Ronda final: 210{doscientos diez}.",
+          "noSub": true
+        },
+        {
+          "id": "R3b",
+          "gap": 0.25,
+          "text": "Último intento."
+        }
+      ],
+      "silenceBeforeBarrier": 1.4,
+      "result": [
+        {
+          "id": "R3c",
+          "gap": 0.35,
+          "text": "Ni con reflejos perfectos: impacto a más de 160{ciento sesenta}.",
+          "em": [
+            "160."
+          ]
+        },
+        {
+          "id": "R3d",
+          "gap": 0.3,
+          "text": "A esta velocidad, reaccionar rápido ya casi no te salva.",
+          "em": [
+            "no",
+            "te",
+            "salva."
+          ]
+        }
+      ],
+      "card": {
+        "bigWith": "R3c",
+        "subWith": "R3d",
+        "scaleWith": "R3d"
+      },
+      "resultTail": 0.7
+    }
+  ],
+  "reveal": {
+    "lines": [
+      {
+        "id": "V1",
+        "gap": 0.3,
+        "text": "Misma barrera. Misma distancia. Solo cambió la velocidad.",
+        "em": [
+          "velocidad."
+        ],
+        "noSub": true
+      },
+      {
+        "id": "V2",
+        "gap": 0.35,
+        "text": "Y la distancia para frenar crece con el cuadrado de la velocidad.",
+        "em": [
+          "cuadrado"
+        ]
+      },
+      {
+        "id": "V3",
+        "gap": 0.3,
+        "text": "75%{setenta y cinco por ciento} más rápido… el triple de distancia.",
+        "em": [
+          "triple"
+        ]
+      },
+      {
+        "id": "V4",
+        "gap": 0.35,
+        "text": "Y eso, sin contar tu reacción. La física no negocia.",
+        "em": [
+          "física",
+          "no",
+          "negocia."
+        ]
+      }
+    ],
+    "sync": {
+      "barsWith": "V2",
+      "factWith": "V3"
+    },
+    "tail": 0.6
+  },
+  "cta": {
+    "lines": [
+      {
+        "id": "C1",
+        "gap": 0.3,
+        "text": "¿A cuántos km/h{kilómetros por hora} chocaste en la ronda final? Coméntalo.",
+        "em": [
+          "ronda",
+          "final?"
+        ],
+        "noSub": true
+      },
+      {
+        "id": "C2",
+        "gap": 0.25,
+        "text": "Y mándaselo a quien maneja rápido.",
+        "noSub": true
+      }
+    ],
+    "sync": {
+      "titleWith": "C1",
+      "commentWith": "C2"
+    },
+    "tail": 0.8
+  }
+}

@@ -85,6 +85,19 @@ for i, r in enumerate(T["rounds"]):
     ok_all &= m < 3
     lines.append(f"| {r['label']} | {L[f'r{i+1}'] + rf['impact']} ({(L[f'r{i+1}'] + rf['impact'])/FPS:.2f} s) | {m:.2f} {'✔' if m < 3 else '✘'} |")
 
+from scipy.io import wavfile  # noqa: E402
+_, vox = wavfile.read(os.path.join(ROOT, "public", "audio", "voz.wav"))
+vox = vox.astype(float) / 32768.0
+lines += ["", "## La voz no anuncia la barrera", "", "Pico de la pista de voz desde 1,2 s antes de la aparición hasta el impacto (debe ser silencio).", "",
+          "| Ronda | Ventana | Pico de voz |", "|---|---|---|"]
+for i, r in enumerate(T["rounds"]):
+    rf = round_frames(i)
+    a0 = (L[f"r{i+1}"] + rf["event"]) / FPS - 1.2
+    a1 = (L[f"r{i+1}"] + rf["impact"]) / FPS
+    pk = float(np.max(np.abs(vox[int(a0 * 48000):int(a1 * 48000)])))
+    ok_all &= pk < 0.01
+    lines.append(f"| {r['label']} | {a0:.2f}–{a1:.2f} s | {pk:.4f} {'✔' if pk < 0.01 else '✘'} |")
+
 lines += ["", f"**Resultado: {'todos los controles pasan' if ok_all else 'HAY CONTROLES QUE FALLAN'}.**", ""]
 open(os.path.join(ROOT, "QA_REEL.md"), "w").write("\n".join(lines))
 print("\n".join(lines))

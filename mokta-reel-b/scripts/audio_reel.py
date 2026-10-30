@@ -13,6 +13,8 @@ public/audio/reel.wav (48 kHz, estéreo).
   impacto                golpe grave + quiebre de barrera plástica + restos; el ambiente se corta en seco
   lectura                relé de balizas sincronizado con el triángulo del instrumental (0,75 s)
 
+  voz                    public/audio/voz.wav (guion, generada por plan_guion.py); el ambiente baja 8 dB al hablar
+
 Regla: ningún sonido cambia en el fotograma de aparición de la barrera (la prueba es visual).
 """
 import json
@@ -240,6 +242,30 @@ t_rev = L["reveal"] / FPS
 t_cta = L["cta"] / FPS
 relay(t_rev, t_rev + 1.5, db(-21))
 add(idle(DUR - t_rev, 404), t_rev)
+
+# ------------------------------------------------------------------ voz (guion) con atenuación del ambiente
+# El ambiente baja 8 dB mientras se habla (ataque 80 ms, liberación 250 ms). La voz nunca suena cerca de
+# la barrera (lo garantiza plan_guion.py), así que la atenuación tampoco cambia en ese momento.
+vpath = os.path.join(ROOT, "public", "audio", "voz.wav")
+if os.path.exists(vpath):
+    _, vox = wavfile.read(vpath)
+    vox = vox.astype(np.float64) / 32768.0
+    if vox.ndim > 1:
+        vox = vox.mean(axis=1)
+    vox = np.pad(vox, (0, max(0, N - len(vox))))[:N]
+    gate = np.zeros(N)
+    for ln in json.load(open(os.path.join(ROOT, "src", "reel", "voz_tiempos.json"))):
+        gate[at(ln["start"] - 0.12): at(ln["start"] + ln["dur"] + 0.25)] = 1.0
+    k = np.ones(int(0.08 * SR)) / int(0.08 * SR)
+    gate = np.convolve(gate, k, mode="same")
+    duck = 1 - (1 - db(-8)) * gate
+    bed_rms = np.sqrt(np.mean(out_l[at(L["r1"] / FPS + 1): at(L["r1"] / FPS + 3)] ** 2))
+    active = np.abs(vox) > 0.02
+    v_rms = np.sqrt(np.mean(vox[active] ** 2)) if active.any() else 1.0
+    vgain = bed_rms * db(-8) * db(12) / v_rms  # voz ≈ 12 dB sobre el ambiente atenuado
+    out_l = out_l * duck + vox * vgain
+    out_r = out_r * duck + vox * vgain
+    print(f"voz mezclada ({active.mean() * 100:.0f} % del tiempo con voz)")
 
 st = np.stack([out_l, out_r], 1)
 end = int(0.01 * SR)

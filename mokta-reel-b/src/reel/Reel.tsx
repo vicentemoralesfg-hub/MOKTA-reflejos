@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { Cta, Hook, Reveal } from "./Scenes";
 import { RoundB } from "./RoundB";
+import { Subtitles } from "./Subtitles";
 import { LAYOUT, ROUNDS, T, roundFrames } from "./config";
 
 export const Reel: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) => (
@@ -21,5 +22,7 @@ export const Reel: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
     <Sequence from={LAYOUT.cta} durationInFrames={T.cta.duration} name="CTA">
       <Cta />
     </Sequence>
+    {/* subtítulos de la voz: tiempos absolutos del reel */}
+    <Subtitles />
   </AbsoluteFill>
 );

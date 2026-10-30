@@ -20,8 +20,9 @@ import { D, DECEL_G, FPS, ROUNDS, SEAMS, kmhAt, lastStop, roundFrames, sAt } fro
  */
 const DECOY_SPEED = 25; // m/s, auto en sentido contrario
 
-const RoundTitle: React.FC<{ f: number; label: string; kmh: number }> = ({ f, label, kmh }) => {
-  const a = inOut(f, 0, 8, 30, 42);
+/** Título de la ronda: se ve mientras la voz lo dice ("Ronda uno: 120") y sale al terminar la frase. */
+const RoundTitle: React.FC<{ f: number; label: string; kmh: number; out: number }> = ({ f, label, kmh, out }) => {
+  const a = inOut(f, 0, 8, out - 10, out);
   return (
     <AbsoluteFill style={{ alignItems: "center", top: 300, opacity: a }}>
       <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 34, letterSpacing: 10, marginRight: -10, color: THEME.dim }}>{label}</div>
@@ -33,13 +34,20 @@ const RoundTitle: React.FC<{ f: number; label: string; kmh: number }> = ({ f, la
   );
 };
 
+/**
+ * Lectura de la ronda, en tres tiempos sincronizados con la voz (timeline.json):
+ *  cardBigAt   cifra principal (con la primera frase)
+ *  cardSubAt   explicación breve
+ *  cardScaleAt escala "tu pausa → velocidad al llegar" (cuando la voz la menciona)
+ */
 const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
   const r = ROUNDS[index];
   const kmh = r.speedKmh;
   const tl = lastStop(kmh);
-  const a = ramp(k, 0, 8);
-  const grow = ramp(k, 6, 22);
-  const late = ramp(k, 16, 26);
+  const a = ramp(k, r.cardBigAt - 4, r.cardBigAt + 6);
+  const sub = ramp(k, r.cardSubAt, r.cardSubAt + 10);
+  const grow = ramp(k, r.cardScaleAt, r.cardScaleAt + 16);
+  const late = ramp(k, r.cardScaleAt + 10, r.cardScaleAt + 20);
   const X0 = 120;
   const W = 840;
   const TMAX = 1.5;
@@ -55,22 +63,16 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
         <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 26, letterSpacing: 6, marginRight: -6, color: THEME.dim }}>
           {r.label} · {kmh} km/h · BARRERA A {D} m
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 46, marginTop: 40, color: THEME.text }}>
-          {tl !== null ? "Tenías" : "Aunque frenaras al instante"}
+        <div style={{ fontFamily: THEME.ui, fontWeight: 600, fontSize: 30, letterSpacing: 5, marginRight: -5, marginTop: 44, color: THEME.text }}>
+          {tl !== null ? "TIEMPO PARA FRENAR A TIEMPO" : "IMPACTO AUNQUE FRENES AL INSTANTE"}
         </div>
         <div style={{ fontFamily: THEME.display, fontWeight: 800, fontSize: tl !== null ? 176 : 150, lineHeight: 1.08, color: tl !== null ? THEME.green : THEME.red }}>
           <Tab>{tl !== null ? `${fmt(tl, 2)} s` : `≈ ${impact(0)} km/h`}</Tab>
         </div>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 36, marginTop: 12, color: THEME.dim, textAlign: "center", lineHeight: 1.3 }}>
-          {tl !== null ? (
+        <div style={{ fontFamily: THEME.ui, fontWeight: 500, fontSize: 38, marginTop: 12, color: THEME.dim, textAlign: "center", lineHeight: 1.3, opacity: sub, translate: `0px ${interpolate(sub, [0, 1], [8, 0])}px` }}>
+          {tl !== null ? null : (
             <>
-              para empezar a frenar
-              <br />y detenerte antes de la barrera
-            </>
-          ) : (
-            <>
-              llegarías a la barrera.
-              <br />A {kmh} km/h necesitas {brakingM} m solo para frenar.
+              Frenar a {kmh}: <span style={{ color: THEME.text }}>{brakingM} m</span> · Barrera: <span style={{ color: THEME.text }}>{D} m</span>
             </>
           )}
         </div>
@@ -113,11 +115,6 @@ const ResultCard: React.FC<{ index: number; k: number }> = ({ index, k }) => {
         </text>
       </svg>
 
-      <AbsoluteFill style={{ alignItems: "center", top: 1070, opacity: late }}>
-        <div style={{ fontFamily: THEME.ui, fontWeight: 400, fontSize: 24, color: THEME.faint, textAlign: "center" }}>
-          Estimación con frenada constante de 0,8 g. Pausar no equivale a frenar.
-        </div>
-      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -149,7 +146,7 @@ export const RoundB: React.FC<{ index: number }> = ({ index }) => {
       {driving ? (
         <>
           <DriveView s={s} travelPerFrame={v / FPS} ride={ride} seams={seams} barrierS={barrierS} decoyS={decoyS} />
-          <RoundTitle f={f} label={r.label} kmh={r.speedKmh} />
+          <RoundTitle f={f} label={r.label} kmh={r.speedKmh} out={r.titleOut} />
           <Cockpit lift={-ride.dy * 400}>
             <ClusterDrive f={f} eventAt={fr.event} kmh={r.speedKmh} displayKmh={kmhNow} roundLabel={`RONDA ${roundLabel}`} />
           </Cockpit>
