@@ -19,15 +19,32 @@ lectura (revela el resultado).
 
 ## Texto del post
 
-> ¿Cuántas rondas pasas? 🚧
-> Pausa en cuanto veas la barrera. Pausar = frenar.
-> Comenta 1, 2 o 3 👇 y etiqueta a quien diga que pasa la final.
+Copiar desde `entregables/DESCRIPCION_INSTAGRAM.txt`:
+
+> Nadie ha pasado la ronda final. ¿Tú sí? 🚧
 >
-> #TestDeReflejos #SeguridadVial #Chile #Manejo
+> Pausa en cuanto veas la barrera: pausar = frenar.
+> 120, 160 y 210 km/h. Misma barrera, misma distancia.
+>
+> Comenta cuántas rondas pasaste: 1, 2 o 3 👇
+> Y etiqueta a ese amigo que dice que maneja bien rápido.
+>
+> Pronto en MOKTA: vende tu auto sin moverte de tu casa. Síguenos 👀
+>
+> #TestDeReflejos #SeguridadVial #Autos #Chile #MOKTA
+
+Por qué así:
+- **Primera línea (lo único visible antes de "más"):** desafío directo que el video confirma; da una razón
+  para ver hasta el final y para volver a intentarlo.
+- **Instrucción en una línea:** quien lee antes de ver entiende el juego.
+- **Comentario de un dígito + etiqueta con motivo concreto:** la forma más fácil de comentar y de compartir.
+- **Línea de MOKTA:** anuncia el negocio (consignación virtual) sin interrumpir el entretenimiento y da una
+  razón para seguir la cuenta.
+- **Pocos hashtags y relevantes:** palabras de búsqueda reales (test de reflejos, seguridad vial, autos, Chile).
 
 ## Primer comentario (fijarlo)
 
-> ¿Alguien pasó la ronda final? Muestra tu pausa 👀
+> ¿Alguien pasó la ronda final? Muestra la captura de tu pausa 👀
 
 ## Por qué está construido así (palancas de retención)
 
