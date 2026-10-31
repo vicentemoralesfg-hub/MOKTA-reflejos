@@ -24,7 +24,7 @@
         "file": "public/audio/voz_hook.mp3",
         "words": "scripts/words_hook.json",
         "gainDb": 0,
-        "_nota": "líneas nuevas v3 (gancho y 'Más adelante la ves…'). Si el archivo no existe, se usa un hueco de silencio del largo del slot (vista previa)."
+        "_nota": "inicio v4 (gancho, 'Después la ves…', '¿Cómo te midió…', 'Y funciona hasta…'). Sin archivo: huecos de silencio del largo del slot (la voz la graba el usuario)."
       }
     },
     "segments": [
@@ -38,19 +38,25 @@
         "src": "c",
         "from": 6,
         "to": 12,
-        "slot": 1.78
+        "slot": 1.9
       },
       {
         "src": "c",
         "from": 13,
-        "to": 17,
-        "slot": 1.95
+        "to": 16,
+        "slot": 1.75
       },
       {
         "src": "c",
-        "from": 18,
-        "to": 21,
-        "slot": 1.22
+        "from": 17,
+        "to": 20,
+        "slot": 1.25
+      },
+      {
+        "src": "c",
+        "from": 21,
+        "to": 27,
+        "slot": 1.95
       },
       {
         "src": "a",
@@ -60,18 +66,16 @@
         "gainDb": -1.0
       },
       {
-        "src": "b",
-        "from": 0,
-        "to": 4,
-        "gapAfter": 0.03,
-        "gainDb": -5.0
+        "src": "c",
+        "from": 28,
+        "to": 30,
+        "slot": 1.15
       },
       {
-        "src": "a",
+        "src": "c",
         "from": 31,
         "to": 37,
-        "gapAfter": 0.18,
-        "gainDb": 2.0
+        "slot": 1.95
       },
       {
         "src": "b",
@@ -160,18 +164,34 @@
         "la",
         "patrulla",
         "está",
-        "en",
-        "esta",
-        "imagen.",
-        "Más",
-        "adelante",
+        "ahí.",
+        "¿La",
+        "ves?",
+        "Después",
         "la",
         "ves.",
         "Frenas.",
         "Pero",
         "ya",
-        "era",
-        "tarde."
+        "es",
+        "tarde.",
+        "¿Cómo",
+        "te",
+        "midió…",
+        "si",
+        "no",
+        "la",
+        "veías?",
+        "Y",
+        "funciona",
+        "hasta",
+        "desde",
+        "una",
+        "patrulla",
+        "que",
+        "viene",
+        "de",
+        "frente…"
       ]
     }
   },
@@ -191,119 +211,123 @@
     },
     {
       "id": "tarde",
-      "word": 18
+      "word": 17
+    },
+    {
+      "id": "comoTeMidio",
+      "word": 21
     },
     {
       "id": "radarLanza",
-      "word": 22
+      "word": 28
     },
     {
       "id": "radarAncha",
-      "word": 27
-    },
-    {
-      "id": "radarMedir",
       "word": 33
     },
     {
+      "id": "radarMedir",
+      "word": 39
+    },
+    {
       "id": "radarFrente",
-      "word": 38
+      "word": 42
     },
     {
       "id": "laserPistola",
-      "word": 45
+      "word": 49
     },
     {
       "id": "laserPuerta",
-      "word": 52
+      "word": 56
     },
     {
       "id": "laserTuyo",
-      "word": 59
+      "word": 63
     },
     {
       "id": "medioSegundo",
-      "word": 64
+      "word": 68
     },
     {
       "id": "desdeDistancia",
-      "word": 71
+      "word": 75
     },
     {
       "id": "piensaNumero",
-      "word": 74
+      "word": 78
     },
     {
       "id": "trescientos",
-      "word": 77
+      "word": 81
     },
     {
       "id": "mas1",
-      "word": 79
+      "word": 83
     },
     {
       "id": "kilometro",
-      "word": 80
+      "word": 84
     },
     {
       "id": "mas2",
-      "word": 82
+      "word": 86
     },
     {
       "id": "tresKm",
-      "word": 85
+      "word": 89
     },
     {
       "id": "niUnPunto",
-      "word": 87
+      "word": 91
     },
     {
       "id": "cientoCuarenta",
-      "word": 95
-    },
-    {
-      "id": "unMinuto",
       "word": 99
     },
     {
+      "id": "unMinuto",
+      "word": 103
+    },
+    {
       "id": "cuandoLaVes",
-      "word": 105
+      "word": 109
     },
     {
       "id": "yaTeMidieron",
-      "word": 108
+      "word": 112
     },
     {
       "id": "detalle",
-      "word": 111
-    },
-    {
-      "id": "teMide",
       "word": 115
     },
     {
+      "id": "teMide",
+      "word": 119
+    },
+    {
       "id": "patenteFoto",
-      "word": 120
+      "word": 124
     },
     {
       "id": "patenteFoto2",
-      "word": 125
-    },
-    {
-      "id": "necesita",
       "word": 129
     },
     {
-      "id": "doscientos",
+      "id": "necesita",
       "word": 133
     },
     {
+      "id": "doscientos",
+      "word": 137
+    },
+    {
       "id": "entonces",
-      "word": 135
+      "word": 139
     },
     {
       "id": "pillaron",
-      "word": 136
+      "word": 140
     }
   ],
   "hits": [
@@ -312,61 +336,61 @@
       "kind": "hookLock"
     },
     {
-      "word": 17,
+      "word": 16,
       "kind": "brake"
     },
     {
-      "word": 21,
+      "word": 20,
       "kind": "hit",
       "gain": 0.45
     },
     {
-      "word": 23,
+      "word": 29,
       "kind": "ping"
     },
     {
-      "word": 48,
+      "word": 52,
       "kind": "laser"
     },
     {
-      "word": 70,
+      "word": 74,
       "kind": "lock"
     },
     {
-      "word": 79,
+      "word": 83,
       "kind": "hit",
       "gain": 0.7
     },
     {
-      "word": 82,
+      "word": 86,
       "kind": "hit",
       "gain": 0.85
     },
     {
-      "word": 85,
+      "word": 89,
       "kind": "big"
     },
     {
-      "word": 94,
+      "word": 98,
       "kind": "hit",
       "gain": 0.45
     },
     {
-      "word": 108,
+      "word": 112,
       "kind": "big"
     },
     {
-      "word": 116,
+      "word": 120,
       "kind": "hit",
       "gain": 0.5
     },
     {
-      "word": 133,
+      "word": 137,
       "kind": "hit",
       "gain": 0.9
     },
     {
-      "word": 138,
+      "word": 142,
       "kind": "hit",
       "gain": 0.5
     }
@@ -374,43 +398,47 @@
   "highlights": {
     "5": "red",
     "8": "key",
+    "10": "key",
     "12": "key",
-    "14": "key",
-    "17": "key",
-    "21": "red",
-    "23": "blue",
-    "28": "blue",
-    "32": "blue",
+    "15": "key",
+    "16": "key",
+    "20": "red",
+    "23": "red",
+    "27": "key",
+    "29": "blue",
+    "34": "blue",
+    "38": "blue",
     "40": "blue",
-    "44": "blue",
-    "47": "red",
-    "48": "red",
-    "58": "red",
-    "63": "red",
-    "69": "key",
-    "70": "key",
-    "76": "key",
-    "77": "key",
-    "78": "key",
-    "79": "key",
+    "45": "blue",
+    "48": "blue",
+    "51": "red",
+    "52": "red",
+    "62": "red",
+    "67": "red",
+    "73": "key",
+    "74": "key",
+    "80": "key",
     "81": "key",
     "82": "key",
+    "83": "key",
     "85": "key",
     "86": "key",
-    "94": "key",
-    "102": "key",
-    "108": "red",
-    "109": "red",
-    "110": "red",
-    "114": "key",
-    "118": "red",
-    "119": "red",
-    "124": "key",
+    "89": "key",
+    "90": "key",
+    "98": "key",
+    "106": "key",
+    "112": "red",
+    "113": "red",
+    "114": "red",
+    "118": "key",
+    "122": "red",
+    "123": "red",
     "128": "key",
-    "133": "key",
-    "134": "key",
+    "132": "key",
+    "137": "key",
     "138": "key",
-    "140": "key"
+    "142": "key",
+    "144": "key"
   },
   "captionBlocks": [
     [

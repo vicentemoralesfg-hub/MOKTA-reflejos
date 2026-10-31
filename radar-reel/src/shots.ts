@@ -1,5 +1,5 @@
 import { EASE_IN_OUT, EASE_OUT } from "./lib/anim";
-import { ShotId, wordAt } from "./timeline";
+import { ShotId, wordIn } from "./timeline";
 import { officerMuzzle } from "./world/World";
 import type { CamSpec, CarSpec, LaserSpec, MarkerSpec, RadarSpec, V3, WorldState } from "./world/World";
 import type { PillSpec } from "./hud/Pill";
@@ -205,6 +205,24 @@ const povPatrol = (t: number, pz: number, closing: number, braking: boolean): Sh
   };
 };
 
+const comoTeMidio = (t: number, d: number): ShotFrame => {
+  // vista aérea: tu auto solo en la carretera oscura, ninguna patrulla a la vista… y ya estaba MEDIDO
+  const z = -V * t;
+  const k = io(t, 0, d);
+  const c = pop(t, 0.15);
+  return {
+    world: {
+      cam: cam(mix3([HERO_X - 12, 46, z + 44], [HERO_X - 9, 34, z + 30], k), [HERO_X, 0, z - 40], 46),
+      cars: [hero(z)],
+      fog: [200, 2600],
+      ...AERIAL,
+      exposure: 1.7,
+      lightMinPx: 0,
+    },
+    card: { title: "MEDIDO · 140 km/h", sub: "¿cómo?", opacity: c.opacity, scale: c.scale, y: 380 },
+  };
+};
+
 const radarSpec = (origin: V3, head: number, opacity: number, facing: 1 | -1 = 1): RadarSpec => ({
   origin,
   facing,
@@ -300,7 +318,7 @@ const laserPistola = (t: number, d: number, id: ShotId): ShotFrame => {
   const off = { x: SHOULDER_X + 1.25, z: 1.0, rotY: 0 };
   const tgt = heroFront(zh);
   off.rotY = Math.atan2(tgt[0] - off.x, tgt[2] - off.z);
-  const wl = wordAt(id, 45);
+  const wl = wordIn(id, 3);
   const g = eo(t, wl - 0.12, wl + 0.2);
   const k = io(t, 0, d);
   return {
@@ -358,13 +376,13 @@ const laserTuyo = (t: number, d: number): ShotFrame => {
       exposure: 1.45,
       studs: 4,
     },
-    pills: [{ at: [HERO_X, 1.6, zh], text: "TÚ", tone: "red", size: "story", leader: 90, ...pop(t, wordAt("laserTuyo", 60) - 0.1) }],
+    pills: [{ at: [HERO_X, 1.6, zh], text: "TÚ", tone: "red", size: "story", leader: 90, ...pop(t, wordIn("laserTuyo", 4) - 0.1) }],
   };
 };
 
 const medioSegundo = (t: number, id: ShotId): ShotFrame => {
   const z = 200 - V * t;
-  const t0 = wordAt(id, 64) - 0.1;
+  const t0 = wordIn(id, 3) - 0.1;
   const el = clamp01((t - t0) / 0.4) * 0.4;
   const locked = t >= t0 + 0.42;
   return {
@@ -399,8 +417,8 @@ const desdeDistancia = (t: number): ShotFrame => {
 
 const piensaNumero = (t: number, id: ShotId): ShotFrame => {
   const z = -V * t;
-  const w1 = wordAt(id, 71);
-  const w2 = wordAt(id, 73);
+  const w1 = wordIn(id, 0);
+  const w2 = wordIn(id, 2);
   const bob = (ph: number) => Math.sin(t * 2.2 + ph) * 8;
   return {
     world: {
@@ -468,7 +486,7 @@ const tresKm = (t: number, d: number, id: ShotId): ShotFrame => {
   const slow = 0.2;
   const z = 40 - V * slow * t;
   const k = eo(t, 0, d);
-  const tw = wordAt(id, 82);
+  const tw = wordIn(id, 0);
   const pulse = ((t * 0.3) % 1 + 1) % 1;
   return {
     world: {
@@ -488,7 +506,7 @@ const tresKm = (t: number, d: number, id: ShotId): ShotFrame => {
 
 const niUnPunto = (t: number, id: ShotId): ShotFrame => {
   const zoom = io(t, 0.05, 0.95);
-  const ringT = wordAt(id, 91) - 0.15;
+  const ringT = wordIn(id, 7) - 0.15;
   return {
     world: ganchoWorld(0, ganchoCam(0, zoom, zoom)),
     ring: { at: [SHOULDER_X, 0.75, -FAR_M], r: 130, opacity: eo(t, ringT, ringT + 0.2), label: "AQUÍ", sub: "2,9 km" },
@@ -580,7 +598,7 @@ const teMide = (t: number, d: number, id: ShotId): ShotFrame => {
       fog: [600, 7000],
       ...AERIAL,
     },
-    screenPills: [{ text: "MIDE: 2,9 km", x: 540, y: 320, size: "story", tone: "red", ...pop(t, wordAt(id, 113)) }],
+    screenPills: [{ text: "MIDE: 2,9 km", x: 540, y: 320, size: "story", tone: "red", ...pop(t, wordIn(id, 1)) }],
   };
 };
 
@@ -687,6 +705,7 @@ export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
   hook2,
   laVes,
   tarde,
+  comoTeMidio,
   radarLanza,
   radarAncha,
   radarMedir,

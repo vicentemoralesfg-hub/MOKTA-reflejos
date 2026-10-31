@@ -39,6 +39,8 @@ export const shotById = (id: ShotId) => SHOTS.find((s) => s.id === id)!;
 /** Segundo (relativo al plano) en que empieza la palabra i. */
 export const wordAt = (shot: ShotId, i: number) => WORDS[i].start - shotById(shot).from / FPS;
 export const wordEndAt = (shot: ShotId, i: number) => WORDS[i].end - shotById(shot).from / FPS;
+/** Segundo (relativo al plano) en que empieza la k-ésima palabra del plano (0 = la primera). */
+export const wordIn = (shot: ShotId, k: number) => wordAt(shot, shotById(shot).firstWord + k);
 
 export type Highlight = "key" | "red" | "blue";
 export const HIGHLIGHTS = cues.highlights as Record<string, Highlight>;

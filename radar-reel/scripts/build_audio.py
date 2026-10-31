@@ -83,7 +83,8 @@ def saw(freq, phase=0.0):
     return 2 * (ph % 1.0) - 1
 
 
-drop_start = W[85]["start"] - 0.05          # silencio de la música justo antes del "tres"
+FIRST = {s["id"]: s["word"] for s in CUES["shots"]}
+drop_start = W[FIRST["tresKm"]]["start"] - 0.05          # silencio de la música justo antes del "tres"
 drop_end = SHOT["niUnPunto"]
 riser_start = SHOT["kilometro"]
 
@@ -247,7 +248,7 @@ for sid, dur, g in [("hook1", SHOT["hook2"] - SHOT["hook1"] + 0.25, 1.0), ("laVe
     add(fx, SHOT[sid], (rumble + wind) * e * 0.05 * g)
 
 # Zumbido muy leve del láser mientras el haz está activo
-a, b = idx(W[48]["start"]), idx(SHOT["trescientos"])
+a, b = idx(W[FIRST["laserPistola"] + 3]["start"]), idx(SHOT["trescientos"])  # desde "láser"
 n = b - a
 hum = (np.sin(2 * np.pi * 220 * np.arange(n) / SR) * 0.5 + np.sin(2 * np.pi * 330 * np.arange(n) / SR) * 0.25)
 hum *= np.minimum(1, np.minimum(np.arange(n), n - np.arange(n)) / (0.3 * SR)) * 0.006
@@ -290,6 +291,10 @@ fade[: int(0.01 * SR)] = np.linspace(0, 1, int(0.01 * SR))
 fade[-int(0.04 * SR):] = np.linspace(1, 0, int(0.04 * SR))
 pcm16 = lambda x: (np.clip(x, -1, 1) * 32767).astype(np.int16)
 os.makedirs(os.path.join(ROOT, "public/audio/stems"), exist_ok=True)
+
+# sin voz (música + efectos, para grabar la locución encima): la música NO se agacha (sin ducking)
+me = (music * 0.72 + fx_st * 0.42) * fade
+wavfile.write(os.path.join(ROOT, "public/audio/mix_sin_voz.wav"), SR, pcm16((me / np.abs(me).max() * 0.89).T))
 
 # sin música: voz + efectos (whooshes y golpes), normalizado por separado
 dry = (v_st * 1.0 + fx_st * 0.42) * fade
