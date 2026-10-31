@@ -6,7 +6,7 @@ import { SHOT_FNS } from "./shots";
 import { World, WorldState, projectToScreen } from "./world/World";
 import { Pill } from "./hud/Pill";
 import { Speedometer } from "./hud/Speedometer";
-import { BigCounter, Card, Fx, Ring, Viewfinder } from "./hud/Overlays";
+import { BigCounter, Card, Fx, Photo, Ring, SpeedLines, Viewfinder } from "./hud/Overlays";
 import { C } from "./hud/style";
 
 /** Lienzo 3D. dpr < 1 renderiza a baja resolución y se amplía sin suavizado (pixelado real). */
@@ -73,6 +73,8 @@ export const Shot: React.FC<{ id: ShotId }> = ({ id }) => {
       {/* viñeta suave: centra la mirada sin oscurecer el cuadro */}
       <AbsoluteFill style={{ background: "radial-gradient(90% 62% at 50% 48%, rgba(0,0,0,0) 62%, rgba(2,6,16,0.4) 100%)", pointerEvents: "none" }} />
 
+      {s.speedLines ? <SpeedLines {...s.speedLines} frame={frame} /> : null}
+
       {s.viewfinder ? <Viewfinder x0={60} y0={150} x1={1020} y1={1640} opacity={s.viewfinder} /> : null}
 
       {s.brackets?.map((b, i) => {
@@ -86,7 +88,7 @@ export const Shot: React.FC<{ id: ShotId }> = ({ id }) => {
             const p = projectToScreen(camSpec, s.ring.at);
             return (
               <>
-                <Ring x={p.x} y={p.y} r={s.ring.r} opacity={s.ring.opacity} />
+                <Ring x={p.x} y={p.y} r={s.ring.r} opacity={s.ring.opacity} color={s.ring.color} />
                 {s.ring.label ? (
                   <Pill p={{ text: s.ring.label, x: p.x, y: p.y - s.ring.r - 90, tone: "red", size: "story", opacity: s.ring.opacity, dot: false }} />
                 ) : null}
@@ -108,6 +110,7 @@ export const Shot: React.FC<{ id: ShotId }> = ({ id }) => {
 
       {s.screenPills?.map((p, i) => <Pill key={`s${i}`} p={p} />)}
 
+      {s.photo ? <Photo {...s.photo} /> : null}
       {s.counter ? <BigCounter {...s.counter} /> : null}
       {s.card ? <Card {...s.card} /> : null}
       {s.speed != null ? <Speedometer kmh={s.speed} big={s.speedBig} /> : null}

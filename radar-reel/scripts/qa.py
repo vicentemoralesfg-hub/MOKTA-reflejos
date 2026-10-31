@@ -69,8 +69,8 @@ for sh, ln in zip(CUES["shots"], lens):
         print(f"  ⚠ {sh['id']} dura {ln:.2f} s")
 
 # ---------------------------------------------------------------- hojas de contacto
-reveal_words = {76: "MÁS 1", 79: "MÁS 2", 82: "3 km", 91: "punto", 105: "ya te", 107: "midieron", 130: "200 m", 137: "final"}
-key = [0, 1, WD["durationInFrames"] - 1] + cuts + [round(W[i]["start"] * FPS) + 6 for i in reveal_words]
+reveal_words = {79: "MÁS 1", 82: "MÁS 2", 85: "3 km", 94: "punto", 108: "ya te", 110: "midieron", 133: "200 m", 140: "final"}
+key = [0, 1, 4, 8, WD["durationInFrames"] - 1] + cuts + [round(W[i]["start"] * FPS) + 6 for i in reveal_words]
 key = sorted(set(k for k in key if 0 <= k < WD["durationInFrames"]))
 sel = "+".join(f"eq(n\\,{k})" for k in key)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-vf", f"select='{sel}',scale=270:480,"

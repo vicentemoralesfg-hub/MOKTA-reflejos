@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { FPS, HIGHLIGHTS, WORDS } from "../timeline";
+import cues from "../data/cues.json";
 import { C, FONT_DISPLAY } from "./style";
 import { EASE_OUT } from "../lib/anim";
 
@@ -9,7 +10,10 @@ import { EASE_OUT } from "../lib/anim";
  * la palabra clave de cada frase va resaltada.
  * Grupos: se corta en la puntuación y nunca más de 3 palabras por línea visible.
  */
-type Group = { words: number[]; start: number; end: number };
+type Group = { words: number[]; start: number; end: number; block?: boolean };
+
+/** Frases que se muestran completas de una vez (el gancho), en vez de palabra por palabra. */
+const BLOCKS = ((cues as { captionBlocks?: number[][] }).captionBlocks ?? []) as [number, number][];
 
 const MAX_WORDS = 3;
 const MAX_CHARS = 17;
@@ -17,7 +21,15 @@ const MAX_CHARS = 17;
 const buildGroups = (): Group[] => {
   const phrases: number[][] = [];
   let cur: number[] = [];
+  const inBlock = (i: number) => BLOCKS.some(([a, b]) => i >= a && i <= b);
+  const blockGroups: Group[] = BLOCKS.map(([a, b]) => ({
+    words: Array.from({ length: b - a + 1 }, (_, k) => a + k),
+    start: a === 0 ? 0 : WORDS[a].start - 0.12,
+    end: WORDS[b + 1] ? WORDS[b + 1].start - 0.12 : WORDS[b].end + 0.45,
+    block: true,
+  }));
   WORDS.forEach((w, i) => {
+    if (inBlock(i)) return;
     cur.push(i);
     if (/[.,:?…]$/.test(w.text) || i === WORDS.length - 1) {
       phrases.push(cur);
@@ -38,13 +50,14 @@ const buildGroups = (): Group[] => {
     });
     if (g.length) groups.push(g);
   }
-  return groups.map((ids, k) => {
+  const wordGroups = groups.map((ids, k) => {
     const start = WORDS[ids[0]].start;
     const lastEnd = WORDS[ids[ids.length - 1]].end;
     const next = k + 1 < groups.length ? WORDS[groups[k + 1][0]].start : lastEnd + 1;
     const end = Math.min(next, lastEnd + 0.45);
     return { words: ids, start, end };
   });
+  return [...blockGroups, ...wordGroups].sort((a, b) => a.start - b.start);
 };
 
 const GROUPS = buildGroups();
@@ -77,7 +90,7 @@ export const Captions: React.FC<{ y?: number }> = ({ y = 1185 }) => {
       >
         {g.words.map((i) => {
           const w = WORDS[i];
-          const p = interpolate(t, [w.start - 0.04, w.start + 0.1], [0, 1], {
+          const p = g.block ? 1 : interpolate(t, [w.start - 0.04, w.start + 0.1], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
             easing: EASE_OUT,
@@ -89,7 +102,7 @@ export const Captions: React.FC<{ y?: number }> = ({ y = 1185 }) => {
               style={{
                 fontFamily: FONT_DISPLAY,
                 fontWeight: 800,
-                fontSize: hl ? 108 : 98,
+                fontSize: g.block ? (hl ? 100 : 92) : hl ? 108 : 98,
                 lineHeight: 1.08,
                 textTransform: "uppercase",
                 color: colorOf(i),

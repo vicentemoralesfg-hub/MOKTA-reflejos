@@ -83,13 +83,13 @@ def saw(freq, phase=0.0):
     return 2 * (ph % 1.0) - 1
 
 
-drop_start = W[82]["start"] - 0.05          # silencio de la música justo antes del "tres"
+drop_start = W[85]["start"] - 0.05          # silencio de la música justo antes del "tres"
 drop_end = SHOT["niUnPunto"]
 riser_start = SHOT["kilometro"]
 
 # Intensidad general (la tensión sube hasta el reveal de 3 km, cae y vuelve más grave)
 inten = smooth_env([
-    (0, 0.55), (SHOT["radarLanza"], 0.62), (SHOT["laserPistola"], 0.7), (SHOT["desdeDistancia"], 0.78),
+    (0, 0.85), (SHOT["hook2"], 0.7), (SHOT["laVes"], 0.6), (SHOT["radarLanza"], 0.62), (SHOT["laserPistola"], 0.7), (SHOT["desdeDistancia"], 0.78),
     (riser_start, 0.9), (drop_start - 0.01, 1.0), (drop_start, 0.0), (drop_end - 0.4, 0.0),
     (drop_end, 0.75), (SHOT["yaTeMidieron"], 0.85), (SHOT["detalle"], 0.6), (SHOT["pillaron"], 0.7), (T, 0.75),
 ])
@@ -221,12 +221,33 @@ for h in CUES["hits"]:
         add(fx, w["end"] - 0.03, beep(2637))
     elif kind == "hit":
         add(fx, w["start"] - 0.01, boom(h.get("gain", 1.0) * 0.55, 1.4))
+    elif kind == "hookLock":
+        # el punto láser cae sobre tu auto: doble pitido de "medido" y golpe (tiempos del plano, no de la voz)
+        lock = SHOT["hook1"] + 0.14
+        add(fx, lock - 0.02, beep(2093, 0.07, 1.4))
+        add(fx, lock + 0.1, beep(2637, 0.09, 1.4))
+        add(fx, lock + 0.02, boom(0.6, 1.4))
+    elif kind == "brake":
+        # chirrido de neumáticos al frenar (t = 1,2 s del plano "Más adelante la ves. Frenas.")
+        n = int(0.9 * SR)
+        tt = np.arange(n) / SR
+        sq = bp(rng.standard_normal(n), 1800, 4200) * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * tt)) * env(n, 0.03, 3.2)
+        add(fx, SHOT["laVes"] + 1.2, sq * 0.05)
     elif kind == "big":
         add(fx, w["start"] - 0.01, boom(1.0, 2.6))
         add(fx, w["start"] - 0.01, boom(0.5, 2.6) * 0.0 + lp(rng.standard_normal(int(2.6 * SR)), 300) * env(int(2.6 * SR), 0.01, 1.6) * 0.15)
 
+# Motor y viento desde el primer cuadro (gancho en plena acción) y en la llegada a la patrulla
+for sid, dur, g in [("hook1", SHOT["hook2"] - SHOT["hook1"] + 0.25, 1.0), ("laVes", 1.3, 0.6)]:
+    n = int(dur * SR)
+    tt = np.arange(n) / SR
+    e = np.minimum(1, (n - np.arange(n)) / (0.25 * SR))
+    rumble = lp(rng.standard_normal(n), 140) * 2.2 + np.sin(2 * np.pi * (52 + 6 * tt) * tt) * 0.25
+    wind = bp(rng.standard_normal(n), 600, 3000) * 0.5
+    add(fx, SHOT[sid], (rumble + wind) * e * 0.05 * g)
+
 # Zumbido muy leve del láser mientras el haz está activo
-a, b = idx(W[45]["start"]), idx(SHOT["trescientos"])
+a, b = idx(W[48]["start"]), idx(SHOT["trescientos"])
 n = b - a
 hum = (np.sin(2 * np.pi * 220 * np.arange(n) / SR) * 0.5 + np.sin(2 * np.pi * 330 * np.arange(n) / SR) * 0.25)
 hum *= np.minimum(1, np.minimum(np.arange(n), n - np.arange(n)) / (0.3 * SR)) * 0.006

@@ -57,6 +57,8 @@ export type CarSpec = {
   laserSpotSize?: number;
   /** Solo proyecta la luz de los focos (cámara subjetiva dentro del auto). */
   hidden?: boolean;
+  /** Giro extra en Y (rad): p. ej. patrulla estacionada en diagonal en la berma. */
+  yaw?: number;
 };
 
 export type RadarSpec = {
@@ -113,6 +115,10 @@ export type WorldState = {
   studs?: number;
   /** Niebla en capas para las vistas aéreas (opacidad 0..1). */
   fogLayers?: number;
+  /** Sin luna (planos que miran hacia ella; el primer cuadro debe llevar la mirada a la acción). */
+  hideMoon?: boolean;
+  /** Puntos de luz sueltos (punto láser sobre el asfalto, lente de la cámara de la pistola). */
+  dots?: { at: V3; size: number; color: string; opacity: number }[];
 };
 
 /** Punta de la pistola en coordenadas de mundo. */
@@ -213,7 +219,7 @@ const Car: React.FC<{ spec: CarSpec }> = ({ spec }) => {
   const brake = spec.brake ?? 0;
   mats.tail.color.setRGB(0.35 + 0.65 * brake, 0.03, 0.05);
 
-  const rotY = spec.facing === -1 ? 0 : Math.PI;
+  const rotY = (spec.facing === -1 ? 0 : Math.PI) + (spec.yaw ?? 0);
   const world = new THREE.Vector3(spec.x, 0.7, spec.z);
   const target = useMemo(() => new THREE.Object3D(), []);
   const spotSize = spec.laserSpotSize ?? 0.9;
@@ -338,8 +344,8 @@ const Road: React.FC = () => {
   );
 };
 
-const Sky: React.FC<{ exposure: number }> = ({ exposure }) => {
-  const mat = useMemo(() => makeSkyMaterial(exposure), [exposure]);
+const Sky: React.FC<{ exposure: number; moon: boolean }> = ({ exposure, moon: showMoon }) => {
+  const mat = useMemo(() => makeSkyMaterial(exposure, showMoon), [exposure, showMoon]);
   const { cam } = useContext(Ctx);
   const moon = MOON_DIR.clone().multiplyScalar(13000).add(v3(cam.pos));
   return (
@@ -350,7 +356,7 @@ const Sky: React.FC<{ exposure: number }> = ({ exposure }) => {
       <points geometry={stars()} position={[cam.pos[0], 0, cam.pos[2]]} frustumCulled={false}>
         <pointsMaterial color="#d6e4ff" size={2.2} sizeAttenuation={false} transparent opacity={0.75} fog={false} depthWrite={false} />
       </points>
-      <sprite position={moon} scale={[420, 420, 1]} frustumCulled={false}>
+      <sprite position={moon} scale={[420, 420, 1]} frustumCulled={false} visible={showMoon}>
         <spriteMaterial map={glowTexture()} color="#dfe9ff" transparent opacity={0.95} fog={false} depthWrite={false} blending={THREE.AdditiveBlending} />
       </sprite>
     </>
@@ -443,7 +449,7 @@ const Marker: React.FC<{ spec: MarkerSpec }> = ({ spec }) => (
 
 const SpeedSign: React.FC<{ x: number; z: number }> = ({ x, z }) => {
   const mat = useMemo(
-    () => new THREE.MeshLambertMaterial({ map: speedSignTexture(), emissive: "#ffffff", emissiveMap: speedSignTexture(), emissiveIntensity: 0.55, side: THREE.DoubleSide }),
+    () => new THREE.MeshLambertMaterial({ map: speedSignTexture(), emissive: "#ffffff", emissiveMap: speedSignTexture(), emissiveIntensity: 0.55 }),
     [],
   );
   return (
@@ -453,6 +459,9 @@ const SpeedSign: React.FC<{ x: number; z: number }> = ({ x, z }) => {
         <meshLambertMaterial color="#8a9099" />
       </mesh>
       <mesh position={[0, 2.7, 0.06]} material={mat}>
+        <circleGeometry args={[0.85, 40]} />
+      </mesh>
+      <mesh position={[0, 2.7, 0.03]} rotation={[0, Math.PI, 0]} material={mat}>
         <circleGeometry args={[0.85, 40]} />
       </mesh>
     </group>
@@ -505,7 +514,7 @@ export const World: React.FC<{ state: WorldState }> = ({ state }) => {
   return (
     <Ctx.Provider value={{ cam: state.cam, minPx: state.lightMinPx ?? 0 }}>
       <CameraRig cam={state.cam} />
-      <Sky exposure={exposure} />
+      <Sky exposure={exposure} moon={!state.hideMoon} />
       <hemisphereLight args={["#5c82bd", "#0e1826", 1.25 * exposure]} />
       <directionalLight position={[MOON_DIR.x * 100, MOON_DIR.y * 100 + 40, MOON_DIR.z * 100]} color="#a9c2ff" intensity={1.1 * exposure} />
       {/* suelo subdividido y 15 cm bajo la calzada: un único triángulo gigante + búfer de profundidad
@@ -527,6 +536,11 @@ export const World: React.FC<{ state: WorldState }> = ({ state }) => {
       {state.fogLayers ? <FogLayers opacity={state.fogLayers} /> : null}
       {state.signs?.map((g) => <SpeedSign key={g.z} x={g.x} z={g.z} />)}
       {state.officer ? <Officer {...state.officer} /> : null}
+      {state.dots?.map((d, i) => (
+        <sprite key={`dot${i}`} position={d.at} scale={[d.size, d.size, 1]} renderOrder={6}>
+          <spriteMaterial map={glowTexture()} color={d.color} transparent opacity={d.opacity} blending={THREE.AdditiveBlending} depthWrite={false} fog={false} />
+        </sprite>
+      ))}
       {state.markers?.map((m) => <Marker key={m.z} spec={m} />)}
       {state.cars.map((c, i) => <Car key={`${c.kind}${i}`} spec={c} />)}
       {state.radar ? <Radar spec={state.radar} /> : null}

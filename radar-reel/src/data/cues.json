@@ -1,10 +1,10 @@
 {
-  "_comment": "Fuente única de sincronía. build_voice.py arma la locución con 'voice' y escribe words.json; Remotion y build_audio.py leen ambos. Planos y golpes se anclan a índices de palabra del guion final (0 = 'En').",
+  "_comment": "Fuente única de sincronía. build_voice.py arma la locución con 'voice' y escribe words.json; Remotion y build_audio.py leen ambos. Planos y golpes se anclan a índices de palabra del guion final (0 = 'Te'). Los segmentos con 'slot' ocupan un tiempo fijo (la toma se ajusta a ese hueco).",
   "fps": 30,
   "voice": {
-    "tempo": 1.07,
-    "leadIn": 0.06,
-    "tail": 0.5,
+    "tempo": 1.13,
+    "leadIn": 0.0,
+    "tail": 0.45,
     "pre": 0.05,
     "post": 0.1,
     "sources": {
@@ -19,20 +19,44 @@
         "words": "scripts/words_nuevas.json",
         "gainDb": -3.5,
         "_nota": "líneas nuevas del guion corregido (eleven_flash_v2_5, misma voz)"
+      },
+      "c": {
+        "file": "public/audio/voz_hook.mp3",
+        "words": "scripts/words_hook.json",
+        "gainDb": 0,
+        "_nota": "líneas nuevas v3 (gancho y 'Más adelante la ves…'). Si el archivo no existe, se usa un hueco de silencio del largo del slot (vista previa)."
       }
     },
     "segments": [
       {
-        "src": "a",
+        "src": "c",
         "from": 0,
-        "to": 18,
-        "gapAfter": 0.3
+        "to": 5,
+        "slot": 1.32
+      },
+      {
+        "src": "c",
+        "from": 6,
+        "to": 12,
+        "slot": 1.78
+      },
+      {
+        "src": "c",
+        "from": 13,
+        "to": 17,
+        "slot": 1.95
+      },
+      {
+        "src": "c",
+        "from": 18,
+        "to": 21,
+        "slot": 1.22
       },
       {
         "src": "a",
         "from": 19,
         "to": 29,
-        "gapAfter": 0.22,
+        "gapAfter": 0.16,
         "gainDb": -1.0
       },
       {
@@ -46,293 +70,356 @@
         "src": "a",
         "from": 31,
         "to": 37,
-        "gapAfter": 0.26,
+        "gapAfter": 0.18,
         "gainDb": 2.0
       },
       {
         "src": "b",
         "from": 5,
         "to": 18,
-        "gapAfter": 0.24,
+        "gapAfter": 0.18,
         "gainDb": 1.2
       },
       {
         "src": "a",
         "from": 48,
         "to": 52,
-        "gapAfter": 0.24,
+        "gapAfter": 0.18,
         "gainDb": -1.2
       },
       {
         "src": "a",
         "from": 53,
         "to": 59,
-        "gapAfter": 0.28
+        "gapAfter": 0.2
       },
       {
         "src": "a",
         "from": 60,
         "to": 65,
-        "gapAfter": 0.26,
+        "gapAfter": 0.18,
         "gainDb": 1.6
       },
       {
         "src": "a",
         "from": 66,
         "to": 75,
-        "gapAfter": 0.65
+        "gapAfter": 0.5
       },
       {
         "src": "a",
         "from": 76,
         "to": 93,
-        "gapAfter": 0.26,
+        "gapAfter": 0.18,
         "gainDb": -0.8
       },
       {
         "src": "a",
         "from": 94,
         "to": 99,
-        "gapAfter": 0.45
+        "gapAfter": 0.32
       },
       {
         "src": "a",
         "from": 100,
         "to": 103,
-        "gapAfter": 0.18,
+        "gapAfter": 0.12,
         "gainDb": -2.5
       },
       {
         "src": "b",
         "from": 19,
+        "to": 23,
+        "gapAfter": 0.14,
+        "gainDb": 0.3
+      },
+      {
+        "src": "b",
+        "from": 24,
+        "to": 38,
+        "gapAfter": 0.16,
+        "gainDb": 0.3
+      },
+      {
+        "src": "b",
+        "from": 39,
         "to": 44,
         "gapAfter": 0,
         "gainDb": 0.3
       }
-    ]
+    ],
+    "placeholderText": {
+      "c": [
+        "Te",
+        "acabas",
+        "de",
+        "ganar",
+        "un",
+        "parte.",
+        "Y",
+        "la",
+        "patrulla",
+        "está",
+        "en",
+        "esta",
+        "imagen.",
+        "Más",
+        "adelante",
+        "la",
+        "ves.",
+        "Frenas.",
+        "Pero",
+        "ya",
+        "era",
+        "tarde."
+      ]
+    }
   },
   "maxShotSeconds": 2.5,
   "shots": [
     {
-      "id": "gancho",
+      "id": "hook1",
       "word": 0
     },
     {
-      "id": "limite",
+      "id": "hook2",
       "word": 6
     },
     {
       "id": "laVes",
-      "word": 12
+      "word": 13
     },
     {
-      "id": "justoATiempo",
-      "word": 15
+      "id": "tarde",
+      "word": 18
     },
     {
       "id": "radarLanza",
-      "word": 19
+      "word": 22
     },
     {
       "id": "radarAncha",
-      "word": 24
+      "word": 27
     },
     {
       "id": "radarMedir",
-      "word": 30
+      "word": 33
     },
     {
       "id": "radarFrente",
-      "word": 35
+      "word": 38
     },
     {
       "id": "laserPistola",
-      "word": 42
+      "word": 45
     },
     {
       "id": "laserPuerta",
-      "word": 49
+      "word": 52
     },
     {
       "id": "laserTuyo",
-      "word": 56
+      "word": 59
     },
     {
       "id": "medioSegundo",
-      "word": 61
+      "word": 64
     },
     {
       "id": "desdeDistancia",
-      "word": 68
-    },
-    {
-      "id": "piensaNumero",
       "word": 71
     },
     {
-      "id": "trescientos",
+      "id": "piensaNumero",
       "word": 74
     },
     {
-      "id": "mas1",
-      "word": 76
-    },
-    {
-      "id": "kilometro",
+      "id": "trescientos",
       "word": 77
     },
     {
-      "id": "mas2",
+      "id": "mas1",
       "word": 79
     },
     {
-      "id": "tresKm",
+      "id": "kilometro",
+      "word": 80
+    },
+    {
+      "id": "mas2",
       "word": 82
     },
     {
+      "id": "tresKm",
+      "word": 85
+    },
+    {
       "id": "niUnPunto",
-      "word": 84
+      "word": 87
     },
     {
       "id": "cientoCuarenta",
-      "word": 92
+      "word": 95
     },
     {
       "id": "unMinuto",
-      "word": 96
+      "word": 99
     },
     {
       "id": "cuandoLaVes",
-      "word": 102
-    },
-    {
-      "id": "yaTeMidieron",
       "word": 105
     },
     {
-      "id": "detalle",
+      "id": "yaTeMidieron",
       "word": 108
     },
     {
+      "id": "detalle",
+      "word": 111
+    },
+    {
       "id": "teMide",
-      "word": 112
+      "word": 115
     },
     {
       "id": "patenteFoto",
-      "word": 117
+      "word": 120
+    },
+    {
+      "id": "patenteFoto2",
+      "word": 125
     },
     {
       "id": "necesita",
-      "word": 126
+      "word": 129
     },
     {
       "id": "doscientos",
-      "word": 130
+      "word": 133
     },
     {
       "id": "entonces",
-      "word": 132
+      "word": 135
     },
     {
       "id": "pillaron",
-      "word": 133
+      "word": 136
     }
   ],
   "hits": [
     {
-      "word": 18,
-      "kind": "hit",
-      "gain": 0.35
+      "word": 0,
+      "kind": "hookLock"
     },
     {
-      "word": 20,
-      "kind": "ping"
+      "word": 17,
+      "kind": "brake"
     },
     {
-      "word": 45,
-      "kind": "laser"
-    },
-    {
-      "word": 67,
-      "kind": "lock"
-    },
-    {
-      "word": 76,
-      "kind": "hit",
-      "gain": 0.7
-    },
-    {
-      "word": 79,
-      "kind": "hit",
-      "gain": 0.85
-    },
-    {
-      "word": 82,
-      "kind": "big"
-    },
-    {
-      "word": 91,
+      "word": 21,
       "kind": "hit",
       "gain": 0.45
     },
     {
-      "word": 105,
+      "word": 23,
+      "kind": "ping"
+    },
+    {
+      "word": 48,
+      "kind": "laser"
+    },
+    {
+      "word": 70,
+      "kind": "lock"
+    },
+    {
+      "word": 79,
+      "kind": "hit",
+      "gain": 0.7
+    },
+    {
+      "word": 82,
+      "kind": "hit",
+      "gain": 0.85
+    },
+    {
+      "word": 85,
       "kind": "big"
     },
     {
-      "word": 113,
+      "word": 94,
+      "kind": "hit",
+      "gain": 0.45
+    },
+    {
+      "word": 108,
+      "kind": "big"
+    },
+    {
+      "word": 116,
       "kind": "hit",
       "gain": 0.5
     },
     {
-      "word": 130,
+      "word": 133,
       "kind": "hit",
       "gain": 0.9
     },
     {
-      "word": 135,
+      "word": 138,
       "kind": "hit",
       "gain": 0.5
     }
   ],
   "highlights": {
-    "5": "key",
-    "10": "key",
-    "11": "key",
+    "5": "red",
+    "8": "key",
+    "12": "key",
     "14": "key",
-    "18": "key",
-    "20": "blue",
-    "25": "blue",
-    "29": "blue",
-    "37": "blue",
-    "41": "blue",
-    "44": "red",
-    "45": "red",
-    "55": "red",
-    "60": "red",
-    "66": "key",
-    "67": "key",
-    "73": "key",
-    "74": "key",
-    "75": "key",
+    "17": "key",
+    "21": "red",
+    "23": "blue",
+    "28": "blue",
+    "32": "blue",
+    "40": "blue",
+    "44": "blue",
+    "47": "red",
+    "48": "red",
+    "58": "red",
+    "63": "red",
+    "69": "key",
+    "70": "key",
     "76": "key",
+    "77": "key",
     "78": "key",
     "79": "key",
+    "81": "key",
     "82": "key",
-    "83": "key",
-    "91": "key",
-    "99": "key",
-    "105": "red",
-    "106": "red",
-    "107": "red",
-    "111": "key",
-    "115": "red",
-    "116": "red",
-    "121": "key",
-    "125": "key",
-    "130": "key",
-    "131": "key",
-    "135": "key",
-    "137": "key"
-  }
+    "85": "key",
+    "86": "key",
+    "94": "key",
+    "102": "key",
+    "108": "red",
+    "109": "red",
+    "110": "red",
+    "114": "key",
+    "118": "red",
+    "119": "red",
+    "124": "key",
+    "128": "key",
+    "133": "key",
+    "134": "key",
+    "138": "key",
+    "140": "key"
+  },
+  "captionBlocks": [
+    [
+      0,
+      5
+    ],
+    [
+      6,
+      12
+    ]
+  ]
 }

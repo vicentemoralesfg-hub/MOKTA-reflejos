@@ -485,7 +485,7 @@ export const makeCurtainMaterial = () =>
 export const MOON_DIR = new THREE.Vector3(-0.42, 0.3, 0.86).normalize();
 /** Resplandor tenue sobre el horizonte, hacia donde va la carretera (lleva la mirada al punto de fuga). */
 export const GLOW_DIR = new THREE.Vector3(0, 0.02, -1).normalize();
-export const makeSkyMaterial = (exposure: number) =>
+export const makeSkyMaterial = (exposure: number, moon = true) =>
   new THREE.ShaderMaterial({
     uniforms: {
       uZenith: { value: new THREE.Color(PAL.skyZenith) },
@@ -494,12 +494,13 @@ export const makeSkyMaterial = (exposure: number) =>
       uMoon: { value: MOON_DIR },
       uGlow: { value: GLOW_DIR },
       uExposure: { value: exposure },
+      uMoonOn: { value: moon ? 1 : 0 },
     },
     vertexShader: /* glsl */ `
       varying vec3 vDir;
       void main(){ vDir = normalize(position); vec4 p = projectionMatrix * modelViewMatrix * vec4(position,1.0); gl_Position = p.xyww; }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uZenith; uniform vec3 uMid; uniform vec3 uHorizon; uniform vec3 uMoon; uniform vec3 uGlow; uniform float uExposure;
+      uniform vec3 uZenith; uniform vec3 uMid; uniform vec3 uHorizon; uniform vec3 uMoon; uniform vec3 uGlow; uniform float uExposure; uniform float uMoonOn;
       varying vec3 vDir;
       void main(){
         vec3 d = normalize(vDir);
@@ -507,7 +508,7 @@ export const makeSkyMaterial = (exposure: number) =>
         vec3 c = mix(uHorizon, uMid, smoothstep(0.0, 0.16, h));
         c = mix(c, uZenith, smoothstep(0.14, 0.75, h));
         float m = max(dot(d, uMoon), 0.0);
-        c += vec3(0.55, 0.65, 0.85) * (pow(m, 900.0) * 1.4 + pow(m, 60.0) * 0.22 + pow(m, 8.0) * 0.07);
+        c += vec3(0.55, 0.65, 0.85) * (pow(m, 900.0) * 1.4 + pow(m, 60.0) * 0.22 + pow(m, 8.0) * 0.07) * uMoonOn;
         float gl = max(dot(d, uGlow), 0.0);
         c += vec3(0.30, 0.42, 0.62) * pow(gl, 30.0) * (1.0 - smoothstep(0.0, 0.25, h)) * 0.55;
         if (d.y < 0.0) c = uHorizon;

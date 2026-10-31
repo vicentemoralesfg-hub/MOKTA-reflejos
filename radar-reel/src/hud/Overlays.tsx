@@ -238,3 +238,85 @@ export const Viewfinder: React.FC<{ x0: number; y0: number; x1: number; y1: numb
     </svg>
   );
 };
+
+/** Líneas de velocidad: trazos en la periferia que apuntan al punto de fuga y corren hacia afuera. */
+export const SpeedLines: React.FC<{ x: number; y: number; intensity: number; frame: number }> = ({ x, y, intensity, frame }) => {
+  const lines = Array.from({ length: 56 }, (_, i) => {
+    const h = (n: number) => {
+      const v = Math.sin((i + 1) * 91.3 + n * 17.7) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    // ángulos hacia los costados (±55° de la horizontal), nunca verticales
+    const side = i % 2 === 0 ? 0 : Math.PI;
+    const ang = side + (h(1) - 0.5) * 1.9;
+    const speed = 0.8 + h(2) * 0.9;
+    const phase = (h(3) + frame * 0.09 * speed) % 1;
+    const r0 = 430 + phase * 900;
+    const len = 160 + 380 * phase;
+    const cx = Math.cos(ang);
+    const cy = Math.sin(ang);
+    return { x1: x + cx * r0, y1: y + cy * r0, x2: x + cx * (r0 + len), y2: y + cy * (r0 + len), o: Math.sin(phase * Math.PI) * (0.3 + 0.5 * h(4)), w: 3 + 6 * h(5) };
+  });
+  return (
+    <svg width={1080} height={1920} style={{ position: "absolute", inset: 0, opacity: intensity, mixBlendMode: "screen" }}>
+      {lines.map((l, i) => (
+        <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="#e6eeff" strokeOpacity={l.o} strokeWidth={l.w} strokeLinecap="round" />
+      ))}
+    </svg>
+  );
+};
+
+/** La "foto" de la pistola: marco blanco ladeado, destello de cámara y sello. */
+export const Photo: React.FC<{ opacity: number; flash: number; stamp: string; stampK: number }> = ({ opacity, flash, stamp, stampK }) => (
+  <>
+    <div
+      style={{
+        position: "absolute",
+        left: 70,
+        top: 330,
+        width: 940,
+        height: 1180,
+        border: "26px solid #f2f2ee",
+        borderBottomWidth: 110,
+        borderRadius: 6,
+        boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
+        rotate: "-3deg",
+        opacity,
+        boxSizing: "border-box",
+      }}
+    />
+    {stampK > 0 ? (
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 800,
+          display: "flex",
+          justifyContent: "center",
+          opacity: stampK,
+        }}
+      >
+        <div
+          style={{
+            rotate: "-12deg",
+            scale: String(1.25 - 0.25 * stampK),
+            padding: "10px 36px",
+            border: `8px solid ${C.red}`,
+            borderRadius: 18,
+            color: C.red,
+            fontFamily: FONT_DISPLAY,
+            fontWeight: 800,
+            fontSize: 130,
+            letterSpacing: 6,
+            background: "rgba(20,4,8,0.55)",
+            textShadow: "0 0 20px rgba(255,59,78,0.5)",
+          }}
+        >
+          {stamp}
+        </div>
+      </div>
+    ) : null}
+    {flash > 0 ? <div style={{ position: "absolute", inset: 0, background: `rgba(255,255,255,${flash})` }} /> : null}
+  </>
+);

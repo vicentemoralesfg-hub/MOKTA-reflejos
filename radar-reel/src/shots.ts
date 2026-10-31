@@ -22,10 +22,13 @@ export type ShotFrame = {
   screenPills?: PillSpec[];
   speed?: number | null;
   speedBig?: boolean;
-  ring?: { at: V3; r: number; opacity: number; label?: string; sub?: string };
+  ring?: { at: V3; r: number; opacity: number; label?: string; sub?: string; color?: string };
   counter?: { value: string; sub?: string; color?: string; opacity: number; y?: number };
   card?: { title: string; sub?: string; opacity: number; scale?: number; y?: number };
   fx?: { flash?: number; tint?: number; vignette?: number; color?: "red" | "blue" };
+  /** Líneas de velocidad (desde un punto de fuga en pantalla). */
+  speedLines?: { x: number; y: number; intensity: number };
+  photo?: { opacity: number; flash: number; stamp: string; stampK: number };
   brackets?: Bracket[];
   viewfinder?: number;
 };
@@ -95,7 +98,7 @@ const AERIAL: Partial<WorldState> = { exposure: 1.9, fogLayers: 0.32, studs: 5, 
 const ganchoCam = (t: number, zoom = 0, aim = 0): CamSpec => {
   const z = -V * t;
   const base: V3 = [1.45, 1.3, z - 0.5];
-  const fwd: V3 = [1.45, 1.3 - 100 * 0.075, z - 100.5];
+  const fwd: V3 = [1.45, 1.3, z - 100.5];
   const patrolPt: V3 = [SHOULDER_X, 0.75, -FAR_M];
   return cam(base, mix3(fwd, patrolPt, aim), lerp(48 - 1.5 * t, 4.2, zoom));
 };
@@ -108,25 +111,81 @@ const ganchoWorld = (t: number, c: CamSpec): WorldState => ({
 });
 
 // ------------------------------------------------------------------ planos
-const gancho = (t: number): ShotFrame => ({
-  world: ganchoWorld(t, ganchoCam(t)),
-  screenPills: [{ text: "¿LA VES?", x: 540, y: 330, size: "xl", tone: "key", dot: false, scale: 1 + 0.015 * Math.sin(t * 3) }],
-});
+/** Patrulla estacionada en la berma, mirando en tu mismo sentido y algo en diagonal: se lee "detenida". */
+const parked = (z: number): CarSpec => ({ kind: "patrol", x: 5.0, z, facing: -1, yaw: -0.22, lights: false });
 
-const limite = (t: number, d: number): ShotFrame => {
-  const kmh = 112 + 28 * io(t, 0.1, d * 0.8);
-  const z = -(31 * t + 0.5 * 3.4 * t * t);
+const HOOK_LOCK = 0.14;
+const hook1 = (t: number): ShotFrame => {
+  // en plena acción: tu auto a 140, un punto láser recorre el asfalto y cae en tu auto → MEDIDO
+  const z = -V * t;
+  const land = eo(t, 0, HOOK_LOCK);
+  const front = heroFront(z);
+  const dotAt: V3 = mix3([HERO_X - 0.6, 0.05, z - 14], front, land);
+  const locked = t >= HOOK_LOCK;
+  const k = eo(t, HOOK_LOCK, HOOK_LOCK + 0.16);
+  const card = pop(t, HOOK_LOCK + 0.04);
   return {
     world: {
-      cam: cam([HERO_X - 1.5, 1.4, z + 8], [HERO_X + 1.0, 1.35, z - 26], 42),
-      cars: [hero(z)],
-      signs: [{ x: 4.9, z: -46 }],
-      fog: [70, 1800],
-      exposure: 1.25,
+      cam: cam([HERO_X + 2.5 - 0.6 * t, 1.3 + 0.25 * t, z - 8.6 + 2.6 * t], [HERO_X - 0.2, 0.7, z - 0.8], 46, 0.05 - 0.04 * t),
+      cars: [hero(z, { laserSpot: k, laserSpotSize: 0.95 })],
+      signs: [{ x: 4.9, z: 7 }],
+      laser: { from: [SHOULDER_X - 0.95, 1.32, z - 700], to: dotAt, grow: 1, radiusNear: 0.05, radiusFar: 0.05, opacity: 0.85, glowScale: 1.8 },
+      dots: locked ? [] : [{ at: dotAt, size: 1.6, color: "#ff2d3d", opacity: 1 }],
+      fog: [70, 1700],
+      exposure: 1.35,
+      studs: 3,
+      hideMoon: true,
+    },
+    speed: KMH,
+    speedBig: true,
+    speedLines: { x: 540, y: 980, intensity: 1 },
+    ring: { at: front, r: lerp(170, 64, k), opacity: locked ? 1 - 0.6 * clamp01((t - HOOK_LOCK - 0.4) / 0.4) : 0, color: "#ff3b4e" },
+    card: { title: "MEDIDO · 140 km/h", opacity: card.opacity, scale: card.scale, y: 420 },
+    fx: { flash: flashAt(t, HOOK_LOCK, 0.35, 0.25) },
+  };
+};
+
+const hook2 = (t: number): ShotFrame => ({
+  // el horizonte vacío, a la altura del centro de la pantalla
+  world: ganchoWorld(t, ganchoCam(t)),
+  screenPills: [{ text: "¿LA VES?", x: 540, y: 330, size: "xl", tone: "key", dot: false, scale: 1 + 0.02 * Math.sin(t * 4) }],
+  speed: KMH,
+});
+
+const laVes = (t: number): ShotFrame => {
+  // detrás de tu auto: la patrulla está DETENIDA adelante en la berma; tú llegas y frenas
+  const tb = 1.2;
+  const a = 7.5;
+  const z = t < tb ? -V * t : -(V * tb + V * (t - tb) - 0.5 * a * (t - tb) * (t - tb));
+  const v = t < tb ? V : V - a * (t - tb);
+  const brake = clamp01((t - tb) / 0.08);
+  return {
+    world: {
+      cam: cam([HERO_X - 1.0, 3.8, z + 10.5], [HERO_X + 1.5, 0.9, z - 34], 32, brake * Math.sin(t * 30) * 0.004),
+      cars: [hero(z, { brake }), parked(-90)],
+      signs: [{ x: 4.9, z: -30 }],
+      fog: [70, 1700],
+      exposure: 1.3,
       studs: 3,
     },
-    speed: kmh,
-    speedBig: true,
+    speed: v * 3.6,
+    pills: [{ at: [5.0, 1.8, -90], text: "PATRULLA", tone: "neutral", size: "story", leader: 70, ...pop(t, 0.45) }],
+  };
+};
+
+const tarde = (t: number): ShotFrame => {
+  // a ras del piso junto a la patrulla detenida: tu auto pasa frenando, demasiado tarde
+  const zh = 30 - 27 * t + 3 * t * t;
+  return {
+    world: {
+      cam: cam([3.2, 0.7, -9.5 + 0.3 * t], [2.6, 1.0, 30], 44),
+      cars: [parked(-1.5), hero(zh, { brake: 1 })],
+      fog: [70, 1700],
+      exposure: 1.3,
+      studs: 3,
+    },
+    speed: (27 - 6 * t) * 3.6,
+    fx: { tint: 0.25 * eo(t, 0.6, 1.0), vignette: 0.4 * eo(t, 0.6, 1.0) },
   };
 };
 
@@ -137,27 +196,12 @@ const povPatrol = (t: number, pz: number, closing: number, braking: boolean): Sh
   return {
     world: {
       cam: cam([HERO_X - 0.35, 1.25 - dip * 0.3, z - 0.6], [HERO_X + 2.2, 0.85 - dip, z - 22], 30),
-      cars: [hero(z, { hidden: true }), patrol(pz, 5.0)],
+      cars: [hero(z, { hidden: true }), parked(pz)],
       fog: [60, 1600],
       exposure: 1.2,
       studs: 3,
     },
     speed: braking ? 140 - 25 * clamp01((t - 0.3) / 1.2) : 140,
-  };
-};
-
-const justoATiempo = (t: number): ShotFrame => {
-  // desde atrás de la patrulla: tu auto llega frenando, la patrulla en silueta en primer plano
-  const zh = 72 - 29 * t + 3 * t * t;
-  return {
-    world: {
-      cam: cam([SHOULDER_X + 0.35, 2.75, -7.2 + 0.4 * t], [2.0, 0.7, 40], 40),
-      cars: [patrol(0), hero(zh, { brake: 1 })],
-      fog: [80, 1800],
-      exposure: 1.2,
-      studs: 3,
-    },
-    speed: 115 - 12 * clamp01(t / 2),
   };
 };
 
@@ -503,15 +547,23 @@ const yaTeMidieron = (t: number): ShotFrame => {
 };
 
 const detalle = (t: number, d: number): ShotFrame => {
-  const z = -V * t;
+  // el detalle: la pistola también es una cámara (la foto es la que necesita tu patente)
+  const zh = 600 - V * t;
+  const off = { x: SHOULDER_X + 1.25, z: 1.0, rotY: 0 };
+  const tgt = heroFront(zh);
+  off.rotY = Math.atan2(tgt[0] - off.x, tgt[2] - off.z);
+  const muzzle = officerMuzzle(off);
   const k = io(t, 0, d);
   return {
     world: {
-      cam: cam([HERO_X + 0.55 - 0.45 * k, 0.9 - 0.3 * k, z - 2.3 - 6.0 + 4.3 * k], [HERO_X, 0.5, z - 2.26], 32),
-      cars: [hero(z)],
-      fog: [60, 1500],
-      exposure: 1.2,
+      cam: cam(mix3([off.x - 0.9, 1.2, off.z + 3.6], [off.x - 0.7, 1.25, off.z + 3.0], k), [off.x + 0.1, 1.45, off.z], 38),
+      cars: [patrol(0), hero(zh)],
+      officer: off,
+      dots: [{ at: [muzzle[0], muzzle[1], muzzle[2] + 0.04], size: 0.5 + 0.12 * Math.sin(t * 14), color: "#e8f2ff", opacity: 1 }],
+      fog: [80, 1800],
+      exposure: 1.5,
     },
+    screenPills: [{ text: "CÁMARA", x: 540, y: 340, size: "story", tone: "key", ...pop(t, 0.1) }],
   };
 };
 
@@ -548,13 +600,17 @@ const tele = (dist: number, aspect: number, fill = 0.8): WorldState => {
 };
 
 const patenteFoto = (t: number): ShotFrame => ({
-  world: tele(FAR_M, 1080 / 1920, 1.2),
-  dpr: 0.032,
+  world: tele(FAR_M, 1080 / 1920, 0.55),
+  dpr: 0.03,
   viewfinder: 1,
-  screenPills: [
-    { text: "2,9 km", x: 540, y: 300, size: "story", tone: "red", ...pop(t, 0.05) },
-    { text: "PATENTE: ???", x: 540, y: 1500, size: "story", tone: "neutral", dot: false, ...pop(t, 0.35) },
-  ],
+  screenPills: [{ text: "2,9 km", x: 540, y: 300, size: "story", tone: "red", ...pop(t, 0.03) }],
+});
+
+const patenteFoto2 = (t: number): ShotFrame => ({
+  // la foto que saca la pistola a 2,9 km: el auto en bloques, ilegible
+  world: tele(FAR_M, 1080 / 1920, 0.9),
+  dpr: 0.024,
+  photo: { opacity: 1, flash: flashAt(t, 0, 0.9, 0.22), stamp: "ILEGIBLE", stampK: eo(t, 0.3, 0.45) },
 });
 
 const necesita = (t: number, d: number): ShotFrame => {
@@ -627,10 +683,10 @@ const pillaron = (t: number, d: number): ShotFrame => {
 };
 
 export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
-  gancho,
-  limite,
-  laVes: (t) => povPatrol(t, -44, 22, true),
-  justoATiempo,
+  hook1,
+  hook2,
+  laVes,
+  tarde,
   radarLanza,
   radarAncha,
   radarMedir,
@@ -654,6 +710,7 @@ export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
   detalle,
   teMide: (t, d) => teMide(t, d, "teMide"),
   patenteFoto,
+  patenteFoto2,
   necesita,
   doscientos,
   entonces,
