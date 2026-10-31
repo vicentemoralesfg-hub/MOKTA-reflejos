@@ -90,7 +90,7 @@ export const Shot: React.FC<{ id: ShotId }> = ({ id }) => {
   const s = SHOT_FNS[id](t, d);
   const camSpec = s.world.cam;
   // punch-in en cada corte: entra 5 % más cerca y se asienta en 0,3 s (todo el cuadro, el HUD sigue alineado)
-  const punch = 1 + 0.05 * Math.pow(1 - Math.min(1, t / 0.3), 3);
+  const punch = s.split ? 1 : 1 + 0.05 * Math.pow(1 - Math.min(1, t / 0.3), 3); // el plano partido no: recortaría sus píldoras
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0b1730" }}>
