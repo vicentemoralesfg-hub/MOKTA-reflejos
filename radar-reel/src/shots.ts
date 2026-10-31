@@ -1,26 +1,36 @@
-import { interpolate } from "remotion";
 import { EASE_IN_OUT, EASE_OUT } from "./lib/anim";
 import { ShotId, wordAt } from "./timeline";
+import { officerMuzzle } from "./world/World";
 import type { CamSpec, CarSpec, LaserSpec, MarkerSpec, RadarSpec, V3, WorldState } from "./world/World";
 import type { PillSpec } from "./hud/Pill";
 
 /**
  * Definición de cada plano: dado el segundo local t (y la duración d), devuelve
  * el estado del mundo 3D y los elementos HUD. Todo es función pura del tiempo.
+ * Regla de ritmo: ningún plano supera 2,5 s (lo valida timeline.ts) y nunca se repite
+ * el mismo tipo de encuadre en dos planos seguidos.
  */
 export type Anchor = Omit<PillSpec, "x" | "y"> & { at: V3; lift?: number };
+export type Bracket = { a: V3; b: V3; opacity: number; color?: string };
 export type ShotFrame = {
   world: WorldState;
+  /** Resolución interna del 3D (<1 = pixelado, como un zoom digital extremo). */
+  dpr?: number;
+  /** Visor partido: arriba y abajo, cada mitad con su propio mundo y resolución. */
+  split?: { top: WorldState; bottom: WorldState; topDpr: number; bottomDpr: number };
   pills?: Anchor[];
   screenPills?: PillSpec[];
   speed?: number | null;
-  ring?: { at: V3; r: number; opacity: number; label?: string };
-  reticle?: { at: V3; w: number; h: number; opacity: number };
+  speedBig?: boolean;
+  ring?: { at: V3; r: number; opacity: number; label?: string; sub?: string };
   counter?: { value: string; sub?: string; color?: string; opacity: number; y?: number };
-  plates?: { far: number; near: number; split: number };
+  card?: { title: string; sub?: string; opacity: number; scale?: number; y?: number };
+  fx?: { flash?: number; tint?: number; vignette?: number; color?: "red" | "blue" };
+  brackets?: Bracket[];
+  viewfinder?: number;
 };
 
-// ------------------------------------------------------------------ constantes físicas
+// ------------------------------------------------------------------ constantes
 export const KMH = 140;
 export const V = KMH / 3.6; // 38,9 m/s
 const HERO_X = 1.75;
@@ -31,19 +41,29 @@ export const FAR_M = 2900;
 /** Divergencia: ≈1 m de ancho a 300 m. */
 const BEAM_SLOPE = 1 / 300;
 
+const RED = "#ff4d5e";
+const YELLOW = "#ffd23f";
+
 // ------------------------------------------------------------------ utilidades
 const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const mix3 = (a: V3, b: V3, k: number): V3 => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
 const io = (t: number, a: number, b: number) => EASE_IN_OUT(clamp01((t - a) / (b - a)));
 const eo = (t: number, a: number, b: number) => EASE_OUT(clamp01((t - a) / (b - a)));
-const fadeIn = (t: number, a: number, len = 0.18) => clamp01((t - a) / len);
+const fadeIn = (t: number, a: number, len = 0.15) => clamp01((t - a) / len);
+/** Destello que arranca en el corte y se apaga en `len` segundos. */
+const flashAt = (t: number, a: number, peak: number, len = 0.35) => (t < a ? 0 : peak * Math.pow(1 - clamp01((t - a) / len), 2));
+/** Píldora que entra con un pequeño rebote. */
+const pop = (t: number, a: number) => {
+  const k = eo(t, a - 0.04, a + 0.22);
+  return { opacity: k, scale: lerp(0.75, 1, k) + Math.sin(clamp01((t - a) / 0.3) * Math.PI) * 0.06 };
+};
 
 const hero = (z: number, extra: Partial<CarSpec> = {}): CarSpec => ({ kind: "hero", x: HERO_X, z, facing: -1, beam: true, ...extra });
 const patrol = (z: number, x = SHOULDER_X, extra: Partial<CarSpec> = {}): CarSpec => ({ kind: "patrol", x, z, facing: 1, lights: false, ...extra });
-const traffic = (x: number, z: number, facing: -1 | 1, color: string): CarSpec => ({ kind: "traffic", x, z, facing, color });
+const traffic = (x: number, z: number, facing: -1 | 1, color = "#4b5361"): CarSpec => ({ kind: "traffic", x, z, facing, color });
 
-/** Punto donde la pistola del agente apunta desde la patrulla estacionada en (SHOULDER_X, 0, pz). */
+/** Punto desde donde apunta la pistola cuando el agente está dentro de la patrulla estacionada en (SHOULDER_X, 0, pz). */
 const emitter = (pz: number): V3 => [SHOULDER_X - 0.95, 1.32, pz + 0.55];
 const heroFront = (z: number): V3 => [HERO_X, 0.58, z - 2.3];
 
@@ -52,7 +72,7 @@ const beam = (from: V3, to: V3, extra: Partial<LaserSpec> = {}): LaserSpec => {
   return { from, to, grow: 1, radiusNear: 0.03, radiusFar: Math.max(0.03, (d * BEAM_SLOPE) / 2), opacity: 1, ...extra };
 };
 
-/** Intensidad del frente de onda del radar sobre un auto (0..1). */
+/** Intensidad del frente de onda del radar sobre un punto (0..1). */
 const waveOn = (r: RadarSpec, x: number, z: number) => {
   const dx = x - r.origin[0];
   const dz = (z - r.origin[2]) * r.facing;
@@ -64,153 +84,243 @@ const waveOn = (r: RadarSpec, x: number, z: number) => {
   for (let f = r.head; f > 0; f -= r.spacing) best = Math.max(best, Math.exp(-Math.pow((f - dist) / 9, 2)));
   return best * r.opacity;
 };
+const withWave = (r: RadarSpec, cars: CarSpec[]) => cars.map((c) => (c.kind === "patrol" ? c : { ...c, wave: waveOn(r, c.x, c.z) }));
 
 const cam = (pos: V3, target: V3, fov: number, roll = 0, up?: V3): CamSpec => ({ pos, target, fov, roll, up });
 
-// ------------------------------------------------------------------ planos
+/** Ajustes comunes de las vistas aéreas: más luz, niebla en capas, tachas y luces visibles. */
+const AERIAL: Partial<WorldState> = { exposure: 1.9, fogLayers: 0.32, studs: 5, lightMinPx: 54, roadGlow: 0.18 };
+
+// ------------------------------------------------------------------ gancho / respuesta
 const ganchoCam = (t: number, zoom = 0, aim = 0): CamSpec => {
   const z = -V * t;
   const base: V3 = [1.45, 1.3, z - 0.5];
   const fwd: V3 = [1.45, 1.3 - 100 * 0.075, z - 100.5];
   const patrolPt: V3 = [SHOULDER_X, 0.75, -FAR_M];
-  return cam(base, mix3(fwd, patrolPt, aim), lerp(48 - 2.5 * t, 5.5, zoom));
+  return cam(base, mix3(fwd, patrolPt, aim), lerp(48 - 1.5 * t, 4.2, zoom));
 };
-const GANCHO_WORLD = (t: number, c: CamSpec): WorldState => ({
+const ganchoWorld = (t: number, c: CamSpec): WorldState => ({
   cam: c,
   cars: [hero(-V * t + 1.2, { hidden: true }), patrol(-FAR_M)],
   fog: [90, 2300],
-  exposure: 1.5,
+  exposure: 1.55,
+  studs: 3,
 });
 
-const laVesState = (t: number, id: ShotId, pz: number): ShotFrame => {
-  const a = 4.6;
-  const vMin = 110 / 3.6;
-  const tStop = (V - vMin) / a;
-  const tb = Math.min(t, tStop);
-  const dist = V * tb - 0.5 * a * tb * tb + Math.max(0, t - tStop) * vMin;
-  const v = t < tStop ? V - a * t : vMin;
-  const z = -dist;
-  const brake = clamp01((t - 0.2) / 0.12);
-  const frame: ShotFrame = {
-    world: {
-      cam: cam([HERO_X - 1.2, 2.05, z + 7.4 + 0.25 * t], [HERO_X + 1.7, 0.95, z - 36], 40),
-      cars: [hero(z, { brake }), patrol(pz)],
-      fog: [70, 1600],
-      exposure: 1.1,
-    },
-    speed: v * 3.6,
-  };
-  if (id === "yaTeMidieron") {
-    const w = wordAt(id, 97);
-    const k = eo(t, w - 0.05, w + 0.3);
-    frame.pills = [
-      { at: [SHOULDER_X, 1.6, pz], lift: 140, text: "MEDIDO · 140 km/h · hace 1 min", tone: "red", size: "md", opacity: k, scale: lerp(0.85, 1, k), leader: 120 },
-    ];
-  }
-  return frame;
-};
+// ------------------------------------------------------------------ planos
+const gancho = (t: number): ShotFrame => ({
+  world: ganchoWorld(t, ganchoCam(t)),
+  screenPills: [{ text: "¿LA VES?", x: 540, y: 330, size: "xl", tone: "key", dot: false, scale: 1 + 0.015 * Math.sin(t * 3) }],
+});
 
-const radarOnda = (t: number): ShotFrame => {
-  const radar: RadarSpec = { origin: [SHOULDER_X - 0.4, 0.9, 2.5], facing: 1, head: 20 + 95 * t, halfAngleDeg: 6.5, range: 430, spacing: 105, opacity: clamp01(t / 0.25) };
-  const cars: CarSpec[] = [
-    patrol(0),
-    hero(235 - V * t),
-    traffic(HERO_X, 130 - 33 * t, -1, "#6b7480"),
-    traffic(HERO_X, 345 - 36 * t, -1, "#41506a"),
-    traffic(LEFT_X, 60 + 29 * t, 1, "#7a3b3b"),
-    traffic(LEFT_X, 190 + 31 * t, 1, "#5a6372"),
-  ].map((c) => (c.kind === "patrol" ? c : { ...c, wave: waveOn(radar, c.x, c.z) }));
-  const k = io(t, 0, 3.6);
+const limite = (t: number, d: number): ShotFrame => {
+  const kmh = 112 + 28 * io(t, 0.1, d * 0.8);
+  const z = -(31 * t + 0.5 * 3.4 * t * t);
   return {
     world: {
-      cam: cam(mix3([-22, 48, -58], [-36, 92, -84], k), mix3([6, 0, 140], [6, 0, 185], k), 48),
-      cars,
-      radar,
-      fog: [200, 2600],
-      exposure: 1.1,
-      lightMinPx: 7,
+      cam: cam([HERO_X - 1.5, 1.4, z + 8], [HERO_X + 1.0, 1.35, z - 26], 42),
+      cars: [hero(z)],
+      signs: [{ x: 4.9, z: -46 }],
+      fog: [70, 1800],
+      exposure: 1.25,
+      studs: 3,
     },
-    pills: [{ at: [SHOULDER_X, 1.9, 0], lift: 90, text: "RADAR", tone: "blue", size: "sm", leader: 70, opacity: fadeIn(t, 0.15) }],
+    speed: kmh,
+    speedBig: true,
+  };
+};
+
+/** Conductor: la patrulla aparece grande en la berma, iluminada por tus focos. */
+const povPatrol = (t: number, pz: number, closing: number, braking: boolean): ShotFrame => {
+  const z = -(closing * t - (braking ? 2.4 : 0) * t * t);
+  const dip = braking ? Math.sin(clamp01((t - 0.3) / 0.6) * Math.PI) * 0.12 : 0;
+  return {
+    world: {
+      cam: cam([HERO_X - 0.35, 1.25 - dip * 0.3, z - 0.6], [HERO_X + 2.2, 0.85 - dip, z - 22], 30),
+      cars: [hero(z, { hidden: true }), patrol(pz, 5.0)],
+      fog: [60, 1600],
+      exposure: 1.2,
+      studs: 3,
+    },
+    speed: braking ? 140 - 25 * clamp01((t - 0.3) / 1.2) : 140,
+  };
+};
+
+const justoATiempo = (t: number): ShotFrame => {
+  // desde atrás de la patrulla: tu auto llega frenando, la patrulla en silueta en primer plano
+  const zh = 72 - 29 * t + 3 * t * t;
+  return {
+    world: {
+      cam: cam([SHOULDER_X + 0.35, 2.75, -7.2 + 0.4 * t], [2.0, 0.7, 40], 40),
+      cars: [patrol(0), hero(zh, { brake: 1 })],
+      fog: [80, 1800],
+      exposure: 1.2,
+      studs: 3,
+    },
+    speed: 115 - 12 * clamp01(t / 2),
+  };
+};
+
+const radarSpec = (origin: V3, head: number, opacity: number, facing: 1 | -1 = 1): RadarSpec => ({
+  origin,
+  facing,
+  head,
+  halfAngleDeg: 11,
+  range: 300,
+  spacing: 48,
+  opacity,
+});
+
+const radarLanza = (t: number): ShotFrame => {
+  const radar = radarSpec([SHOULDER_X - 0.3, 0.9, 2.4], 8 + 110 * t, clamp01(t / 0.15));
+  return {
+    world: {
+      cam: cam([SHOULDER_X - 3.4, 1.0, -3.2 + 0.5 * t], [3.2, 1.6, 40], 46),
+      cars: withWave(radar, [patrol(0), hero(150 - V * t), traffic(HERO_X, 95 - 33 * t, -1)]),
+      radar,
+      fog: [80, 1800],
+      exposure: 1.25,
+      studs: 3,
+    },
+    screenPills: [{ text: "RADAR", x: 540, y: 340, size: "story", tone: "blue", ...pop(t, 0.12) }],
+  };
+};
+
+const radarAncha = (t: number, d: number): ShotFrame => {
+  const radar = radarSpec([SHOULDER_X - 0.3, 0.9, 2.4], 40 + 120 * t, 1);
+  const k = io(t, 0, d);
+  return {
+    world: {
+      cam: cam(mix3([-26, 68, -62], [-32, 80, -70], k), [4, 0, 115], 48),
+      cars: withWave(radar, [
+        patrol(0),
+        hero(165 - V * t),
+        traffic(HERO_X, 92 - 33 * t, -1, "#6b7480"),
+        traffic(HERO_X, 240 - 36 * t, -1, "#41506a"),
+        traffic(LEFT_X, 58 + 29 * t, 1, "#7a3b3b"),
+        traffic(LEFT_X, 150 + 31 * t, 1, "#5a6372"),
+      ]),
+      radar,
+      fog: [250, 3000],
+      exposure: 1.6,
+      studs: 4,
+      lightMinPx: 10,
+      fogLayers: 0.15,
+    },
+  };
+};
+
+const radarMedir = (t: number): ShotFrame => {
+  // subjetiva: la onda azul de una patrulla que viene de frente te pasa por encima
+  const zh = -V * t;
+  const pz = -165 + 25 * t;
+  // ondas espaciadas: solo una o dos te cruzan en el plano (pulso suave, nunca un parpadeo)
+  const radar = { ...radarSpec([LEFT_X, 0.9, pz + 2.4], 60 + 85 * t, 1), spacing: 125, nearFade: 1 };
+  const camZ = zh - 0.5;
+  const dist = Math.hypot(1.45 - LEFT_X, camZ - (pz + 2.4));
+  let hitNow = 0;
+  for (let f = radar.head; f > 0; f -= radar.spacing) hitNow = Math.max(hitNow, Math.exp(-Math.pow((f - dist) / 22, 2)));
+  return {
+    world: {
+      cam: cam([1.45, 1.3, camZ], [1.2, 0.9, camZ - 100], 46),
+      cars: [hero(zh + 1.2, { hidden: true }), patrol(pz, LEFT_X)],
+      radar,
+      fog: [80, 1800],
+      exposure: 1.25,
+      studs: 3,
+    },
+    fx: { tint: hitNow * 0.5, color: "blue" },
+    speed: KMH,
   };
 };
 
 const radarFrente = (t: number): ShotFrame => {
   const pz = -25 + 25 * t;
-  const radar: RadarSpec = { origin: [LEFT_X, 0.9, pz + 2.5], facing: 1, head: 12 + 95 * t, halfAngleDeg: 6.5, range: 380, spacing: 105, opacity: clamp01(t / 0.2) };
-  const cars: CarSpec[] = [
-    patrol(pz, LEFT_X, { lights: false }),
-    hero(250 - V * t),
-    traffic(HERO_X, 150 - 33 * t, -1, "#6b7480"),
-    traffic(LEFT_X, pz - 60, 1, "#41506a"),
-  ].map((c) => (c.kind === "patrol" ? c : { ...c, wave: waveOn(radar, c.x, c.z) }));
+  const radar = radarSpec([LEFT_X, 0.9, pz + 2.4], 12 + 110 * t, clamp01(t / 0.15));
   return {
     world: {
       cam: cam([-3.2, 14, pz - 34 + 2 * t], [0.5, 0, pz + 40], 46),
-      cars,
+      cars: withWave(radar, [patrol(pz, LEFT_X), hero(110 - V * t), traffic(HERO_X, 60 - 33 * t, -1, "#6b7480"), traffic(LEFT_X, pz - 60, 1, "#41506a")]),
       radar,
       fog: [150, 2400],
-      exposure: 1.1,
-      lightMinPx: 7,
+      exposure: 1.45,
+      studs: 4,
+      lightMinPx: 8,
     },
-    pills: [{ at: [LEFT_X, 1.9, pz], lift: 90, text: "RADAR", tone: "blue", size: "sm", leader: 40, opacity: fadeIn(t, 0.1) }],
+    screenPills: [{ text: "RADAR", x: 540, y: 330, size: "story", tone: "blue", ...pop(t, 0.05) }],
   };
 };
 
-const laserEnciende = (t: number): ShotFrame => {
-  const z = 340 - V * t;
-  const g = eo(t, 0.4, 0.68);
-  const k = io(t, 0, 2);
+const laserPistola = (t: number, d: number, id: ShotId): ShotFrame => {
+  const zh = 320 - V * t;
+  const off = { x: SHOULDER_X + 1.25, z: 1.0, rotY: 0 };
+  const tgt = heroFront(zh);
+  off.rotY = Math.atan2(tgt[0] - off.x, tgt[2] - off.z);
+  const wl = wordAt(id, 45);
+  const g = eo(t, wl - 0.12, wl + 0.2);
+  const k = io(t, 0, d);
   return {
     world: {
-      cam: cam(mix3([3.1, 1.55, -1.8], [2.95, 1.48, -0.7], k), [2.2, 0.9, 120], 38),
-      cars: [patrol(0), hero(z, { laserSpot: g })],
-      laser: beam(emitter(0), heroFront(z), { grow: g, opacity: 1 }),
-      fog: [120, 2200],
-      exposure: 0.9,
-      lightMinPx: 6,
+      cam: cam(mix3([off.x + 0.75, 1.15, off.z - 3.4], [off.x + 0.6, 1.2, off.z - 2.6], k), [off.x - 1.4, 1.55, off.z + 30], 40),
+      cars: [patrol(0), hero(zh, { laserSpot: g })],
+      officer: off,
+      laser: beam(officerMuzzle(off), tgt, { grow: g }),
+      fog: [80, 1800],
+      exposure: 1.35,
+      studs: 3,
     },
-    pills: [{ at: [SHOULDER_X - 0.6, 1.6, 0.6], lift: 80, text: "LÁSER", tone: "red", size: "sm", leader: 60, opacity: fadeIn(t, 0.55) }],
+    screenPills: [{ text: "PISTOLA LÁSER", x: 540, y: 330, size: "story", tone: "red", ...pop(t, wl) }],
   };
 };
 
-const laserUnMetro = (t: number): ShotFrame => {
-  const z = 305 - V * t;
-  const k = io(t, 0, 1.6);
+const laserPuerta = (t: number): ShotFrame => {
+  // de costado: el rayo llega al frente de tu auto y mide lo mismo que la puerta (≈1 m)
+  const zh = 220 - V * t;
+  const bz = zh - 3.4;
+  const k = eo(t, 0.25, 0.6);
   return {
     world: {
-      cam: cam(mix3([-6, 13.5, z - 34], [-5.2, 11.5, z - 29], k), [1.6, 0.7, z + 4], 40),
+      cam: cam([HERO_X - 7.6, 2.2, zh - 5.0], [HERO_X - 0.1, 0.7, zh - 2.0], 50),
+      cars: [patrol(0), hero(zh, { laserSpot: 1, laserSpotSize: 0.6 })],
+      laser: { ...beam(emitter(0), heroFront(zh)), radiusFar: 0.5, glowScale: 1.12, opacity: 0.75 },
+      fog: [80, 1800],
+      exposure: 1.3,
+      studs: 3,
+    },
+    brackets: [
+      { a: [HERO_X - 0.95, 1.08, bz], b: [HERO_X - 0.95, 0.08, bz], opacity: k, color: RED },
+      { a: [HERO_X - 0.95, 0.18, zh - 0.95], b: [HERO_X - 0.95, 0.18, zh + 0.25], opacity: k, color: YELLOW },
+    ],
+    pills: [{ at: [HERO_X - 0.95, 1.08, bz], text: "≈ 1 m", tone: "red", size: "story", leader: 110, ...pop(t, 0.3) }],
+  };
+};
+
+const laserTuyo = (t: number, d: number): ShotFrame => {
+  const zh = 180 - V * t;
+  const k = io(t, 0, d);
+  return {
+    world: {
+      cam: cam(mix3([-17, 24, zh - 30], [-15, 21, zh - 27], k), [1, 0.4, zh + 6], 42),
       cars: [
         patrol(0),
-        hero(z, { laserSpot: 1, laserSpotSize: 1.0 }),
-        traffic(HERO_X, z + 26, -1, "#6b7480"),
-        traffic(LEFT_X, z - 14 + 28 * t, 1, "#7a3b3b"),
-        traffic(LEFT_X, z + 40 + 28 * t, 1, "#41506a"),
+        hero(zh, { laserSpot: 1, laserSpotSize: 1.1 }),
+        traffic(HERO_X, zh + 22, -1),
+        traffic(HERO_X, zh - 34, -1, "#3b4352"),
+        traffic(LEFT_X, zh - 8 + 28 * t, 1),
+        traffic(LEFT_X, zh + 36 + 28 * t, 1, "#3b4352"),
       ],
-      laser: beam(emitter(0), heroFront(z)),
+      laser: beam(emitter(0), heroFront(zh)),
       fog: [120, 2200],
-      exposure: 1.05,
+      exposure: 1.45,
+      studs: 4,
     },
-    pills: [{ at: [HERO_X, 0.9, z - 2.3], lift: 150, text: "≈1 m", tone: "red", size: "md", leader: 130, opacity: fadeIn(t, wordAt("laserUnMetro", 46) - 0.05) }],
+    pills: [{ at: [HERO_X, 1.6, zh], text: "TÚ", tone: "red", size: "story", leader: 90, ...pop(t, wordAt("laserTuyo", 60) - 0.1) }],
   };
 };
 
-const laserElTuyo = (t: number): ShotFrame => {
-  const z = 244 - V * t;
-  const k = io(t, 0, 2.2);
-  return {
-    world: {
-      cam: cam([HERO_X - 3.5 + 0.6 * k, 1.25 - 0.1 * k, z - 7.2 + 1.2 * k], [HERO_X, 0.72, z - 1.6], 38),
-      cars: [patrol(0), hero(z, { laserSpot: 1, laserSpotSize: 0.85 }), traffic(HERO_X, z + 30, -1, "#6b7480"), traffic(LEFT_X, z + 20 + 28 * t, 1, "#7a3b3b")],
-      laser: beam(emitter(0), heroFront(z), { radiusFar: 0.14, opacity: 0.9 }),
-      fog: [80, 1800],
-      exposure: 1.05,
-    },
-  };
-};
-
-const medioSegundo = (t: number): ShotFrame => {
+const medioSegundo = (t: number, id: ShotId): ShotFrame => {
   const z = 200 - V * t;
-  const t0 = 0.5;
+  const t0 = wordAt(id, 64) - 0.1;
   const el = clamp01((t - t0) / 0.4) * 0.4;
   const locked = t >= t0 + 0.42;
   return {
@@ -219,85 +329,102 @@ const medioSegundo = (t: number): ShotFrame => {
       cars: [patrol(0), hero(z, { laserSpot: 1, laserSpotSize: 0.75 }), traffic(LEFT_X, z - 70 + 28 * t, 1, "#41506a")],
       laser: beam(emitter(0), heroFront(z), { radiusFar: 0.09, opacity: 0.9 }),
       fog: [80, 1800],
-      exposure: 1.05,
+      exposure: 1.25,
+      studs: 3,
     },
     speed: KMH,
-    counter: { value: `${el.toFixed(2).replace(".", ",")} s`, color: locked ? "#FFD23F" : "#F4F7FB", opacity: fadeIn(t, 0.25, 0.15), y: 330 },
-    pills: [
-      { at: [HERO_X, 1.6, z - 0.4], lift: 120, text: "140 km/h ✓", tone: "red", size: "md", leader: 100, opacity: locked ? 1 : 0, scale: locked ? lerp(1.15, 1, eo(t, t0 + 0.42, t0 + 0.62)) : 1 },
-    ],
+    counter: { value: `${el.toFixed(2).replace(".", ",")} s`, color: locked ? YELLOW : "#F4F7FB", opacity: fadeIn(t, 0.05), y: 300 },
+    pills: [{ at: [HERO_X, 1.6, z - 0.4], text: "140 km/h", tone: "red", size: "story", leader: 70, ...(locked ? pop(t, t0 + 0.42) : { opacity: 0 }) }],
   };
 };
 
-const piensaNumero = (t: number, d: number): ShotFrame => {
+const desdeDistancia = (t: number): ShotFrame => {
+  // cenital sobre tu auto: el rayo sale hacia adelante y se pierde en la noche
   const z = -V * t;
-  const k = io(t, 0, d);
-  const w1 = wordAt("piensaNumero", 63);
-  const w2 = wordAt("piensaNumero", 65);
-  const bob = (ph: number) => Math.sin(t * 2.2 + ph) * 8;
-  const p1 = eo(t, w1 - 0.05, w1 + 0.25);
-  const p2 = eo(t, w2 - 0.1, w2 + 0.2);
   return {
     world: {
-      cam: cam([HERO_X + 0.3, 2.6, z + 8.2 - 1.2 * k], [2.3, 0.6, z - 90], 42),
-      cars: [hero(z, { laserSpot: 1, laserSpotSize: 0.7 })],
-      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, z - FAR_M], grow: 1, radiusNear: 0.1, radiusFar: 3.2, opacity: 1, fadeFar: 0.88 },
-      fog: [70, 1700],
-      exposure: 1.0,
+      cam: cam([HERO_X + 0.4, 30 - 2 * t, z + 9], [HERO_X, 0, z - 24], 44),
+      cars: [hero(z, { laserSpot: 1, laserSpotSize: 0.8 })],
+      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, z - FAR_M], grow: 1, radiusNear: 0.18, radiusFar: 4, opacity: 1, fadeFar: 0.9 },
+      fog: [80, 1500],
+      exposure: 1.4,
+      studs: 4,
+    },
+  };
+};
+
+const piensaNumero = (t: number, id: ShotId): ShotFrame => {
+  const z = -V * t;
+  const w1 = wordAt(id, 71);
+  const w2 = wordAt(id, 73);
+  const bob = (ph: number) => Math.sin(t * 2.2 + ph) * 8;
+  return {
+    world: {
+      cam: cam([-5.5, 17, z - 18 - 6 * t], [1.5, 0, z - 160], 44),
+      cars: [hero(z, { laserSpot: 1, laserSpotSize: 1.2 })],
+      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, z - FAR_M], grow: 1, radiusNear: 0.3, radiusFar: 5, opacity: 1, fadeFar: 0.85 },
+      fog: [120, 1600],
+      exposure: 1.5,
+      studs: 4,
+      lightMinPx: 8,
     },
     screenPills: [
-      { text: "¿300 m?", x: 330, y: 610 + bob(0), size: "lg", tone: "key", opacity: p1, scale: lerp(0.8, 1, p1), dot: false },
-      { text: "¿1 km?", x: 760, y: 520 + bob(1.7), size: "lg", tone: "key", opacity: p2, scale: lerp(0.8, 1, p2), dot: false },
+      { text: "¿300 m?", x: 300, y: 420 + bob(0), size: "story", tone: "key", dot: false, ...pop(t, w1) },
+      { text: "¿1 km?", x: 770, y: 600 + bob(1.7), size: "story", tone: "key", dot: false, ...pop(t, w2 - 0.05) },
     ],
   };
 };
 
-const flyOver = (t: number, d: number, id: "trescientos" | "kilometro"): ShotFrame => {
-  const near = id === "trescientos";
-  const mark = near ? 300 : 1000;
-  const masW = wordAt(id, near ? 68 : 71);
-  const z = -V * t - (near ? 0 : 80);
+/** Marcas de distancia: vuelo a ras sobre la carretera (pregunta) y plano nuevo en cada "Más". */
+const pregunta = (t: number, d: number, mark: number, label: string): ShotFrame => {
+  const near = mark < 500;
+  const z = -V * t;
   const k = io(t, 0, d);
-  const camPos: V3 = near ? mix3([-3.5, 7, z + 10], [-6, 30, -170], k) : mix3([-12, 45, -400], [-24, 115, -760], k);
-  const look: V3 = near ? mix3([1.5, 0, -330], [1.5, 0, -420], k) : mix3([1.5, 0, -1000], [1.5, 0, -1060], k);
-  const m = eo(t, masW - 0.08, masW + 0.18);
-  const markers: MarkerSpec[] = [{ z: -mark, opacity: 1, color: "#d8ecff", scale: near ? 1.6 : 4 }];
+  const camPos: V3 = near ? mix3([-3, 6, 8], [-5, 15, -150], k) : mix3([-14, 60, -690], [-18, 76, -800], k);
+  const look: V3 = near ? [1.5, 0, -330] : [1.5, 0, -1010];
   return {
     world: {
       cam: cam(camPos, look, near ? 50 : 52),
       cars: [hero(z, { laserSpot: 1 })],
-      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, -FAR_M], grow: 1, radiusNear: near ? 0.12 : 0.6, radiusFar: near ? 2.4 : 4.5, opacity: 1, fadeFar: near ? 0.75 : 0.55 },
-      markers,
-      fog: near ? [250, 3200] : [600, 4800],
-      exposure: 1.1,
-      lightMinPx: near ? 8 : 14,
+      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, -FAR_M], grow: 1, radiusNear: near ? 0.15 : 0.7, radiusFar: near ? 2.6 : 4.5, opacity: 1, fadeFar: 0.6 },
+      markers: [{ z: -mark, opacity: 1, color: "#d8ecff", scale: near ? 2 : 4.5 }],
+      fog: near ? [250, 3200] : [600, 5200],
+      ...AERIAL,
+      exposure: near ? 1.6 : 1.9,
     },
-    pills: [
-      {
-        at: [0, 0, -mark],
-        leader: near ? 170 : 200,
-        text: near ? "300 m" : "1 km",
-        size: "lg",
-        tone: "neutral",
-        strike: m,
-        stamp: "MÁS",
-        stampOpacity: m,
-        opacity: fadeIn(t, 0.05),
-      },
-    ],
+    pills: [{ at: [0, 0, -mark], text: label, size: "story", tone: "key", dot: false, leader: near ? 150 : 180, ...pop(t, 0.08) }],
+  };
+};
+
+const mas = (t: number, mark: number, label: string): ShotFrame => {
+  const near = mark < 500;
+  const z = -V * 0.9 - V * t;
+  const s = eo(t, 0.02, 0.2);
+  const camPos: V3 = near ? [-6.5, 6 + 2 * t, -mark + 22] : mix3([-6, 8, -mark + 12], [-34, 120, -mark + 60], eo(t, 0, 1.4));
+  const look: V3 = near ? [2, 1, -mark - 70] : mix3([1.5, 2, -mark - 80], [1.5, 0, -mark - 900], eo(t, 0, 1.4));
+  return {
+    world: {
+      cam: cam(camPos, look, near ? 44 : 48),
+      cars: [hero(z, { laserSpot: 1 })],
+      laser: { from: heroFront(z), to: [SHOULDER_X - 0.95, 1.32, -FAR_M], grow: 1, radiusNear: 0.4, radiusFar: 4, opacity: 1, fadeFar: 0.35 },
+      markers: [{ z: -mark, opacity: 1, color: "#d8ecff", scale: near ? 2 : 4.5 }],
+      fog: [400, 6000],
+      ...AERIAL,
+    },
+    screenPills: [{ text: label, x: 430, y: 360, size: "story", tone: "neutral", dot: false, strike: s, stamp: "MÁS", stampOpacity: s }],
+    fx: { flash: flashAt(t, 0, 0.35, 0.25) },
   };
 };
 
 /** Vista aérea alta y oblicua: la patrulla queda arriba (z = -FAR_M), tu auto abajo (z ≈ 0). */
 const mapCam = (k: number, from: V3, to: V3, fov: number, roll = 0): CamSpec => cam(mix3(from, to, k), [0, 0, -1000], fov, roll);
 
-const tresKm = (t: number, d: number): ShotFrame => {
-  // cámara lenta: todo avanza a 0,2× y la cámara baja flotando
+const tresKm = (t: number, d: number, id: ShotId): ShotFrame => {
+  // el reveal: única cámara lenta, destello y tinte rojo
   const slow = 0.2;
   const z = 40 - V * slow * t;
   const k = eo(t, 0, d);
-  const tw = wordAt("tresKm", 74);
-  const pk = eo(t, tw - 0.05, tw + 0.35);
+  const tw = wordAt(id, 82);
   const pulse = ((t * 0.3) % 1 + 1) % 1;
   return {
     world: {
@@ -305,45 +432,73 @@ const tresKm = (t: number, d: number): ShotFrame => {
       cars: [hero(z, { laserSpot: 1, laserSpotSize: 14 }), patrol(-FAR_M)],
       laser: { from: emitter(-FAR_M), to: heroFront(z), grow: 1, radiusNear: 4.5, radiusFar: 5, opacity: 1, pulse },
       fog: [3000, 14000],
-      exposure: 1.7,
-      lightMinPx: 54,
-      roadGlow: 0.16,
+      ...AERIAL,
+      exposure: 2.0,
+      hideHills: true,
     },
-    pills: [{ at: [0, 0, -FAR_M / 2], lift: 0, text: "2,9 km", size: "xl", tone: "key", opacity: pk, scale: lerp(0.7, 1, pk), dot: false }],
-    ring: { at: [SHOULDER_X, 0, -FAR_M], r: 30, opacity: Math.max(0.5, pk) },
+    pills: [{ at: [0, 0, -FAR_M / 2], lift: 0, text: "2,9 km", size: "xl", tone: "key", dot: false, ...pop(t, tw) }],
+    ring: { at: [SHOULDER_X, 0, -FAR_M], r: 34, opacity: Math.max(0.6, eo(t, tw, tw + 0.3)) },
+    fx: { flash: flashAt(t, 0, 0.9, 0.45), tint: 0.55, vignette: 0.9 },
   };
 };
 
-const niUnPunto = (t: number): ShotFrame => {
-  const zoom = io(t, 0.15, 1.35);
-  const c = ganchoCam(0, zoom, zoom);
-  const ringK = eo(t, 1.25, 1.6);
+const niUnPunto = (t: number, id: ShotId): ShotFrame => {
+  const zoom = io(t, 0.05, 0.95);
+  const ringT = wordAt(id, 91) - 0.15;
   return {
-    world: GANCHO_WORLD(0, c),
-    ring: { at: [SHOULDER_X, 0.75, -FAR_M], r: 70, opacity: ringK, label: "AQUÍ" },
+    world: ganchoWorld(0, ganchoCam(0, zoom, zoom)),
+    ring: { at: [SHOULDER_X, 0.75, -FAR_M], r: 130, opacity: eo(t, ringT, ringT + 0.2), label: "AQUÍ", sub: "2,9 km" },
+  };
+};
+
+const cientoCuarenta = (t: number): ShotFrame => {
+  const fast = V * 3.4;
+  const z = -fast * t;
+  return {
+    world: {
+      cam: cam([HERO_X - 0.5, 1.6, z + 8.6], [HERO_X + 0.4, 0.7, z - 12], 50, Math.sin(t * 1.3) * 0.01),
+      cars: [hero(z)],
+      fog: [70, 1700],
+      exposure: 1.25,
+      studs: 3,
+    },
+    speed: KMH,
   };
 };
 
 const unMinuto = (t: number, d: number): ShotFrame => {
-  const fast = V * 3.4;
+  const fast = V * 6;
   const z = -fast * t;
-  const k = clamp01(t / (d - 0.25));
-  const secs = Math.round(lerp(0, FAR_M / V, k));
-  const meters = Math.round(lerp(FAR_M, 0, k) / 10) * 10;
+  const k = clamp01(t / (d - 0.2));
+  const secs = Math.round(lerp(0, FAR_M / V, EASE_IN_OUT(k)));
+  const meters = Math.round(lerp(FAR_M, 0, EASE_IN_OUT(k)) / 10) * 10;
   return {
     world: {
-      cam: cam([HERO_X - 1.1, 1.45, z + 8.4], [HERO_X - 0.2, 0.75, z - 12], 50, Math.sin(t * 1.3) * 0.01),
+      cam: cam([HERO_X - 22, 46, z + 34], [HERO_X, 0, z - 26], 48),
       cars: [hero(z)],
-      fog: [70, 1700],
-      exposure: 1.05,
+      fog: [200, 3000],
+      ...AERIAL,
+      exposure: 1.7,
+      lightMinPx: 0,
     },
-    speed: KMH,
-    counter: {
-      value: `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`,
-      sub: `${meters.toLocaleString("es-CL")} m`,
-      opacity: fadeIn(t, 0.05),
-      y: 330,
+    counter: { value: `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`, sub: `faltan ${meters.toLocaleString("es-CL")} m`, opacity: 1, y: 280 },
+  };
+};
+
+const yaTeMidieron = (t: number): ShotFrame => {
+  // desde la berma, a ras de piso: tu auto llega; destello rojo y tarjeta MEDIDO
+  const zh = 48 - 28 * t;
+  const k = eo(t, 0.02, 0.25);
+  return {
+    world: {
+      cam: cam([SHOULDER_X - 1.6, 0.45, 4.6], [2.4, 1.4, 40], 44),
+      cars: [patrol(0), hero(zh, { brake: 1 })],
+      fog: [80, 1800],
+      exposure: 1.3,
+      studs: 3,
     },
+    card: { title: "MEDIDO · 140 km/h", sub: "hace 1 min", opacity: k, scale: lerp(0.8, 1, k), y: 560 },
+    fx: { flash: flashAt(t, 0, 0.95, 0.4), tint: 0.45, vignette: 0.85 },
   };
 };
 
@@ -355,112 +510,154 @@ const detalle = (t: number, d: number): ShotFrame => {
       cam: cam([HERO_X + 0.55 - 0.45 * k, 0.9 - 0.3 * k, z - 2.3 - 6.0 + 4.3 * k], [HERO_X, 0.5, z - 2.26], 32),
       cars: [hero(z)],
       fog: [60, 1500],
-      exposure: 1.1,
+      exposure: 1.2,
     },
-    speed: null,
   };
 };
 
-const patente = (t: number, id: "patenteLejos" | "patenteCerca"): ShotFrame => {
-  const far = id === "patenteLejos";
-  const z = (far ? FAR_M : 232) - V * t;
-  const e = emitter(0);
-  const target = heroFront(z);
-  const fov = far ? 2.6 : 3.2;
-  // el auto queda ~160 px sobre el centro (arriba van las fotos, al centro los subtítulos)
-  const dist = Math.hypot(target[0] - e[0], target[1] - e[1], target[2] - e[2]);
-  const drop = dist * (160 / 960) * Math.tan((fov / 2) * (Math.PI / 180));
-  const c = cam(e, [target[0], target[1] - drop, target[2]], fov);
-  const k = eo(t, 0.05, 0.4);
+const teMide = (t: number, d: number, id: ShotId): ShotFrame => {
+  // detrás y arriba de tu auto, el rayo cruza 2,9 km hasta la patrulla
+  const z = -V * t;
+  const k = io(t, 0, d);
+  const pulse = ((1 - t * 0.6) % 1 + 1) % 1;
   return {
     world: {
-      cam: c,
-      cars: [hero(z, { beam: false }), patrol(0)],
-      fog: [3200, 14000],
-      exposure: 1.05,
-      lightMinPx: far ? 4 : 0,
+      cam: cam(mix3([HERO_X - 10, 34, z + 46], [HERO_X - 12, 40, z + 54], k), [1, 0, z - 700], 46),
+      cars: [hero(z, { laserSpot: 1, laserSpotSize: 2 }), patrol(-FAR_M + z)],
+      laser: { from: emitter(-FAR_M + z), to: heroFront(z), grow: 1, radiusNear: 3, radiusFar: 0.4, opacity: 1, pulse },
+      fog: [600, 7000],
+      ...AERIAL,
     },
-    reticle: { at: [HERO_X, 0.75, z - 2.3], w: far ? 130 : 440, h: far ? 100 : 300, opacity: k },
-    plates: far ? { far: eo(t, 0.2, 0.5), near: 0, split: 0 } : { far: 1, near: eo(t, wordAt(id, 118) - 0.1, wordAt(id, 118) + 0.2), split: 1 },
+    screenPills: [{ text: "MIDE: 2,9 km", x: 540, y: 320, size: "story", tone: "red", ...pop(t, wordAt(id, 113)) }],
   };
 };
 
-const cierre = (t: number, d: number): ShotFrame => {
+/** Teleobjetivo desde la patrulla hacia tu auto a `dist` metros (encuadra el frente del auto). */
+const tele = (dist: number, aspect: number, fill = 0.8): WorldState => {
+  const zh = dist + 2.3;
+  const e = emitter(0);
+  const tgt = heroFront(zh);
+  const hFov = (1.9 / dist) / fill; // rad: el ancho del auto ocupa `fill` del cuadro
+  const vFov = ((2 * Math.atan(Math.tan(hFov / 2) / aspect)) * 180) / Math.PI;
+  return {
+    cam: cam(e, [tgt[0], tgt[1] + (fill > 1 ? 0.02 : 0.15), tgt[2]], vFov),
+    cars: [hero(zh, { beam: false })],
+    fog: [20000, 30000],
+    exposure: 1.6,
+  };
+};
+
+const patenteFoto = (t: number): ShotFrame => ({
+  world: tele(FAR_M, 1080 / 1920, 1.2),
+  dpr: 0.032,
+  viewfinder: 1,
+  screenPills: [
+    { text: "2,9 km", x: 540, y: 300, size: "story", tone: "red", ...pop(t, 0.05) },
+    { text: "PATENTE: ???", x: 540, y: 1500, size: "story", tone: "neutral", dot: false, ...pop(t, 0.35) },
+  ],
+});
+
+const necesita = (t: number, d: number): ShotFrame => {
+  const k = io(t, 0, d);
+  const dist = Math.exp(lerp(Math.log(FAR_M), Math.log(200), k));
+  return {
+    world: tele(dist, 1080 / 1920, lerp(1.2, 1.4, k)),
+    dpr: lerp(0.032, 1, Math.pow(k, 1.6)),
+    viewfinder: 1,
+    counter: { value: `${(Math.round(dist / 10) * 10).toLocaleString("es-CL")} m`, opacity: 1, y: 260, color: lerp(0, 1, k) > 0.95 ? YELLOW : "#F4F7FB" },
+  };
+};
+
+const doscientos = (t: number): ShotFrame => ({
+  world: tele(200, 1080 / 960),
+  split: { top: tele(FAR_M, 1080 / 960, 1.5), bottom: tele(200, 1080 / 960, 1.5), topDpr: 0.032, bottomDpr: 1 },
+  screenPills: [
+    { text: "MIDE: 2,9 km", x: 540, y: 150, size: "story", tone: "red", ...pop(t, 0.02) },
+    { text: "FOTO: 200 m", x: 540, y: 1770, size: "story", tone: "key", ...pop(t, 0.12) },
+  ],
+  fx: { flash: flashAt(t, 0, 0.4, 0.3) },
+});
+
+const entonces = (t: number): ShotFrame => {
+  // desde atrás y arriba de la patrulla: la marca de 200 m cerca, la de 2,9 km en el horizonte
+  const zh = 1500 - V * t;
+  return {
+    world: {
+      cam: cam([-8, 120 - 4 * t, -60 + 4 * t], [0, 0, 400], 56),
+      cars: [patrol(0), hero(zh)],
+      markers: [
+        { z: 200, opacity: 1, color: YELLOW, scale: 4 },
+        { z: FAR_M, opacity: 1, color: RED, scale: 16 },
+      ],
+      fog: [400, 6000],
+      exposure: 1.6,
+      studs: 4,
+      lightMinPx: 10,
+    },
+    pills: [
+      { at: [0, 0, 200], lift: -150, text: "FOTO: 200 m", tone: "key", size: "story", opacity: 1 },
+      { at: [0, 60, FAR_M], text: "MIDE: 2,9 km", tone: "red", size: "story", leader: 40, opacity: 1 },
+    ],
+    ring: { at: [SHOULDER_X, 0.8, 0], r: 46, opacity: 0.9 },
+  };
+};
+
+const pillaron = (t: number, d: number): ShotFrame => {
   const z = -1250 - V * t;
   const k = io(t, 0, d + 0.4);
-  const p = eo(t, 0.05, 0.4);
-  const q = eo(t, wordAt("cierre", 121) - 0.1, wordAt("cierre", 121) + 0.3);
   return {
     world: {
       cam: mapCam(k, [-120, 1120, 900], [-100, 1060, 840], 56),
       cars: [patrol(-FAR_M), hero(z, { laserSpot: 1, laserSpotSize: 14 })],
-      laser: { from: emitter(-FAR_M), to: heroFront(z), grow: 1, radiusNear: 3, radiusFar: 3.4, opacity: 0.55 },
+      laser: { from: emitter(-FAR_M), to: heroFront(z), grow: 1, radiusNear: 3, radiusFar: 3.4, opacity: 0.6 },
       markers: [
-        { z: -FAR_M + 200, opacity: 1, color: "#ffe28a", scale: 9 },
-        { z: 0, opacity: 1, color: "#ff8a94", scale: 9 },
+        { z: -FAR_M + 200, opacity: 1, color: YELLOW, scale: 30 },
+        { z: 0, opacity: 1, color: RED, scale: 22 },
       ],
       fog: [3000, 14000],
-      exposure: 1.7,
-      lightMinPx: 54,
-      roadGlow: 0.16,
+      ...AERIAL,
+      hideHills: true,
     },
     pills: [
-      { at: [0, 0, 0], lift: 95, text: "2,9 km", tone: "red", size: "lg", opacity: p },
-      { at: [0, 0, -FAR_M + 200], lift: -75, text: "≈200 m", tone: "key", size: "lg", opacity: q },
+      { at: [0, 0, 0], lift: 110, text: "MIDE: 2,9 km", tone: "red", size: "story", opacity: 1 },
+      { at: [0, 0, -FAR_M + 200], lift: -110, text: "FOTO: 200 m", tone: "key", size: "story", opacity: 1 },
     ],
-    ring: { at: [SHOULDER_X, 0, -FAR_M], r: 26, opacity: 0.7 },
+    ring: { at: [SHOULDER_X, 0, -FAR_M], r: 26, opacity: 0.8 },
   };
 };
 
 export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
-  gancho: (t) => ({
-    world: GANCHO_WORLD(t, ganchoCam(t)),
-    screenPills: [{ text: "¿LA VES?", x: 540, y: 330, size: "xl", tone: "key", dot: false, scale: 1 + 0.015 * Math.sin(t * 3) }],
-  }),
-  imagina: (t) => {
-    const z = -V * t;
-    return {
-      world: {
-        cam: cam([HERO_X + 1.0 - 0.35 * t, 1.6 + 0.05 * t, z + 8.8 - 0.45 * t], [HERO_X - 0.2, 0.8, z - 10], 40),
-        cars: [hero(z)],
-        fog: [70, 1800],
-        exposure: 1.15,
-      },
-      speed: KMH,
-    };
-  },
-  laVes: (t) => laVesState(t, "laVes", -74),
-  justoATiempo: (t) => {
-    const v0 = 110 / 3.6;
-    const z = -(v0 * t - 0.5 * 1.3 * t * t);
-    const v = v0 - 1.3 * t;
-    return {
-      world: {
-        cam: cam([HERO_X - 0.9, 0.6, z - 10.8 + 0.9 * t], [HERO_X, 0.85, z], 36),
-        cars: [hero(z, { brake: 1 })],
-        fog: [60, 1500],
-        exposure: 1.1,
-      },
-      speed: v * 3.6,
-    };
-  },
-  radarOnda,
+  gancho,
+  limite,
+  laVes: (t) => povPatrol(t, -44, 22, true),
+  justoATiempo,
+  radarLanza,
+  radarAncha,
+  radarMedir,
   radarFrente,
-  laserEnciende,
-  laserUnMetro,
-  laserElTuyo,
-  medioSegundo,
-  piensaNumero,
-  trescientos: (t, d) => flyOver(t, d, "trescientos"),
-  kilometro: (t, d) => flyOver(t, d, "kilometro"),
-  tresKm,
-  niUnPunto,
+  laserPistola: (t, d) => laserPistola(t, d, "laserPistola"),
+  laserPuerta,
+  laserTuyo,
+  medioSegundo: (t) => medioSegundo(t, "medioSegundo"),
+  desdeDistancia,
+  piensaNumero: (t) => piensaNumero(t, "piensaNumero"),
+  trescientos: (t, d) => pregunta(t, d, 300, "¿300 m?"),
+  mas1: (t) => mas(t, 300, "300 m"),
+  kilometro: (t, d) => pregunta(t, d, 1000, "¿1 km?"),
+  mas2: (t) => mas(t, 1000, "1 km"),
+  tresKm: (t, d) => tresKm(t, d, "tresKm"),
+  niUnPunto: (t) => niUnPunto(t, "niUnPunto"),
+  cientoCuarenta,
   unMinuto,
-  yaTeMidieron: (t) => laVesState(t, "yaTeMidieron", -96),
+  cuandoLaVes: (t) => povPatrol(t, -30, 13, false),
+  yaTeMidieron,
   detalle,
-  patenteLejos: (t) => patente(t, "patenteLejos"),
-  patenteCerca: (t) => patente(t, "patenteCerca"),
-  cierre,
+  teMide: (t, d) => teMide(t, d, "teMide"),
+  patenteFoto,
+  necesita,
+  doscientos,
+  entonces,
+  pillaron,
 };
 
-export { interpolate };
+export type { MarkerSpec };

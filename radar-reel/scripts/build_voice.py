@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Locución: aplica tempo y pausas dramáticas a la voz de ElevenLabs y reescribe
-los tiempos por palabra para Remotion.
+Locución: arma la voz final a partir de segmentos (por rango de palabras) de una o más tomas
+de ElevenLabs, con pausas definidas, tempo uniforme y nivel igualado entre tomas.
 
-Entrada:  public/audio/voz_raw.mp3 (ElevenLabs) · scripts/words_raw.json (transcripción con tiempos)
-Salida:   public/audio/voz.wav (48 kHz mono) · src/data/words.json
+Entrada:  cues.json → voice.sources (mp3 + tiempos por palabra) y voice.segments
+Salida:   public/audio/voz.wav (48 kHz mono, 16 bits) · src/data/words.json
 """
 import json
 import math
@@ -17,49 +17,54 @@ from scipy.io import wavfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CUES = json.load(open(os.path.join(ROOT, "src", "data", "cues.json")))
-RAW = json.load(open(os.path.join(ROOT, "scripts", "words_raw.json")))
+VC = CUES["voice"]
 SR = 48000
-TEMPO = CUES["voiceTempo"]
+TEMPO = VC["tempo"]
+FPS = CUES["fps"]
 
-with tempfile.TemporaryDirectory() as tmp:
-    out = os.path.join(tmp, "v.wav")
-    subprocess.run(
-        ["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, "public/audio/voz_raw.mp3"),
-         "-af", f"atempo={TEMPO}", "-ac", "1", "-ar", str(SR), "-c:a", "pcm_f32le", out],
-        check=True,
-    )
-    sr, voice = wavfile.read(out)
-voice = voice.astype(np.float32)
 
-words = [dict(w, start=w["start"] / TEMPO, end=w["end"] / TEMPO) for w in RAW]
+def load(src):
+    with tempfile.TemporaryDirectory() as tmp:
+        out = os.path.join(tmp, "v.wav")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(ROOT, src["file"]),
+                        "-af", f"atempo={TEMPO}", "-ac", "1", "-ar", str(SR), "-c:a", "pcm_f32le", out], check=True)
+        _, x = wavfile.read(out)
+    words = json.load(open(os.path.join(ROOT, src["words"])))
+    words = [dict(w, start=w["start"] / TEMPO, end=w["end"] / TEMPO) for w in words]
+    return x.astype(np.float32) * (10 ** (src.get("gainDb", 0) / 20)), words
 
-# Pausas: se cortan en el centro del silencio entre dos palabras.
-pieces, cursor, shift = [], 0, 0.0
-pause_at = {p["afterWord"]: p["seconds"] for p in CUES["pauses"]}
-shifts = [0.0] * len(words)
-for i in range(len(words)):
-    shifts[i] = shift
-    if i in pause_at and i + 1 < len(words):
-        cut_t = (words[i]["end"] + words[i + 1]["start"]) / 2
-        cut = int(round(cut_t * SR))
-        pieces.append(voice[cursor:cut])
-        pieces.append(np.zeros(int(round(pause_at[i] * SR)), np.float32))
-        cursor = cut
-        shift += pause_at[i]
-pieces.append(voice[cursor:])
 
-lead = CUES["voiceLeadIn"]
-voice = np.concatenate([np.zeros(int(round(lead * SR)), np.float32)] + pieces)
+srcs = {k: load(v) for k, v in VC["sources"].items()}
+pre, post = VC["pre"], VC["post"]
 
+pieces = [np.zeros(int(round(VC["leadIn"] * SR)), np.float32)]
+cursor = VC["leadIn"]
 out_words = []
-for w, sh in zip(words, shifts):
-    out_words.append(dict(text=w["text"], start=round(w["start"] + sh + lead, 4), end=round(w["end"] + sh + lead, 4)))
+for seg in VC["segments"]:
+    audio, words = srcs[seg["src"]]
+    w0, w1 = words[seg["from"]], words[seg["to"]]
+    a = max(0.0, w0["start"] - pre)
+    b = min(len(audio) / SR, w1["end"] + post)
+    clip = audio[int(a * SR): int(b * SR)].copy() * (10 ** (seg.get("gainDb", 0) / 20))
+    fade = int(0.012 * SR)
+    clip[:fade] *= np.linspace(0, 1, fade)
+    clip[-fade:] *= np.linspace(1, 0, fade)
+    for w in words[seg["from"]: seg["to"] + 1]:
+        out_words.append(dict(text=w["text"], start=round(cursor + w["start"] - a, 4), end=round(cursor + w["end"] - a, 4)))
+    pieces.append(clip)
+    cursor += len(clip) / SR
+    gap = np.zeros(int(round(seg["gapAfter"] * SR)), np.float32)
+    pieces.append(gap)
+    cursor += len(gap) / SR
 
-total = out_words[-1]["end"] + CUES["tail"]
-frames = int(math.ceil(total * CUES["fps"]))
-voice = np.pad(voice, (0, max(0, int(frames / CUES["fps"] * SR) - len(voice))))[: int(frames / CUES["fps"] * SR)]
+voice = np.concatenate(pieces)
+total = out_words[-1]["end"] + VC["tail"]
+frames = int(math.ceil(total * FPS))
+n = int(frames / FPS * SR)
+voice = np.pad(voice, (0, max(0, n - len(voice))))[:n]
 
 wavfile.write(os.path.join(ROOT, "public/audio/voz.wav"), SR, (np.clip(voice, -1, 1) * 32767).astype(np.int16))
 json.dump(dict(durationInFrames=frames, words=out_words), open(os.path.join(ROOT, "src/data/words.json"), "w"),
           ensure_ascii=False, indent=1)
-print(f"voz: {len(voice) / SR:.2f}s · {frames} fotogramas · última palabra {out_words[-1]['end']:.2f}s")
+print(f"voz: {n / SR:.2f}s · {frames} fotogramas · {len(out_words)} palabras · última {out_words[-1]['end']:.2f}s")
+print(" ".join(w["text"] for w in out_words))

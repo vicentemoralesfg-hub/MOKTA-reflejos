@@ -60,9 +60,16 @@ black = subprocess.run(["ffmpeg", "-hide_banner", "-i", src, "-vf", "blackdetect
 bl = [l for l in black.splitlines() if "black_start" in l]
 print(f"fotogramas negros: {len(bl)} tramos", *bl, sep="\n  ")
 
-# ---------------------------------------------------------------- hojas de contacto
+# ---------------------------------------------------------------- ritmo
 cuts = [shot_start(s["word"]) for s in CUES["shots"]]
-reveal_words = {68: "MÁS 1", 71: "MÁS 2", 74: "3 km", 83: "punto", 97: "ya te", 99: "midieron", 118: "200 m", 125: "final"}
+lens = [(b - a) / FPS for a, b in zip(cuts, cuts[1:] + [WD["durationInFrames"]])]
+print(f"planos: {len(cuts)} · más largo {max(lens):.2f} s (límite {CUES['maxShotSeconds']} s) · promedio {sum(lens) / len(lens):.2f} s")
+for sh, ln in zip(CUES["shots"], lens):
+    if ln > CUES["maxShotSeconds"]:
+        print(f"  ⚠ {sh['id']} dura {ln:.2f} s")
+
+# ---------------------------------------------------------------- hojas de contacto
+reveal_words = {76: "MÁS 1", 79: "MÁS 2", 82: "3 km", 91: "punto", 105: "ya te", 107: "midieron", 130: "200 m", 137: "final"}
 key = [0, 1, WD["durationInFrames"] - 1] + cuts + [round(W[i]["start"] * FPS) + 6 for i in reveal_words]
 key = sorted(set(k for k in key if 0 <= k < WD["durationInFrames"]))
 sel = "+".join(f"eq(n\\,{k})" for k in key)

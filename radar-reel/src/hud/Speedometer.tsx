@@ -2,7 +2,7 @@ import React from "react";
 import { C, FONT_DISPLAY, FONT_UI } from "./style";
 
 /** Velocímetro discreto (abajo a la izquierda, sobre la zona de interfaz de Reels/TikTok). */
-export const Speedometer: React.FC<{ kmh: number; opacity?: number }> = ({ kmh, opacity = 1 }) => {
+export const Speedometer: React.FC<{ kmh: number; opacity?: number; big?: boolean }> = ({ kmh, opacity = 1, big = false }) => {
   const R = 74;
   const sweep = 240;
   const start = 150;
@@ -15,7 +15,7 @@ export const Speedometer: React.FC<{ kmh: number; opacity?: number }> = ({ kmh, 
   };
   const over = kmh > 120;
   return (
-    <div style={{ position: "absolute", left: 56, top: 1395, width: 200, height: 200, opacity }}>
+    <div style={{ position: "absolute", left: big ? 90 : 56, top: big ? 1330 : 1395, width: 200, height: 200, opacity, scale: big ? "1.45" : "1", transformOrigin: "0% 0%" }}>
       <div style={{ position: "absolute", inset: 0, borderRadius: 999, background: "rgba(5,12,28,0.55)", border: `1.5px solid ${C.pillBorder}` }} />
       <svg width={200} height={200} style={{ position: "absolute", inset: 0 }}>
         <path d={arc(start, start + sweep)} stroke="rgba(200,220,255,0.18)" strokeWidth={9} fill="none" strokeLinecap="round" />

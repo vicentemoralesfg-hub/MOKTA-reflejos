@@ -83,15 +83,15 @@ def saw(freq, phase=0.0):
     return 2 * (ph % 1.0) - 1
 
 
-drop_start = W[74]["start"] - 0.05          # silencio de la música justo antes del "tres"
+drop_start = W[82]["start"] - 0.05          # silencio de la música justo antes del "tres"
 drop_end = SHOT["niUnPunto"]
 riser_start = SHOT["kilometro"]
 
 # Intensidad general (la tensión sube hasta el reveal de 3 km, cae y vuelve más grave)
 inten = smooth_env([
-    (0, 0.55), (SHOT["radarOnda"], 0.62), (SHOT["laserEnciende"], 0.7), (SHOT["piensaNumero"], 0.78),
+    (0, 0.55), (SHOT["radarLanza"], 0.62), (SHOT["laserPistola"], 0.7), (SHOT["desdeDistancia"], 0.78),
     (riser_start, 0.9), (drop_start - 0.01, 1.0), (drop_start, 0.0), (drop_end - 0.4, 0.0),
-    (drop_end, 0.75), (SHOT["yaTeMidieron"], 0.85), (SHOT["detalle"], 0.6), (SHOT["cierre"], 0.7), (T, 0.75),
+    (drop_end, 0.75), (SHOT["yaTeMidieron"], 0.85), (SHOT["detalle"], 0.6), (SHOT["pillaron"], 0.7), (T, 0.75),
 ])
 
 pad = np.zeros((2, N))
@@ -211,15 +211,14 @@ for h in CUES["hits"]:
     kind = h["kind"]
     if kind == "ping":
         # tres pulsos de radar (coinciden con las ondas del plano)
-        for k in range(3):
-            add(fx, SHOT["radarOnda"] + 0.25 + k * 1.1, ping(1.0 - 0.25 * k))
-        for k in range(2):
-            add(fx, SHOT["radarFrente"] + 0.2 + k * 1.1, ping(0.6 - 0.2 * k))
+        # pulsos de radar: uno por plano de radar (pasan rápido)
+        for sid, g in [("radarLanza", 1.0), ("radarAncha", 0.75), ("radarMedir", 0.85), ("radarFrente", 0.6)]:
+            add(fx, SHOT[sid] + 0.12, ping(g))
     elif kind == "laser":
-        add(fx, SHOT["laserEnciende"] + 0.4, zap())
+        add(fx, w["start"] - 0.1, zap())
     elif kind == "lock":
-        add(fx, SHOT["medioSegundo"] + 0.95, beep())
-        add(fx, SHOT["medioSegundo"] + 1.07, beep(2637))
+        add(fx, w["end"] - 0.15, beep())
+        add(fx, w["end"] - 0.03, beep(2637))
     elif kind == "hit":
         add(fx, w["start"] - 0.01, boom(h.get("gain", 1.0) * 0.55, 1.4))
     elif kind == "big":
@@ -227,15 +226,25 @@ for h in CUES["hits"]:
         add(fx, w["start"] - 0.01, boom(0.5, 2.6) * 0.0 + lp(rng.standard_normal(int(2.6 * SR)), 300) * env(int(2.6 * SR), 0.01, 1.6) * 0.15)
 
 # Zumbido muy leve del láser mientras el haz está activo
-a, b = idx(SHOT["laserEnciende"] + 0.45), idx(SHOT["trescientos"])
+a, b = idx(W[45]["start"]), idx(SHOT["trescientos"])
 n = b - a
 hum = (np.sin(2 * np.pi * 220 * np.arange(n) / SR) * 0.5 + np.sin(2 * np.pi * 330 * np.arange(n) / SR) * 0.25)
 hum *= np.minimum(1, np.minimum(np.arange(n), n - np.arange(n)) / (0.3 * SR)) * 0.006
 fx[a:b] += hum
 
-# Pasadas de cámara (muy suaves) en los vuelos sobre el haz
-for sid, g in [("trescientos", 0.7), ("kilometro", 0.9), ("unMinuto", 0.8)]:
-    add(fx, SHOT[sid] + 0.05, whoosh(1.2, g))
+# Whoosh en cada corte (centrado en el corte, con variación de tono para que no suene repetido)
+def cut_whoosh(i, gain):
+    n = int(0.42 * SR)
+    tt = np.arange(n) / SR
+    e = np.sin(np.pi * tt / 0.42) ** 3
+    lo = 500 + 900 * ((i * 0.618) % 1)
+    x = bp(rng.standard_normal(n), lo, lo * 4) * e
+    sweep = np.sin(2 * np.pi * np.cumsum(np.linspace(180 + 60 * (i % 3), 70, n)) / SR) * e * 0.25
+    return (x + sweep) * gain * 0.06
+
+
+for i, s_ in enumerate(CUES["shots"][1:], start=1):
+    add(fx, SHOT[s_["id"]] - 0.28, cut_whoosh(i, 0.9 if s_["id"] in ("mas1", "mas2", "tresKm", "yaTeMidieron", "doscientos") else 0.6))
 
 fx_st = np.stack([fx, fx]) + wet(fx, 0.45)
 
@@ -254,17 +263,20 @@ venv = lp(venv, 6, 1)
 duck = 1 - 0.55 * np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
 music_d = music * np.stack([duck, duck])
 
-mix = v_st * 1.0 + music_d * 0.72 + fx_st * 0.42
 # fades mínimos para evitar clics (el loop corta en seco a propósito)
 fade = np.ones(N)
 fade[: int(0.01 * SR)] = np.linspace(0, 1, int(0.01 * SR))
 fade[-int(0.04 * SR):] = np.linspace(1, 0, int(0.04 * SR))
-mix *= fade
+pcm16 = lambda x: (np.clip(x, -1, 1) * 32767).astype(np.int16)
+os.makedirs(os.path.join(ROOT, "public/audio/stems"), exist_ok=True)
+
+# sin música: voz + efectos (whooshes y golpes), normalizado por separado
+dry = (v_st * 1.0 + fx_st * 0.42) * fade
+wavfile.write(os.path.join(ROOT, "public/audio/mix_sin_musica.wav"), SR, pcm16((dry / np.abs(dry).max() * 0.89).T))
+
+mix = (v_st * 1.0 + music_d * 0.72 + fx_st * 0.42) * fade
 peak = np.abs(mix).max()
 mix = mix / peak * 0.89
-
-os.makedirs(os.path.join(ROOT, "public/audio/stems"), exist_ok=True)
-pcm16 = lambda x: (np.clip(x, -1, 1) * 32767).astype(np.int16)
 wavfile.write(os.path.join(ROOT, "public/audio/mix.wav"), SR, pcm16(mix.T))
 for name, x in [("musica", music_d * 0.72), ("efectos", fx_st * 0.42), ("voz", v_st)]:
     wavfile.write(os.path.join(ROOT, f"public/audio/stems/{name}.wav"), SR, pcm16((x / peak * 0.89).T))

@@ -1,11 +1,13 @@
 import React from "react";
 import { C, FONT_DISPLAY, Tone, toneColor } from "./style";
 
-export type PillSize = "sm" | "md" | "lg" | "xl";
+export type PillSize = "sm" | "md" | "lg" | "story" | "xl";
+/** "story": tamaño mínimo para las píldoras que cuentan la historia (igual a los subtítulos). */
 const SIZES: Record<PillSize, { font: number; padX: number; padY: number; dot: number }> = {
   sm: { font: 34, padX: 20, padY: 8, dot: 11 },
   md: { font: 44, padX: 26, padY: 10, dot: 13 },
   lg: { font: 64, padX: 34, padY: 12, dot: 16 },
+  story: { font: 96, padX: 44, padY: 14, dot: 22 },
   xl: { font: 150, padX: 60, padY: 14, dot: 0 },
 };
 
@@ -62,7 +64,7 @@ export const Pill: React.FC<{ p: PillSpec }> = ({ p }) => {
             border: `2px solid ${p.tone && p.tone !== "neutral" ? color + "99" : C.pillBorder}`,
             boxShadow: `0 6px 30px rgba(0,0,0,0.45), 0 0 24px ${p.tone && p.tone !== "neutral" ? color + "33" : "rgba(0,0,0,0)"}`,
             fontFamily: FONT_DISPLAY,
-            fontWeight: p.size === "xl" ? 800 : 700,
+            fontWeight: p.size === "xl" || p.size === "story" ? 800 : 700,
             fontSize: s.font,
             lineHeight: 1,
             letterSpacing: p.size === "xl" ? 3 : 1,

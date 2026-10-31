@@ -141,3 +141,100 @@ export const BigCounter: React.FC<{ value: string; sub?: string; color?: string;
     ) : null}
   </div>
 );
+
+/** Tarjeta grande centrada (p. ej. "MEDIDO · 140 km/h" / "hace 1 min"). */
+export const Card: React.FC<{ title: string; sub?: string; color?: string; opacity: number; scale?: number; y?: number }> = ({
+  title,
+  sub,
+  color = C.red,
+  opacity,
+  scale = 1,
+  y = 640,
+}) =>
+  opacity <= 0.001 ? null : (
+    <div style={{ position: "absolute", left: 0, right: 0, top: y, display: "flex", justifyContent: "center", opacity }}>
+      <div
+        style={{
+          scale: String(scale),
+          padding: "26px 54px 22px",
+          borderRadius: 40,
+          background: "rgba(10,6,14,0.82)",
+          border: `4px solid ${color}`,
+          boxShadow: `0 0 60px ${color}88, 0 14px 50px rgba(0,0,0,0.6)`,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 6,
+        }}
+      >
+        <div style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 118, lineHeight: 1, color: C.white, letterSpacing: 2, whiteSpace: "nowrap" }}>
+          {title}
+        </div>
+        {sub ? (
+          <div style={{ fontFamily: FONT_DISPLAY, fontWeight: 700, fontSize: 78, lineHeight: 1, color, whiteSpace: "nowrap" }}>{sub}</div>
+        ) : null}
+      </div>
+    </div>
+  );
+
+/** Destello, tinte rojo y viñeta para los momentos de escalada. */
+export const Fx: React.FC<{ flash?: number; tint?: number; vignette?: number; color?: "red" | "blue" }> = ({
+  flash = 0,
+  tint = 0,
+  vignette = 0,
+  color = "red",
+}) => (
+  <>
+    {tint > 0 ? (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: color === "blue" ? `rgba(60,150,255,${0.35 * tint})` : `rgba(255,30,50,${0.22 * tint})`,
+          mixBlendMode: "screen",
+        }}
+      />
+    ) : null}
+    {vignette > 0 ? (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(75% 55% at 50% 50%, rgba(0,0,0,0) 45%, rgba(120,0,12,${0.75 * vignette}) 100%)`,
+        }}
+      />
+    ) : null}
+    {flash > 0 ? (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(80% 60% at 50% 45%, rgba(255,255,255,${flash}) 0%, rgba(255,60,70,${flash * 0.85}) 60%, rgba(255,20,40,${flash * 0.7}) 100%)`,
+        }}
+      />
+    ) : null}
+  </>
+);
+
+/** Esquinas de visor a pantalla completa + REC. */
+export const Viewfinder: React.FC<{ x0: number; y0: number; x1: number; y1: number; opacity: number; color?: string }> = ({
+  x0,
+  y0,
+  x1,
+  y1,
+  opacity,
+  color = C.white,
+}) => {
+  const L = 70;
+  const d = [
+    `M ${x0} ${y0 + L} L ${x0} ${y0} L ${x0 + L} ${y0}`,
+    `M ${x1 - L} ${y0} L ${x1} ${y0} L ${x1} ${y0 + L}`,
+    `M ${x1} ${y1 - L} L ${x1} ${y1} L ${x1 - L} ${y1}`,
+    `M ${x0 + L} ${y1} L ${x0} ${y1} L ${x0} ${y1 - L}`,
+  ].join(" ");
+  return (
+    <svg width={1080} height={1920} style={{ position: "absolute", inset: 0, opacity }}>
+      <path d={d} stroke={color} strokeWidth={6} fill="none" strokeLinecap="round" />
+    </svg>
+  );
+};

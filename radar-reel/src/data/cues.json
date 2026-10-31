@@ -1,45 +1,299 @@
 {
-  "_comment": "Fuente única de sincronía. build_voice.py aplica tempo y pausas a la locución y escribe words.json; Remotion y build_audio.py leen ambos. Los planos y golpes se anclan a índices de palabra (0 = 'En').",
+  "_comment": "Fuente única de sincronía. build_voice.py arma la locución con 'voice' y escribe words.json; Remotion y build_audio.py leen ambos. Planos y golpes se anclan a índices de palabra del guion final (0 = 'En').",
   "fps": 30,
-  "voiceTempo": 1.05,
-  "voiceLeadIn": 0.06,
-  "tail": 0.45,
-  "pauses": [
-    { "afterWord": 75, "seconds": 0.7 },
-    { "afterWord": 99, "seconds": 0.35 }
-  ],
+  "voice": {
+    "tempo": 1.07,
+    "leadIn": 0.06,
+    "tail": 0.5,
+    "pre": 0.05,
+    "post": 0.1,
+    "sources": {
+      "a": {
+        "file": "public/audio/voz_raw.mp3",
+        "words": "scripts/words_raw.json",
+        "gainDb": 0,
+        "_nota": "toma aprobada (eleven_v4)"
+      },
+      "b": {
+        "file": "public/audio/voz_nuevas_lineas.mp3",
+        "words": "scripts/words_nuevas.json",
+        "gainDb": -3.5,
+        "_nota": "líneas nuevas del guion corregido (eleven_flash_v2_5, misma voz)"
+      }
+    },
+    "segments": [
+      {
+        "src": "a",
+        "from": 0,
+        "to": 18,
+        "gapAfter": 0.3
+      },
+      {
+        "src": "a",
+        "from": 19,
+        "to": 29,
+        "gapAfter": 0.22,
+        "gainDb": -1.0
+      },
+      {
+        "src": "b",
+        "from": 0,
+        "to": 4,
+        "gapAfter": 0.03,
+        "gainDb": -5.0
+      },
+      {
+        "src": "a",
+        "from": 31,
+        "to": 37,
+        "gapAfter": 0.26,
+        "gainDb": 2.0
+      },
+      {
+        "src": "b",
+        "from": 5,
+        "to": 18,
+        "gapAfter": 0.24,
+        "gainDb": 1.2
+      },
+      {
+        "src": "a",
+        "from": 48,
+        "to": 52,
+        "gapAfter": 0.24,
+        "gainDb": -1.2
+      },
+      {
+        "src": "a",
+        "from": 53,
+        "to": 59,
+        "gapAfter": 0.28
+      },
+      {
+        "src": "a",
+        "from": 60,
+        "to": 65,
+        "gapAfter": 0.26,
+        "gainDb": 1.6
+      },
+      {
+        "src": "a",
+        "from": 66,
+        "to": 75,
+        "gapAfter": 0.65
+      },
+      {
+        "src": "a",
+        "from": 76,
+        "to": 93,
+        "gapAfter": 0.26,
+        "gainDb": -0.8
+      },
+      {
+        "src": "a",
+        "from": 94,
+        "to": 99,
+        "gapAfter": 0.45
+      },
+      {
+        "src": "a",
+        "from": 100,
+        "to": 103,
+        "gapAfter": 0.18,
+        "gainDb": -2.5
+      },
+      {
+        "src": "b",
+        "from": 19,
+        "to": 44,
+        "gapAfter": 0,
+        "gainDb": 0.3
+      }
+    ]
+  },
+  "maxShotSeconds": 2.5,
   "shots": [
-    { "id": "gancho", "word": 0 },
-    { "id": "imagina", "word": 6 },
-    { "id": "laVes", "word": 12 },
-    { "id": "justoATiempo", "word": 15 },
-    { "id": "radarOnda", "word": 19 },
-    { "id": "radarFrente", "word": 30 },
-    { "id": "laserEnciende", "word": 38 },
-    { "id": "laserUnMetro", "word": 43 },
-    { "id": "laserElTuyo", "word": 48 },
-    { "id": "medioSegundo", "word": 53 },
-    { "id": "piensaNumero", "word": 60 },
-    { "id": "trescientos", "word": 66 },
-    { "id": "kilometro", "word": 69 },
-    { "id": "tresKm", "word": 72 },
-    { "id": "niUnPunto", "word": 76 },
-    { "id": "unMinuto", "word": 84 },
-    { "id": "yaTeMidieron", "word": 94 },
-    { "id": "detalle", "word": 100 },
-    { "id": "patenteLejos", "word": 104 },
-    { "id": "patenteCerca", "word": 113 },
-    { "id": "cierre", "word": 120 }
+    {
+      "id": "gancho",
+      "word": 0
+    },
+    {
+      "id": "limite",
+      "word": 6
+    },
+    {
+      "id": "laVes",
+      "word": 12
+    },
+    {
+      "id": "justoATiempo",
+      "word": 15
+    },
+    {
+      "id": "radarLanza",
+      "word": 19
+    },
+    {
+      "id": "radarAncha",
+      "word": 24
+    },
+    {
+      "id": "radarMedir",
+      "word": 30
+    },
+    {
+      "id": "radarFrente",
+      "word": 35
+    },
+    {
+      "id": "laserPistola",
+      "word": 42
+    },
+    {
+      "id": "laserPuerta",
+      "word": 49
+    },
+    {
+      "id": "laserTuyo",
+      "word": 56
+    },
+    {
+      "id": "medioSegundo",
+      "word": 61
+    },
+    {
+      "id": "desdeDistancia",
+      "word": 68
+    },
+    {
+      "id": "piensaNumero",
+      "word": 71
+    },
+    {
+      "id": "trescientos",
+      "word": 74
+    },
+    {
+      "id": "mas1",
+      "word": 76
+    },
+    {
+      "id": "kilometro",
+      "word": 77
+    },
+    {
+      "id": "mas2",
+      "word": 79
+    },
+    {
+      "id": "tresKm",
+      "word": 82
+    },
+    {
+      "id": "niUnPunto",
+      "word": 84
+    },
+    {
+      "id": "cientoCuarenta",
+      "word": 92
+    },
+    {
+      "id": "unMinuto",
+      "word": 96
+    },
+    {
+      "id": "cuandoLaVes",
+      "word": 102
+    },
+    {
+      "id": "yaTeMidieron",
+      "word": 105
+    },
+    {
+      "id": "detalle",
+      "word": 108
+    },
+    {
+      "id": "teMide",
+      "word": 112
+    },
+    {
+      "id": "patenteFoto",
+      "word": 117
+    },
+    {
+      "id": "necesita",
+      "word": 126
+    },
+    {
+      "id": "doscientos",
+      "word": 130
+    },
+    {
+      "id": "entonces",
+      "word": 132
+    },
+    {
+      "id": "pillaron",
+      "word": 133
+    }
   ],
   "hits": [
-    { "word": 20, "kind": "ping" },
-    { "word": 39, "kind": "laser" },
-    { "word": 59, "kind": "lock" },
-    { "word": 68, "kind": "hit", "gain": 0.55 },
-    { "word": 71, "kind": "hit", "gain": 0.75 },
-    { "word": 74, "kind": "big" },
-    { "word": 99, "kind": "hit", "gain": 0.9 },
-    { "word": 118, "kind": "hit", "gain": 0.6 }
+    {
+      "word": 18,
+      "kind": "hit",
+      "gain": 0.35
+    },
+    {
+      "word": 20,
+      "kind": "ping"
+    },
+    {
+      "word": 45,
+      "kind": "laser"
+    },
+    {
+      "word": 67,
+      "kind": "lock"
+    },
+    {
+      "word": 76,
+      "kind": "hit",
+      "gain": 0.7
+    },
+    {
+      "word": 79,
+      "kind": "hit",
+      "gain": 0.85
+    },
+    {
+      "word": 82,
+      "kind": "big"
+    },
+    {
+      "word": 91,
+      "kind": "hit",
+      "gain": 0.45
+    },
+    {
+      "word": 105,
+      "kind": "big"
+    },
+    {
+      "word": 113,
+      "kind": "hit",
+      "gain": 0.5
+    },
+    {
+      "word": 130,
+      "kind": "hit",
+      "gain": 0.9
+    },
+    {
+      "word": 135,
+      "kind": "hit",
+      "gain": 0.5
+    }
   ],
   "highlights": {
     "5": "key",
@@ -51,32 +305,34 @@
     "25": "blue",
     "29": "blue",
     "37": "blue",
-    "39": "red",
-    "46": "red",
-    "47": "red",
-    "52": "red",
-    "58": "key",
-    "59": "key",
-    "65": "key",
+    "41": "blue",
+    "44": "red",
+    "45": "red",
+    "55": "red",
+    "60": "red",
     "66": "key",
     "67": "key",
-    "68": "key",
-    "70": "key",
-    "71": "key",
     "73": "key",
     "74": "key",
     "75": "key",
+    "76": "key",
+    "78": "key",
+    "79": "key",
+    "82": "key",
     "83": "key",
-    "90": "key",
     "91": "key",
-    "97": "red",
-    "98": "red",
-    "99": "red",
-    "103": "key",
-    "107": "key",
-    "118": "key",
-    "119": "key",
-    "123": "key",
-    "125": "key"
+    "99": "key",
+    "105": "red",
+    "106": "red",
+    "107": "red",
+    "111": "key",
+    "115": "red",
+    "116": "red",
+    "121": "key",
+    "125": "key",
+    "130": "key",
+    "131": "key",
+    "135": "key",
+    "137": "key"
   }
 }

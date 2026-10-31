@@ -14,28 +14,7 @@ export const TOTAL_FRAMES = wordsData.durationInFrames;
 export type Word = { text: string; start: number; end: number };
 export const WORDS: Word[] = wordsData.words;
 
-export type ShotId =
-  | "gancho"
-  | "imagina"
-  | "laVes"
-  | "justoATiempo"
-  | "radarOnda"
-  | "radarFrente"
-  | "laserEnciende"
-  | "laserUnMetro"
-  | "laserElTuyo"
-  | "medioSegundo"
-  | "piensaNumero"
-  | "trescientos"
-  | "kilometro"
-  | "tresKm"
-  | "niUnPunto"
-  | "unMinuto"
-  | "yaTeMidieron"
-  | "detalle"
-  | "patenteLejos"
-  | "patenteCerca"
-  | "cierre";
+export type ShotId = string;
 
 const shotStartFrame = (word: number) => {
   if (word === 0) return 0;
@@ -48,8 +27,12 @@ export type ShotTiming = { id: ShotId; from: number; duration: number; firstWord
 export const SHOTS: ShotTiming[] = cues.shots.map((s, i, arr) => {
   const from = shotStartFrame(s.word);
   const to = i + 1 < arr.length ? shotStartFrame(arr[i + 1].word) : TOTAL_FRAMES;
-  return { id: s.id as ShotId, from, duration: to - from, firstWord: s.word };
+  return { id: s.id, from, duration: to - from, firstWord: s.word };
 });
+
+/** Regla de ritmo: ningún plano dura más de maxShotSeconds. */
+export const MAX_SHOT_FRAMES = Math.round(cues.maxShotSeconds * FPS);
+export const LONG_SHOTS = SHOTS.filter((s) => s.duration > MAX_SHOT_FRAMES);
 
 export const shotById = (id: ShotId) => SHOTS.find((s) => s.id === id)!;
 

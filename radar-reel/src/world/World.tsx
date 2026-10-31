@@ -8,7 +8,9 @@ import {
   ROAD_LENGTH,
   ROAD_TOTAL_W,
   ROAD_Z0,
+  OFFICER_MUZZLE,
   carGeometries,
+  fogTexture,
   forest,
   glowTexture,
   hills,
@@ -16,9 +18,13 @@ import {
   makeCurtainMaterial,
   makeRadarFanMaterial,
   makeSkyMaterial,
+  officerGeometry,
+  patrolGeometries,
   pineGeometry,
   plateTexture,
+  roadStuds,
   roadTextures,
+  speedSignTexture,
   stars,
 } from "./assets";
 
@@ -62,6 +68,8 @@ export type RadarSpec = {
   range: number;
   spacing: number;
   opacity: number;
+  /** 1 = la onda se desvanece al pasar junto a la cámara (plano subjetivo). */
+  nearFade?: number;
 };
 
 export type LaserSpec = {
@@ -76,6 +84,8 @@ export type LaserSpec = {
   fadeFar?: number;
   /** Fracción 0..1 donde va un pulso brillante, o null. */
   pulse?: number | null;
+  /** Ancho del halo respecto del núcleo (por defecto 2,6). */
+  glowScale?: number;
 };
 
 export type MarkerSpec = { z: number; opacity: number; color?: string; scale?: number };
@@ -95,6 +105,20 @@ export type WorldState = {
   roadGlow?: number;
   /** Oculta los cerros (en la vista cenital parecen rocas y tapan el bosque). */
   hideHills?: boolean;
+  /** Letreros de velocidad máxima 120 (en la berma derecha, mirando al conductor). */
+  signs?: { x: number; z: number }[];
+  /** Agente apuntando la pistola láser (mira hacia +Z, girado rotY). */
+  officer?: { x: number; z: number; rotY?: number } | null;
+  /** Tachas reflectantes de la carretera: tamaño en píxeles (0 = ocultas). */
+  studs?: number;
+  /** Niebla en capas para las vistas aéreas (opacidad 0..1). */
+  fogLayers?: number;
+};
+
+/** Punta de la pistola en coordenadas de mundo. */
+export const officerMuzzle = (o: { x: number; z: number; rotY?: number }): V3 => {
+  const v = OFFICER_MUZZLE.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), o.rotY ?? 0);
+  return [o.x + v.x, v.y, o.z + v.z];
 };
 
 const Ctx = createContext<{ cam: CamSpec; minPx: number }>({ cam: { pos: [0, 0, 0], target: [0, 0, -1], fov: 45 }, minPx: 0 });
@@ -165,7 +189,10 @@ const Car: React.FC<{ spec: CarSpec }> = ({ spec }) => {
       tire: new THREE.MeshLambertMaterial({ color: PAL.tire }),
       head: new THREE.MeshBasicMaterial({ color: "#fff4dc" }),
       tail: new THREE.MeshBasicMaterial({ color: "#ff2030" }),
-      bar: new THREE.MeshLambertMaterial({ color: "#2b3140", flatShading: true }),
+      bar: new THREE.MeshLambertMaterial({ color: "#20242c", flatShading: true }),
+      door: new THREE.MeshLambertMaterial({ color: PAL.patrolDoor, side: THREE.DoubleSide }),
+      lensR: new THREE.MeshLambertMaterial({ color: "#a3141f", emissive: "#3a0508", flatShading: true }),
+      lensB: new THREE.MeshLambertMaterial({ color: "#1546a8", emissive: "#04122e", flatShading: true }),
       plate: new THREE.MeshLambertMaterial({ map: plateTexture(), emissive: "#ffffff", emissiveMap: plateTexture(), emissiveIntensity: 0.18 }),
       spot: new THREE.MeshBasicMaterial({
         map: glowTexture(),
@@ -204,6 +231,7 @@ const Car: React.FC<{ spec: CarSpec }> = ({ spec }) => {
       <mesh geometry={G.body} material={mats.body} />
       <mesh geometry={G.glass} material={mats.glass} />
       <mesh geometry={G.wheels} material={mats.tire} />
+      <mesh geometry={G.seams} material={mats.tire} />
       <mesh geometry={G.head} material={mats.head} />
       <mesh geometry={G.tail} material={mats.tail} />
       {spec.kind === "hero" ? (
@@ -212,7 +240,14 @@ const Car: React.FC<{ spec: CarSpec }> = ({ spec }) => {
           <mesh geometry={G.plateR} material={mats.plate} />
         </>
       ) : null}
-      {isPatrol ? <mesh geometry={G.lightbar} material={mats.bar} /> : null}
+      {isPatrol ? (
+        <>
+          <mesh geometry={patrolGeometries().doors} material={mats.door} />
+          <mesh geometry={patrolGeometries().barBase} material={mats.bar} />
+          <mesh geometry={patrolGeometries().lensR} material={mats.lensR} />
+          <mesh geometry={patrolGeometries().lensB} material={mats.lensB} />
+        </>
+      ) : null}
       {lights ? (
         <>
           {[-0.62, 0.62].map((x) => (
@@ -264,7 +299,7 @@ const Forest: React.FC = () => {
 const Hills: React.FC = () => {
   const mesh = useMemo(() => {
     const hs = hills();
-    const geo = new THREE.IcosahedronGeometry(1, 1);
+    const geo = new THREE.IcosahedronGeometry(1, 2);
     const m = new THREE.InstancedMesh(geo, new THREE.MeshLambertMaterial({ color: "#ffffff", flatShading: true }), hs.length);
     const o = new THREE.Object3D();
     const c = new THREE.Color();
@@ -315,7 +350,7 @@ const Sky: React.FC<{ exposure: number }> = ({ exposure }) => {
       <points geometry={stars()} position={[cam.pos[0], 0, cam.pos[2]]} frustumCulled={false}>
         <pointsMaterial color="#d6e4ff" size={2.2} sizeAttenuation={false} transparent opacity={0.75} fog={false} depthWrite={false} />
       </points>
-      <sprite position={moon} scale={[520, 520, 1]} frustumCulled={false}>
+      <sprite position={moon} scale={[420, 420, 1]} frustumCulled={false}>
         <spriteMaterial map={glowTexture()} color="#dfe9ff" transparent opacity={0.95} fog={false} depthWrite={false} blending={THREE.AdditiveBlending} />
       </sprite>
     </>
@@ -342,6 +377,9 @@ const Radar: React.FC<{ spec: RadarSpec }> = ({ spec }) => {
   fan.uniforms.uHead.value = spec.head;
   fan.uniforms.uSpacing.value = spec.spacing;
   fan.uniforms.uOpacity.value = spec.opacity;
+  fan.uniforms.uCenter.value = center;
+  fan.uniforms.uHalf.value = half;
+  fan.uniforms.uNearFade.value = spec.nearFade ?? 0;
   const fronts: number[] = [];
   for (let r = spec.head; r > 2 && fronts.length < 5; r -= spec.spacing) if (r < spec.range) fronts.push(r);
   return (
@@ -350,9 +388,10 @@ const Radar: React.FC<{ spec: RadarSpec }> = ({ spec }) => {
       {fronts.map((r, i) => {
         const fade = Math.pow(Math.max(0, 1 - r / spec.range), 1.2) * spec.opacity;
         const m = curtains[i];
-        m.uniforms.uOpacity.value = fade * 0.75;
+        m.uniforms.uOpacity.value = fade * 1.1;
+        m.uniforms.uNearFade.value = spec.nearFade ?? 0;
         return (
-          <mesh key={i} geometry={curtainGeo} material={m} scale={[r, 2.2 + r * 0.035, r]} position={[0, -spec.origin[1], 0]} renderOrder={4} />
+          <mesh key={i} geometry={curtainGeo} material={m} scale={[r, 3 + r * 0.06, r]} position={[0, -spec.origin[1], 0]} renderOrder={9} />
         );
       })}
     </group>
@@ -382,7 +421,7 @@ const Laser: React.FC<{ spec: LaserSpec }> = ({ spec }) => {
   return (
     <group position={spec.from} quaternion={q}>
       <mesh geometry={geo} material={core} scale={[1, len, 1]} renderOrder={7} />
-      <mesh geometry={geo} material={glow} scale={[2.6, len, 2.6]} renderOrder={7} />
+      <mesh geometry={geo} material={glow} scale={[spec.glowScale ?? 2.6, len, spec.glowScale ?? 2.6]} renderOrder={7} />
     </group>
   );
 };
@@ -400,6 +439,59 @@ const Marker: React.FC<{ spec: MarkerSpec }> = ({ spec }) => (
       </mesh>
     ))}
   </group>
+);
+
+const SpeedSign: React.FC<{ x: number; z: number }> = ({ x, z }) => {
+  const mat = useMemo(
+    () => new THREE.MeshLambertMaterial({ map: speedSignTexture(), emissive: "#ffffff", emissiveMap: speedSignTexture(), emissiveIntensity: 0.55, side: THREE.DoubleSide }),
+    [],
+  );
+  return (
+    <group position={[x, 0, z]}>
+      <mesh position={[0, 1.15, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 2.3, 8]} />
+        <meshLambertMaterial color="#8a9099" />
+      </mesh>
+      <mesh position={[0, 2.7, 0.06]} material={mat}>
+        <circleGeometry args={[0.85, 40]} />
+      </mesh>
+    </group>
+  );
+};
+
+const Officer: React.FC<{ x: number; z: number; rotY?: number }> = ({ x, z, rotY = 0 }) => (
+  <mesh geometry={officerGeometry()} position={[x, 0, z]} rotation={[0, rotY, 0]}>
+    <meshLambertMaterial color="#1a2233" flatShading />
+  </mesh>
+);
+
+const Studs: React.FC<{ size: number }> = ({ size }) => (
+  <points geometry={roadStuds()} frustumCulled={false} renderOrder={3}>
+    <pointsMaterial color="#ffe2a8" size={size} sizeAttenuation={false} transparent opacity={0.95} depthWrite={false} />
+  </points>
+);
+
+const FogLayers: React.FC<{ opacity: number }> = ({ opacity }) => (
+  <>
+    {[
+      [18, 0, 1],
+      [55, 1.7, 0.8],
+      [120, 3.1, 0.6],
+    ].map(([y, r, k]) => (
+      <mesh key={y} rotation={[-Math.PI / 2, 0, r]} position={[0, y, -1500]} renderOrder={2}>
+        <planeGeometry args={[9000, 9000]} />
+        <meshBasicMaterial
+          map={fogTexture()}
+          color="#a9c4ee"
+          transparent
+          opacity={opacity * k}
+          depthWrite={false}
+          fog={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+    ))}
+  </>
 );
 
 export const World: React.FC<{ state: WorldState }> = ({ state }) => {
@@ -431,6 +523,10 @@ export const World: React.FC<{ state: WorldState }> = ({ state }) => {
       ) : null}
       <Forest />
       {state.hideHills ? null : <Hills />}
+      {state.studs ? <Studs size={state.studs} /> : null}
+      {state.fogLayers ? <FogLayers opacity={state.fogLayers} /> : null}
+      {state.signs?.map((g) => <SpeedSign key={g.z} x={g.x} z={g.z} />)}
+      {state.officer ? <Officer {...state.officer} /> : null}
       {state.markers?.map((m) => <Marker key={m.z} spec={m} />)}
       {state.cars.map((c, i) => <Car key={`${c.kind}${i}`} spec={c} />)}
       {state.radar ? <Radar spec={state.radar} /> : null}
@@ -440,8 +536,8 @@ export const World: React.FC<{ state: WorldState }> = ({ state }) => {
 };
 
 /** Proyección 3D → píxeles con la misma cámara que el render (para etiquetas HUD). */
-export const projectToScreen = (cam: CamSpec, p: V3) => {
-  const c = new THREE.PerspectiveCamera(cam.fov, 1080 / 1920, 0.3, 30000);
+export const projectToScreen = (cam: CamSpec, p: V3, w = 1080, h = 1920) => {
+  const c = new THREE.PerspectiveCamera(cam.fov, w / h, 0.3, 30000);
   c.position.set(...cam.pos);
   c.up.set(...(cam.up ?? [0, 1, 0]));
   c.lookAt(...cam.target);
@@ -449,7 +545,7 @@ export const projectToScreen = (cam: CamSpec, p: V3) => {
   c.updateMatrixWorld();
   c.updateProjectionMatrix();
   const v = v3(p).project(c);
-  return { x: (v.x * 0.5 + 0.5) * 1080, y: (-v.y * 0.5 + 0.5) * 1920, visible: v.z < 1 && v.z > -1 };
+  return { x: (v.x * 0.5 + 0.5) * w, y: (-v.y * 0.5 + 0.5) * h, visible: v.z < 1 && v.z > -1 };
 };
 
 export { PLATE_TEXT };
