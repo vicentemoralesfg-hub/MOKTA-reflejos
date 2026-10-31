@@ -12,7 +12,7 @@
         "file": "public/audio/voz_edge.mp3",
         "words": "scripts/words_edge.json",
         "gainDb": 0,
-        "_nota": "edge-tts es-CL-LorenzoNeural rate +0%, guion completo en una toma"
+        "_nota": "edge-tts es-CL-LorenzoNeural rate +8%, guion completo en una toma"
       }
     },
     "segments": [
@@ -20,17 +20,29 @@
         "src": "e",
         "from": 0,
         "to": 5,
-        "gapAfter": 0.22
-      },
-      {
-        "src": "e",
-        "from": 6,
-        "to": 12,
         "gapAfter": 0.2
       },
       {
         "src": "e",
+        "from": 6,
+        "to": 10,
+        "gapAfter": 0.12
+      },
+      {
+        "src": "e",
+        "from": 11,
+        "to": 12,
+        "gapAfter": 0.22
+      },
+      {
+        "src": "e",
         "from": 13,
+        "to": 15,
+        "gapAfter": 0.12
+      },
+      {
+        "src": "e",
+        "from": 16,
         "to": 16,
         "gapAfter": 0.14
       },
@@ -38,7 +50,7 @@
         "src": "e",
         "from": 17,
         "to": 20,
-        "gapAfter": 0.2
+        "gapAfter": 0.22
       },
       {
         "src": "e",
@@ -50,61 +62,97 @@
         "src": "e",
         "from": 28,
         "to": 38,
-        "gapAfter": 0.16
+        "gapAfter": 0.12
       },
       {
         "src": "e",
         "from": 39,
-        "to": 41,
-        "gapAfter": 0.08
-      },
-      {
-        "src": "e",
-        "from": 42,
         "to": 48,
         "gapAfter": 0.2
       },
       {
         "src": "e",
         "from": 49,
+        "to": 55,
+        "gapAfter": 0.14
+      },
+      {
+        "src": "e",
+        "from": 56,
         "to": 62,
-        "gapAfter": 0.18
+        "gapAfter": 0.14
       },
       {
         "src": "e",
         "from": 63,
         "to": 67,
-        "gapAfter": 0.18
+        "gapAfter": 0.14
       },
       {
         "src": "e",
         "from": 68,
         "to": 74,
-        "gapAfter": 0.2
+        "gapAfter": 0.24
       },
       {
         "src": "e",
         "from": 75,
+        "to": 77,
+        "gapAfter": 0.14
+      },
+      {
+        "src": "e",
+        "from": 78,
         "to": 80,
-        "gapAfter": 0.18
+        "gapAfter": 0.22
       },
       {
         "src": "e",
         "from": 81,
+        "to": 82,
+        "gapAfter": 0.3
+      },
+      {
+        "src": "e",
+        "from": 83,
+        "to": 83,
+        "gapAfter": 0.16
+      },
+      {
+        "src": "e",
+        "from": 84,
+        "to": 85,
+        "gapAfter": 0.3
+      },
+      {
+        "src": "e",
+        "from": 86,
+        "to": 86,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 87,
         "to": 90,
-        "gapAfter": 0.5
+        "gapAfter": 0.45
       },
       {
         "src": "e",
         "from": 91,
+        "to": 98,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 99,
         "to": 108,
-        "gapAfter": 0.18
+        "gapAfter": 0.22
       },
       {
         "src": "e",
         "from": 109,
         "to": 114,
-        "gapAfter": 0.32
+        "gapAfter": 0.35
       },
       {
         "src": "e",
@@ -116,13 +164,13 @@
         "src": "e",
         "from": 119,
         "to": 123,
-        "gapAfter": 0.14
+        "gapAfter": 0.12
       },
       {
         "src": "e",
         "from": 124,
         "to": 138,
-        "gapAfter": 0.16
+        "gapAfter": 0.2
       },
       {
         "src": "e",

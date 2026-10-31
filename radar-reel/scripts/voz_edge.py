@@ -2,7 +2,7 @@
 """
 Locución con edge-tts (voz es-CL-LorenzoNeural) para el guion actual completo.
 
-Uso:  python3 scripts/voz_edge.py [--rate +6%]
+Uso:  python3 scripts/voz_edge.py [--rate +8%]
 Salida: public/audio/voz_edge.mp3 · scripts/words_edge.json (tiempos por palabra del guion)
         y cues.json → voice pasa a una sola fuente "e" con los mismos tramos y pausas del montaje.
 Después: python3 scripts/build_voice.py y el resto del flujo (render de subtítulos, audio, assemble).
@@ -36,14 +36,17 @@ TEXT = (
     "necesita tenerte a unos doscientos metros. Entonces… ¿cuándo te pillaron de verdad?"
 )
 TOKENS = TEXT.split()
-# Tramos del montaje (índices de palabra del guion) y pausa después de cada uno (s).
+# Tramos del montaje (índices de palabra del guion) y pausa después de cada uno (s). Se corta en cada
+# fin de frase: las pausas largas del servicio (~0,9 s) se reemplazan por estas, más cortas y con ritmo.
 SEGMENTS = [
-    (0, 5, 0.22), (6, 12, 0.2), (13, 16, 0.14), (17, 20, 0.2), (21, 27, 0.2), (28, 38, 0.16),
-    (39, 41, 0.08), (42, 48, 0.2), (49, 62, 0.18), (63, 67, 0.18), (68, 74, 0.2), (75, 80, 0.18),
-    (81, 90, 0.5), (91, 108, 0.18), (109, 114, 0.32), (115, 118, 0.12), (119, 123, 0.14),
-    (124, 138, 0.16), (139, 144, 0.0),
+    (0, 5, 0.2), (6, 10, 0.12), (11, 12, 0.22), (13, 15, 0.12), (16, 16, 0.14), (17, 20, 0.22),
+    (21, 27, 0.2), (28, 38, 0.12), (39, 48, 0.2), (49, 55, 0.14), (56, 62, 0.14), (63, 67, 0.14),
+    (68, 74, 0.24), (75, 77, 0.14), (78, 80, 0.22), (81, 82, 0.3), (83, 83, 0.16), (84, 85, 0.3),
+    (86, 86, 0.2), (87, 90, 0.45), (91, 98, 0.2), (99, 108, 0.22), (109, 114, 0.35), (115, 118, 0.12),
+    (119, 123, 0.12), (124, 138, 0.2), (139, 144, 0.0),
 ]
 assert len(TOKENS) == 145 and SEGMENTS[-1][1] == len(TOKENS) - 1
+assert all(a[1] + 1 == b[0] for a, b in zip(SEGMENTS, SEGMENTS[1:]))
 
 
 def norm(w):
@@ -88,7 +91,7 @@ def align(marks):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--rate", default="+0%")
+    ap.add_argument("--rate", default="+8%")
     args = ap.parse_args()
     audio, marks = asyncio.run(synth(args.rate))
     open(os.path.join(ROOT, "public/audio/voz_edge.mp3"), "wb").write(audio)
