@@ -76,7 +76,7 @@ export const S09Correcto: React.FC = () => {
   const hIn = ramp(f, 0, 6);
   // momento héroe: 30 segundos
   const heroIn = ramp(f, tTreinta - 6, tTreinta + 2, EASE_OUT);
-  const heroOut = ramp(f, tSal - 8, tSal + 2, EASE_IN_OUT);
+  const heroOut = ramp(f, tSal - 7, tSal - 1, EASE_IN_OUT);
   const hero = heroIn * (1 - heroOut);
   const secs = map(f, [tTreinta - 2, tTreinta + 22], [0, 30], EASE_IN_OUT);
   const done = f >= tTreinta + 22;
@@ -85,7 +85,7 @@ export const S09Correcto: React.FC = () => {
   const circ = 2 * Math.PI * R;
   // auto que parte
   const drive = ramp(f, tManej - 4, D, EASE_IN_OUT);
-  const carIn = ramp(f, tManej - 10, tManej - 2);
+  const carIn = ramp(f, tManej - 6, tManej + 2);
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 85% 60% at 50% 50%, #0B2A20 0%, #061410 55%, #020605 100%)" }}>
       <Chapter n="04" label="LO CORRECTO" color={C.green} at={0} />
@@ -110,7 +110,7 @@ export const S09Correcto: React.FC = () => {
       <Row i={1} at={tCint - 6} f={f} dim={hero} icon={<Belt size={46} color={C.green} />} text="Ponte el cinturón" />
       <Row
         i={2}
-        at={tSal - 4}
+        at={tSal}
         f={f}
         icon={<Stopwatch size={46} color={C.green} />}
         text={
