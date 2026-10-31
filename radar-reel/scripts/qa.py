@@ -8,6 +8,7 @@ Uso: python3 scripts/qa.py out/CuandoTeMidieron_con_subtitulos.mp4 [etiqueta]
 - Sincronía: compara el ataque de cada golpe en el audio con la palabra a la que está anclado.
 """
 import json
+import math
 import os
 import subprocess
 import sys
@@ -32,8 +33,8 @@ def run(cmd):
 def shot_start(word):
     if word == 0:
         return 0
-    f = round((W[word]["start"] - 0.12) * FPS)
-    return max(f, round(W[word - 1]["end"] * FPS))
+    f = math.floor((W[word]["start"] - 0.12) * FPS + 0.5)
+    return max(f, math.floor(W[word - 1]["end"] * FPS + 0.5))
 
 
 # ---------------------------------------------------------------- specs

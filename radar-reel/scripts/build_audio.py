@@ -8,6 +8,7 @@ src/data/words.json, los mismos tiempos que usa Remotion.
 Salida: public/audio/mix.wav (48 kHz, estéreo) y stems en public/audio/stems/.
 """
 import json
+import math
 import os
 
 import numpy as np
@@ -30,8 +31,8 @@ def shot_start(word):
     """Mismo criterio que src/timeline.ts: corte 0,12 s antes de la palabra."""
     if word == 0:
         return 0.0
-    f = round((W[word]["start"] - 0.12) * FPS)
-    f = max(f, round(W[word - 1]["end"] * FPS))
+    f = math.floor((W[word]["start"] - 0.12) * FPS + 0.5)
+    f = max(f, math.floor(W[word - 1]["end"] * FPS + 0.5))
     return f / FPS
 
 

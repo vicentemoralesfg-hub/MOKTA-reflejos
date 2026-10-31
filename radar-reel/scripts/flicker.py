@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Detecta parpadeos: saltos de imagen entre fotogramas consecutivos que no coinciden con un corte de plano."""
-import json, os, subprocess, sys
+import json, math, os, subprocess, sys
 import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src = sys.argv[1]
@@ -8,7 +8,7 @@ cues = json.load(open(os.path.join(ROOT, "src/data/cues.json")))
 W = json.load(open(os.path.join(ROOT, "src/data/words.json")))["words"]
 def ss(word):
     if word == 0: return 0
-    f = round((W[word]["start"] - 0.12) * 30); return max(f, round(W[word - 1]["end"] * 30))
+    f = math.floor((W[word]["start"] - 0.12) * 30 + 0.5); return max(f, math.floor(W[word - 1]["end"] * 30 + 0.5))
 cuts = {ss(s["word"]): s["id"] for s in cues["shots"]}
 raw = subprocess.run(["ffmpeg", "-v", "error", "-i", src, "-vf", "scale=135:240,format=gray", "-f", "rawvideo", "-"], capture_output=True).stdout
 fr = np.frombuffer(raw, np.uint8).reshape(-1, 240, 135).astype(float)
