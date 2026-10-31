@@ -2,198 +2,135 @@
   "_comment": "Fuente única de sincronía. build_voice.py arma la locución con 'voice' y escribe words.json; Remotion y build_audio.py leen ambos. Planos y golpes se anclan a índices de palabra del guion final (0 = 'Te'). Los segmentos con 'slot' ocupan un tiempo fijo (la toma se ajusta a ese hueco).",
   "fps": 30,
   "voice": {
-    "tempo": 1.13,
+    "tempo": 1.0,
     "leadIn": 0.0,
     "tail": 0.45,
     "pre": 0.05,
     "post": 0.1,
     "sources": {
-      "a": {
-        "file": "public/audio/voz_raw.mp3",
-        "words": "scripts/words_raw.json",
+      "e": {
+        "file": "public/audio/voz_edge.mp3",
+        "words": "scripts/words_edge.json",
         "gainDb": 0,
-        "_nota": "toma aprobada (eleven_v4)"
-      },
-      "b": {
-        "file": "public/audio/voz_nuevas_lineas.mp3",
-        "words": "scripts/words_nuevas.json",
-        "gainDb": -3.5,
-        "_nota": "líneas nuevas del guion corregido (eleven_flash_v2_5, misma voz)"
-      },
-      "c": {
-        "file": "public/audio/voz_hook.mp3",
-        "words": "scripts/words_hook.json",
-        "gainDb": 0,
-        "_nota": "inicio v4 (gancho, 'Después la ves…', '¿Cómo te midió…', 'Y funciona hasta…'). Sin archivo: huecos de silencio del largo del slot (la voz la graba el usuario)."
+        "_nota": "edge-tts es-CL-LorenzoNeural rate +0%, guion completo en una toma"
       }
     },
     "segments": [
       {
-        "src": "c",
+        "src": "e",
         "from": 0,
         "to": 5,
-        "slot": 1.32
+        "gapAfter": 0.22
       },
       {
-        "src": "c",
+        "src": "e",
         "from": 6,
         "to": 12,
-        "slot": 1.9
-      },
-      {
-        "src": "c",
-        "from": 13,
-        "to": 16,
-        "slot": 1.75
-      },
-      {
-        "src": "c",
-        "from": 17,
-        "to": 20,
-        "slot": 1.25
-      },
-      {
-        "src": "c",
-        "from": 21,
-        "to": 27,
-        "slot": 1.95
-      },
-      {
-        "src": "a",
-        "from": 19,
-        "to": 29,
-        "gapAfter": 0.16,
-        "gainDb": -1.0
-      },
-      {
-        "src": "c",
-        "from": 28,
-        "to": 30,
-        "slot": 1.15
-      },
-      {
-        "src": "c",
-        "from": 31,
-        "to": 37,
-        "slot": 1.95
-      },
-      {
-        "src": "b",
-        "from": 5,
-        "to": 18,
-        "gapAfter": 0.18,
-        "gainDb": 1.2
-      },
-      {
-        "src": "a",
-        "from": 48,
-        "to": 52,
-        "gapAfter": 0.18,
-        "gainDb": -1.2
-      },
-      {
-        "src": "a",
-        "from": 53,
-        "to": 59,
         "gapAfter": 0.2
       },
       {
-        "src": "a",
-        "from": 60,
-        "to": 65,
-        "gapAfter": 0.18,
-        "gainDb": 1.6
+        "src": "e",
+        "from": 13,
+        "to": 16,
+        "gapAfter": 0.14
       },
       {
-        "src": "a",
-        "from": 66,
-        "to": 75,
+        "src": "e",
+        "from": 17,
+        "to": 20,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 21,
+        "to": 27,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 28,
+        "to": 38,
+        "gapAfter": 0.16
+      },
+      {
+        "src": "e",
+        "from": 39,
+        "to": 41,
+        "gapAfter": 0.08
+      },
+      {
+        "src": "e",
+        "from": 42,
+        "to": 48,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 49,
+        "to": 62,
+        "gapAfter": 0.18
+      },
+      {
+        "src": "e",
+        "from": 63,
+        "to": 67,
+        "gapAfter": 0.18
+      },
+      {
+        "src": "e",
+        "from": 68,
+        "to": 74,
+        "gapAfter": 0.2
+      },
+      {
+        "src": "e",
+        "from": 75,
+        "to": 80,
+        "gapAfter": 0.18
+      },
+      {
+        "src": "e",
+        "from": 81,
+        "to": 90,
         "gapAfter": 0.5
       },
       {
-        "src": "a",
-        "from": 76,
-        "to": 93,
-        "gapAfter": 0.18,
-        "gainDb": -0.8
+        "src": "e",
+        "from": 91,
+        "to": 108,
+        "gapAfter": 0.18
       },
       {
-        "src": "a",
-        "from": 94,
-        "to": 99,
+        "src": "e",
+        "from": 109,
+        "to": 114,
         "gapAfter": 0.32
       },
       {
-        "src": "a",
-        "from": 100,
-        "to": 103,
-        "gapAfter": 0.12,
-        "gainDb": -2.5
+        "src": "e",
+        "from": 115,
+        "to": 118,
+        "gapAfter": 0.12
       },
       {
-        "src": "b",
-        "from": 19,
-        "to": 23,
-        "gapAfter": 0.14,
-        "gainDb": 0.3
+        "src": "e",
+        "from": 119,
+        "to": 123,
+        "gapAfter": 0.14
       },
       {
-        "src": "b",
-        "from": 24,
-        "to": 38,
-        "gapAfter": 0.16,
-        "gainDb": 0.3
+        "src": "e",
+        "from": 124,
+        "to": 138,
+        "gapAfter": 0.16
       },
       {
-        "src": "b",
-        "from": 39,
-        "to": 44,
-        "gapAfter": 0,
-        "gainDb": 0.3
+        "src": "e",
+        "from": 139,
+        "to": 144,
+        "gapAfter": 0.0
       }
-    ],
-    "placeholderText": {
-      "c": [
-        "Te",
-        "acabas",
-        "de",
-        "ganar",
-        "un",
-        "parte.",
-        "Y",
-        "la",
-        "patrulla",
-        "está",
-        "ahí.",
-        "¿La",
-        "ves?",
-        "Después",
-        "la",
-        "ves.",
-        "Frenas.",
-        "Pero",
-        "ya",
-        "es",
-        "tarde.",
-        "¿Cómo",
-        "te",
-        "midió…",
-        "si",
-        "no",
-        "la",
-        "veías?",
-        "Y",
-        "funciona",
-        "hasta",
-        "desde",
-        "una",
-        "patrulla",
-        "que",
-        "viene",
-        "de",
-        "frente…"
-      ]
-    }
+    ]
   },
   "maxShotSeconds": 2.5,
   "shots": [
