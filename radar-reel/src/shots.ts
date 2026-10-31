@@ -610,7 +610,7 @@ const patenteFoto2 = (t: number): ShotFrame => ({
   // la foto que saca la pistola a 2,9 km: el auto en bloques, ilegible
   world: tele(FAR_M, 1080 / 1920, 0.9),
   dpr: 0.024,
-  photo: { opacity: 1, flash: flashAt(t, 0, 0.9, 0.22), stamp: "ILEGIBLE", stampK: eo(t, 0.3, 0.45) },
+  photo: { opacity: 1, flash: flashAt(t, 0, 0.6, 0.2), stamp: "ILEGIBLE", stampK: eo(t, 0.3, 0.45) },
 });
 
 const necesita = (t: number, d: number): ShotFrame => {

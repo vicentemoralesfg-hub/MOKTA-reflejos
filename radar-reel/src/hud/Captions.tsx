@@ -24,8 +24,9 @@ const buildGroups = (): Group[] => {
   const inBlock = (i: number) => BLOCKS.some(([a, b]) => i >= a && i <= b);
   const blockGroups: Group[] = BLOCKS.map(([a, b]) => ({
     words: Array.from({ length: b - a + 1 }, (_, k) => a + k),
-    start: a === 0 ? 0 : WORDS[a].start - 0.12,
-    end: WORDS[b + 1] ? WORDS[b + 1].start - 0.12 : WORDS[b].end + 0.45,
+    // los bloques cambian exactamente en el fotograma del corte (mismo redondeo que timeline.ts)
+    start: a === 0 ? 0 : Math.round((WORDS[a].start - 0.12) * FPS) / FPS,
+    end: WORDS[b + 1] ? Math.round((WORDS[b + 1].start - 0.12) * FPS) / FPS : WORDS[b].end + 0.45,
     block: true,
   }));
   WORDS.forEach((w, i) => {
@@ -70,7 +71,8 @@ const colorOf = (i: number) => {
 export const Captions: React.FC<{ y?: number }> = ({ y = 1185 }) => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
-  const g = GROUPS.find((gr) => t >= gr.start - 0.04 && t < gr.end);
+  // si dos grupos se solapan en un corte, gana el más reciente (nunca queda la frase anterior en el plano nuevo)
+  const g = [...GROUPS].reverse().find((gr) => t >= gr.start - (gr.block ? 0 : 0.04) && t < gr.end);
   if (!g) return null;
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
