@@ -12,7 +12,7 @@
         "file": "public/audio/voz_edge.mp3",
         "words": "scripts/words_edge.json",
         "gainDb": 0,
-        "_nota": "edge-tts es-CL-LorenzoNeural rate +8%, guion completo en una toma"
+        "_nota": "edge-tts es-CL-LorenzoNeural rate +0% audio-24khz-96kbitrate-mono-mp3, guion completo en una toma"
       }
     },
     "segments": [
@@ -140,7 +140,7 @@
         "src": "e",
         "from": 91,
         "to": 98,
-        "gapAfter": 0.2
+        "gapAfter": 0.1
       },
       {
         "src": "e",

@@ -2,13 +2,14 @@
 """
 Locución con edge-tts (voz es-CL-LorenzoNeural) para el guion actual completo.
 
-Uso:  python3 scripts/voz_edge.py [--rate +8%]
+Uso:  python3 scripts/voz_edge.py [--rate +0%]
 Salida: public/audio/voz_edge.mp3 · scripts/words_edge.json (tiempos por palabra del guion)
         y cues.json → voice pasa a una sola fuente "e" con los mismos tramos y pausas del montaje.
 Después: python3 scripts/build_voice.py y el resto del flujo (render de subtítulos, audio, assemble).
 
 Requiere salida a speech.platform.bing.com (servicio de lectura en voz alta de Edge; edge-tts no
 es un cliente oficial de Microsoft). Usa el proxy de la sesión y su CA, sin desactivar TLS.
+Pide el MP3 a 96 kbps (edge-tts usa 48 kbps por defecto): mismo audio, menos artefactos de compresión.
 """
 import argparse
 import asyncio
@@ -19,11 +20,13 @@ import re
 import ssl
 import unicodedata
 
+import aiohttp
 import edge_tts
 import edge_tts.communicate
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VOICE = "es-CL-LorenzoNeural"
+FORMAT = "audio-24khz-96kbitrate-mono-mp3"
 TEXT = (
     "Te acabas de ganar un parte. Y la patrulla está ahí. ¿La ves? Después la ves. Frenas. Pero ya es tarde. "
     "¿Cómo te midió… si no la veías? El radar lanza una onda más ancha que toda la carretera. "
@@ -42,7 +45,7 @@ SEGMENTS = [
     (0, 5, 0.2), (6, 10, 0.12), (11, 12, 0.22), (13, 15, 0.12), (16, 16, 0.14), (17, 20, 0.22),
     (21, 27, 0.2), (28, 38, 0.12), (39, 48, 0.2), (49, 55, 0.14), (56, 62, 0.14), (63, 67, 0.14),
     (68, 74, 0.24), (75, 77, 0.14), (78, 80, 0.22), (81, 82, 0.3), (83, 83, 0.16), (84, 85, 0.3),
-    (86, 86, 0.2), (87, 90, 0.45), (91, 98, 0.2), (99, 108, 0.22), (109, 114, 0.35), (115, 118, 0.12),
+    (86, 86, 0.2), (87, 90, 0.45), (91, 98, 0.1), (99, 108, 0.22), (109, 114, 0.35), (115, 118, 0.12),
     (119, 123, 0.12), (124, 138, 0.2), (139, 144, 0.0),
 ]
 assert len(TOKENS) == 145 and SEGMENTS[-1][1] == len(TOKENS) - 1
@@ -57,6 +60,14 @@ def norm(w):
 async def synth(rate):
     # edge-tts fija la CA de certifi; el proxy de la sesión presenta su propia CA (incluida en este paquete).
     edge_tts.communicate._SSL_CTX = ssl.create_default_context(cafile=os.environ.get("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt"))
+    # formato de salida: edge-tts lo trae fijo en el mensaje de configuración del websocket
+    edge_tts.communicate.MP3_BITRATE_BPS = 96_000
+    send = aiohttp.ClientWebSocketResponse.send_str
+
+    async def send_str(self, data, *a, **k):
+        return await send(self, data.replace("audio-24khz-48kbitrate-mono-mp3", FORMAT), *a, **k)
+
+    aiohttp.ClientWebSocketResponse.send_str = send_str
     com = edge_tts.Communicate(TEXT, VOICE, rate=rate, boundary="WordBoundary", proxy=os.environ.get("HTTPS_PROXY"))
     audio, marks = bytearray(), []
     async for ch in com.stream():
@@ -91,7 +102,7 @@ def align(marks):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--rate", default="+8%")
+    ap.add_argument("--rate", default="+0%")
     args = ap.parse_args()
     audio, marks = asyncio.run(synth(args.rate))
     open(os.path.join(ROOT, "public/audio/voz_edge.mp3"), "wb").write(audio)
@@ -102,7 +113,7 @@ def main():
     cues = json.load(open(path))
     vc = cues["voice"]
     vc.update(tempo=1.0, sources={"e": dict(file="public/audio/voz_edge.mp3", words="scripts/words_edge.json", gainDb=0,
-                                           _nota=f"edge-tts {VOICE} rate {args.rate}, guion completo en una toma")},
+                                           _nota=f"edge-tts {VOICE} rate {args.rate} {FORMAT}, guion completo en una toma")},
               segments=[dict(src="e", **{"from": f, "to": t}, gapAfter=g) for f, t, g in SEGMENTS])
     vc.pop("placeholderText", None)
     json.dump(cues, open(path, "w"), ensure_ascii=False, indent=2)

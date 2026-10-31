@@ -1,730 +1,730 @@
 {
- "durationInFrames": 1370,
+ "durationInFrames": 1454,
  "words": [
   {
    "text": "Te",
    "start": 0.05,
-   "end": 0.131
+   "end": 0.1375
   },
   {
    "text": "acabas",
-   "start": 0.131,
-   "end": 0.4898
+   "start": 0.1375,
+   "end": 0.525
   },
   {
    "text": "de",
-   "start": 0.5245,
-   "end": 0.5708
+   "start": 0.5625,
+   "end": 0.6125
   },
   {
    "text": "ganar",
-   "start": 0.594,
-   "end": 0.8139
+   "start": 0.6375,
+   "end": 0.875
   },
   {
    "text": "un",
-   "start": 0.8255,
-   "end": 0.9528
+   "start": 0.8875,
+   "end": 1.025
   },
   {
    "text": "parte.",
-   "start": 0.9644,
-   "end": 1.2306
+   "start": 1.0375,
+   "end": 1.325
   },
   {
    "text": "Y",
-   "start": 1.5806,
-   "end": 1.6732
+   "start": 1.675,
+   "end": 1.775
   },
   {
    "text": "la",
-   "start": 1.6963,
-   "end": 1.7658
+   "start": 1.8,
+   "end": 1.875
   },
   {
    "text": "patrulla",
-   "start": 1.8121,
-   "end": 2.1361
+   "start": 1.925,
+   "end": 2.275
   },
   {
    "text": "está",
-   "start": 2.1477,
-   "end": 2.3213
+   "start": 2.2875,
+   "end": 2.475
   },
   {
    "text": "ahí.",
-   "start": 2.3213,
-   "end": 2.4833
+   "start": 2.475,
+   "end": 2.65
   },
   {
    "text": "¿La",
-   "start": 2.7533,
-   "end": 2.9037
+   "start": 2.92,
+   "end": 3.0825
   },
   {
    "text": "ves?",
-   "start": 2.9269,
-   "end": 3.1699
+   "start": 3.1075,
+   "end": 3.37
   },
   {
    "text": "Después",
-   "start": 3.5399,
-   "end": 3.8755
+   "start": 3.74,
+   "end": 4.1025
   },
   {
    "text": "la",
-   "start": 3.8986,
-   "end": 3.9681
+   "start": 4.1275,
+   "end": 4.2025
   },
   {
    "text": "ves.",
-   "start": 4.0028,
-   "end": 4.269
+   "start": 4.24,
+   "end": 4.5275
   },
   {
    "text": "Frenas.",
-   "start": 4.539,
-   "end": 5.0019
+   "start": 4.7975,
+   "end": 5.2975
   },
   {
    "text": "Pero",
-   "start": 5.2919,
-   "end": 5.4656
+   "start": 5.5874,
+   "end": 5.7749
   },
   {
    "text": "ya",
-   "start": 5.5119,
-   "end": 5.6276
+   "start": 5.8249,
+   "end": 5.9499
   },
   {
    "text": "es",
-   "start": 5.6623,
-   "end": 5.7433
+   "start": 5.9874,
+   "end": 6.0749
   },
   {
    "text": "tarde.",
-   "start": 5.7897,
-   "end": 6.0559
+   "start": 6.1249,
+   "end": 6.4124
   },
   {
    "text": "¿Cómo",
-   "start": 6.4259,
-   "end": 6.6227
+   "start": 6.7825,
+   "end": 6.995
   },
   {
    "text": "te",
-   "start": 6.669,
-   "end": 6.7269
+   "start": 7.045,
+   "end": 7.1075
   },
   {
    "text": "midió…",
-   "start": 6.75,
-   "end": 7.0509
+   "start": 7.1325,
+   "end": 7.4575
   },
   {
    "text": "si",
-   "start": 7.2477,
-   "end": 7.375
+   "start": 7.67,
+   "end": 7.8075
   },
   {
    "text": "no",
-   "start": 7.4097,
-   "end": 7.5255
+   "start": 7.845,
+   "end": 7.97
   },
   {
    "text": "la",
-   "start": 7.537,
-   "end": 7.618
+   "start": 7.9825,
+   "end": 8.07
   },
   {
    "text": "veías?",
-   "start": 7.6412,
-   "end": 8.081
+   "start": 8.095,
+   "end": 8.57
   },
   {
    "text": "El",
-   "start": 8.431,
-   "end": 8.5699
+   "start": 8.92,
+   "end": 9.07
   },
   {
    "text": "radar",
-   "start": 8.5815,
-   "end": 8.8592
+   "start": 9.0825,
+   "end": 9.3825
   },
   {
    "text": "lanza",
-   "start": 8.8708,
-   "end": 9.1602
+   "start": 9.395,
+   "end": 9.7075
   },
   {
    "text": "una",
-   "start": 9.1833,
-   "end": 9.357
+   "start": 9.7325,
+   "end": 9.92
   },
   {
    "text": "onda",
-   "start": 9.3685,
-   "end": 9.5652
+   "start": 9.9325,
+   "end": 10.145
   },
   {
    "text": "más",
-   "start": 9.5884,
-   "end": 9.8083
+   "start": 10.17,
+   "end": 10.4075
   },
   {
    "text": "ancha",
-   "start": 9.8083,
-   "end": 10.0282
+   "start": 10.4075,
+   "end": 10.645
   },
   {
    "text": "que",
-   "start": 10.0977,
-   "end": 10.1671
+   "start": 10.72,
+   "end": 10.795
   },
   {
    "text": "toda",
-   "start": 10.2597,
-   "end": 10.4449
+   "start": 10.895,
+   "end": 11.095
   },
   {
    "text": "la",
-   "start": 10.4565,
-   "end": 10.5259
+   "start": 11.1075,
+   "end": 11.1825
   },
   {
    "text": "carretera.",
-   "start": 10.5838,
-   "end": 11.0352
+   "start": 11.245,
+   "end": 11.7325
   },
   {
    "text": "Y",
-   "start": 11.3051,
-   "end": 11.3746
+   "start": 12.0025,
+   "end": 12.0775
   },
   {
    "text": "funciona",
-   "start": 11.3977,
-   "end": 11.8259
+   "start": 12.1025,
+   "end": 12.565
   },
   {
    "text": "hasta",
-   "start": 11.8259,
-   "end": 12.0111
+   "start": 12.565,
+   "end": 12.765
   },
   {
    "text": "desde",
-   "start": 12.0343,
-   "end": 12.2426
+   "start": 12.79,
+   "end": 13.015
   },
   {
    "text": "una",
-   "start": 12.2542,
-   "end": 12.3931
+   "start": 13.0275,
+   "end": 13.1775
   },
   {
    "text": "patrulla",
-   "start": 12.4509,
-   "end": 12.7866
+   "start": 13.24,
+   "end": 13.6025
   },
   {
    "text": "que",
-   "start": 12.8444,
-   "end": 12.9139
+   "start": 13.665,
+   "end": 13.74
   },
   {
    "text": "viene",
-   "start": 12.9486,
-   "end": 13.1801
+   "start": 13.7775,
+   "end": 14.0275
   },
   {
    "text": "de",
-   "start": 13.2148,
-   "end": 13.2843
+   "start": 14.065,
+   "end": 14.14
   },
   {
    "text": "frente…",
-   "start": 13.3074,
-   "end": 13.6315
+   "start": 14.165,
+   "end": 14.515
   },
   {
    "text": "Pero",
-   "start": 13.9815,
-   "end": 14.1435
+   "start": 14.865,
+   "end": 15.04
   },
   {
    "text": "la",
-   "start": 14.1667,
-   "end": 14.2246
+   "start": 15.065,
+   "end": 15.1275
   },
   {
    "text": "pistola",
-   "start": 14.2825,
-   "end": 14.6297
+   "start": 15.19,
+   "end": 15.565
   },
   {
    "text": "láser",
-   "start": 14.6413,
-   "end": 14.9538
+   "start": 15.5775,
+   "end": 15.915
   },
   {
    "text": "es",
-   "start": 14.9538,
-   "end": 15.0926
+   "start": 15.915,
+   "end": 16.065
   },
   {
    "text": "otra",
-   "start": 15.0926,
-   "end": 15.2778
+   "start": 16.065,
+   "end": 16.265
   },
   {
    "text": "cosa.",
-   "start": 15.3357,
-   "end": 15.625
+   "start": 16.3275,
+   "end": 16.64
   },
   {
    "text": "Un",
-   "start": 15.915,
-   "end": 16.0655
+   "start": 16.93,
+   "end": 17.0925
   },
   {
    "text": "rayo",
-   "start": 16.0655,
-   "end": 16.3085
+   "start": 17.0925,
+   "end": 17.355
   },
   {
    "text": "del",
-   "start": 16.3317,
-   "end": 16.459
+   "start": 17.38,
+   "end": 17.5175
   },
   {
    "text": "ancho",
-   "start": 16.459,
-   "end": 16.702
+   "start": 17.5175,
+   "end": 17.78
   },
   {
    "text": "de",
-   "start": 16.7368,
-   "end": 16.8293
+   "start": 17.8175,
+   "end": 17.9175
   },
   {
    "text": "una",
-   "start": 16.8409,
-   "end": 16.9798
+   "start": 17.93,
+   "end": 18.08
   },
   {
    "text": "puerta.",
-   "start": 17.0493,
-   "end": 17.3733
+   "start": 18.155,
+   "end": 18.505
   },
   {
    "text": "Un",
-   "start": 17.6633,
-   "end": 17.7906
+   "start": 18.795,
+   "end": 18.9325
   },
   {
    "text": "solo",
-   "start": 17.8022,
-   "end": 18.0568
+   "start": 18.945,
+   "end": 19.22
   },
   {
    "text": "auto:",
-   "start": 18.0684,
-   "end": 18.3809
+   "start": 19.2325,
+   "end": 19.57
   },
   {
    "text": "el",
-   "start": 18.5661,
-   "end": 18.6818
+   "start": 19.77,
+   "end": 19.895
   },
   {
    "text": "tuyo.",
-   "start": 18.7397,
-   "end": 19.0175
+   "start": 19.9575,
+   "end": 20.2575
   },
   {
    "text": "Y",
-   "start": 19.3075,
-   "end": 19.4116
+   "start": 20.5475,
+   "end": 20.66
   },
   {
    "text": "le",
-   "start": 19.4348,
-   "end": 19.5043
+   "start": 20.685,
+   "end": 20.76
   },
   {
    "text": "basta",
-   "start": 19.539,
-   "end": 19.7705
+   "start": 20.7975,
+   "end": 21.0475
   },
   {
    "text": "menos",
-   "start": 19.7936,
-   "end": 20.0251
+   "start": 21.0725,
+   "end": 21.3225
   },
   {
    "text": "de",
-   "start": 20.0598,
-   "end": 20.1177
+   "start": 21.36,
+   "end": 21.4225
   },
   {
    "text": "medio",
-   "start": 20.1524,
-   "end": 20.3723
+   "start": 21.46,
+   "end": 21.6975
   },
   {
    "text": "segundo.",
-   "start": 20.3838,
-   "end": 20.7889
+   "start": 21.71,
+   "end": 22.1475
   },
   {
    "text": "¿Desde",
-   "start": 21.1789,
-   "end": 21.4104
+   "start": 22.5375,
+   "end": 22.7875
   },
   {
    "text": "qué",
-   "start": 21.4567,
-   "end": 21.5145
+   "start": 22.8375,
+   "end": 22.9
   },
   {
    "text": "distancia?",
-   "start": 21.5377,
-   "end": 22.0238
+   "start": 22.925,
+   "end": 23.45
   },
   {
    "text": "Piensa",
-   "start": 22.3138,
-   "end": 22.6494
+   "start": 23.74,
+   "end": 24.1025
   },
   {
    "text": "un",
-   "start": 22.661,
-   "end": 22.7536
+   "start": 24.115,
+   "end": 24.215
   },
   {
    "text": "número.",
-   "start": 22.7651,
-   "end": 23.1008
+   "start": 24.2275,
+   "end": 24.59
   },
   {
    "text": "¿Trescientos",
-   "start": 23.4708,
-   "end": 23.9338
+   "start": 24.96,
+   "end": 25.46
   },
   {
    "text": "metros?…",
-   "start": 23.9685,
-   "end": 24.3389
+   "start": 25.4975,
+   "end": 25.8975
   },
   {
    "text": "Más.",
-   "start": 24.7889,
-   "end": 25.1593
+   "start": 26.3475,
+   "end": 26.7475
   },
   {
    "text": "¿Un",
-   "start": 25.4693,
-   "end": 25.6198
+   "start": 27.0575,
+   "end": 27.22
   },
   {
    "text": "kilómetro?…",
-   "start": 25.6313,
-   "end": 26.129
+   "start": 27.2325,
+   "end": 27.77
   },
   {
    "text": "Más.",
-   "start": 26.579,
-   "end": 26.9494
+   "start": 28.22,
+   "end": 28.62
   },
   {
    "text": "Hasta",
-   "start": 27.2994,
-   "end": 27.5425
+   "start": 28.97,
+   "end": 29.2325
   },
   {
    "text": "casi",
-   "start": 27.6004,
-   "end": 27.7971
+   "start": 29.295,
+   "end": 29.5075
   },
   {
    "text": "tres",
-   "start": 27.8781,
-   "end": 28.0402
+   "start": 29.595,
+   "end": 29.77
   },
   {
    "text": "kilómetros.",
-   "start": 28.0865,
-   "end": 28.6536
+   "start": 29.82,
+   "end": 30.4325
   },
   {
    "text": "A",
-   "start": 29.2536,
-   "end": 29.3809
+   "start": 31.0325,
+   "end": 31.17
   },
   {
    "text": "esa",
-   "start": 29.4156,
-   "end": 29.5776
+   "start": 31.2075,
+   "end": 31.3825
   },
   {
    "text": "distancia,",
-   "start": 29.6008,
-   "end": 30.0985
+   "start": 31.4075,
+   "end": 31.945
   },
   {
    "text": "ni",
-   "start": 30.2837,
-   "end": 30.3879
+   "start": 32.145,
+   "end": 32.2575
   },
   {
    "text": "siquiera",
-   "start": 30.411,
-   "end": 30.7814
+   "start": 32.2825,
+   "end": 32.6825
   },
   {
    "text": "es",
-   "start": 30.7929,
-   "end": 30.8971
+   "start": 32.695,
+   "end": 32.8075
   },
   {
    "text": "un",
-   "start": 30.9087,
-   "end": 31.0244
+   "start": 32.82,
+   "end": 32.945
   },
   {
    "text": "punto.",
-   "start": 31.036,
-   "end": 31.3253
+   "start": 32.9575,
+   "end": 33.27
   },
   {
    "text": "A",
-   "start": 31.6753,
-   "end": 31.7795
+   "start": 33.52,
+   "end": 33.6325
   },
   {
    "text": "ciento",
-   "start": 31.7911,
-   "end": 32.092
+   "start": 33.645,
+   "end": 33.97
   },
   {
    "text": "cuarenta,",
-   "start": 32.1383,
-   "end": 32.5434
+   "start": 34.02,
+   "end": 34.4575
   },
   {
    "text": "tardarías",
-   "start": 32.7749,
-   "end": 33.2147
+   "start": 34.7075,
+   "end": 35.1825
   },
   {
    "text": "más",
-   "start": 33.2378,
-   "end": 33.3883
+   "start": 35.2075,
+   "end": 35.37
   },
   {
    "text": "de",
-   "start": 33.423,
-   "end": 33.4925
+   "start": 35.4075,
+   "end": 35.4825
   },
   {
    "text": "un",
-   "start": 33.5156,
-   "end": 33.5966
+   "start": 35.5075,
+   "end": 35.595
   },
   {
    "text": "minuto",
-   "start": 33.6429,
-   "end": 33.9207
+   "start": 35.645,
+   "end": 35.945
   },
   {
    "text": "en",
-   "start": 33.9323,
-   "end": 34.0017
+   "start": 35.9575,
+   "end": 36.0325
   },
   {
    "text": "llegar.",
-   "start": 34.0249,
-   "end": 34.3374
+   "start": 36.0575,
+   "end": 36.395
   },
   {
    "text": "Cuando",
-   "start": 34.7074,
-   "end": 34.9504
+   "start": 36.765,
+   "end": 37.0275
   },
   {
    "text": "la",
-   "start": 34.9736,
-   "end": 35.0431
+   "start": 37.0525,
+   "end": 37.1275
   },
   {
    "text": "ves…",
-   "start": 35.0662,
-   "end": 35.2977
+   "start": 37.1525,
+   "end": 37.4025
   },
   {
    "text": "ya",
-   "start": 35.4829,
-   "end": 35.5754
+   "start": 37.6025,
+   "end": 37.7025
   },
   {
    "text": "te",
-   "start": 35.6449,
-   "end": 35.7028
+   "start": 37.7775,
+   "end": 37.84
   },
   {
    "text": "midieron.",
-   "start": 35.7259,
-   "end": 36.1426
+   "start": 37.865,
+   "end": 38.315
   },
   {
    "text": "Pero",
-   "start": 36.6426,
-   "end": 36.8277
+   "start": 38.815,
+   "end": 39.015
   },
   {
    "text": "hay",
-   "start": 36.8277,
-   "end": 36.9319
+   "start": 39.015,
+   "end": 39.1275
   },
   {
    "text": "un",
-   "start": 36.9551,
-   "end": 37.0361
+   "start": 39.1525,
+   "end": 39.24
   },
   {
    "text": "detalle.",
-   "start": 37.0708,
-   "end": 37.4296
+   "start": 39.2775,
+   "end": 39.665
   },
   {
    "text": "Te",
-   "start": 37.6996,
-   "end": 37.7922
+   "start": 39.935,
+   "end": 40.035
   },
   {
    "text": "mide",
-   "start": 37.8269,
-   "end": 38.0005
+   "start": 40.0725,
+   "end": 40.26
   },
   {
    "text": "a",
-   "start": 38.0005,
-   "end": 38.0353
+   "start": 40.26,
+   "end": 40.2975
   },
   {
    "text": "tres",
-   "start": 38.1047,
-   "end": 38.2668
+   "start": 40.3725,
+   "end": 40.5475
   },
   {
    "text": "kilómetros…",
-   "start": 38.313,
-   "end": 38.8339
+   "start": 40.5975,
+   "end": 41.16
   },
   {
    "text": "pero",
-   "start": 39.1039,
-   "end": 39.2312
+   "start": 41.43,
+   "end": 41.5675
   },
   {
    "text": "para",
-   "start": 39.2891,
-   "end": 39.4164
+   "start": 41.63,
+   "end": 41.7675
   },
   {
    "text": "que",
-   "start": 39.4743,
-   "end": 39.5206
+   "start": 41.83,
+   "end": 41.88
   },
   {
    "text": "tu",
-   "start": 39.5784,
-   "end": 39.6247
+   "start": 41.9425,
+   "end": 41.9925
   },
   {
    "text": "patente",
-   "start": 39.6826,
-   "end": 40.0067
+   "start": 42.055,
+   "end": 42.405
   },
   {
    "text": "salga",
-   "start": 40.0298,
-   "end": 40.3307
+   "start": 42.43,
+   "end": 42.755
   },
   {
    "text": "en",
-   "start": 40.3423,
-   "end": 40.377
+   "start": 42.7675,
+   "end": 42.805
   },
   {
    "text": "la",
-   "start": 40.4118,
-   "end": 40.4696
+   "start": 42.8425,
+   "end": 42.905
   },
   {
    "text": "foto,",
-   "start": 40.4928,
-   "end": 40.7821
+   "start": 42.93,
+   "end": 43.2425
   },
   {
    "text": "necesita",
-   "start": 40.9673,
-   "end": 41.4418
+   "start": 43.4425,
+   "end": 43.955
   },
   {
    "text": "tenerte",
-   "start": 41.4997,
-   "end": 41.8469
+   "start": 44.0175,
+   "end": 44.3925
   },
   {
    "text": "a",
-   "start": 41.8469,
-   "end": 41.8932
+   "start": 44.3925,
+   "end": 44.4425
   },
   {
    "text": "unos",
-   "start": 41.9279,
-   "end": 42.1247
+   "start": 44.48,
+   "end": 44.6925
   },
   {
    "text": "doscientos",
-   "start": 42.171,
-   "end": 42.5993
+   "start": 44.7425,
+   "end": 45.205
   },
   {
    "text": "metros.",
-   "start": 42.634,
-   "end": 43.0275
+   "start": 45.2425,
+   "end": 45.6675
   },
   {
    "text": "Entonces…",
-   "start": 43.3775,
-   "end": 43.9099
+   "start": 46.0175,
+   "end": 46.5925
   },
   {
    "text": "¿cuándo",
-   "start": 44.095,
-   "end": 44.2802
+   "start": 46.7925,
+   "end": 46.9925
   },
   {
    "text": "te",
-   "start": 44.3265,
-   "end": 44.3844
+   "start": 47.0425,
+   "end": 47.105
   },
   {
    "text": "pillaron",
-   "start": 44.4423,
-   "end": 44.7548
+   "start": 47.1675,
+   "end": 47.505
   },
   {
    "text": "de",
-   "start": 44.7895,
-   "end": 44.8358
+   "start": 47.5425,
+   "end": 47.5925
   },
   {
    "text": "verdad?",
-   "start": 44.8589,
-   "end": 45.2061
+   "start": 47.6175,
+   "end": 47.9925
   }
  ]
 }
