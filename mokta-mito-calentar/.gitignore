@@ -1,0 +1,5 @@
+node_modules/
+out/
+public/audio/stems/
+public/audio/vo/
+public/audio/mix_sinvoz.wav
