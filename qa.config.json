@@ -1,0 +1,9 @@
+{
+  "expectedWidth": 1080,
+  "expectedHeight": 1920,
+  "checkpoints": ["start", "middle", "end"],
+  "minTextLayersPerFrame": 1,
+  "minOpacity": 0.05,
+  "minPixelStdDevInTextBox": 8,
+  "compositions": {}
+}
