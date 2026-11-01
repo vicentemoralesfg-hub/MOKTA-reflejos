@@ -91,9 +91,10 @@ riser_start = SHOT["kilometro"]
 
 # Intensidad general (la tensión sube hasta el reveal de 3 km, cae y vuelve más grave)
 inten = smooth_env([
-    (0, 0.85), (SHOT["hook2"], 0.7), (SHOT["laVes"], 0.6), (SHOT["radarLanza"], 0.62), (SHOT["laserPistola"], 0.7), (SHOT["desdeDistancia"], 0.78),
+    (0, 0.85), (SHOT["hook2"], 0.7), (SHOT["desdeDistancia"], 0.78),
     (riser_start, 0.9), (drop_start - 0.01, 1.0), (drop_start, 0.0), (drop_end - 0.4, 0.0),
-    (drop_end, 0.75), (SHOT["yaTeMidieron"], 0.85), (SHOT["detalle"], 0.6), (SHOT["pillaron"], 0.7), (T, 0.75),
+    (drop_end, 0.75), (SHOT["comoLoHace"], 0.62), (SHOT["laserPistola"], 0.72), (SHOT["yaTeMidieron"], 0.85),
+    (SHOT["detalle"], 0.6), (SHOT["pillaron"], 0.7), (T, 0.75),
 ])
 
 pad = np.zeros((2, N))
@@ -240,7 +241,7 @@ for h in CUES["hits"]:
         add(fx, w["start"] - 0.01, boom(0.5, 2.6) * 0.0 + lp(rng.standard_normal(int(2.6 * SR)), 300) * env(int(2.6 * SR), 0.01, 1.6) * 0.15)
 
 # Motor y viento desde el primer cuadro (gancho en plena acción) y en la llegada a la patrulla
-for sid, dur, g in [("hook1", SHOT["hook2"] - SHOT["hook1"] + 0.25, 1.0), ("laVes", 1.3, 0.6)]:
+for sid, dur, g in [("hook1", SHOT["hook2"] - SHOT["hook1"] + 0.25, 1.0)]:
     n = int(dur * SR)
     tt = np.arange(n) / SR
     e = np.minimum(1, (n - np.arange(n)) / (0.25 * SR))
@@ -249,7 +250,7 @@ for sid, dur, g in [("hook1", SHOT["hook2"] - SHOT["hook1"] + 0.25, 1.0), ("laVe
     add(fx, SHOT[sid], (rumble + wind) * e * 0.05 * g)
 
 # Zumbido muy leve del láser mientras el haz está activo
-a, b = idx(W[FIRST["laserPistola"] + 3]["start"]), idx(SHOT["trescientos"])  # desde "láser"
+a, b = idx(W[FIRST["laserPistola"] + 3]["start"]), idx(SHOT["cuandoLaVes"])  # desde "láser" hasta "cuando la ves"
 n = b - a
 hum = (np.sin(2 * np.pi * 220 * np.arange(n) / SR) * 0.5 + np.sin(2 * np.pi * 330 * np.arange(n) / SR) * 0.25)
 hum *= np.minimum(1, np.minimum(np.arange(n), n - np.arange(n)) / (0.3 * SR)) * 0.006
@@ -267,7 +268,7 @@ def cut_whoosh(i, gain):
 
 
 for i, s_ in enumerate(CUES["shots"][1:], start=1):
-    add(fx, SHOT[s_["id"]] - 0.28, cut_whoosh(i, 0.9 if s_["id"] in ("mas1", "mas2", "tresKm", "yaTeMidieron", "doscientos") else 0.6))
+    add(fx, SHOT[s_["id"]] - 0.28, cut_whoosh(i, 0.9 if s_["id"] in ("mas1", "mas2", "tresKm", "yaTeMidieron", "doscientos", "pillaron") else 0.6))
 
 fx_st = np.stack([fx, fx]) + wet(fx, 0.45)
 

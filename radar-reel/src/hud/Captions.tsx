@@ -15,6 +15,10 @@ type Group = { words: number[]; start: number; end: number; block?: boolean };
 /** Frases que se muestran completas de una vez (el gancho), en vez de palabra por palabra. */
 const BLOCKS = ((cues as { captionBlocks?: number[][] }).captionBlocks ?? []) as [number, number][];
 
+/** Texto a mostrar por palabra (números en cifras); "" = la palabra no se muestra. */
+const DISPLAY = ((cues as { captionText?: Record<string, string> }).captionText ?? {}) as Record<string, string>;
+const shown = (i: number) => DISPLAY[String(i)] ?? WORDS[i].text;
+
 const MAX_WORDS = 3;
 const MAX_CHARS = 17;
 
@@ -40,7 +44,7 @@ const buildGroups = (): Group[] => {
   const groups: number[][] = [];
   for (const ph of phrases) {
     let g: number[] = [];
-    const len = (ids: number[]) => ids.reduce((a, i) => a + WORDS[i].text.length + 1, 0);
+    const len = (ids: number[]) => ids.reduce((a, i) => a + (shown(i) ? shown(i).length + 1 : 0), 0);
     ph.forEach((i, k) => {
       const remaining = ph.length - k;
       if (g.length && (g.length >= MAX_WORDS || len([...g, i]) > MAX_CHARS) && !(remaining === 1 && g.length < MAX_WORDS && len([...g, i]) <= MAX_CHARS + 3)) {
@@ -92,6 +96,7 @@ export const Captions: React.FC<{ y?: number }> = ({ y = 1185 }) => {
       >
         {g.words.map((i) => {
           const w = WORDS[i];
+          if (!shown(i)) return null;
           const p = g.block ? 1 : interpolate(t, [w.start - 0.04, w.start + 0.1], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
@@ -117,7 +122,7 @@ export const Captions: React.FC<{ y?: number }> = ({ y = 1185 }) => {
                 letterSpacing: 0.5,
               }}
             >
-              {w.text}
+              {shown(i)}
             </span>
           );
         })}

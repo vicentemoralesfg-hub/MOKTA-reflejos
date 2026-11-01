@@ -640,7 +640,7 @@ const laserTuyo = (t: number, d: number): ShotFrame => {
         tone: "red",
         size: "story",
         leader: 90,
-        ...pop(t, wordIn("laserTuyo", 4) - 0.1),
+        ...pop(t, wordIn("laserTuyo", 7) - 0.1), // "tuyo"
       },
     ],
   };
@@ -902,7 +902,7 @@ const tresKm = (t: number, d: number, id: ShotId): ShotFrame => {
 
 const niUnPunto = (t: number, id: ShotId): ShotFrame => {
   // acercamiento continuo hasta que aparece el anillo (la cámara no se queda quieta)
-  const ringT = wordIn(id, 7) - 0.15;
+  const ringT = wordIn(id, 6) - 0.15; // "punto"
   const zoom = io(t, 0.05, Math.max(0.95, ringT + 0.1));
   return {
     world: ganchoWorld(0, ganchoCam(0, zoom, zoom)),
@@ -983,9 +983,11 @@ const yaTeMidieron = (t: number): ShotFrame => {
   };
 };
 
-const detalle = (t: number, d: number): ShotFrame => {
-  // el detalle: la pistola también es una cámara (la foto es la que necesita tu patente)
+const detalle = (t: number, d: number, foto = false): ShotFrame => {
+  // el detalle: la pistola también es una cámara (la foto es la que necesita tu patente).
+  // foto: plano más cerrado; en "foto" el lente destella como un flash y aparece CÁMARA.
   const zh = 600 - V * t;
+  const tf = foto ? wordIn("detalleFoto", 5) - 0.08 : 99;
   const off = { x: SHOULDER_X + 1.25, z: 1.0, rotY: 0 };
   const tgt = heroFront(zh);
   off.rotY = Math.atan2(tgt[0] - off.x, tgt[2] - off.z);
@@ -994,11 +996,17 @@ const detalle = (t: number, d: number): ShotFrame => {
   return {
     world: {
       cam: cam(
-        mix3(
-          [off.x - 0.9, 1.2, off.z + 3.6],
-          [off.x - 0.7, 1.25, off.z + 3.0],
-          k,
-        ),
+        foto
+          ? mix3(
+              [off.x - 0.62, 1.28, off.z + 2.5],
+              [off.x - 0.5, 1.32, off.z + 2.05],
+              k,
+            )
+          : mix3(
+              [off.x - 0.9, 1.2, off.z + 3.6],
+              [off.x - 0.7, 1.25, off.z + 3.0],
+              k,
+            ),
         [off.x + 0.1, 1.45, off.z],
         38,
       ),
@@ -1007,7 +1015,7 @@ const detalle = (t: number, d: number): ShotFrame => {
       dots: [
         {
           at: [muzzle[0], muzzle[1], muzzle[2] + 0.04],
-          size: 0.5 + 0.12 * Math.sin(t * 14),
+          size: 0.5 + 0.12 * Math.sin(t * 14) + 3.5 * flashAt(t, tf, 1, 0.35),
           color: "#e8f2ff",
           opacity: 1,
         },
@@ -1022,7 +1030,7 @@ const detalle = (t: number, d: number): ShotFrame => {
         y: 340,
         size: "story",
         tone: "key",
-        ...pop(t, 0.1),
+        ...(foto ? pop(t, tf) : { opacity: 0 }),
       },
     ],
   };
@@ -1060,7 +1068,7 @@ const teMide = (t: number, d: number, id: ShotId): ShotFrame => {
         y: 320,
         size: "story",
         tone: "red",
-        ...pop(t, wordIn(id, 1)),
+        ...pop(t, wordIn(id, 2) - 0.1), // "tres"
       },
     ],
   };
@@ -1105,7 +1113,11 @@ const patenteFoto2 = (t: number): ShotFrame => ({
     opacity: 1,
     flash: flashAt(t, 0, 0.6, 0.2),
     stamp: "ILEGIBLE",
-    stampK: eo(t, 0.3, 0.45),
+    stampK: eo(
+      t,
+      wordIn("patenteFoto2", 6) - 0.1,
+      wordIn("patenteFoto2", 6) + 0.05,
+    ), // "patente"
   },
 });
 
@@ -1240,9 +1252,11 @@ const pillaron = (t: number, d: number): ShotFrame => {
 export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
   hook1,
   hook2,
+  aEsaDistancia: hook2, // vuelve la subjetiva del gancho: «¿LA VES?»
   laVes,
   tarde,
   comoTeMidio,
+  comoLoHace: comoTeMidio,
   radarLanza,
   radarAncha,
   radarMedir,
@@ -1263,7 +1277,8 @@ export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
   unMinuto,
   cuandoLaVes: (t) => povPatrol(t, -30, 13, false),
   yaTeMidieron,
-  detalle,
+  detalle: (t, d) => detalle(t, d),
+  detalleFoto: (t, d) => detalle(t, d, true),
   teMide: (t, d) => teMide(t, d, "teMide"),
   patenteFoto,
   patenteFoto2,
