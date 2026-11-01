@@ -1,0 +1,5 @@
+cand 0   WER 0.00  tono 98 Hz  ±3.17 st  HNR 8.5 dB  2.74 pal/s | ¿Sabías que casi todos cometemos este error con el auto?  Escucha bien, porque te va a ahorrar plata.  Y no.  No es lo que piensas.
+cand 1   WER 0.00  tono 191 Hz  ±3.96 st  HNR 11.6 dB  2.79 pal/s | ¿Sabías que casi todos cometemos este error con el auto?  Escucha bien, porque te va a ahorrar plata.  Y no, no es lo que piensas.
+cand 2   WER 0.00  tono 146 Hz  ±4.44 st  HNR 7.7 dB  3.19 pal/s | ¿Sabías que casi todos cometemos este error con el auto?  Escucha bien, porque te va a ahorrar plata y no, no es lo que piensas.
+cand 3 ◀ WER 0.00  tono 142 Hz  ±4.92 st  HNR 9.9 dB  2.58 pal/s | ¿Sabías que casi todos cometemos este error con el auto?  ¡Escucha bien, porque te va a ahorrar plata!  Y no, no es lo que piensas.
+cand 4   WER 0.00  tono 164 Hz  ±4.42 st  HNR 11.8 dB  3.16 pal/s | ¿Sabías que casi todos cometemos este error con el auto?  Escucha bien, porque te va a ahorrar plata.  Y no, no es lo que piensas.

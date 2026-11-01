@@ -1,54 +1,20 @@
 {
-  "_comment": "Guion v2 de la locución. 'voice' describe el timbre (igual en todas las frases); 'emotion' dirige la interpretación de cada escena. Lo usa scripts/gen_vo.py (Qwen3-TTS VoiceDesign).",
-  "voice": "Voice: a Chilean man in his early 30s; warm, charismatic and close; medium-low pitch; crisp diction; speaks Latin American Spanish with a natural Chilean accent, like a popular car creator on Instagram Reels talking to a friend. Pace: fast and energetic social-media delivery, about three words per second, short natural pauses only.",
+  "_comment": "Guion de la locución v3. 'voice' describe la ÚNICA voz del video (Qwen3-TTS VoiceDesign); se diseña una vez sobre 'ref_text' y después se clona en todas las frases (modelo Base), así el timbre no cambia. La emoción de cada frase sale de la puntuación y del estilo de la referencia. Lo usa scripts/gen_vo.py.",
+  "voice": "A Latin American Spanish male narrator in his mid-30s with a soft Chilean accent. Deep-medium, resonant and warm voice; confident, magnetic and intriguing, like a top automotive storyteller on YouTube who keeps you hooked until the end. Very clear, crisp diction: every word is easy to understand. Energetic but controlled delivery, dynamic intonation with natural emphasis, steady pace around three words per second.",
+  "ref_text": "¿Sabías que casi todos cometemos este error con el auto? Escucha bien, porque te va a ahorrar plata. ¡Y no, no es lo que piensas!",
+  "f0_range_hz": [90, 150],
   "lines": {
-    "hook": {
-      "text": "¿Calientas el auto diez minutos cada mañana?",
-      "emotion": "Delivery: curious and slightly provocative, as if catching the listener red-handed; rising question intonation, quick pace."
-    },
-    "para": {
-      "text": "Para. Le estás haciendo más daño que bien.",
-      "emotion": "Delivery: 'Para.' is a sharp, firm one-word command followed by a short pause; then serious and concerned, stressing 'más daño'."
-    },
-    "teaser": {
-      "text": "Quédate: te digo cuánto hay que esperar de verdad.",
-      "emotion": "Delivery: lower, complicit and intriguing, as if sharing a secret; build curiosity and stress 'de verdad'."
-    },
-    "carburador": {
-      "text": "Este mito viene de los autos con carburador, que sí necesitaban calor.",
-      "emotion": "Delivery: storytelling tone, a bit nostalgic and explanatory, steady pace, stress 'carburador'."
-    },
-    "inyeccion": {
-      "text": "Pero hoy, la inyección electrónica ajusta la mezcla sola, con frío o con calor.",
-      "emotion": "Delivery: confident and clear, upbeat modern tone, stress 'sola'."
-    },
-    "bencina": {
-      "text": "En ralentí pasa algo peor: el motor frío inyecta bencina extra, que puede lavar el aceite de los cilindros.",
-      "emotion": "Delivery: grave and serious, building tension, slower and heavier on 'lavar el aceite de los cilindros'."
-    },
-    "lento": {
-      "text": "Y como detenido se calienta lentísimo, ese desgaste dura mucho más.",
-      "emotion": "Delivery: emphatic on 'lentísimo', worried, then firm on 'mucho más'."
-    },
-    "horas": {
-      "text": "Diez minutos al día son sesenta horas al año: casi un estanque de bencina, sin moverte ni un metro.",
-      "emotion": "Delivery: incredulous and emphatic, stressing the numbers 'sesenta horas' and 'casi un estanque', with disbelief on 'sin moverte ni un metro'."
-    },
-    "correcto": {
-      "text": "¿Lo correcto? Enciéndelo, ponte el cinturón, unos treinta segundos, y sal manejando suave.",
-      "emotion": "Delivery: relieved, warm and upbeat, brisk and fluid like a quick checklist; only a tiny pause before 'unos treinta segundos'; confident ending."
-    },
-    "suave": {
-      "text": "Sin acelerones hasta que tome temperatura: andando, se calienta mucho más rápido.",
-      "emotion": "Delivery: friendly practical advice, calm and confident, positive on 'mucho más rápido'."
-    },
-    "escarcha": {
-      "text": "Solo espera más si el parabrisas está escarchado: primero ver, después partir.",
-      "emotion": "Delivery: careful and responsible, serious but calm; clear and rhythmic on 'primero ver, después partir'."
-    },
-    "cta": {
-      "text": "Y tú, ¿cuántos minutos lo calentabas? Te leo en los comentarios.",
-      "emotion": "Delivery: friendly, playful and smiling, inviting the viewer to comment."
-    }
+    "hook": { "text": "¿Calientas el auto diez minutos cada mañana?" },
+    "para": { "text": "¡Para! Le estás haciendo más daño que bien." },
+    "teaser": { "text": "Quédate: te digo cuánto hay que esperar de verdad." },
+    "carburador": { "text": "Este mito viene de los autos con carburador, que sí necesitaban calor." },
+    "inyeccion": { "text": "Pero hoy, la inyección electrónica ajusta la mezcla sola, con frío o con calor." },
+    "bencina": { "text": "En ralentí pasa algo peor: el motor frío inyecta bencina extra, que puede lavar el aceite de los cilindros." },
+    "lento": { "text": "Y como detenido se calienta lentísimo, ese desgaste dura mucho más." },
+    "horas": { "text": "Diez minutos al día son sesenta horas al año: ¡casi un estanque de bencina, sin moverte ni un metro!" },
+    "correcto": { "text": "¿Lo correcto? Enciéndelo, ponte el cinturón, unos treinta segundos, y sal manejando suave." },
+    "suave": { "text": "Sin acelerones hasta que tome temperatura: andando, se calienta mucho más rápido." },
+    "escarcha": { "text": "Solo espera más si el parabrisas está escarchado: primero ver, después partir." },
+    "cta": { "text": "Y tú, ¿cuántos minutos lo calentabas? Te leo en los comentarios." }
   }
 }

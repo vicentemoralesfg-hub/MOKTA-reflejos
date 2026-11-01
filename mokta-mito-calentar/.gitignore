@@ -5,3 +5,4 @@ public/audio/vo/
 public/audio/mix_sinvoz.wav
 public/audio/vo_takes/
 __pycache__/
+public/audio/vo_ref/cand_*.wav
