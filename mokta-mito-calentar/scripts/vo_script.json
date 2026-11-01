@@ -11,11 +11,11 @@
       "emotion": "Delivery: 'Para.' is a sharp, firm one-word command followed by a short pause; then serious and concerned, stressing 'más daño'."
     },
     "teaser": {
-      "text": "Quédate, porque te voy a decir cuánto hay que esperar de verdad.",
+      "text": "Quédate: te digo cuánto hay que esperar de verdad.",
       "emotion": "Delivery: lower, complicit and intriguing, as if sharing a secret; build curiosity and stress 'de verdad'."
     },
     "carburador": {
-      "text": "Este mito viene de los autos con carburador, que sí necesitaban calor para funcionar bien.",
+      "text": "Este mito viene de los autos con carburador, que sí necesitaban calor.",
       "emotion": "Delivery: storytelling tone, a bit nostalgic and explanatory, steady pace, stress 'carburador'."
     },
     "inyeccion": {
@@ -36,10 +36,10 @@
     },
     "correcto": {
       "text": "¿Lo correcto? Enciéndelo, ponte el cinturón, unos treinta segundos, y sal manejando suave.",
-      "emotion": "Delivery: relieved, warm and reassuring, upbeat; a brief pause before 'unos treinta segundos'; confident ending."
+      "emotion": "Delivery: relieved, warm and upbeat, brisk and fluid like a quick checklist; only a tiny pause before 'unos treinta segundos'; confident ending."
     },
     "suave": {
-      "text": "Sin acelerones hasta que llegue a su temperatura normal: andando, se calienta mucho más rápido.",
+      "text": "Sin acelerones hasta que tome temperatura: andando, se calienta mucho más rápido.",
       "emotion": "Delivery: friendly practical advice, calm and confident, positive on 'mucho más rápido'."
     },
     "escarcha": {

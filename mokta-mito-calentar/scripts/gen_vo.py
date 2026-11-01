@@ -36,12 +36,12 @@ DEFAULT_LEAD = 3
 TAIL = {"para": 6, "teaser": 6, "horas": 8, "correcto": 8, "escarcha": 8, "cta": 36}
 DEFAULT_TAIL = 5
 MIN_DUR = {"para": 60, "cta": 110}
-MAX_PAUSE = {"para": 0.55, "correcto": 0.4}
+MAX_PAUSE = {"para": 0.5, "correcto": 0.28}
 # Ritmo objetivo de reel (palabras/s). Si una frase queda más lenta, se acelera con Rubber Band R3
 # (estiramiento de tiempo de alta calidad, sin cambiar el tono), hasta un máximo de ×1,25.
-TARGET_WPS = 3.0
-MAX_TEMPO = 1.25
-DEFAULT_MAX_PAUSE = 0.32
+TARGET_WPS = 3.35
+MAX_TEMPO = 1.3
+DEFAULT_MAX_PAUSE = 0.22
 
 
 def norm_words(s):
@@ -66,7 +66,7 @@ def wer(ref, hyp):
     return d[len(r), len(h)] / max(1, len(r))
 
 
-def takes(n):
+def takes(n, only=None):
     import torch
     from qwen_tts import Qwen3TTSModel
 
@@ -74,6 +74,7 @@ def takes(n):
     os.makedirs(TAKES_DIR, exist_ok=True)
     model = Qwen3TTSModel.from_pretrained("Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign", device_map="cpu", dtype=torch.float32)
     ids = [b["id"] for b in json.load(open(TL_PATH))["beats"]]
+    ids = [i for i in ids if not only or i in only]
     for k in range(n):
         torch.manual_seed(1000 + k)
         for bid in ids:
@@ -255,6 +256,6 @@ def build():
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "build"
     if cmd == "takes":
-        takes(int(sys.argv[2]) if len(sys.argv) > 2 else 2)
+        takes(int(sys.argv[2]) if len(sys.argv) > 2 else 2, sys.argv[3:] or None)
     else:
         build()

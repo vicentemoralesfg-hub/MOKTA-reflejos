@@ -1,13 +1,13 @@
 # MOKTA · El mito de calentar el auto (Remotion)
 
-Reel vertical 1080×1920 · 30 fps · 48,5 s · H.264 + AAC. Locución en español (fonética latinoamericana), texto en pantalla sincronizado palabra por palabra, música y efectos 100 % sintetizados.
+Reel vertical 1080×1920 · 30 fps · 50,8 s · H.264 + AAC. **v2**: locución dirigida con emoción por frase (Qwen3-TTS VoiceDesign, voz masculina latinoamericana cálida y enérgica), texto en pantalla sincronizado palabra por palabra, música cinematográfica y efectos 100 % sintetizados. Ver `ANALISIS_v1.md` para el análisis crítico de la v1 y los cambios.
 
 **Entregables** (`entrega/`)
 
 | Archivo | Qué es |
 |---|---|
-| `MOKTA_MitoCalentarAuto_v1.mp4` | Versión principal: voz + música + efectos |
-| `MOKTA_MitoCalentarAuto_v1_sinvoz.mp4` | Misma imagen, solo música + efectos (para poner voz propia o un audio en tendencia) |
+| `MOKTA_MitoCalentarAuto_v2.mp4` | Versión principal: voz + música + efectos |
+| `MOKTA_MitoCalentarAuto_v2_sinvoz.mp4` | Misma imagen, solo música + efectos (para poner voz propia o un audio en tendencia) |
 | `portada.jpg` | Portada sugerida para el Reel |
 | `texto_publicacion.md` | Descripción, hashtags y fuentes para la publicación |
 
@@ -15,7 +15,7 @@ Reel vertical 1080×1920 · 30 fps · 48,5 s · H.264 + AAC. Locución en españ
 
 | # | Escena | Qué hace para retener |
 |---|---|---|
-| 1 | Gancho (0–2,6 s) | Pregunta directa + auto con escarcha "calentando" + cronómetro que corre de 00:00 a 10:00 desde el primer fotograma |
+| 1 | Gancho (0–2,3 s) | Pregunta directa + auto con escarcha "calentando" + cronómetro que corre de 00:00 a 10:00 desde el primer fotograma |
 | 2 | "Para." | Corte seco: el plano se congela en rojo, golpe sonoro, sello gigante |
 | 3 | Bucle abierto | "Te digo cuánto hay que esperar de verdad": cronómetro con cifras borrosas (la respuesta llega en la escena 9) |
 | 4–5 | 01 · El origen | Carburador (look de película antigua, el "chupete") → rodillo de años → inyección electrónica |
@@ -41,16 +41,21 @@ Cambio visual o sonoro cada 1–2 s, capítulos numerados arriba para dar sensac
 ```bash
 npm i
 python3 scripts/gen_textures.py         # grano de película + escarcha (PNG procedurales)
-python3 scripts/gen_vo.py               # locución (Kokoro-82M, Apache 2.0) + tiempos por palabra → src/timeline.json
+python3 scripts/gen_vo.py takes 2       # 2 tomas por frase con Qwen3-TTS VoiceDesign (guion y emociones: scripts/vo_script.json)
+python3 scripts/gen_vo.py build         # elige la mejor toma (Whisper + Resemblyzer + Praat), ajusta ritmo (Rubber Band) → src/timeline.json
 python3 scripts/gen_audio.py            # música + efectos + mezclas → public/audio/
 npx remotion studio                     # vista previa (composición MitoCalentarAuto + escenas sueltas)
 npx remotion render MitoCalentarAuto out/video_muted.mp4 --muted --codec=h264 --crf=15 --props='{"audio":null}'
 bash scripts/assemble.sh                # normaliza a −14 LUFS y genera entrega/*.mp4
 ```
 
-`gen_vo.py` necesita `pip install kokoro misaki torch soundfile faster-whisper phonemizer-fork` (sin extras de inglés)
-y `espeak-ng`. Si cambias el texto de la locución (`vo` en `src/timeline.json`), vuelve a correr `gen_vo.py` y `gen_audio.py`:
+`gen_vo.py` necesita `pip install qwen-tts faster-whisper resemblyzer praat-parselmouth num2words`, `torch`/`torchaudio` CPU
+de la misma versión (p. ej. 2.9.1) y `rubberband-cli`. Si cambias el texto o la emoción de una frase (`scripts/vo_script.json`),
+borra sus tomas en `public/audio/vo_takes/`, vuelve a correr `gen_vo.py takes` + `build` y luego `gen_audio.py`:
 las escenas se re-sincronizan solas porque buscan cada palabra con `cue()`.
+
+¿Locución humana? Graba siguiendo `scripts/vo_script.json`, guarda cada frase como `public/audio/vo_takes/<escena>_0.wav`
+y corre `gen_vo.py build`: el video se ajusta a tu voz.
 
 En un servidor sin Chrome de Remotion, define `REMOTION_CHROME` con la ruta de un Chrome headless.
 
@@ -58,7 +63,8 @@ En un servidor sin Chrome de Remotion, define `REMOTION_CHROME` con la ruta de u
 
 | Qué | Archivo |
 |---|---|
-| Texto de la locución, orden y duración mínima de escenas | `src/timeline.json` |
+| Texto y dirección (emoción) de la locución | `scripts/vo_script.json` |
+| Duración de escenas y palabra→fotograma (generado) | `src/timeline.json` |
 | Colores, tipografías, zona segura | `src/config.ts` |
 | Escenas | `src/scenes/S01Hook.tsx` … `S12Cta.tsx` |
 | Ilustraciones (auto, calle, carburador, cilindro, íconos) | `src/art/` |

@@ -34,7 +34,7 @@ export const S03Teaser: React.FC = () => {
           </Big>
         </Reveal>
         <Reveal at={tCuanto - 3} from="up" style={{ marginTop: 6 }}>
-          <Big size={104}>te digo cuánto hay que esperar</Big>
+          <Big size={90}>te digo cuánto hay que esperar</Big>
         </Reveal>
         <Reveal at={tVerdad - 4} from="slam" dur={6} style={{ marginTop: 14 }}>
           <Big size={150}>

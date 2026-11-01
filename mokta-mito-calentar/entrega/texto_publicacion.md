@@ -16,4 +16,4 @@ Mándaselo al que lo deja prendido 10 minutos.
 
 Fuentes: Recursos Naturales Canadá (idling / warm-up), Argonne National Laboratory – DOE EE.UU. (consumo en ralentí ≈ 0,6 L/h, sedán 2.0 L). Con frío extremo, máximo 2–3 min; sigue siempre el manual de tu auto.
 
-**Portada**: `portada.jpg` (primer plano del gancho con "¿Calientas el auto 10 minutos cada mañana?").
+**Portada**: `portada.jpg` (gancho: "¿Calientas el auto 10 minutos cada mañana?" con el cronómetro en 10:00).

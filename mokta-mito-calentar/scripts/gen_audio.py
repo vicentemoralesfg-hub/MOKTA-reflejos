@@ -557,7 +557,7 @@ t60 = cue("horas", "sesenta", 35)
 for k in range(24):
     place(sfx, tick(1500 + 40 * k, 0.03, 0.1), t60 - 0.13 + k * (0.73 / 24))
 place(sfx, boom(1.2, 70, 30, 0.8), t60 - 0.13 + 0.73)
-tq = cue("horas", "quemando", 74)
+tq = cue("horas", "casi", 74)
 for k in range(5):  # gorgoteo de bencina (burbujas)
     n_b = int(0.12 * SR)
     ts = np.arange(n_b) / SR
@@ -670,7 +670,7 @@ def master(x):
 
 
 voice_st = np.stack([vo, vo], 1)
-mix = voice_st * 1.0 + music * 0.30 * duck[:, None] + sfx * 0.42 * duck_sfx[:, None]
+mix = voice_st * 1.0 + music * 0.34 * duck[:, None] + sfx * 0.42 * duck_sfx[:, None]
 mix_nv = music * 0.55 + sfx * 0.55
 
 out = os.path.join(ROOT, "public", "audio")

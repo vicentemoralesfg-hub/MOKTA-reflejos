@@ -106,7 +106,7 @@ export const S10Suave: React.FC = () => {
         </Reveal>
         <Reveal at={tHasta - 3} from="up" style={{ marginTop: 14 }}>
           <Sub size={44}>
-            hasta que llegue a su <b style={{ color: C.green }}>temperatura normal</b>
+            hasta que <b style={{ color: C.green }}>tome temperatura</b>
           </Sub>
         </Reveal>
       </AbsoluteFill>

@@ -80,7 +80,7 @@ export const S04Carburador: React.FC = () => {
         <div
           style={{
             position: "absolute",
-            left: 300,
+            left: 325,
             top: 770,
             width: 520,
             height: 620,

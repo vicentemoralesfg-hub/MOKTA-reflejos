@@ -27,6 +27,6 @@ mux() { # $1 = wav normalizado, $2 = mp4 de salida
 
 norm public/audio/mix.wav out/mix_norm.wav
 norm public/audio/mix_sinvoz.wav out/mix_sinvoz_norm.wav
-mux out/mix_norm.wav entrega/MOKTA_MitoCalentarAuto_v1.mp4
-mux out/mix_sinvoz_norm.wav entrega/MOKTA_MitoCalentarAuto_v1_sinvoz.mp4
+mux out/mix_norm.wav entrega/MOKTA_MitoCalentarAuto_${VERSION:-v2}.mp4
+mux out/mix_sinvoz_norm.wav entrega/MOKTA_MitoCalentarAuto_${VERSION:-v2}_sinvoz.mp4
 echo ASSEMBLED
