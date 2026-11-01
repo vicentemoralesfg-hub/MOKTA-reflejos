@@ -1,0 +1,12 @@
+# torch/torchaudio se instalan aparte según el hardware (ver instalar.sh / instalar.ps1)
+qwen-tts==0.1.1
+transformers==4.57.3
+accelerate==1.12.0
+faster-whisper==1.2.1
+ctranslate2==4.8.4
+pyloudnorm==0.2.0
+num2words==0.5.14
+huggingface-hub==0.36.2
+librosa==1.0.0
+soundfile==0.14.0
+scipy==1.18.1

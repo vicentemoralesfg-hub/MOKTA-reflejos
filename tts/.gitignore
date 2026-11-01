@@ -1,0 +1,7 @@
+.venv/
+models/
+salida/
+casting/
+__pycache__/
+*.pyc
+voices/*/candidatos/

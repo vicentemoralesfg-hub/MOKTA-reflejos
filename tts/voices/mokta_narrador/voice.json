@@ -1,0 +1,36 @@
+{
+  "name": "mokta_narrador",
+  "language": "Spanish",
+  "persona_instruct": "Locutor masculino de unos 40 años, español latinoamericano neutro. Timbre medio-grave, cálido y con cuerpo. Tono serio, seguro y analítico, como narrador de documental de investigación. Dicción clara, ritmo pausado, énfasis en las palabras clave y tensión contenida.",
+  "master": {
+    "file": "maestra.wav",
+    "text": "En dos mil diecinueve, nadie le prestó atención a este dato. Parecía irrelevante. Pero cuando cruzamos las cifras, apareció algo inquietante: el mismo patrón, repetido una y otra vez. ¿Casualidad? No. Y lo que descubrimos después… lo cambia todo."
+  },
+  "emotions": {
+    "neutral": {
+      "file": "refs/neutral.wav",
+      "text": "En dos mil diecinueve, nadie le prestó atención a este dato. Parecía irrelevante. Pero cuando cruzamos las cifras, apareció algo inquietante: el mismo patrón, repetido una y otra vez. ¿Casualidad? No. Y lo que descubrimos después… lo cambia todo.",
+      "spk_sim": 0.9999,
+      "cer": 0.0
+    },
+    "tension": {
+      "file": "refs/tension.wav",
+      "text": "Hace tiempo que algo no encajaba. Los registros estaban incompletos, y cada pista nos conducía al mismo lugar… un lugar que nadie quería mirar.",
+      "spk_sim": 0.9826,
+      "cer": 0.0
+    },
+    "sorpresa": {
+      "file": "refs/sorpresa.wav",
+      "text": "¿Y saben qué encontramos? Justo lo contrario de lo que todos decían. ¡Por primera vez, nadie conocía la verdad!",
+      "spk_sim": 0.9732,
+      "cer": 0.0
+    },
+    "enfasis": {
+      "file": "refs/enfasis.wav",
+      "text": "Esto no es una opinión. Es un hecho. Y el precio de ignorarlo será cien veces mayor: necesitamos conciencia, y la necesitamos ahora.",
+      "spk_sim": 0.9832,
+      "cer": 0.0
+    }
+  },
+  "created": "2026-11-01 22:53"
+}
