@@ -29,7 +29,7 @@ export const S06Bencina: React.FC = () => {
   const zoom = map(f, [0, D], [1.0, 1.1]);
   const cylIn = ramp(f, 0, 10);
   return (
-    <AbsoluteFill style={{ background: "radial-gradient(ellipse 85% 60% at 50% 60%, #121F36 0%, #070C17 60%, #03050A 100%)" }}>
+    <AbsoluteFill style={{ background: "radial-gradient(ellipse 85% 60% at 50% 60%, #3A0F14 0%, #160609 60%, #070203 100%)" }}>
       <AbsoluteFill style={{ transform: `translate(${sh.x + sh2.x}px, ${sh.y + sh2.y}px)` }}>
         <div
           style={{

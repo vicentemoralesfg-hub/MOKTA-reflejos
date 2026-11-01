@@ -271,16 +271,10 @@ def tape_stop(x, dur):
 
 
 # ================================================================ MÚSICA
+# Lecho cinematográfico único y coherente (Re menor → resolución en Si♭/Fa mayor en "Lo correcto"):
+# pulso grave + reloj + drones con reverberación + golpes en los capítulos + subidas antes de los momentos clave.
 BPM = 100
 SPB = 60 / BPM
-mus = np.zeros((N, 2))
-drums = np.zeros((N, 2))
-
-# acordes (MIDI): Re menor (oscuro) y progresión luminosa para la solución
-DARK = [[50, 53, 57], [46, 50, 53], [43, 46, 50], [45, 49, 52]]  # Dm Bb Gm A
-MAIN = [[50, 53, 57], [46, 50, 53], [41, 45, 48], [48, 52, 55]]  # Dm Bb F C
-LIGHT = [[46, 50, 53], [41, 45, 48], [48, 52, 55], [50, 53, 57]]  # Bb F C Dm
-RETRO = [[50, 53, 57], [43, 46, 50]]
 
 t_para = at("para")
 t_beat_in = cue("para", "estas", 14) - 0.05
@@ -295,129 +289,197 @@ t_esc = at("escarcha")
 t_cta = at("cta")
 
 
-def section_chords(a, b, prog, lp=1300, gain=0.5, arp=True, bass=True, arp_gain=0.22, bright=2600):
-    """Rellena [a,b) con acordes de 1 compás, bajo en corcheas y arpegio en semicorcheas."""
-    bar = SPB * 4
+def reverb(x, dur=2.2, wet=0.3, lp=5000, seed=3):
+    """Reverberación por convolución con una respuesta al impulso sintética (ruido con decaimiento)."""
+    g = np.random.default_rng(seed)
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    out = np.zeros_like(x)
+    for c in range(x.shape[1]):
+        ir = g.standard_normal(n) * np.exp(-ts / (dur * 0.28))
+        ir = filt(sos_lp(lp), ir)
+        ir[: int(0.012 * SR)] = 0  # pre-delay
+        ir /= np.sqrt(np.sum(ir ** 2)) + 1e-9
+        out[:, c] = signal.fftconvolve(x[:, c], ir)[: len(x)]
+    return x * (1 - wet) + out * wet * 1.6
+
+
+def soft_pad(freqs, dur, lp=1400, gain=1.0, attack=0.6, release=0.8):
+    """Pad cálido: senos desafinados + un poco de sierra filtrada, con trémolo lento."""
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    x = np.zeros(n)
+    for i, f in enumerate(freqs):
+        for d, w in ((-0.25, 0.5), (0.0, 0.7), (0.22, 0.5)):
+            ff = f * (1 + d / 100)
+            x += w * (np.sin(2 * np.pi * ff * ts + i) + 0.18 * saw(ff, ts + i * 0.01))
+    x = filt(sos_lp(lp), x) / (len(freqs) * 1.7)
+    x *= 1 + 0.08 * np.sin(2 * np.pi * 0.23 * ts)
+    e = np.ones(n)
+    na, nr = min(n, int(attack * SR)), min(n, int(release * SR))
+    e[:na] = np.linspace(0, 1, na) ** 2
+    e[-nr:] *= np.linspace(1, 0, nr) ** 1.5
+    return x * e * gain
+
+
+def bell(f, dur=1.6, gain=1.0):
+    """Campana/piano suave: fundamental + armónicos con decaimientos distintos."""
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    x = np.sin(2 * np.pi * f * ts) * np.exp(-ts / 0.6)
+    x += 0.35 * np.sin(2 * np.pi * 2 * f * ts) * np.exp(-ts / 0.25)
+    x += 0.12 * np.sin(2 * np.pi * 3.01 * f * ts) * np.exp(-ts / 0.12)
+    return fade(x, 0.003, 0.05) * gain
+
+
+def sub_pulse(f, dur, gain=1.0):
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    x = np.sin(2 * np.pi * f * ts) * np.exp(-ts / (dur * 0.5))
+    return fade(np.tanh(x * 1.5), 0.004, 0.02) * gain
+
+
+def drone(f, dur, gain=1.0, lp=500, beat_hz=0.15):
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    x = np.sin(2 * np.pi * f * ts) + 0.5 * np.sin(2 * np.pi * f * 1.004 * ts) + 0.25 * saw(f * 2, ts)
+    x = filt(sos_lp(lp), x) * (1 + 0.15 * np.sin(2 * np.pi * beat_hz * ts))
+    return fade(x, min(0.8, dur / 3), min(0.8, dur / 3)) * gain
+
+
+bed = np.zeros((N, 2))     # drones / pads (con reverberación)
+perc = np.zeros((N, 2))    # pulso, reloj, golpes (más secos)
+dry = np.zeros((N, 2))     # campanas (con reverberación larga)
+
+
+def st(x, w=0.04):
+    """Ensancha un mono a estéreo con un pequeño retardo."""
+    d = int(w * 0.01 * SR)
+    return np.stack([x, np.concatenate([np.zeros(d), x[:-d]]) if d else x], 1)
+
+
+def clock(a, b, every, gain, f_hi=2500, f_lo=1900):
     k = 0
     t0 = a
-    while t0 < b - 0.05:
-        ch = prog[k % len(prog)]
-        d = min(bar, b - t0)
-        freqs = [mtof(m + 12) for m in ch]
-        p = pad(freqs, d + 0.1, lp, gain)
-        place(mus, np.stack([p * 0.95, p * 1.05], 1), t0)
-        if bass:
-            for e in range(int(np.ceil(d / (SPB / 2)))):
-                tt = t0 + e * SPB / 2
-                if tt >= b:
-                    break
-                bn = bass_note(mtof(ch[0] - 12), SPB / 2 * 0.95, 0.55 if e % 2 == 0 else 0.4)
-                place(mus, bn, tt)
-        if arp:
-            seq = [0, 1, 2, 1, 0, 2, 1, 2]
-            for s in range(int(np.ceil(d / (SPB / 4)))):
-                tt = t0 + s * SPB / 4
-                if tt >= b:
-                    break
-                m = ch[seq[s % len(seq)]] + 24
-                pl = pluck(mtof(m), 0.2, bright, arp_gain * (1.0 if s % 4 == 0 else 0.7))
-                place(mus, pl, tt, pan=0.35 if s % 2 else -0.35)
-        t0 += bar
+    while t0 < b:
+        place(perc, tick(f_hi if k % 2 == 0 else f_lo, 0.035, gain), t0, pan=0.25)
+        t0 += every
         k += 1
 
 
-def section_drums(a, b, kick_g=0.9, snare_g=0.55, hat_g=0.18, half=False, fill_end=False):
-    s = 0
+def pulses(a, b, f, every, gain):
     t0 = a
-    while t0 < b - 0.02:
-        pos = s % 16  # semicorcheas por compás
-        if half:
-            if pos == 0:
-                place(drums, kick(kick_g), t0)
-            if pos == 8:
-                place(drums, snare(snare_g), t0)
-        else:
-            if pos in (0, 6, 8, 10) and not (pos == 6 and s % 32 >= 16):
-                place(drums, kick(kick_g * (1 if pos in (0, 8) else 0.7)), t0)
-            if pos in (4, 12):
-                place(drums, snare(snare_g), t0)
-        if pos % 2 == 0:
-            place(drums, hat(False, hat_g * (1 if pos % 4 == 0 else 0.6)), t0, pan=0.2)
-        if pos == 14 and not half:
-            place(drums, hat(True, hat_g * 0.7), t0, pan=0.2)
-        t0 += SPB / 4
-        s += 1
-    if fill_end:
-        for k in range(4):
-            place(drums, snare(snare_g * (0.5 + 0.15 * k)), b - SPB + k * SPB / 4)
+    while t0 < b - 0.05:
+        place(perc, sub_pulse(f, min(every * 0.95, 0.5), gain), t0)
+        t0 += every
 
 
-# gancho: tensión (pad oscuro filtrado + pulso grave), sin batería
-d_hook = t_para
-p = pad([mtof(50), mtof(53), mtof(57)], d_hook, 700, 0.45)
-place(mus, np.stack([p, p], 1), 0)
-for k in range(int(d_hook / SPB) + 1):
-    place(mus, bass_note(mtof(38), 0.25, 0.5), k * SPB)
-place(mus, riser(d_hook, 150, 2600, 0.35), 0)
+def kicks(a, b, every, gain):
+    t0 = a
+    while t0 < b - 0.05:
+        place(perc, kick(gain), t0)
+        t0 += every
 
-# "Para." → silencio dramático, entra el beat
-section_chords(t_beat_in, t_carb, MAIN, lp=1500, gain=0.42, arp=True, arp_gain=0.16)
-section_drums(t_beat_in, t_carb, kick_g=0.85, snare_g=0.5, hat_g=0.16)
 
-# carburador: lo-fi (filtrado + medio tiempo)
+D1, D2, F2, A2 = mtof(38), mtof(50), mtof(53), mtof(57)
+
+# 1) gancho: tensión (drone + pulso de corazón + reloj) y subida hacia "Para."
+place(bed, st(drone(mtof(38), t_para + 0.2, 0.55, 380)), 0)
+place(bed, st(soft_pad([D2, F2, A2], t_para + 0.3, 900, 0.45, 0.4, 0.2)), 0)
+pulses(0, t_para, mtof(26), SPB, 0.55)
+clock(0, t_para, SPB / 2, 0.07)
+place(bed, st(riser(1.6, 120, 3200, 0.5)), t_para - 1.6)
+
+# 2) "Para." → silencio, y entra el pulso
+pulses(t_beat_in, t_carb, mtof(26), SPB / 2, 0.42)
+kicks(t_beat_in, t_carb, SPB * 2, 0.8)
+clock(t_beat_in, t_carb, SPB / 2, 0.08)
+place(bed, st(soft_pad([D2, F2, A2, mtof(60)], t_carb - t_beat_in, 1100, 0.5, 0.3, 0.3)), t_beat_in)
+
+# 3) el origen (carburador): apagado, como de radio antigua + crepitar de vinilo
 retro = np.zeros((N, 2))
-_m, _d = mus, drums
-mus = retro
-drums = retro
-section_chords(t_carb, t_iny, RETRO, lp=800, gain=0.45, arp=True, arp_gain=0.12, bright=1400)
-section_drums(t_carb, t_iny, kick_g=0.7, snare_g=0.45, hat_g=0.1, half=True)
-mus, drums = _m, _d
-retro_f = np.stack([filt(sos_bp(250, 3200), retro[:, c]) for c in range(2)], 1)
+_bed = bed
+bed = retro
+place(bed, st(soft_pad([mtof(46), mtof(50), mtof(53)], (t_iny - t_carb) / 2 + 0.3, 1000, 0.6, 0.3, 0.3)), t_carb)
+place(bed, st(soft_pad([D2, F2, A2], (t_iny - t_carb) / 2 + 0.3, 1000, 0.6, 0.3, 0.3)), t_carb + (t_iny - t_carb) / 2)
+bed = _bed
+kicks(t_carb, t_iny, SPB * 2, 0.55)
+retro_f = np.stack([filt(sos_bp(300, 2600), retro[:, c]) for c in range(2)], 1)
 crackle = np.zeros(N)
 for _ in range(int((t_iny - t_carb) * 40)):
     tt = t_carb + rng.random() * (t_iny - t_carb)
     i = idx(tt)
     m = int(0.002 * SR)
     crackle[i:i + m] += filt(sos_hp(2000), noise(m)) * rng.random() * 0.5
-crackle[idx(t_carb):idx(t_iny)] += filt(sos_bp(800, 5000), noise(idx(t_iny) - idx(t_carb))) * 0.015
-mus += retro_f * 1.1 + np.stack([crackle, crackle], 1)
+crackle[idx(t_carb):idx(t_iny)] += filt(sos_bp(800, 5000), noise(idx(t_iny) - idx(t_carb))) * 0.012
+bed += retro_f + np.stack([crackle, crackle], 1) * 0.8
 
-# inyección: moderno, brillante
-place(mus, riser(0.5, 400, 5000, 0.25), t_iny)
-section_chords(t_iny, t_benc, MAIN, lp=2400, gain=0.4, arp=True, arp_gain=0.24, bright=4200)
-section_drums(t_iny, t_benc, kick_g=0.9, snare_g=0.5, hat_g=0.2)
+# 4) inyección: se abre el filtro, campanas limpias (lo moderno)
+place(bed, st(soft_pad([D2, F2, A2, mtof(64)], t_benc - t_iny + 0.3, 2600, 0.45, 0.2, 0.4)), t_iny)
+kicks(t_iny, t_benc, SPB, 0.7)
+clock(t_iny, t_benc, SPB / 4, 0.05, 5200, 4200)
+for k, m in enumerate([74, 77, 81, 84, 81, 77, 74, 77, 81, 86, 84, 81]):
+    tt = t_iny + 0.45 + k * SPB / 2
+    if tt < t_benc - 0.2:
+        place(dry, st(bell(mtof(m), 1.2, 0.16)), tt, pan=0.3 if k % 2 else -0.3)
 
-# daño: oscuro, bajo saturado
-section_chords(t_benc, t_horas, DARK, lp=900, gain=0.5, arp=True, arp_gain=0.12, bright=1600)
-section_drums(t_benc, t_horas, kick_g=1.0, snare_g=0.55, hat_g=0.16, fill_end=True)
+# 5) el daño: grave, disonante, pulso en corcheas
+place(bed, st(drone(mtof(38), t_horas - t_benc, 0.7, 420, 0.4)), t_benc)
+place(bed, st(drone(mtof(39), t_horas - t_benc, 0.16, 300, 0.33)), t_benc)  # segunda menor: inquietud
+place(bed, st(soft_pad([D2, mtof(56), A2], t_horas - t_benc, 800, 0.4, 0.5, 0.4)), t_benc)
+pulses(t_benc, t_horas, mtof(26), SPB / 2, 0.5)
+kicks(t_benc, t_horas, SPB, 0.85)
+clock(t_benc, t_horas, SPB / 2, 0.07)
 
-# bencina/plata: tensión con tic-tac
-section_chords(t_horas, t_corr, DARK, lp=1200, gain=0.42, arp=True, arp_gain=0.16, bright=2200)
-section_drums(t_horas, t_corr, kick_g=0.9, snare_g=0.5, hat_g=0.2)
-place(mus, riser(1.2, 200, 3000, 0.3), t_corr - 1.2)
+# 6) la bencina: el reloj acelera, subida hacia la solución
+place(bed, st(drone(mtof(38), t_corr - t_horas, 0.55, 600)), t_horas)
+place(bed, st(soft_pad([D2, F2, A2, mtof(62)], t_corr - t_horas, 1300, 0.45, 0.3, 0.2)), t_horas)
+pulses(t_horas, t_corr, mtof(26), SPB / 2, 0.5)
+kicks(t_horas, t_corr, SPB, 0.85)
+clock(t_horas, t_corr - 1.2, SPB / 4, 0.06, 3000, 2400)
+place(bed, st(riser(1.4, 150, 4000, 0.55)), t_corr - 1.4)
 
-# lo correcto → luminoso
-section_chords(t_corr, t_cta, LIGHT, lp=2600, gain=0.42, arp=True, arp_gain=0.22, bright=4500)
-section_drums(t_corr, t_esc, kick_g=0.9, snare_g=0.5, hat_g=0.2)
-section_drums(t_esc, t_cta, kick_g=0.7, snare_g=0.35, hat_g=0.14, half=True)
+# 7) lo correcto → resolución cálida (Si♭ – Fa – Do – Re m), campanas ascendentes
+LIGHT = [[46, 50, 53, 57], [41, 45, 48, 52], [48, 52, 55, 59], [50, 53, 57, 60]]
+bar = SPB * 4
+t0, k = t_corr, 0
+while t0 < t_cta - 0.1:
+    d = min(bar, t_cta - t0)
+    place(bed, st(soft_pad([mtof(m + 12) for m in LIGHT[k % 4]], d + 0.5, 2400, 0.5, 0.15, 0.5)), t0)
+    place(perc, bass_note(mtof(LIGHT[k % 4][0] - 12), d * 0.95, 0.35), t0)
+    t0 += bar
+    k += 1
+kicks(t_corr, t_esc, SPB, 0.7)
+clock(t_corr, t_esc, SPB / 2, 0.05, 6000, 5000)
+motif = [77, 81, 84, 89, 84, 81, 77, 81, 84, 86, 84, 81]
+for j, m in enumerate(motif * 3):
+    tt = t_corr + 0.3 + j * SPB / 2
+    if tt < t_esc - 0.2:
+        place(dry, st(bell(mtof(m), 1.4, 0.12)), tt, pan=0.25 if j % 2 else -0.25)
 
-# cierre
+# 8) excepción (escarcha): cristalino, más liviano
+for j in range(int((t_cta - t_esc) / (SPB / 2))):
+    place(dry, st(bell(mtof([86, 89, 93, 96][j % 4]), 1.0, 0.08)), t_esc + j * SPB / 2, pan=0.4 if j % 2 else -0.4)
+kicks(t_esc, t_cta, SPB * 2, 0.5)
+
+# 9) cierre: pad abierto que vuelve al inicio
 d_cta = TOTAL - t_cta
-p = pad([mtof(58), mtof(62), mtof(65), mtof(69)], d_cta, 1600, 0.55)
-place(mus, np.stack([p, p * 1.02], 1), t_cta)
-for k in range(int(d_cta / (SPB * 2))):
-    place(drums, kick(0.6), t_cta + k * SPB * 2)
-    place(drums, hat(True, 0.08), t_cta + k * SPB * 2 + SPB)
+place(bed, st(soft_pad([mtof(58), mtof(62), mtof(65), mtof(69)], d_cta, 1800, 0.6, 0.3, 1.0)), t_cta)
+pulses(t_cta, TOTAL - 0.4, mtof(26), SPB, 0.35)
+for j, m in enumerate([77, 81, 84, 81]):
+    place(dry, st(bell(mtof(m), 1.6, 0.12)), t_cta + 0.2 + j * SPB)
 
-# sidechain (bombeo) del pad/bajo con el bombo
-kick_env = np.abs(drums[:, 0])
-kick_env = filt(sos_lp(8, 1), kick_env)
-kick_env /= kick_env.max() + 1e-9
-mus *= (1 - 0.45 * np.clip(kick_env * 2.5, 0, 1))[:, None]
-music = mus * 0.9 + drums * 0.75
-# corte seco en "Para." (todo se calla 0,35 s, salvo el golpe)
-cut_a, cut_b = idx(t_para), idx(t_beat_in)
-music[cut_a:cut_b] *= 0.0
+# golpes de capítulo (01 el origen, 02 el daño, 03 la bencina, 04 lo correcto)
+for tc in (t_carb, t_benc, t_horas, t_corr):
+    place(perc, boom(1.8, 60, 28, 0.55), tc)
+
+music = reverb(bed, 2.6, 0.32, 4500) * 0.85 + reverb(dry, 3.2, 0.45, 6000) * 0.9 + reverb(perc, 0.9, 0.12, 3000) * 0.8
+# nivelación suave por tramos: secciones parejas sin aplastar la dinámica
+_env = np.sqrt(filt(sos_lp(0.6, 1), (music ** 2).mean(1)) + 1e-12)
+_target = np.median(_env[_env > 1e-4])
+music *= np.clip((_target / _env) ** 0.6, 0.5, 2.5)[:, None]
+# corte seco en "Para." (todo se calla hasta que vuelve la voz)
+music[idx(t_para):idx(t_beat_in)] *= 0.0
 
 # ================================================================ EFECTOS
 sfx = np.zeros((N, 2))

@@ -69,7 +69,7 @@ export const S08Horas: React.FC = () => {
   const tDia = cue("horas", "dia", 24);
   const tSesenta = cue("horas", "sesenta", 35);
   const tAno = cue("horas", "ano", 63);
-  const tQuem = cue("horas", "quemando", 74);
+  const tQuem = cue("horas", "casi", 74);
   const tMov = cue("horas", "moverte", 102);
   const hours = map(f, [tSesenta - 4, tSesenta + 18], [0, 60], EASE_OUT);
   const liters = map(f, [tQuem, tQuem + 26], [0, LITERS], EASE_OUT);

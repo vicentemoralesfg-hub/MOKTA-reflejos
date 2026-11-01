@@ -63,7 +63,7 @@ export const Carburetor: React.FC<{ t: number; choke?: number; ink?: string; acc
       fill={color}
       fontFamily={FONT_UI}
       fontWeight={700}
-      fontSize={30}
+      fontSize={36}
       letterSpacing={3}
       textAnchor={anchor}
       opacity={labels}

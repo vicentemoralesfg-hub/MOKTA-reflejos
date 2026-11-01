@@ -1,102 +1,126 @@
 #!/usr/bin/env python3
 """
-Locución local con Kokoro-82M (Apache 2.0) + fonética española latinoamericana (espeak-ng es-419).
+Locución v2 con Qwen3-TTS VoiceDesign (Apache 2.0), dirigida frase por frase con instrucciones de emoción.
 
-1. Sintetiza la frase 'vo' de cada escena de src/timeline.json.
-2. Recorta silencios y obtiene el instante de cada palabra con Whisper (faster-whisper).
-3. Ajusta la duración de cada escena para que la frase quepa (+ respiro) y escribe en
-   timeline.json: voAt (inicio de la frase) y words (palabra → fotograma). Las escenas
-   sincronizan sus animaciones con esas palabras (src/timeline.ts → cue()).
-4. Escribe public/audio/vo.wav (48 kHz) ya posicionado en la línea de tiempo.
+  python3 scripts/gen_vo.py takes [N]   → genera N tomas por escena (public/audio/vo_takes/)
+  python3 scripts/gen_vo.py build       → elige la mejor toma de cada escena, sincroniza y escribe:
+                                          src/timeline.json (duración, voAt y palabra→fotograma)
+                                          public/audio/vo.wav (locución posicionada, 48 kHz)
 
-Requisitos: pip install kokoro misaki (sin extras) torch soundfile faster-whisper phonemizer-fork; apt install espeak-ng
+Criterios de elección (no se puede "escuchar", así que se mide):
+  1. Inteligibilidad: tasa de error de palabras (Whisper) contra el guion → descarta tomas con errores.
+  2. Mismo hablante: similitud de timbre (Resemblyzer) con el centroide de todas las tomas → evita saltos de voz.
+  3. Expresividad: variación de tono en semitonos (Praat) → a igualdad, gana la más expresiva.
+
+Guion y dirección de cada frase: scripts/vo_script.json.
+Requisitos: pip install qwen-tts faster-whisper resemblyzer praat-parselmouth; torch/torchaudio CPU emparejados.
 """
 import json
 import os
 import sys
-import types
+import unicodedata
 
 import numpy as np
 import soundfile as sf
 from scipy.signal import resample_poly
 
-# misaki.en requiere spacy (inglés); no se usa → módulo vacío para poder importar kokoro.
-_en = types.ModuleType("misaki.en")
-_en.MToken = object
-_en.G2P = object
-sys.modules["misaki.en"] = _en
-
-import torch  # noqa: E402
-from huggingface_hub import hf_hub_download  # noqa: E402
-from kokoro.model import KModel  # noqa: E402
-from misaki.espeak import EspeakG2P  # noqa: E402
-from faster_whisper import WhisperModel  # noqa: E402
-
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TL_PATH = os.path.join(ROOT, "src", "timeline.json")
-VOICE = os.environ.get("VO_VOICE", "em_alex")
-SPEED = float(os.environ.get("VO_SPEED", "1.28"))
-MAX_PAUSE = float(os.environ.get("VO_MAX_PAUSE", "0.13"))  # s: pausas internas más largas se acortan
-SR_K = 24000
+SCRIPT = json.load(open(os.path.join(ROOT, "scripts", "vo_script.json")))
+TAKES_DIR = os.path.join(ROOT, "public", "audio", "vo_takes")
 SR = 48000
 
-TL = json.load(open(TL_PATH))
-FPS = TL["fps"]
-
-# Inicio de la frase dentro de cada escena (fotogramas) y respiro mínimo al final.
-LEAD = {"hook": 2, "para": 3}
+# Inicio de la frase dentro de la escena y respiro final (fotogramas); duración mínima de algunas escenas.
+LEAD = {"hook": 2}
 DEFAULT_LEAD = 3
-TAIL = {"teaser": 8, "horas": 12, "correcto": 10, "escarcha": 10, "cta": 36}
-DEFAULT_TAIL = 6
+TAIL = {"para": 6, "teaser": 6, "horas": 8, "correcto": 8, "escarcha": 8, "cta": 36}
+DEFAULT_TAIL = 5
 MIN_DUR = {"para": 60, "cta": 110}
-
-g2p = EspeakG2P(language="es-419")
-model = KModel().eval()
-pack = torch.load(hf_hub_download("hexgrad/Kokoro-82M", f"voices/{VOICE}.pt"), weights_only=True)
-asr = WhisperModel("small", device="cpu", compute_type="int8")
-
-out_dir = os.path.join(ROOT, "public", "audio", "vo")
-os.makedirs(out_dir, exist_ok=True)
+MAX_PAUSE = {"para": 0.55, "correcto": 0.4}
+DEFAULT_MAX_PAUSE = 0.32
 
 
-def trim(a, thr=0.004, pad=0.05, pad_end=0.09):
-    env = np.convolve(np.abs(a), np.ones(240) / 240, mode="same")
+def norm_words(s):
+    s = unicodedata.normalize("NFD", s.lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = "".join(c if c.isalnum() or c == " " else " " for c in s)
+    return s.replace("v", "b").split()  # b/v suenan igual en español
+
+
+def wer(ref, hyp):
+    r, h = norm_words(ref), norm_words(hyp)
+    d = np.zeros((len(r) + 1, len(h) + 1), dtype=int)
+    d[:, 0] = np.arange(len(r) + 1)
+    d[0, :] = np.arange(len(h) + 1)
+    for i in range(1, len(r) + 1):
+        for j in range(1, len(h) + 1):
+            d[i, j] = min(d[i - 1, j] + 1, d[i, j - 1] + 1, d[i - 1, j - 1] + (r[i - 1] != h[j - 1]))
+    return d[len(r), len(h)] / max(1, len(r))
+
+
+def takes(n):
+    import torch
+    from qwen_tts import Qwen3TTSModel
+
+    torch.set_num_threads(os.cpu_count() or 4)
+    os.makedirs(TAKES_DIR, exist_ok=True)
+    model = Qwen3TTSModel.from_pretrained("Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign", device_map="cpu", dtype=torch.float32)
+    ids = [b["id"] for b in json.load(open(TL_PATH))["beats"]]
+    for k in range(n):
+        torch.manual_seed(1000 + k)
+        for bid in ids:
+            path = os.path.join(TAKES_DIR, f"{bid}_{k}.wav")
+            if os.path.exists(path):
+                continue
+            line = SCRIPT["lines"][bid]
+            wavs, sr = model.generate_voice_design(
+                text=line["text"], language="Spanish", instruct=SCRIPT["voice"] + " " + line["emotion"]
+            )
+            sf.write(path, wavs[0], sr)
+            print(f"toma {k} {bid}: {len(wavs[0]) / sr:.2f} s", flush=True)
+
+
+def load(path, sr_out):
+    a, sr = sf.read(path, dtype="float32")
+    if a.ndim > 1:
+        a = a.mean(1)
+    from math import gcd
+
+    g = gcd(sr, sr_out)
+    return resample_poly(a, sr_out // g, sr // g).astype(np.float32)
+
+
+def trim(a, sr, pad=0.05, pad_end=0.12):
+    env = np.convolve(np.abs(a), np.ones(int(0.01 * sr)) / (0.01 * sr), mode="same")
+    thr = env.max() * 10 ** (-42 / 20)
     idx = np.where(env > thr)[0]
     if len(idx) == 0:
         return a
-    s = max(0, idx[0] - int(pad * SR_K))
-    e = min(len(a), idx[-1] + int(pad_end * SR_K))
-    return a[s:e]
+    return a[max(0, idx[0] - int(pad * sr)): min(len(a), idx[-1] + int(pad_end * sr))]
 
 
-PAUSE = {"para": 0.38, "correcto": 0.22}  # pausas dramáticas que se respetan
-
-
-def squeeze_pauses(a, max_pause, thr=0.005, hop=120):
-    """Acorta silencios internos a MAX_PAUSE (ritmo de reel), con fundidos de 8 ms."""
+def cap_pauses(a, sr, max_pause, hop=240):
+    """Acorta solo los silencios internos más largos que max_pause (conserva la respiración natural)."""
     n = len(a) // hop
     env = np.array([np.sqrt(np.mean(a[i * hop:(i + 1) * hop] ** 2)) for i in range(n)])
+    thr = env.max() * 10 ** (-38 / 20)
     quiet = env < thr
-    keep = int(max_pause * SR_K / hop)
-    out = []
-    i = 0
-    last = 0
+    keep = int(max_pause * sr / hop)
+    out, last, i = [], 0, 0
+    fl = int(0.01 * sr)
     while i < n:
         if quiet[i]:
             j = i
             while j < n and quiet[j]:
                 j += 1
             if j - i > keep and i > 0 and j < n:
-                cut_a = (i + keep // 2) * hop
-                cut_b = (j - keep // 2) * hop
+                cut_a, cut_b = (i + keep // 2) * hop, (j - keep // 2) * hop
                 seg = a[last:cut_a].copy()
-                fl = int(0.008 * SR_K)
-                if len(seg) > fl:
-                    seg[-fl:] *= np.linspace(1, 0, fl)
+                seg[-fl:] *= np.linspace(1, 0, fl)
                 out.append(seg)
+                nxt = a[cut_b:cut_b + fl].copy()
+                a[cut_b:cut_b + fl] = nxt * np.linspace(0, 1, len(nxt))
                 last = cut_b
-                nxt = a[last:last + fl].copy()
-                a[last:last + fl] = nxt * np.linspace(0, 1, len(nxt))
             i = j
         else:
             i += 1
@@ -104,43 +128,105 @@ def squeeze_pauses(a, max_pause, thr=0.005, hop=120):
     return np.concatenate(out)
 
 
-lines = []
-for b in TL["beats"]:
-    # "... " delante: Kokoro ataca mejor la primera consonante (el silencio inicial se recorta después)
-    ph = g2p("... " + b["vo"])
-    with torch.no_grad():
-        audio = model(ph, pack[len(ph) - 1], SPEED)
-    a = audio.numpy() if hasattr(audio, "numpy") else np.asarray(audio)
-    a = squeeze_pauses(trim(a.astype(np.float32)), PAUSE.get(b["id"], MAX_PAUSE))
-    a16 = resample_poly(a, 2, 3).astype(np.float32)
-    segs, _ = asr.transcribe(a16, language="es", word_timestamps=True, initial_prompt=b["vo"])
-    words = []
-    for s in segs:
-        for w in s.words:
-            words.append(dict(w=w.word.strip(), start=float(w.start), end=float(w.end), p=float(w.probability)))
-    a48 = resample_poly(a, 2, 1).astype(np.float32)
-    sf.write(os.path.join(out_dir, f"{b['id']}.wav"), a48, SR)
-    lines.append(dict(id=b["id"], audio=a48, words=words, text=" ".join(x["w"] for x in words)))
-    print(f"{b['id']:<11} {len(a48) / SR:5.2f}s | {lines[-1]['text']}", flush=True)
+def speech_rms(a):
+    hop = 480
+    n = len(a) // hop
+    r = np.array([np.sqrt(np.mean(a[i * hop:(i + 1) * hop] ** 2)) for i in range(n)])
+    r = r[r > r.max() * 0.1]
+    return float(np.sqrt(np.mean(r ** 2))) if len(r) else 1e-3
 
-# ---------------------------------------------------------------- duraciones y palabras
-for b, ln in zip(TL["beats"], lines):
-    lead = LEAD.get(b["id"], DEFAULT_LEAD)
-    vo_frames = int(np.ceil(len(ln["audio"]) / SR * FPS))
-    need = lead + vo_frames + TAIL.get(b["id"], DEFAULT_TAIL)
-    b["duration"] = int(max(need, MIN_DUR.get(b["id"], 54)))
-    b["voAt"] = lead
-    b["words"] = [dict(w=w["w"], t=round(lead + w["start"] * FPS, 1)) for w in ln["words"]]
 
-total = sum(b["duration"] for b in TL["beats"])
-vo = np.zeros(int(np.ceil(total / FPS * SR)) + SR, dtype=np.float32)
-t = 0
-for b, ln in zip(TL["beats"], lines):
-    i = int(round((t + b["voAt"]) / FPS * SR))
-    vo[i:i + len(ln["audio"])] += ln["audio"]
-    t += b["duration"]
-vo = vo[: int(np.ceil(total / FPS * SR))]
-sf.write(os.path.join(ROOT, "public", "audio", "vo.wav"), vo, SR)
+def build():
+    import parselmouth
+    from faster_whisper import WhisperModel
+    from resemblyzer import VoiceEncoder, preprocess_wav
 
-json.dump(TL, open(TL_PATH, "w"), ensure_ascii=False, indent=1)
-print(f"OK · {total} fotogramas · {total / FPS:.2f} s")
+    TL = json.load(open(TL_PATH))
+    FPS = TL["fps"]
+    asr = WhisperModel("small", device="cpu", compute_type="int8")
+    enc = VoiceEncoder("cpu")
+    files = sorted(f for f in os.listdir(TAKES_DIR) if f.endswith(".wav"))
+    info = {}
+    for f in files:
+        bid, k = f[:-4].rsplit("_", 1)
+        p = os.path.join(TAKES_DIR, f)
+        a16 = load(p, 16000)
+        segs, _ = asr.transcribe(a16, language="es")
+        hyp = " ".join(s.text for s in segs)
+        emb = enc.embed_utterance(preprocess_wav(a16, source_sr=16000))
+        snd = parselmouth.Sound(a16.astype(np.float64), 16000)
+        f0 = snd.to_pitch(time_step=0.01, pitch_floor=70, pitch_ceiling=400).selected_array["frequency"]
+        f0 = f0[f0 > 0]
+        f0sd = float(np.std(12 * np.log2(f0 / np.median(f0)))) if len(f0) > 10 else 0.0
+        info[f] = dict(bid=bid, k=int(k), wer=wer(SCRIPT["lines"][bid]["text"], hyp), hyp=hyp, emb=emb, f0sd=f0sd, dur=len(a16) / 16000)
+    centroid = np.mean([v["emb"] for v in info.values()], 0)
+    centroid /= np.linalg.norm(centroid)
+    for v in info.values():
+        v["sim"] = float(np.dot(v["emb"], centroid) / np.linalg.norm(v["emb"]))
+
+    chosen = {}
+    report = []
+    for b in TL["beats"]:
+        cand = [v | {"file": f} for f, v in info.items() if v["bid"] == b["id"]]
+        best_wer = min(c["wer"] for c in cand)
+        ok = [c for c in cand if c["wer"] <= best_wer + 1e-9]
+        sims = [c["sim"] for c in info.values()]
+        floor = np.median(sims) - 0.04
+        ok2 = [c for c in ok if c["sim"] >= floor] or ok
+        pick = max(ok2, key=lambda c: c["sim"] + 0.03 * min(c["f0sd"], 6))
+        chosen[b["id"]] = pick
+        for c in sorted(cand, key=lambda c: c["k"]):
+            report.append(
+                f"{b['id']:<11} toma {c['k']} {'◀' if c is pick or c['file'] == pick['file'] else ' '} "
+                f"WER {c['wer']:.2f}  timbre {c['sim']:.3f}  tono±{c['f0sd']:.2f}st  {c['dur']:.2f}s | {c['hyp'].strip()}"
+            )
+    print("\n".join(report))
+    open(os.path.join(TAKES_DIR, "seleccion.txt"), "w").write("\n".join(report) + "\n")
+
+    # nivel común, recorte, pausas y palabra → fotograma
+    lines = {}
+    target = None
+    for b in TL["beats"]:
+        a = load(os.path.join(TAKES_DIR, chosen[b["id"]]["file"]), SR)
+        a = cap_pauses(trim(a, SR), SR, MAX_PAUSE.get(b["id"], DEFAULT_MAX_PAUSE))
+        r = speech_rms(a)
+        target = target or r
+        a = a * (target / r)
+        segs, _ = asr.transcribe(resample_poly(a, 1, 3).astype(np.float32), language="es", word_timestamps=True, initial_prompt=SCRIPT["lines"][b["id"]]["text"])
+        words = [dict(w=w.word.strip(), start=float(w.start)) for s in segs for w in s.words]
+        lines[b["id"]] = (a, words)
+
+    for b in TL["beats"]:
+        a, words = lines[b["id"]]
+        b["vo"] = SCRIPT["lines"][b["id"]]["text"]
+        lead = LEAD.get(b["id"], DEFAULT_LEAD)
+        need = lead + int(np.ceil(len(a) / SR * FPS)) + TAIL.get(b["id"], DEFAULT_TAIL)
+        b["duration"] = int(max(need, MIN_DUR.get(b["id"], 0)))
+        b["voAt"] = lead
+        b["words"] = [dict(w=w["w"], t=round(lead + w["start"] * FPS, 1)) for w in words]
+
+    total = sum(b["duration"] for b in TL["beats"])
+    vo = np.zeros(int(np.ceil(total / FPS * SR)), dtype=np.float32)
+    t = 0
+    for b in TL["beats"]:
+        a, _ = lines[b["id"]]
+        i = int(round((t + b["voAt"]) / FPS * SR))
+        vo[i:i + len(a)] += a[: len(vo) - i]
+        t += b["duration"]
+    vo /= np.abs(vo).max() + 1e-9
+    vo *= 0.9
+    sf.write(os.path.join(ROOT, "public", "audio", "vo.wav"), vo, SR)
+    TL["_comment"] = (
+        "Fuente única de tiempos (fotogramas a 30 fps). La leen Remotion (src/timeline.ts) y scripts/gen_audio.py. "
+        "scripts/gen_vo.py la reescribe a partir de la locución elegida: duración de cada escena, voAt y palabra→fotograma."
+    )
+    json.dump(TL, open(TL_PATH, "w"), ensure_ascii=False, indent=1)
+    print(f"OK · {total} fotogramas · {total / FPS:.2f} s")
+
+
+if __name__ == "__main__":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "build"
+    if cmd == "takes":
+        takes(int(sys.argv[2]) if len(sys.argv) > 2 else 2)
+    else:
+        build()

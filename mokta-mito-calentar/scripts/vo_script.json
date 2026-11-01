@@ -1,0 +1,54 @@
+{
+  "_comment": "Guion v2 de la locución. 'voice' describe el timbre (igual en todas las frases); 'emotion' dirige la interpretación de cada escena. Lo usa scripts/gen_vo.py (Qwen3-TTS VoiceDesign).",
+  "voice": "Voice: a Chilean man in his early 30s; warm, charismatic and close; medium-low pitch; crisp diction; speaks Latin American Spanish with a natural Chilean accent, like a popular car YouTuber talking to a friend.",
+  "lines": {
+    "hook": {
+      "text": "¿Calientas el auto diez minutos cada mañana?",
+      "emotion": "Delivery: curious and slightly provocative, as if catching the listener red-handed; rising question intonation, quick pace."
+    },
+    "para": {
+      "text": "Para. Le estás haciendo más daño que bien.",
+      "emotion": "Delivery: 'Para.' is a sharp, firm one-word command followed by a short pause; then serious and concerned, stressing 'más daño'."
+    },
+    "teaser": {
+      "text": "Quédate, porque te voy a decir cuánto hay que esperar de verdad.",
+      "emotion": "Delivery: lower, complicit and intriguing, as if sharing a secret; build curiosity and stress 'de verdad'."
+    },
+    "carburador": {
+      "text": "Este mito viene de los autos con carburador, que sí necesitaban calor para funcionar bien.",
+      "emotion": "Delivery: storytelling tone, a bit nostalgic and explanatory, steady pace, stress 'carburador'."
+    },
+    "inyeccion": {
+      "text": "Pero hoy, la inyección electrónica ajusta la mezcla sola, con frío o con calor.",
+      "emotion": "Delivery: confident and clear, upbeat modern tone, stress 'sola'."
+    },
+    "bencina": {
+      "text": "En ralentí pasa algo peor: el motor frío inyecta bencina extra, que puede lavar el aceite de los cilindros.",
+      "emotion": "Delivery: grave and serious, building tension, slower and heavier on 'lavar el aceite de los cilindros'."
+    },
+    "lento": {
+      "text": "Y como detenido se calienta lentísimo, ese desgaste dura mucho más.",
+      "emotion": "Delivery: emphatic on 'lentísimo', worried, then firm on 'mucho más'."
+    },
+    "horas": {
+      "text": "Diez minutos al día son sesenta horas al año: casi un estanque de bencina, sin moverte ni un metro.",
+      "emotion": "Delivery: incredulous and emphatic, stressing the numbers 'sesenta horas' and 'casi un estanque', with disbelief on 'sin moverte ni un metro'."
+    },
+    "correcto": {
+      "text": "¿Lo correcto? Enciéndelo, ponte el cinturón, unos treinta segundos, y sal manejando suave.",
+      "emotion": "Delivery: relieved, warm and reassuring, upbeat; a brief pause before 'unos treinta segundos'; confident ending."
+    },
+    "suave": {
+      "text": "Sin acelerones hasta que llegue a su temperatura normal: andando, se calienta mucho más rápido.",
+      "emotion": "Delivery: friendly practical advice, calm and confident, positive on 'mucho más rápido'."
+    },
+    "escarcha": {
+      "text": "Solo espera más si el parabrisas está escarchado: primero ver, después partir.",
+      "emotion": "Delivery: careful and responsible, serious but calm; clear and rhythmic on 'primero ver, después partir'."
+    },
+    "cta": {
+      "text": "Y tú, ¿cuántos minutos lo calentabas? Te leo en los comentarios.",
+      "emotion": "Delivery: friendly, playful and smiling, inviting the viewer to comment."
+    }
+  }
+}

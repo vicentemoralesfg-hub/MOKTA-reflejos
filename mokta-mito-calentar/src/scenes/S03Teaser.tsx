@@ -28,13 +28,13 @@ export const S03Teaser: React.FC = () => {
       }}
     >
       <AbsoluteFill style={{ alignItems: "center", top: 290 }}>
-        <Reveal at={0} from="up" dur={6}>
-          <Big size={88} color={C.dim}>
-            Te digo
+        <Reveal at={0} from="slam" dur={6}>
+          <Big size={110} color={C.green}>
+            Quédate:
           </Big>
         </Reveal>
         <Reveal at={tCuanto - 3} from="up" style={{ marginTop: 6 }}>
-          <Big size={120}>cuánto hay que esperar</Big>
+          <Big size={104}>te digo cuánto hay que esperar</Big>
         </Reveal>
         <Reveal at={tVerdad - 4} from="slam" dur={6} style={{ marginTop: 14 }}>
           <Big size={150}>
@@ -46,7 +46,7 @@ export const S03Teaser: React.FC = () => {
       </AbsoluteFill>
 
       <AbsoluteFill
-        style={{ alignItems: "center", justifyContent: "center", top: 190, opacity: ringIn, transform: `scale(${0.85 + 0.15 * ringIn})` }}
+        style={{ alignItems: "center", justifyContent: "center", top: 300, opacity: ringIn, transform: `scale(${0.85 + 0.15 * ringIn})` }}
       >
         <svg width={560} height={560} viewBox="-280 -280 560 560">
           <circle r={R} fill="rgba(5,10,20,0.6)" stroke="rgba(244,246,248,0.12)" strokeWidth={22} />
