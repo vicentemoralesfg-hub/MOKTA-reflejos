@@ -36,7 +36,7 @@ const buildGroups = (): Group[] => {
   WORDS.forEach((w, i) => {
     if (inBlock(i)) return;
     cur.push(i);
-    if (/[.,:?…]$/.test(w.text) || i === WORDS.length - 1) {
+    if (/[.,:?!…]$/.test(w.text) || i === WORDS.length - 1) {
       phrases.push(cur);
       cur = [];
     }
@@ -48,8 +48,11 @@ const buildGroups = (): Group[] => {
     ph.forEach((i, k) => {
       const remaining = ph.length - k;
       if (g.length && (g.length >= MAX_WORDS || len([...g, i]) > MAX_CHARS) && !(remaining === 1 && g.length < MAX_WORDS && len([...g, i]) <= MAX_CHARS + 3)) {
-        groups.push(g);
-        g = [];
+        // un número nunca queda separado de su unidad: pasa al grupo siguiente ("3 KILÓMETROS!")
+        const last = g[g.length - 1];
+        const carry = g.length > 1 && /\d/.test(shown(last)) ? [last] : [];
+        groups.push(carry.length ? g.slice(0, -1) : g);
+        g = carry;
       }
       g.push(i);
     });

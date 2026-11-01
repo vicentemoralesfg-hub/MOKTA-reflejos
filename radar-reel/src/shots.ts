@@ -923,7 +923,8 @@ const cientoCuarenta = (t: number): ShotFrame => {
     world: {
       cam: cam(
         [HERO_X - 0.5, 1.6, z + 8.6],
-        [HERO_X + 0.4, 0.7, z - 12],
+        // mira un poco más arriba: el auto queda bajo el subtítulo (su patente no choca con el texto)
+        [HERO_X + 0.4, 2.1, z - 12],
         50,
         Math.sin(t * 1.3) * 0.01,
       ),
