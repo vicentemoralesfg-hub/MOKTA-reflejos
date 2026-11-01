@@ -1,0 +1,54 @@
+{
+  "_comment": "Locución por escena (las palabras de 'pronunciations' se envían como fonemas IPA porque la voz las pronunciaba mal) (TTS local Piper, voz es_MX-claude-high, licencia Apache-2.0). scripts/gen_voice.py sintetiza cada texto, lo transcribe con Whisper para obtener el tiempo de cada palabra y re-sincroniza timeline.json (duraciones y 'beats') con la voz. 'anchors': beat → frase que lo dispara (inicio de su primera palabra) + desplazamiento en fotogramas.",
+  "voice": "es_MX-claude-high",
+  "voiceUrl": "https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/",
+  "lengthScale": 0.75,
+  "takes": 6,
+  "sentenceGap": 0.14,
+  "pronunciations": {
+    "recirculación": "[[resiɾ kulasjˈon]]",
+    "vidrios": "[[bˈidɾjos]]",
+    "vidrio": "[[bˈidɾjo]]",
+    "frío": "[[fɾˈio]]",
+    "revés": "[[reβˈes]]"
+  },
+  "noiseScale": 0.72,
+  "noiseW": 0.9,
+  "scenes": {
+    "hook": {
+      "start": 2,
+      "text": "El noventa por ciento usa este botón al revés. Un hábito de dos segundos que te empaña los vidrios, y te quema bencina.",
+      "anchors": { "habit": ["un hábito", -2], "c1": ["te empaña", -2], "c2": ["te quema", -2] }
+    },
+    "define": {
+      "start": 3,
+      "text": "Es la recirculación: cierra el aire de afuera, y tu auto respira su propio aire.",
+      "anchors": { "intake": ["cierra", -2], "loop": ["y tu auto", -2] }
+    },
+    "winter": {
+      "start": 6,
+      "text": "En invierno, la prendes para no pasar frío. Pero tu respiración suelta vapor de agua, que queda atrapado, toca el vidrio frío… y se empaña.",
+      "anchors": { "line": ["la prendes", -4], "press": ["prendes", 0], "breath": ["pero tu", -3], "pov": ["toca el", -3], "fogged": ["se empaña", -1] }
+    },
+    "summer": {
+      "start": 6,
+      "text": "En verano, con el aire acondicionado prendido, la dejas apagada. Y el compresor enfría aire caliente, sin parar. Más esfuerzo, más bencina.",
+      "anchors": { "line": ["con el aire", -4], "press": ["apagada", 0], "flow": ["y el compresor", -3], "fuel": ["más esfuerzo", -2] }
+    },
+    "rule": {
+      "start": 3,
+      "text": "O sea: lo estás usando al revés. Con frío, o lluvia: aire de afuera. Con calor: recirculación.",
+      "anchors": { "flip": ["al revés", -4], "cold": ["con frío", 10], "hot": ["con calor", -3] }
+    },
+    "recipe": {
+      "start": 3,
+      "text": "¿Y para desempañar al tiro? Uno: modo parabrisas. Dos: aire acondicionado, aunque sea invierno. Tres: la recirculación, apagada. Cuatro: ventilador al máximo, con calor. ¡Listo!",
+      "anchors": { "s1": ["uno", -2], "s2": ["dos", -2], "s3": ["tres", -2], "s4": ["cuatro", -2], "done": ["listo", -2] }
+    },
+    "cta": {
+      "start": 3,
+      "text": "¿Lo usabas al revés? Comenta: sí, o no.",
+      "anchors": { "comment": ["comenta", -2] }
+    }
+  }
+}

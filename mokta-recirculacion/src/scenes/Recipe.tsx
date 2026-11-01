@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { COLORS, FONT_DISPLAY, FONT_UI, FPS, TEXT, beat } from "../config";
+import { COLORS, FONT_DISPLAY, FONT_UI, FPS, TEXT, beat, scene } from "../config";
 import { Windshield } from "../components/Windshield";
 import { HvacButton, PressRipple } from "../components/HvacButton";
 import { Dial, TempRing } from "../components/Gauges";
@@ -33,7 +33,7 @@ export const Recipe: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
-      <AbsoluteFill style={{ scale: String(interpolate(f, [0, 300], [1.04, 1.0])) }}>
+      <AbsoluteFill style={{ scale: String(interpolate(f, [0, scene("recipe").duration], [1.04, 1.0])) }}>
         <Windshield id="recipe" t={f / FPS + 14} fog={1} clear={clear} vents={vents} hazeOpacity={0.54} />
       </AbsoluteFill>
       <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(3,5,9,0.55) 0%, rgba(3,5,9,0) 30%, rgba(3,5,9,0) 52%, rgba(3,5,9,0.6) 70%)" }} />
@@ -64,7 +64,7 @@ export const Recipe: React.FC = () => {
         </div>
 
         {/* indicador de pasos (1·2·3·4) + paso actual */}
-        <div style={{ position: "absolute", top: 410, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", opacity: (1 - listOut) * ramp(f, S[0] - 6, S[0] + 2) }}>
+        <div style={{ position: "absolute", top: 410, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", opacity: (1 - listOut) * ramp(f, S[0] + 4, S[0] + 9) }}>
           {TEXT.steps.map((s, i) => {
             const isDone = f >= S[i] + 30 || f >= done - 6;
             const isCur = i === current && !isDone;

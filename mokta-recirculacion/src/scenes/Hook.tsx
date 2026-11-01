@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { COLORS, FONT_DISPLAY, FPS, TEXT, beat } from "../config";
+import { COLORS, FONT_DISPLAY, FPS, TEXT, beat, scene } from "../config";
 import { Windshield } from "../components/Windshield";
 import { HvacButton } from "../components/HvacButton";
 import { DropIcon, FuelIcon, RecircIcon } from "../components/Icons";
@@ -30,7 +30,8 @@ export const Hook: React.FC = () => {
   const pulse = 0.85 + 0.15 * Math.sin(f / 3.2);
 
   // Empuje de cámara constante + golpe final hacia la siguiente escena
-  const push = interpolate(f, [0, 135], [1.0, 1.06]) + ramp(f, 118, 135, (x) => x * x * x) * 0.25;
+  const D = scene("hook").duration;
+  const push = interpolate(f, [0, D], [1.0, 1.06]) + ramp(f, D - 17, D, (x) => x * x * x) * 0.25;
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { COLORS, FONT_DISPLAY, FONT_UI, TEXT, beat } from "../config";
+import { COLORS, FONT_DISPLAY, FONT_UI, TEXT, beat, scene } from "../config";
 import { HvacButton } from "../components/HvacButton";
 import { BookmarkIcon, CheckIcon, DropIcon, RecircIcon, SnowIcon, SunIcon } from "../components/Icons";
 import { Bg, Chip, Flash, Flip, Grade, H, Marker, Pop, Slam } from "../components/Kinetic";
@@ -16,7 +16,7 @@ export const Rule: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.ink }}>
       <Bg mood="neutral" />
-      <AbsoluteFill style={{ translate: `${sh.x}px ${sh.y}px`, rotate: `${sh.r}deg`, scale: String(lerp(1, 1.035, ramp(f, B.cold, 210, (x) => x))) }}>
+      <AbsoluteFill style={{ translate: `${sh.x}px ${sh.y}px`, rotate: `${sh.r}deg`, scale: String(lerp(1, 1.035, ramp(f, B.cold, scene("rule").duration, (x) => x))) }}>
         {leadOut < 1 ? (
           <div style={{ position: "absolute", top: 600, left: 0, right: 0, opacity: 1 - leadOut, scale: String(lerp(1, 0.7, leadOut)) }}>
             <Slam at={0} from={1.6}>

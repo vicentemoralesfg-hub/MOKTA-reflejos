@@ -1,56 +1,56 @@
 {
-  "_comment": "Fuente única de tiempos (fotogramas a 30 fps). La leen Remotion (src/config.ts) y el generador de audio (scripts/gen_audio.py). 120 BPM = 15 fotogramas por pulso: todas las escenas empiezan en un pulso. 'beats' son instantes relativos al inicio de la escena; 'cues' son los efectos de sonido [beat o fotograma, efecto].",
+  "_comment": "Fuente única de tiempos (fotogramas a 30 fps). La leen Remotion (src/config.ts) y el audio (scripts/gen_audio.py). scripts/gen_voice.py recalcula 'duration' y los 'beats' a partir de la locución. 'cues' = efectos de sonido [referencia, efecto]; la referencia es un fotograma, un beat ('press'), un beat con desplazamiento ('habit-3') o 'end-N'. 120 BPM = 15 fotogramas por pulso: cada escena dura un múltiplo de 15.",
   "fps": 30,
   "bpm": 120,
   "scenes": [
     {
       "id": "hook",
-      "duration": 135,
+      "duration": 195,
       "music": "hook",
-      "beats": { "flip": 8, "flipHit": 16, "habit": 60, "c1": 78, "c2": 96 },
-      "cues": [[0, "boom"], [0, "whooshDown"], [6, "swish"], [16, "hit"], [57, "whoosh"], [60, "pop"], [78, "pop"], [78, "fogHiss"], [96, "pop"], [96, "coin"], [105, "riser"]]
+      "beats": { "flip": 8, "flipHit": 16, "habit": 61, "c1": 99, "c2": 151 },
+      "cues": [[0, "boom"], [0, "whooshDown"], ["flip-2", "swish"], ["flipHit", "hit"], ["habit-3", "whoosh"], ["habit", "pop"], ["c1", "pop"], ["c1", "fogHiss"], ["c2", "pop"], ["c2", "coin"], ["end-30", "riser"]]
     },
     {
       "id": "define",
-      "duration": 120,
+      "duration": 165,
       "music": "groove",
-      "beats": { "name": 0, "diagram": 30, "intake": 45, "loop": 72 },
-      "cues": [[0, "hit"], [27, "whoosh"], [47, "clunk"], [72, "loopWhoosh"]]
+      "beats": { "name": 0, "diagram": 18, "intake": 29, "loop": 75 },
+      "cues": [[0, "hit"], ["diagram-3", "whoosh"], ["intake+2", "clunk"], ["loop", "loopWhoosh"]]
     },
     {
       "id": "winter",
-      "duration": 210,
+      "duration": 255,
       "music": "winter",
-      "beats": { "chip": 0, "line": 12, "press": 30, "breath": 66, "pov": 132, "fogged": 168, "co2": 180 },
-      "cues": [[0, "hit"], [-3, "whoosh"], [12, "pop"], [30, "click"], [63, "whoosh"], [66, "breath"], [90, "breath"], [114, "breath"], [129, "whoosh"], [132, "fogHiss"], [168, "hit"], [168, "buzz"], [180, "pop"]]
+      "beats": { "chip": 0, "line": 26, "press": 35, "breath": 70, "pov": 168, "fogged": 210, "co2": 220 },
+      "cues": [[0, "hit"], [-3, "whoosh"], ["line", "pop"], ["press", "click"], ["breath-3", "whoosh"], ["pov-3", "whoosh"], ["pov", "fogHiss"], ["fogged", "hit"], ["fogged", "buzz"], ["co2", "pop"]]
     },
     {
       "id": "summer",
-      "duration": 210,
+      "duration": 270,
       "music": "summer",
-      "beats": { "chip": 0, "line": 12, "press": 30, "flow": 66, "fuel": 138 },
-      "cues": [[0, "hit"], [-3, "whoosh"], [12, "pop"], [30, "click"], [63, "whoosh"], [66, "strain"], [138, "hit"], [140, "drain"], [176, "buzz"]]
+      "beats": { "chip": 0, "line": 21, "press": 92, "flow": 112, "fuel": 199 },
+      "cues": [[0, "hit"], [-3, "whoosh"], ["line", "pop"], ["press", "click"], ["flow-3", "whoosh"], ["flow", "strain"], ["fuel", "hit"], ["fuel+2", "drain"], ["fuel+38", "buzz"]]
     },
     {
       "id": "rule",
-      "duration": 210,
+      "duration": 225,
       "music": "rule",
-      "beats": { "lead": 0, "flip": 10, "flipHit": 20, "cold": 48, "hot": 72, "notes": 112, "save": 150 },
-      "cues": [[0, "boom"], [8, "swish"], [20, "hit"], [45, "whoosh"], [48, "pop"], [69, "whoosh"], [72, "pop"], [64, "pop"], [98, "pop"], [112, "pop"], [124, "pop"], [150, "pop"], [150, "tick"]]
+      "beats": { "lead": 0, "flip": 38, "flipHit": 48, "cold": 69, "hot": 117, "notes": 161, "save": 187 },
+      "cues": [[0, "boom"], ["flip-2", "swish"], ["flipHit", "hit"], ["cold-3", "whoosh"], ["cold", "pop"], ["cold+16", "pop"], ["hot-3", "whoosh"], ["hot", "pop"], ["hot+26", "pop"], ["notes", "pop"], ["notes+12", "pop"], ["save", "pop"], ["save", "tick"]]
     },
     {
       "id": "recipe",
-      "duration": 300,
+      "duration": 390,
       "music": "recipe",
-      "beats": { "title": 0, "s1": 42, "s2": 87, "s3": 132, "s4": 177, "clear": 60, "done": 236, "rear": 248 },
-      "cues": [[0, "hit"], [-3, "whoosh"], [42, "dial"], [44, "step1"], [87, "click"], [89, "step2"], [132, "click"], [134, "step3"], [177, "fan"], [179, "step4"], [236, "ding"], [248, "pop"]]
+      "beats": { "title": 0, "s1": 47, "s2": 93, "s3": 183, "s4": 243, "done": 327, "rear": 337 },
+      "cues": [[0, "hit"], [-3, "whoosh"], ["s1", "dial"], ["s1+2", "step1"], ["s2", "click"], ["s2+2", "step2"], ["s3", "click"], ["s3+2", "step3"], ["s4", "fan"], ["s4+2", "step4"], ["done", "ding"], ["rear", "pop"]]
     },
     {
       "id": "cta",
-      "duration": 105,
+      "duration": 120,
       "music": "cta",
-      "beats": { "q": 0, "comment": 18, "save": 36, "share": 50, "brand": 66 },
-      "cues": [[0, "hit"], [-3, "whoosh"], [18, "pop"], [36, "pop"], [50, "pop"], [66, "tick"]]
+      "beats": { "q": 0, "comment": 31, "save": 51, "share": 65, "brand": 81 },
+      "cues": [[0, "hit"], [-3, "whoosh"], ["comment", "pop"], ["save", "pop"], ["share", "pop"], ["brand", "tick"]]
     }
   ]
 }

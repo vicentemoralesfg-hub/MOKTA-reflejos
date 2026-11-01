@@ -10,6 +10,7 @@ Música: 120 BPM (1 pulso = 15 fotogramas), La menor, progresión Am–F–C–G
 """
 import json
 import os
+import re
 
 import numpy as np
 from scipy import signal
@@ -491,9 +492,19 @@ FX = {
 }
 GAIN = {"boom": 1.0, "hit": 0.85, "pop": 0.55, "click": 0.9, "whoosh": 0.7, "whooshDown": 0.7, "swish": 0.6, "riser": 0.7}
 
+def resolve(s, ref):
+    """Referencia de un efecto → fotograma relativo a la escena: 12 · "press" · "habit-3" · "end-30"."""
+    if isinstance(ref, (int, float)):
+        return ref
+    m = re.fullmatch(r"([A-Za-z0-9]+)([+-]\d+)?", ref)
+    base = s["dur"] * FPS if m.group(1) == "end" else s["beats"][m.group(1)]
+    return int(round(base)) + int(m.group(2) or 0)
+
+
 qa = []
 for s in scenes:
-    for fr, name in s["cues"]:
+    for ref, name in s["cues"]:
+        fr = resolve(s, ref)
         at = s["start"] + fr / FPS
         if name == "riser":
             d = s["start"] + s["dur"] - at
@@ -502,8 +513,55 @@ for s in scenes:
             place(sfx, FX[name](), at, GAIN.get(name, 0.8))
         qa.append(dict(t=round(at, 3), frame=s["f0"] + fr, cue=name, scene=s["id"]))
 
+# ---------------------------------------------------------------- 4) locución (scripts/gen_voice.py)
+VO_JSON = os.path.join(ROOT, "src", "voice.json")
+vox = np.zeros((N, 2))
+has_voice = os.path.exists(VO_JSON) and os.path.exists(os.path.join(ROOT, "public", "audio", "voice", "hook.wav"))
+if has_voice:
+    VJ = json.load(open(VO_JSON))
+
+    def voice_chain(x):
+        x = filt(butter("high", 85, 2), x)
+        x = x + 0.35 * filt(butter("band", [2500, 6000], 2), x)  # presencia
+        # compresor suave (seguidor de envolvente, 4:1 sobre −18 dB)
+        env = np.sqrt(filt(butter("low", 18, 1), x**2) + 1e-12)
+        db = 20 * np.log10(env / (np.max(env) + 1e-9) + 1e-9)
+        gr = np.where(db > -18, (db + 18) * (1 - 1 / 4), 0)
+        x = x * 10 ** (-gr / 20)
+        return x / (np.max(np.abs(x)) + 1e-9)
+
+    for s in scenes:
+        path = os.path.join(ROOT, "public", "audio", "voice", f"{s['id']}.wav")
+        if not os.path.exists(path):
+            continue
+        vsr, v = wavfile.read(path)
+        v = v.astype(np.float64) / 32768
+        if vsr != SR:
+            v = signal.resample_poly(v, SR, vsr)
+        v = voice_chain(v)
+        place(vox, v, s["start"] + VJ["scenes"][s["id"]]["start"] / FPS)
+
+# ducking: la música, el ambiente y los efectos bajan cuando habla la voz
+vo_env = np.abs(vox[:, 0])
+att = filt(butter("low", 30, 1), vo_env)
+duck = np.clip(att / (np.percentile(att[att > 1e-4], 60) if has_voice and np.any(att > 1e-4) else 1), 0, 1)
+# relajación lenta (~250 ms) para que la música no "bombee" entre palabras
+rel = np.copy(duck)
+k = np.exp(-1 / (0.25 * SR))
+for i in range(1, N):
+    if rel[i] < rel[i - 1] * k:
+        rel[i] = rel[i - 1] * k
+duck = rel
+
 # ---------------------------------------------------------------- mezcla
-mix = music * 0.42 + amb * 0.16 + sfx * 0.85
+if has_voice:
+    bg = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck)[:, None]
+    m_ = np.abs(vox[:, 0]) > 0.05
+    r = lambda x: 20 * np.log10(np.sqrt(np.mean(x[m_] ** 2)) + 1e-12)  # noqa: E731
+    print(f"voz sobre fondo mientras habla: {r(vox * 1.05) - r(bg):+.1f} dB")
+    mix = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck)[:, None] + vox * 1.05
+else:
+    mix = music * 0.42 + amb * 0.16 + sfx * 0.85
 mix = np.tanh(mix * 1.1) / np.tanh(1.1)
 mix /= np.max(np.abs(mix)) + 1e-9
 mix *= 0.9
@@ -519,7 +577,7 @@ def save(path, x):
 
 
 save(os.path.join(ROOT, "public", "audio", "soundtrack.wav"), mix)
-for name, x in (("musica", music), ("ambiente", amb), ("efectos", sfx)):
+for name, x in (("musica", music), ("ambiente", amb), ("efectos", sfx)) + ((("voz", vox),) if has_voice else ()):
     save(os.path.join(ROOT, "public", "audio", "stems", f"{name}.wav"), x / (np.max(np.abs(x)) + 1e-9) * 0.9)
 json.dump(dict(total=TOTAL, cues=qa), open(os.path.join(ROOT, "public", "audio", "events.json"), "w"), indent=1)
 print(f"OK · {TOTAL:.3f} s · {N} muestras · {len(qa)} efectos")
