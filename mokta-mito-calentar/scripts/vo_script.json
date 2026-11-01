@@ -1,6 +1,6 @@
 {
   "_comment": "Guion v2 de la locución. 'voice' describe el timbre (igual en todas las frases); 'emotion' dirige la interpretación de cada escena. Lo usa scripts/gen_vo.py (Qwen3-TTS VoiceDesign).",
-  "voice": "Voice: a Chilean man in his early 30s; warm, charismatic and close; medium-low pitch; crisp diction; speaks Latin American Spanish with a natural Chilean accent, like a popular car YouTuber talking to a friend.",
+  "voice": "Voice: a Chilean man in his early 30s; warm, charismatic and close; medium-low pitch; crisp diction; speaks Latin American Spanish with a natural Chilean accent, like a popular car creator on Instagram Reels talking to a friend. Pace: fast and energetic social-media delivery, about three words per second, short natural pauses only.",
   "lines": {
     "hook": {
       "text": "¿Calientas el auto diez minutos cada mañana?",

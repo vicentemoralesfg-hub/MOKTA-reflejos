@@ -37,10 +37,18 @@ TAIL = {"para": 6, "teaser": 6, "horas": 8, "correcto": 8, "escarcha": 8, "cta":
 DEFAULT_TAIL = 5
 MIN_DUR = {"para": 60, "cta": 110}
 MAX_PAUSE = {"para": 0.55, "correcto": 0.4}
+# Ritmo objetivo de reel (palabras/s). Si una frase queda más lenta, se acelera con Rubber Band R3
+# (estiramiento de tiempo de alta calidad, sin cambiar el tono), hasta un máximo de ×1,25.
+TARGET_WPS = 3.0
+MAX_TEMPO = 1.25
 DEFAULT_MAX_PAUSE = 0.32
 
 
 def norm_words(s):
+    import re
+    from num2words import num2words
+
+    s = re.sub(r"\d+", lambda m: " " + num2words(int(m.group()), lang="es") + " ", s)
     s = unicodedata.normalize("NFD", s.lower())
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
     s = "".join(c if c.isalnum() or c == " " else " " for c in s)
@@ -128,6 +136,23 @@ def cap_pauses(a, sr, max_pause, hop=240):
     return np.concatenate(out)
 
 
+def tempo_fit(a, sr, n_words):
+    """Acelera la frase hasta TARGET_WPS con rubberband --fine (sin tocar el tono)."""
+    import subprocess
+    import tempfile
+
+    rate = n_words / (len(a) / sr)
+    tempo = float(np.clip(TARGET_WPS / rate, 1.0, MAX_TEMPO))
+    if tempo < 1.02:
+        return a, 1.0
+    with tempfile.TemporaryDirectory() as d:
+        i, o = os.path.join(d, "i.wav"), os.path.join(d, "o.wav")
+        sf.write(i, a, sr)
+        subprocess.run(["rubberband", "--fine", "-T", f"{tempo:.4f}", i, o], check=True, capture_output=True)
+        b, _ = sf.read(o, dtype="float32")
+    return b.astype(np.float32), tempo
+
+
 def speech_rms(a):
     hop = 480
     n = len(a) // hop
@@ -173,7 +198,8 @@ def build():
         sims = [c["sim"] for c in info.values()]
         floor = np.median(sims) - 0.04
         ok2 = [c for c in ok if c["sim"] >= floor] or ok
-        pick = max(ok2, key=lambda c: c["sim"] + 0.03 * min(c["f0sd"], 6))
+        # a igualdad de inteligibilidad: mismo timbre, más expresiva y más ágil (reel)
+        pick = max(ok2, key=lambda c: c["sim"] + 0.03 * min(c["f0sd"], 6) - 0.02 * c["dur"] / max(1, len(norm_words(SCRIPT["lines"][b["id"]]["text"]))) * 10)
         chosen[b["id"]] = pick
         for c in sorted(cand, key=lambda c: c["k"]):
             report.append(
@@ -189,6 +215,8 @@ def build():
     for b in TL["beats"]:
         a = load(os.path.join(TAKES_DIR, chosen[b["id"]]["file"]), SR)
         a = cap_pauses(trim(a, SR), SR, MAX_PAUSE.get(b["id"], DEFAULT_MAX_PAUSE))
+        a, tempo = tempo_fit(a, SR, len(norm_words(SCRIPT["lines"][b["id"]]["text"])))
+        print(f"{b['id']:<11} ritmo ×{tempo:.2f} → {len(norm_words(SCRIPT['lines'][b['id']]['text'])) / (len(a) / SR):.2f} palabras/s")
         r = speech_rms(a)
         target = target or r
         a = a * (target / r)
