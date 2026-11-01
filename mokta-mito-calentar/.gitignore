@@ -4,3 +4,4 @@ public/audio/stems/
 public/audio/vo/
 public/audio/mix_sinvoz.wav
 public/audio/vo_takes/
+__pycache__/
