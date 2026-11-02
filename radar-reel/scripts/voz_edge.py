@@ -36,7 +36,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from guion import LINES, TAKES, TOKENS, segments  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VOICE = "es-CL-LorenzoNeural"
+VOICE = os.environ.get("EDGE_VOICE", "es-CL-LorenzoNeural")
 FORMAT = "audio-24khz-96kbitrate-mono-mp3"
 SR = 24000
 JOIN = 0.6  # silencio entre tomas (no se oye: build_voice corta cada tramo con sus propias pausas)
@@ -108,6 +108,8 @@ async def run():
     pieces, words, t = [], [], 0.0
     for first, last, rate, pitch, volume in TAKES:
         text = " ".join(LINES[i][0] for i in range(first, last + 1))
+        shift = int(os.environ.get("EDGE_RATE_SHIFT", "0"))  # % que se suma a la velocidad de cada toma
+        rate = f"{int(rate.rstrip('%')) + shift:+d}%"
         mp3, marks = await synth(text, rate, pitch, volume)
         x = decode(mp3)
         for tok, m in zip(text.split(), align(text.split(), marks)):

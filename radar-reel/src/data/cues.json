@@ -4,144 +4,144 @@
   "voice": {
     "tempo": 1.0,
     "leadIn": 0.0,
-    "tail": 0.35,
-    "pre": 0.0,
-    "post": 0.0,
+    "tail": 0.4,
+    "pre": 0.05,
+    "post": 0.16,
     "sources": {
-      "q": {
-        "file": "public/audio/voz_qwen.wav",
-        "words": "scripts/words_qwen.json",
+      "e": {
+        "file": "public/audio/voz_edge.wav",
+        "words": "scripts/words_edge.json",
         "gainDb": 0,
-        "_nota": "Qwen3-TTS 1.7B VoiceDesign: persona fija + emoción por bloque (guion.py); cortes en silencios reales"
+        "_nota": "edge-tts es-MX-JorgeNeural audio-24khz-96kbitrate-mono-mp3, una toma por bloque con su entonación (guion.py)"
       }
     },
     "segments": [
       {
-        "src": "q",
+        "src": "e",
         "from": 0,
         "to": 6,
         "gapAfter": 0.15
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 7,
         "to": 12,
         "gapAfter": 0.3
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 13,
         "to": 18,
         "gapAfter": 0.15
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 19,
         "to": 21,
         "gapAfter": 0.3
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 22,
         "to": 23,
         "gapAfter": 0.22
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 24,
         "to": 25,
         "gapAfter": 0.2
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 26,
         "to": 27,
         "gapAfter": 0.22
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 28,
         "to": 29,
         "gapAfter": 0.2
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 30,
         "to": 33,
         "gapAfter": 0.45
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 34,
         "to": 43,
         "gapAfter": 0.25
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 44,
         "to": 53,
         "gapAfter": 0.18
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 54,
         "to": 56,
         "gapAfter": 0.2
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 57,
         "to": 60,
         "gapAfter": 0.25
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 61,
         "to": 75,
         "gapAfter": 0.22
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 76,
         "to": 82,
         "gapAfter": 0.32
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 83,
         "to": 87,
         "gapAfter": 0.3
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 88,
         "to": 90,
         "gapAfter": 0.5
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 91,
         "to": 98,
         "gapAfter": 0.28
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 99,
         "to": 111,
         "gapAfter": 0.32
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 112,
         "to": 115,
         "gapAfter": 0.25
       },
       {
-        "src": "q",
+        "src": "e",
         "from": 116,
         "to": 124,
         "gapAfter": 0.0,
-        "gainDb": 3.0
+        "gainDb": 2.0
       }
     ]
   },
