@@ -1,5 +1,5 @@
 {
- "total": 54.0,
+ "total": 48.2,
  "cues": [
   {
    "t": 0.0,
@@ -26,86 +26,92 @@
    "scene": "hook"
   },
   {
-   "t": 1.933,
-   "frame": 58,
+   "t": 2.5,
+   "frame": 75,
+   "cue": "hit",
+   "scene": "hook"
+  },
+  {
+   "t": 3.267,
+   "frame": 98,
    "cue": "whoosh",
    "scene": "hook"
   },
   {
-   "t": 2.033,
-   "frame": 61,
+   "t": 3.367,
+   "frame": 101,
    "cue": "pop",
    "scene": "hook"
   },
   {
-   "t": 3.3,
-   "frame": 99,
+   "t": 4.533,
+   "frame": 136,
    "cue": "pop",
    "scene": "hook"
   },
   {
-   "t": 3.3,
-   "frame": 99,
+   "t": 4.533,
+   "frame": 136,
    "cue": "fogHiss",
    "scene": "hook"
   },
   {
-   "t": 5.033,
-   "frame": 151,
+   "t": 5.567,
+   "frame": 167,
    "cue": "pop",
    "scene": "hook"
   },
   {
-   "t": 5.033,
-   "frame": 151,
+   "t": 5.567,
+   "frame": 167,
    "cue": "coin",
    "scene": "hook"
   },
   {
-   "t": 5.5,
-   "frame": 165,
+   "t": 5.7,
+   "frame": 171,
    "cue": "riser",
    "scene": "hook"
   },
   {
-   "t": 6.5,
-   "frame": 195,
+   "t": 6.7,
+   "frame": 201,
    "cue": "hit",
    "scene": "define"
   },
   {
-   "t": 7.0,
-   "frame": 210,
+   "t": 7.733,
+   "frame": 232,
    "cue": "whoosh",
    "scene": "define"
   },
   {
-   "t": 7.533,
-   "frame": 226,
+   "t": 8.3,
+   "frame": 249,
    "cue": "clunk",
    "scene": "define"
   },
   {
-   "t": 9.0,
-   "frame": 270,
+   "t": 9.4,
+   "frame": 282,
    "cue": "loopWhoosh",
    "scene": "define"
   },
   {
-   "t": 12.0,
-   "frame": 360,
+   "t": 11.6,
+   "frame": 348,
    "cue": "hit",
    "scene": "winter"
   },
   {
-   "t": 11.9,
-   "frame": 357,
+   "t": 11.5,
+   "frame": 345,
    "cue": "whoosh",
    "scene": "winter"
   },
   {
-   "t": 12.867,
-   "frame": 386,
+   "t": 12.8,
+   "frame": 384,
    "cue": "pop",
    "scene": "winter"
   },
@@ -116,278 +122,278 @@
    "scene": "winter"
   },
   {
-   "t": 14.233,
-   "frame": 427,
+   "t": 14.033,
+   "frame": 421,
    "cue": "whoosh",
    "scene": "winter"
   },
   {
-   "t": 17.5,
-   "frame": 525,
+   "t": 16.567,
+   "frame": 497,
    "cue": "whoosh",
    "scene": "winter"
   },
   {
-   "t": 17.6,
-   "frame": 528,
+   "t": 16.667,
+   "frame": 500,
    "cue": "fogHiss",
    "scene": "winter"
   },
   {
-   "t": 19.0,
-   "frame": 570,
+   "t": 18.133,
+   "frame": 544,
    "cue": "hit",
    "scene": "winter"
   },
   {
-   "t": 19.0,
-   "frame": 570,
+   "t": 18.133,
+   "frame": 544,
    "cue": "buzz",
    "scene": "winter"
   },
   {
-   "t": 19.333,
-   "frame": 580,
+   "t": 18.4,
+   "frame": 552,
    "cue": "pop",
    "scene": "winter"
   },
   {
-   "t": 20.5,
-   "frame": 615,
+   "t": 19.133,
+   "frame": 574,
    "cue": "hit",
    "scene": "summer"
   },
   {
-   "t": 20.4,
-   "frame": 612,
+   "t": 19.033,
+   "frame": 571,
    "cue": "whoosh",
    "scene": "summer"
   },
   {
-   "t": 21.2,
-   "frame": 636,
+   "t": 20.567,
+   "frame": 617,
    "cue": "pop",
    "scene": "summer"
   },
   {
-   "t": 23.567,
-   "frame": 707,
+   "t": 22.433,
+   "frame": 673,
    "cue": "click",
    "scene": "summer"
   },
   {
-   "t": 24.133,
-   "frame": 724,
+   "t": 23.0,
+   "frame": 690,
    "cue": "whoosh",
    "scene": "summer"
   },
   {
-   "t": 24.233,
-   "frame": 727,
+   "t": 23.1,
+   "frame": 693,
    "cue": "strain",
    "scene": "summer"
   },
   {
-   "t": 27.133,
-   "frame": 814,
+   "t": 25.633,
+   "frame": 769,
    "cue": "hit",
    "scene": "summer"
   },
   {
-   "t": 27.2,
-   "frame": 816,
+   "t": 25.7,
+   "frame": 771,
    "cue": "drain",
    "scene": "summer"
   },
   {
-   "t": 28.4,
-   "frame": 852,
+   "t": 26.9,
+   "frame": 807,
    "cue": "buzz",
    "scene": "summer"
   },
   {
-   "t": 29.5,
-   "frame": 885,
+   "t": 27.767,
+   "frame": 833,
    "cue": "boom",
    "scene": "rule"
   },
   {
-   "t": 30.7,
-   "frame": 921,
+   "t": 28.933,
+   "frame": 868,
    "cue": "swish",
    "scene": "rule"
   },
   {
-   "t": 31.1,
-   "frame": 933,
+   "t": 29.333,
+   "frame": 880,
    "cue": "hit",
    "scene": "rule"
   },
   {
-   "t": 31.7,
-   "frame": 951,
+   "t": 30.167,
+   "frame": 905,
    "cue": "whoosh",
    "scene": "rule"
   },
   {
-   "t": 31.8,
-   "frame": 954,
+   "t": 30.267,
+   "frame": 908,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 32.333,
-   "frame": 970,
+   "t": 30.8,
+   "frame": 924,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 33.3,
-   "frame": 999,
+   "t": 31.833,
+   "frame": 955,
    "cue": "whoosh",
    "scene": "rule"
   },
   {
-   "t": 33.4,
-   "frame": 1002,
+   "t": 31.933,
+   "frame": 958,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 34.267,
-   "frame": 1028,
+   "t": 32.8,
+   "frame": 984,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 34.867,
-   "frame": 1046,
+   "t": 32.467,
+   "frame": 974,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 35.267,
-   "frame": 1058,
+   "t": 32.867,
+   "frame": 986,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 35.733,
-   "frame": 1072,
+   "t": 33.0,
+   "frame": 990,
    "cue": "pop",
    "scene": "rule"
   },
   {
-   "t": 35.733,
-   "frame": 1072,
+   "t": 33.0,
+   "frame": 990,
    "cue": "tick",
    "scene": "rule"
   },
   {
-   "t": 37.0,
-   "frame": 1110,
+   "t": 33.8,
+   "frame": 1014,
    "cue": "hit",
    "scene": "recipe"
   },
   {
-   "t": 36.9,
-   "frame": 1107,
+   "t": 33.7,
+   "frame": 1011,
    "cue": "whoosh",
    "scene": "recipe"
   },
   {
-   "t": 38.567,
-   "frame": 1157,
+   "t": 35.133,
+   "frame": 1054,
    "cue": "dial",
    "scene": "recipe"
   },
   {
-   "t": 38.633,
-   "frame": 1159,
+   "t": 35.2,
+   "frame": 1056,
    "cue": "step1",
    "scene": "recipe"
   },
   {
-   "t": 40.1,
-   "frame": 1203,
+   "t": 36.767,
+   "frame": 1103,
    "cue": "click",
    "scene": "recipe"
   },
   {
-   "t": 40.167,
-   "frame": 1205,
+   "t": 36.833,
+   "frame": 1105,
    "cue": "step2",
    "scene": "recipe"
   },
   {
-   "t": 43.1,
-   "frame": 1293,
+   "t": 39.667,
+   "frame": 1190,
    "cue": "click",
    "scene": "recipe"
   },
   {
-   "t": 43.167,
-   "frame": 1295,
+   "t": 39.733,
+   "frame": 1192,
    "cue": "step3",
    "scene": "recipe"
   },
   {
-   "t": 45.1,
-   "frame": 1353,
+   "t": 41.533,
+   "frame": 1246,
    "cue": "fan",
    "scene": "recipe"
   },
   {
-   "t": 45.167,
-   "frame": 1355,
+   "t": 41.6,
+   "frame": 1248,
    "cue": "step4",
    "scene": "recipe"
   },
   {
-   "t": 47.9,
-   "frame": 1437,
+   "t": 43.367,
+   "frame": 1301,
    "cue": "ding",
    "scene": "recipe"
   },
   {
-   "t": 48.233,
-   "frame": 1447,
+   "t": 43.633,
+   "frame": 1309,
    "cue": "pop",
    "scene": "recipe"
   },
   {
-   "t": 50.0,
-   "frame": 1500,
+   "t": 44.767,
+   "frame": 1343,
    "cue": "hit",
    "scene": "cta"
   },
   {
-   "t": 49.9,
-   "frame": 1497,
+   "t": 44.667,
+   "frame": 1340,
    "cue": "whoosh",
    "scene": "cta"
   },
   {
-   "t": 51.033,
-   "frame": 1531,
+   "t": 46.067,
+   "frame": 1382,
    "cue": "pop",
    "scene": "cta"
   },
   {
-   "t": 51.7,
-   "frame": 1551,
+   "t": 46.6,
+   "frame": 1398,
    "cue": "pop",
    "scene": "cta"
   },
   {
-   "t": 52.167,
-   "frame": 1565,
+   "t": 47.0,
+   "frame": 1410,
    "cue": "pop",
    "scene": "cta"
   },
   {
-   "t": 52.7,
-   "frame": 1581,
+   "t": 47.4,
+   "frame": 1422,
    "cue": "tick",
    "scene": "cta"
   }

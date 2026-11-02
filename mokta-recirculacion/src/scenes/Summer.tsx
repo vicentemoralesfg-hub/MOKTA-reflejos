@@ -47,10 +47,10 @@ export const Summer: React.FC = () => {
               </Pop>
             </div>
             <div style={{ position: "absolute", top: 830, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 90 }}>
-              <Pop at={B.line + 4}>
+              <Pop at={8}>
                 <HvacButton size={280} led={1} ledColor={COLORS.green} text="A/C" label="ENCENDIDO" labelColor={COLORS.green} />
               </Pop>
-              <Pop at={B.line + 8}>
+              <Pop at={12}>
                 <div style={{ position: "relative" }}>
                   <PressRipple f={f} at={B.press} size={280} color={COLORS.red} />
                   <HvacButton

@@ -15,15 +15,18 @@ export const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const B = {
     flip: beat("hook", "flip"),
+    reves: beat("hook", "reves"),
     hit: beat("hook", "flipHit"),
     habit: beat("hook", "habit"),
     c1: beat("hook", "c1"),
     c2: beat("hook", "c2"),
   };
-  const sh = shake(f, [0, B.hit, B.habit, B.c2], 14);
+  const sh = shake(f, [0, B.hit, B.reves, B.habit, B.c2], 14);
+  // golpe cuando la VOZ dice "¡al revés!" (el giro visual ya ocurrió en el primer segundo)
+  const punch = f >= B.reves ? 1 + 0.16 * Math.exp(-(f - B.reves) / 5) * Math.cos((f - B.reves) / 2.2) : 1;
 
   // Parte A → B: el botón sube y se achica, los textos A salen hacia arriba
-  const move = ramp(f, B.habit - 4, B.habit + 10, EASE_IN_OUT);
+  const move = ramp(f, B.habit - 10, B.habit + 2, EASE_IN_OUT); // el botón sube antes de que entre el texto
   const aOut = ramp(f, B.habit - 6, B.habit + 2, EASE_IN_OUT);
   const btnSize = lerp(430, 250, move);
   const btnTop = lerp(640, 250, move);
@@ -66,7 +69,7 @@ export const Hook: React.FC = () => {
         </svg>
 
         <div style={{ position: "absolute", top: 1130, left: 0, right: 0, display: "flex", justifyContent: "center", opacity: 1 - aOut }}>
-          <Flip at={B.flip}>
+          <Flip at={B.flip} style={{ scale: String(punch) }}>
             <div style={{ ...H, fontSize: 176 }}>
               <Marker at={-10} color={COLORS.red}>
                 {TEXT.hookFlip}
@@ -91,7 +94,7 @@ export const Hook: React.FC = () => {
 
         {/* --- Parte B --- */}
         <div style={{ position: "absolute", top: 560, left: 60, right: 60 }}>
-          <Pop at={B.habit} from={0.8}>
+          <Pop at={B.habit + 3} from={0.8}>
             <div style={{ ...SUB, fontSize: 56 }}>
               Un hábito de{" "}
               <Marker at={B.habit + 4} color={COLORS.led} textColor={COLORS.ink} rotate={-1.5}>
@@ -135,6 +138,7 @@ export const Hook: React.FC = () => {
         })}
       </AbsoluteFill>
       <Flash at={B.hit} max={0.35} />
+      <Flash at={B.reves} max={0.28} color={COLORS.red} />
       <Flash at={B.c2} max={0.2} color={COLORS.red} />
       <Grade />
     </AbsoluteFill>

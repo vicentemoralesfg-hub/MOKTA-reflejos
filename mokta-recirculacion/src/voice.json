@@ -1,53 +1,71 @@
 {
-  "_comment": "Locución por escena (las palabras de 'pronunciations' se envían como fonemas IPA porque la voz las pronunciaba mal) (TTS local Piper, voz es_MX-claude-high, licencia Apache-2.0). scripts/gen_voice.py sintetiza cada texto, lo transcribe con Whisper para obtener el tiempo de cada palabra y re-sincroniza timeline.json (duraciones y 'beats') con la voz. 'anchors': beat → frase que lo dispara (inicio de su primera palabra) + desplazamiento en fotogramas.",
-  "voice": "es_MX-claude-high",
-  "voiceUrl": "https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/",
-  "lengthScale": 0.75,
-  "takes": 6,
-  "sentenceGap": 0.14,
-  "pronunciations": {
-    "recirculación": "[[resiɾ kulasjˈon]]",
-    "vidrios": "[[bˈidɾjos]]",
-    "vidrio": "[[bˈidɾjo]]",
-    "frío": "[[fɾˈio]]",
-    "revés": "[[reβˈes]]"
+  "_comment": "Locución con Qwen3-TTS (Apache-2.0). scripts/qwen_voice.py genera tomas (voz de referencia diseñada + clon, y VoiceDesign con la emoción de cada escena); scripts/gen_voice.py recorta pausas, transcribe con Whisper, mide ritmo/tono/énfasis, elige la mejor toma y re-sincroniza timeline.json. 'anchors': beat → frase que lo dispara (inicio de su primera palabra) + desplazamiento en fotogramas. 'keywords': palabras que deben sonar con énfasis (se mide).",
+  "qwen": {
+    "designModel": "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
+    "cloneModel": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+    "persona": "Adult man, around 32 years old, deep low-pitched masculine baritone voice, Latin American Spanish speaker from Chile. Confident car expert talking straight to camera on a viral reel: quick energetic pace, only short pauses, clear diction, dynamic intonation, emphatic on the important words.",
+    "reference": {
+      "seed": 11,
+      "text": "El noventa por ciento usa este botón… ¡al revés! Un hábito de dos segundos que te empaña los vidrios, y te quema bencina.",
+      "emotion": "Intriguing and provocative: a brief dramatic pause before the reveal, then urgent."
+    },
+    "modes": ["clone", "design"],
+    "seeds": [1, 2, 3],
+    "pauseCap": 0.28,
+    "tempo": 1.18,
+    "minSpeakerSim": 0.985,
+    "pitchTarget": 140,
+    "pitchRange": [100, 175]
   },
-  "noiseScale": 0.72,
-  "noiseW": 0.9,
+  "tail": 5,
   "scenes": {
     "hook": {
       "start": 2,
-      "text": "El noventa por ciento usa este botón al revés. Un hábito de dos segundos que te empaña los vidrios, y te quema bencina.",
-      "anchors": { "habit": ["un hábito", -2], "c1": ["te empaña", -2], "c2": ["te quema", -2] }
+      "text": "El noventa por ciento usa este botón… ¡al revés! Un hábito de dos segundos que te empaña los vidrios y te quema bencina.",
+      "emotion": "Intriguing and provocative: a brief dramatic pause before the reveal 'al revés', then urgent.",
+      "keywords": ["revés", "segundos", "empaña", "bencina"],
+      "anchors": { "reves": ["al revés", -1], "habit": ["un hábito", -2], "c1": ["te empaña", -2], "c2": ["te quema", -2] }
     },
     "define": {
       "start": 3,
-      "text": "Es la recirculación: cierra el aire de afuera, y tu auto respira su propio aire.",
-      "anchors": { "intake": ["cierra", -2], "loop": ["y tu auto", -2] }
+      "text": "Se llama recirculación: cierra el aire de afuera, y el auto respira su propio aire.",
+      "emotion": "Brisk and explanatory, like revealing how something secretly works.",
+      "keywords": ["recirculación", "cierra", "propio"],
+      "anchors": { "intake": ["cierra", -2], "loop": ["y el auto", -2] }
     },
     "winter": {
-      "start": 6,
-      "text": "En invierno, la prendes para no pasar frío. Pero tu respiración suelta vapor de agua, que queda atrapado, toca el vidrio frío… y se empaña.",
-      "anchors": { "line": ["la prendes", -4], "press": ["prendes", 0], "breath": ["pero tu", -3], "pov": ["toca el", -3], "fogged": ["se empaña", -1] }
+      "start": 3,
+      "text": "Error uno: en invierno la prendes por el frío. Pero tu respiración suelta vapor, queda atrapado, toca el vidrio frío… ¡y se empaña!",
+      "emotion": "Alarmed and vivid, building tension up to the final 'y se empaña'.",
+      "keywords": ["error", "vapor", "atrapado", "empaña"],
+      "anchors": { "line": ["la prendes", -4], "press": ["prendes", 0], "breath": ["pero tu", -3], "pov": ["toca el", -3], "fogged": ["y se empaña", -2] }
     },
     "summer": {
-      "start": 6,
-      "text": "En verano, con el aire acondicionado prendido, la dejas apagada. Y el compresor enfría aire caliente, sin parar. Más esfuerzo, más bencina.",
-      "anchors": { "line": ["con el aire", -4], "press": ["apagada", 0], "flow": ["y el compresor", -3], "fuel": ["más esfuerzo", -2] }
+      "start": 3,
+      "text": "Error dos: en verano, con aire acondicionado, ¡la dejas apagada! Y el compresor enfría aire caliente sin parar. Más esfuerzo… ¡más bencina!",
+      "emotion": "Frustrated and urgent, building up, punchy on the final 'más bencina'.",
+      "keywords": ["error", "apagada", "parar", "bencina"],
+      "anchors": { "line": ["con aire", -4], "press": ["apagada", 0], "flow": ["y el compresor", -3], "fuel": ["más esfuerzo", -2] }
     },
     "rule": {
       "start": 3,
-      "text": "O sea: lo estás usando al revés. Con frío, o lluvia: aire de afuera. Con calor: recirculación.",
-      "anchors": { "flip": ["al revés", -4], "cold": ["con frío", 10], "hot": ["con calor", -3] }
+      "text": "O sea… ¡lo estás usando al revés! Frío o lluvia: ¡aire de afuera! Calor: ¡recirculación!",
+      "emotion": "Decisive and firm, stating a golden rule.",
+      "keywords": ["revés", "afuera", "recirculación"],
+      "anchors": { "flip": ["al revés", -4], "cold": ["frío o lluvia", 6], "hot": ["calor", -3] }
     },
     "recipe": {
       "start": 3,
-      "text": "¿Y para desempañar al tiro? Uno: modo parabrisas. Dos: aire acondicionado, aunque sea invierno. Tres: la recirculación, apagada. Cuatro: ventilador al máximo, con calor. ¡Listo!",
+      "text": "¿Y para desempañar al tiro? Uno: modo parabrisas. Dos: aire acondicionado, aunque sea invierno. Tres: recirculación apagada. Cuatro: ventilador al máximo. ¡Listo!",
+      "emotion": "Fast, crisp step-by-step countdown, energetic, triumphant and satisfied on the final 'Listo'.",
+      "keywords": ["uno", "dos", "tres", "cuatro", "listo"],
       "anchors": { "s1": ["uno", -2], "s2": ["dos", -2], "s3": ["tres", -2], "s4": ["cuatro", -2], "done": ["listo", -2] }
     },
     "cta": {
       "start": 3,
-      "text": "¿Lo usabas al revés? Comenta: sí, o no.",
+      "text": "¿Tú lo usabas al revés? Comenta sí o no… y guárdalo.",
+      "emotion": "Friendly and challenging, a playful question that invites the viewer to comment.",
+      "keywords": ["revés", "comenta", "guárdalo"],
       "anchors": { "comment": ["comenta", -2] }
     }
   }

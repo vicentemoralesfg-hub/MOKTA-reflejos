@@ -187,64 +187,72 @@ STYLE = {
     "groove": dict(kick="four", clap=True, hats="8", bass="8", pad=1500, arp=0.45, arpCut=2600),
     "winter": dict(kick="four", clap=True, hats="8", bass="8", pad=850, arp=0.35, arpCut=1300),
     "summer": dict(kick="four", clap=True, hats="16", bass="8", pad=2600, arp=0.55, arpCut=5200, oct=12),
-    "rule": dict(kick="four", clap=True, hats="16", bass="8", pad=1800, arp=0.5, arpCut=3200, holdUntil=45),
+    "rule": dict(kick="four", clap=True, hats="16", bass="8", pad=1800, arp=0.5, arpCut=3200, holdUntil="flipHit"),
     "recipe": dict(kick="four", clap=True, hats="8", bass="8", pad=1400, arp=0.5, arpCut=2000, build=True),
     "cta": dict(kick="four", clap=True, hats="8", bass="8", pad=2200, arp=0.45, arpCut=3000),
 }
 
-for s in scenes:
-    st = STYLE[s["music"]]
-    nbeats = int(round(s["dur"] / BEAT))
-    hold = st.get("holdUntil", 0) / FPS
-    for b in range(nbeats):
-        tb = s["start"] + b * BEAT
-        rel = tb - s["start"]
-        if rel < hold - 1e-6:
-            continue
-        root, notes = chord_at(tb)
-        # bombo
-        k_on = st["kick"] == "four" or (st["kick"] == "half" and b % 2 == 0)
-        if k_on:
-            place(drums, kick(0.95), tb)
-            i = idx(tb)
-            n = min(N - i, int(0.35 * SR))
-            side[i : i + n] = np.minimum(side[i : i + n], 1 - 0.55 * env_exp(n, 0.11))
-        if st["clap"] and b % 2 == 1:
-            place(drums, reverb(clap(0.55), 0.3), tb, pan=0.05)
-        # platillos
-        if st["hats"] in ("8", "16", "16q"):
-            steps = 2 if st["hats"] == "8" else 4
-            for k in range(steps):
-                g = (0.22 if k % 2 == 1 else 0.13) * (0.5 if st["hats"] == "16q" else 1)
-                place(drums, hat(False, g), tb + k * BEAT / steps, pan=0.25)
-            if st["hats"] == "16":
-                place(drums, hat(True, 0.12), tb + BEAT / 2, pan=-0.25)
-        # bajo
-        if st["bass"] == "8":
-            for k in range(2):
-                place(mus, bass_note(midi(root - 12 + (12 if (b % 4 == 3 and k == 1) else 0)), BEAT / 2 * 0.95, 0.55), tb + k * BEAT / 2)
-        elif st["bass"] == "pulse":
-            place(mus, bass_note(midi(root - 12), BEAT * 0.9, 0.6, 220), tb)
-        # arpegio
-        if st["arp"] > 0:
-            cut = st["arpCut"]
-            if st.get("build"):
-                cut = 1200 + 5000 * min(1, rel / (s["beats"]["done"] / FPS))
-            seq = [notes[0], notes[1], notes[2], notes[1] + 12]
-            for k in range(4):
-                place(mus, pluck(midi(seq[(b * 4 + k) % 4] + st.get("oct", 0)), st["arp"], cut), tb + k * BEAT / 4, pan=0.3 if k % 2 else -0.3)
+def scene_at(t):
+    for s in scenes:
+        if s["start"] - 1e-6 <= t < s["start"] + s["dur"] - 1e-6:
+            return s
+    return scenes[-1]
 
-    # colchón armónico por compás (cortado en los límites de escena)
-    tb = s["start"]
-    while tb < s["start"] + s["dur"] - 1e-6:
-        if tb - s["start"] >= hold - 1e-6:
-            d = min(BAR - (tb % BAR), s["start"] + s["dur"] - tb)
-            _, notes = chord_at(tb + 1e-3)
-            p = pad([midi(m - 12) for m in notes] + [midi(notes[0])], d, st["pad"], 0.5)
-            place(mus, np.stack([p, np.roll(p, 220)], 1), tb)
-            tb += d
-        else:
-            tb += BEAT
+
+# Rejilla de pulso GLOBAL (120 BPM continuo): los cortes de escena pueden caer en cualquier fotograma
+# (los define la voz) y la música no se "descuadra". Cada pulso toma el estilo de la escena en la que cae.
+NBEATS = int(np.ceil(TOTAL / BEAT))
+for b in range(NBEATS):
+    tb = b * BEAT
+    s = scene_at(tb)
+    st = STYLE[s["music"]]
+    rel = tb - s["start"]
+    hold = st.get("holdUntil", 0)
+    hold = s["beats"][hold] if isinstance(hold, str) else hold  # batería en silencio hasta el golpe de "AL REVÉS"
+    if rel < hold / FPS - 1e-6:
+        continue
+    root, notes = chord_at(tb)
+    # bombo
+    k_on = st["kick"] == "four" or (st["kick"] == "half" and b % 2 == 0)
+    if k_on:
+        place(drums, kick(0.95), tb)
+        i = idx(tb)
+        n = min(N - i, int(0.35 * SR))
+        side[i : i + n] = np.minimum(side[i : i + n], 1 - 0.55 * env_exp(n, 0.11))
+    if st["clap"] and b % 2 == 1:
+        place(drums, reverb(clap(0.55), 0.3), tb, pan=0.05)
+    # platillos
+    if st["hats"] in ("8", "16", "16q"):
+        steps = 2 if st["hats"] == "8" else 4
+        for k in range(steps):
+            g = (0.22 if k % 2 == 1 else 0.13) * (0.5 if st["hats"] == "16q" else 1)
+            place(drums, hat(False, g), tb + k * BEAT / steps, pan=0.25)
+        if st["hats"] == "16":
+            place(drums, hat(True, 0.12), tb + BEAT / 2, pan=-0.25)
+    # bajo
+    if st["bass"] == "8":
+        for k in range(2):
+            place(mus, bass_note(midi(root - 12 + (12 if (b % 4 == 3 and k == 1) else 0)), BEAT / 2 * 0.95, 0.55), tb + k * BEAT / 2)
+    elif st["bass"] == "pulse":
+        place(mus, bass_note(midi(root - 12), BEAT * 0.9, 0.6, 220), tb)
+    # arpegio
+    if st["arp"] > 0:
+        cut = st["arpCut"]
+        if st.get("build"):
+            cut = 1200 + 5000 * min(1, max(0, rel) / (s["beats"]["done"] / FPS))
+        seq = [notes[0], notes[1], notes[2], notes[1] + 12]
+        for k in range(4):
+            place(mus, pluck(midi(seq[(b * 4 + k) % 4] + st.get("oct", 0)), st["arp"], cut), tb + k * BEAT / 4, pan=0.3 if k % 2 else -0.3)
+
+# colchón armónico: un acorde por compás, con el filtro del estilo de la escena en que empieza
+for bar in range(int(np.ceil(TOTAL / BAR))):
+    tb = bar * BAR
+    s = scene_at(tb)
+    st = STYLE[s["music"]]
+    d = min(BAR, TOTAL - tb)
+    _, notes = chord_at(tb + 1e-3)
+    p = pad([midi(m - 12) for m in notes] + [midi(notes[0])], d, st["pad"], 0.5)
+    place(mus, np.stack([p, np.roll(p, 220)], 1), tb)
 
 # redoble creciente antes de "LISTO" en la receta
 r = sc("recipe")
@@ -552,14 +560,20 @@ for i in range(1, N):
     if rel[i] < rel[i - 1] * k:
         rel[i] = rel[i - 1] * k
 duck = rel
+# los efectos se recuperan rápido (80 ms): los golpes de cada corte caen en la pausa entre frases y deben pegar
+duck_fx = np.copy(np.clip(att / (np.percentile(att[att > 1e-4], 60) if has_voice and np.any(att > 1e-4) else 1), 0, 1))
+kf = np.exp(-1 / (0.08 * SR))
+for i in range(1, N):
+    if duck_fx[i] < duck_fx[i - 1] * kf:
+        duck_fx[i] = duck_fx[i - 1] * kf
 
 # ---------------------------------------------------------------- mezcla
 if has_voice:
-    bg = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck)[:, None]
+    bg = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck_fx)[:, None]
     m_ = np.abs(vox[:, 0]) > 0.05
     r = lambda x: 20 * np.log10(np.sqrt(np.mean(x[m_] ** 2)) + 1e-12)  # noqa: E731
     print(f"voz sobre fondo mientras habla: {r(vox * 1.05) - r(bg):+.1f} dB")
-    mix = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck)[:, None] + vox * 1.05
+    mix = music * 0.36 * (1 - 0.78 * duck)[:, None] + amb * 0.14 * (1 - 0.6 * duck)[:, None] + sfx * 0.7 * (1 - 0.45 * duck_fx)[:, None] + vox * 1.05
 else:
     mix = music * 0.42 + amb * 0.16 + sfx * 0.85
 mix = np.tanh(mix * 1.1) / np.tanh(1.1)

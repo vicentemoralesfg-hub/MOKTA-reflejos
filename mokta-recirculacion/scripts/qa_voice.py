@@ -25,10 +25,14 @@ W = [(w.word.strip(), w.start) for s in segs for w in s.words]
 print("Transcripción del MP4 final:\n " + " ".join(w for w, _ in W) + "\n")
 
 
+NUM = {"1": "uno", "2": "dos", "3": "tres", "4": "cuatro", "90": "noventa"}
+
+
 def n(s):
     s = unicodedata.normalize("NFD", s.lower())
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
-    return re.sub(r"[^a-z0-9]", "", s)
+    s = re.sub(r"[^a-z0-9]", "", s)
+    return NUM.get(s, s)  # Whisper escribe "1." por "uno"
 
 
 T = json.load(open("src/timeline.json"))

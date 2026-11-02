@@ -1,61 +1,56 @@
-# MOKTA · El botón que usas al revés v1 (con locución) — Informe de control de calidad
+# MOKTA · El botón que usas al revés v1 (voz Qwen3-TTS) — Informe de control de calidad
 
 Archivo: `entrega/MOKTA_BotonRecirculacion_v1.mp4` · verificado sobre el MP4 final con `scripts/qa.py` y `scripts/qa_voice.py`.
+La auditoría de la voz (ritmo, emoción, énfasis, decisiones y alternativas descartadas) está en [`AUDITORIA_VOZ.md`](AUDITORIA_VOZ.md).
 
 ## Especificaciones (medido con ffprobe/ffmpeg)
 | Criterio | Resultado |
 |---|---|
 | Resolución / relación | 1080×1920, 9:16 ✔ |
-| FPS / fotogramas | 30 fps, 1620 fotogramas (los esperados por la timeline) ✔ |
-| Duración | 54,000 s (video y audio idénticos) ✔ |
+| FPS / fotogramas | 30 fps, 1446 fotogramas (los esperados por la timeline) ✔ |
+| Duración | 48,200 s (video y audio idénticos) ✔ |
 | Video | H.264 High, yuv420p rango TV, BT.709, faststart ✔ |
-| Audio | AAC-LC 48 kHz estéreo ≈336 kbps ✔ |
-| Sonoridad | −14,6 LUFS integrados, pico −1,3 dBFS (objetivo Instagram/TikTok ≈ −14) ✔ |
-| Voz sobre el fondo mientras habla | +10,4 dB (la música baja ~11 dB con la voz) ✔ |
-| Fotogramas negros | 0 detectados ✔ |
-| Tamaño | 35,7 MB (bajo el límite de Reels/TikTok/Shorts) ✔ |
+| Audio | AAC-LC 48 kHz estéreo ≈343 kbps ✔ |
+| Sonoridad | −14,0 LUFS integrados, pico −1,2 dBFS (objetivo Instagram/TikTok ≈ −14) ✔ |
+| Voz sobre el fondo mientras habla | ≈ +11 dB ✔ |
+| Fotogramas negros | 0 ✔ |
+| Tamaño | 32,3 MB ✔ |
 
-## Locución: ¿se entiende? (Whisper sobre el MP4 final, con música y efectos)
-> El 90 % usa este botón al revés un hábito de dos segundos que te empaña, los vidrios y te quema vencina. Es la recirculación sierra, el aire de afuera y tu auto respira su propio aire. En invierno, la prendes para no pasar frío pero tu respiración suelta vapor de agua que queda atrapado, toca el vidrio frío y se empaña. En verano, con el aire acondicionado prendido, la dejas apagada y el compresor en fría, aire caliente sin parar, más esfuerzo, más vencina. O sea, lo estás usando al revés con frío o lluvia, aire de afuera, con calor, recirculación. Y para desempañar al tiro, uno, modo para brisas, dos, aire acondicionado, aunque sea invierno, tres, la recirculación apagada, cuatro, ventilador al máximo, con calor. ¡Listo! ¿Lo usabas al revés, comenta, sí o no?
+## Voz en el MP4 final (Whisper, con música y efectos)
+> El 90 % usa este botón. Al revés. Un hábito de dos segundos que te empaña los vidrios y te quema vencina. Se llama recirculación. Cierra el aire de afuera y el auto respira su propio aire. Error 1. En invierno lo aprendes por el frío, pero tu respiración suelta vapor, queda atrapado, toca el vidrio frío y se empaña. Error 2. En verano, con aire acondicionado, la dejas apagada y el compresor en fría aire caliente sin parar. Más esfuerzo, más vencina. O sea, lo estás usando al revés, frío o lluvia, aire de afuera, calor, recirculación, y para desempañar al tiro. Uno, modo para brisas. Dos, aire acondicionado, aunque sea invierno. Tres, recirculación apagada. Cuatro, ventilador al máximo. Listo. Tú lo usabas al revés, comenta sí o no y guárdalo.
 
-Todas las palabras clave se reconocen. Las diferencias son de ortografía, no de pronunciación: "vencina"/"bencina" y "sierra"/"cierra" suenan igual en el español de Chile, y "en fría", "para brisas" son solo cortes de palabra.
-Antes de la corrección fonética la voz decía "reciclación" y "vidridos". Se arregló enviando esas palabras como fonemas IPA y eligiendo, de 6 tomas por escena, la que mejor se entiende.
+Todo el guion se reconoce. "vencina", "en fría" y "para brisas" son solo cómo escribe Whisper "bencina", "enfría" y "parabrisas".
+"lo aprendes" en vez de "la prendes" es una ambigüedad de transcripción en el habla rápida: en la toma aislada se oye "la prendes".
 
-## Sincronía golpe visual ↔ palabra (Whisper sobre el MP4 final)
-Cada golpe se adelanta a propósito 2–4 fotogramas a su palabra (lo visual levemente antes del audio se percibe sincronizado).
-Error medio respecto de lo previsto: **39 ms** (1 fotograma = 33 ms). Ejemplos:
+## Sincronía golpe visual ↔ palabra
+Error medio respecto de lo previsto: **69 ms** (1 fotograma = 33 ms). Ejemplos (voz → golpe):
+- "al revés" 2,44 → 2,50 s
+- "prendes" (clic) → +127 ms
+- "uno/dos/tres/cuatro" 35,20 / 36,78 / 39,72 / 41,56 → 35,13 / 36,77 / 39,67 / 41,53 s
+- "listo" 43,52 → 43,37 s
+- "comenta" 46,12 → 46,07 s
 
-| Golpe | Palabra | Voz | Golpe |
-|---|---|---|---|
-| Clic del botón (invierno) | "prendes" | 13,18 s | 13,17 s |
-| "Y SE EMPAÑA" | "se empaña" | 19,04 s | 19,00 s |
-| Recirculación APAGADA (verano) | "apagada" | 23,56 s | 23,57 s |
-| Paso 1 · 2 · 3 · 4 | "uno" · "dos" · "tres" · "cuatro" | 38,62 · 40,14 · 43,12 · 45,10 s | 38,57 · 40,10 · 43,10 · 45,10 s |
-| "LISTO" | "listo" | 48,02 s | 47,90 s |
+## Cortes
+Salto de imagen máximo exactamente en el fotograma del corte. Cada corte cae en la pausa entre frases (0,27–0,30 s) con su golpe sonoro: +4,1 a +10,0 dB en los primeros 80 ms respecto de los 100 ms previos ✔
 
-La tarjeta "Frío o lluvia" entra 0,36 s después de "con frío" a propósito, para que se alcance a ver el giro de "AL REVÉS".
-
-## Sincronía en los cortes
-Salto de imagen máximo exactamente en el fotograma del corte; ataque del golpe/whoosh a −1/−2 ms ✔
-
-| Corte | Fotograma | Ataque de audio |
+| Corte | Fotograma | Golpe |
 |---|---|---|
-| Qué es | 195 | −2 ms |
-| Error #1 · Invierno | 360 | −2 ms |
-| Error #2 · Verano | 615 | −2 ms |
-| La regla | 885 | −1 ms |
-| Desempañar al tiro | 1110 | −2 ms |
-| Cierre | 1500 | −2 ms |
+| Qué es | 201 | +5,9 dB |
+| Error #1 · Invierno | 348 | +6,0 dB |
+| Error #2 · Verano | 574 | +4,5 dB |
+| La regla | 833 | +10,0 dB |
+| Desempañar al tiro | 1014 | +8,4 dB |
+| Cierre | 1343 | +4,1 dB |
 
 ## Revisado visualmente
-- Fotograma 0 = portada legible: "EL 90% USA ESTE BOTÓN" + botón + "AL REVÉS" de cabeza (gira y queda derecho en los primeros 0,5 s).
-- Un fotograma por segundo de los 54 s: textos dentro de la zona segura de Reels (y ≈ 210–1490 px), sin superposiciones.
-  Se corrigió el indicador de pasos 1·2·3·4, que por 8 fotogramas tapaba el título de la receta. La escena se volvió a renderizar y se empalmó, con los puntos de unión verificados fotograma a fotograma.
-- Empañado progresivo (bordes → centro) y desempañado de abajo hacia arriba sincronizados con los pasos de la voz.
+- Un fotograma por segundo de los 48 s. Textos dentro de la zona segura de Reels, sin superposiciones.
+- Corregido en esta versión:
+  - el botón del gancho tapaba "Un hábito de 2 segundos…" al subir
+  - "Error #2 · Verano" mostraba la pantalla casi vacía 1,4 s
+  - Se re-renderizaron solo esas escenas y se empalmaron; los puntos de unión se verificaron fotograma a fotograma.
+- Golpe visual nuevo cuando la voz dice "¡al revés!" (el texto late con destello rojo).
 
 ## Limitaciones
-- Voz sintética (Piper, `es_MX-claude-high`, Apache-2.0): acento latinoamericano neutro/mexicano, no chileno.
-  ElevenLabs (voz chilena) no estuvo disponible: la cuenta no tenía créditos ni generaciones gratis.
-  Con otra voz basta reemplazar `public/audio/voice/*.wav` y ejecutar `gen_voice.py --keep-audio` + `gen_audio.py`.
+- Voz sintética (Qwen3-TTS, Apache-2.0) con acento latinoamericano; no se puede garantizar un acento chileno marcado.
 - "90%" es la cifra editorial del gancho (pedida para el reel), no un dato de estudio. "33°" es un ejemplo ilustrativo.
 - Escenas 100 % generadas por código (sin grabaciones reales del tablero); marca MOKTA en texto (no se proporcionó logo).

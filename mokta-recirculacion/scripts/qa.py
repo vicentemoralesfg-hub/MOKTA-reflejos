@@ -45,16 +45,20 @@ au = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-i", vid, "-ac", "1
 hop = SR // 1000  # envolvente cada 1 ms
 env = np.sqrt(np.convolve(au**2, np.ones(hop * 5) / (hop * 5), "same"))[::hop]
 
-print("\ncorte  fotograma  salto_img(máx ±2)  ataque_audio(ms vs corte)")
+print("\ncorte  fotograma  salto_img(máx ±2)  golpe en el corte (dB: 0..+80 ms vs −150..−50 ms)")
+
+
+def rms_db(t0, t1):
+    s = au[int(t0 * SR) : int(t1 * SR)]
+    return 20 * np.log10(np.sqrt(np.mean(s**2)) + 1e-9)
+
+
 f0 = 0
 for s in T["scenes"]:
     if f0 > 0:
         win = diff[f0 - 2 : f0 + 3]
         k = int(np.argmax(win)) - 2
-        t_ms = f0 * 1000 / FPS
-        seg = env[int(t_ms) - 120 : int(t_ms) + 200]
-        d = np.diff(seg)
-        a = int(np.argmax(d)) - 120
-        print(f"{s['id']:7s} {f0:6d}   {diff[f0]:6.1f} (pico en {k:+d})   {a:+5d} ms")
+        t = f0 / FPS
+        print(f"{s['id']:7s} {f0:6d}   {diff[f0]:6.1f} (pico en {k:+d})   {rms_db(t, t + 0.08) - rms_db(t - 0.15, t - 0.05):+5.1f} dB")
     f0 += s["duration"]
 print(f"\nfotogramas: {len(fr)} (esperados {f0})")

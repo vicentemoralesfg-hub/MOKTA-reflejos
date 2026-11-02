@@ -1,510 +1,308 @@
 {
  "hook": {
+  "take": "hook_clone_s1.wav",
   "start": 2,
-  "dur": 5.987,
-  "text": "El noventa por ciento usa este botón al revés. Un hábito de dos segundos que te empaña los vidrios, y te quema bencina.",
-  "heard": "El  90 %  usa  este  botón  al  revés  un  hábito  de  2  segundos  que  té,  empaña,  los  vidrios  y  te  quema  vencina.",
-  "intelligibility": 1.0,
+  "dur": 6.459,
+  "text": "El noventa por ciento usa este botón… ¡al revés! Un hábito de dos segundos que te empaña los vidrios y te quema bencina.",
+  "heard": "El 90 % usa este botón. Al revés, un hábito de dos segundos que te empaña los vidrios y te quema vencina.",
+  "metrics": {
+   "dur": 6.46,
+   "syl_s": 6.04,
+   "artic_syl_s": 6.49,
+   "pauses": 2,
+   "pause_s": 0.45,
+   "f0_med": 167.0,
+   "f0_sd_st": 6.31,
+   "f0_range_st": 17.86,
+   "word_db_sd": 2.86,
+   "kw_db": 2.03,
+   "kw_st": 3.03,
+   "intelig": 1.0,
+   "f0_pyin": 154,
+   "spk_sim": 0.995,
+   "score": 7.404
+  },
   "words": [
    [
     "el",
     0.0,
-    0.08
+    0.28
    ],
    [
     "noventa",
-    0.08,
-    0.267
+    0.28,
+    0.62
    ],
    [
     "por",
-    0.267,
-    0.453
+    0.62,
+    0.92
    ],
    [
     "ciento",
-    0.453,
-    0.64
+    0.77,
+    0.92
    ],
    [
     "usa",
-    0.64,
-    1.04
+    0.92,
+    1.4
    ],
    [
     "este",
-    1.04,
-    1.28
+    1.4,
+    1.64
    ],
    [
     "boton",
-    1.28,
-    1.62
+    1.64,
+    2.26
    ],
    [
     "al",
-    1.62,
-    1.74
+    2.38,
+    2.6
    ],
    [
     "reves",
-    1.74,
-    2.02
-   ],
-   [
-    "un",
-    2.02,
-    2.12
-   ],
-   [
-    "habito",
-    2.12,
-    2.48
-   ],
-   [
-    "de",
-    2.48,
-    2.58
-   ],
-   [
-    "dos",
-    2.58,
-    2.74
-   ],
-   [
-    "segundos",
-    2.74,
+    2.6,
     3.06
    ],
    [
-    "que",
-    3.06,
-    3.3
-   ],
-   [
-    "te",
-    3.3,
+    "un",
+    3.36,
     3.5
    ],
    [
-    "empana",
-    3.68,
-    4.12
+    "habito",
+    3.5,
+    3.76
    ],
    [
-    "los",
-    4.38,
-    4.54
+    "de",
+    3.76,
+    3.86
    ],
    [
-    "vidrios",
-    4.54,
-    4.94
+    "dos",
+    3.86,
+    4.0
    ],
    [
-    "y",
-    4.94,
-    5.04
+    "segundos",
+    4.0,
+    4.3
+   ],
+   [
+    "que",
+    4.3,
+    4.52
    ],
    [
     "te",
-    5.04,
-    5.14
+    4.52,
+    4.62
+   ],
+   [
+    "empana",
+    4.62,
+    4.94
+   ],
+   [
+    "los",
+    4.94,
+    5.06
+   ],
+   [
+    "vidrios",
+    5.06,
+    5.42
+   ],
+   [
+    "y",
+    5.42,
+    5.56
+   ],
+   [
+    "te",
+    5.56,
+    5.66
    ],
    [
     "quema",
-    5.14,
-    5.4
+    5.66,
+    5.88
    ],
    [
     "bencina",
-    5.4,
-    5.987
+    5.88,
+    6.34
    ]
   ]
  },
  "define": {
+  "take": "define_clone_s3.wav",
   "start": 3,
-  "dur": 4.691,
-  "text": "Es la recirculación: cierra el aire de afuera, y tu auto respira su propio aire.",
-  "heard": "es  la  recirculación  sierra,  el  aire  de  afuera  y  tu  auto  respira  su  propio  aire.",
-  "intelligibility": 1.0,
+  "dur": 4.633,
+  "text": "Se llama recirculación: cierra el aire de afuera, y el auto respira su propio aire.",
+  "heard": "Se llama recirculación, cierra el aire de afuera y el auto respira su propio aire.",
+  "metrics": {
+   "dur": 4.63,
+   "syl_s": 6.04,
+   "artic_syl_s": 6.36,
+   "pauses": 1,
+   "pause_s": 0.23,
+   "f0_med": 168.0,
+   "f0_sd_st": 4.43,
+   "f0_range_st": 15.37,
+   "word_db_sd": 5.69,
+   "kw_db": 1.2,
+   "kw_st": 2.78,
+   "intelig": 1.0,
+   "f0_pyin": 157,
+   "spk_sim": 0.9914,
+   "score": 7.094
+  },
   "words": [
    [
-    "es",
+    "se",
     0.0,
-    0.12
+    0.16
    ],
    [
-    "la",
-    0.12,
-    0.24
+    "llama",
+    0.16,
+    0.36
    ],
    [
     "recirculacion",
-    0.24,
-    0.94
+    0.36,
+    1.16
    ],
    [
     "cierra",
-    0.94,
-    1.66
+    1.48,
+    1.82
    ],
    [
     "el",
-    1.66,
-    1.78
+    1.82,
+    1.98
    ],
    [
     "aire",
-    1.78,
-    2.0
-   ],
-   [
-    "de",
-    2.0,
+    1.98,
     2.14
    ],
    [
-    "afuera",
+    "de",
     2.14,
-    2.46
+    2.3
+   ],
+   [
+    "afuera",
+    2.3,
+    2.66
    ],
    [
     "y",
-    2.46,
-    2.78
+    2.66,
+    2.96
    ],
    [
-    "tu",
-    2.78,
-    2.92
+    "el",
+    2.96,
+    3.08
    ],
    [
     "auto",
-    2.92,
-    3.2
+    3.08,
+    3.3
    ],
    [
     "respira",
-    3.2,
-    3.72
-   ],
-   [
-    "su",
-    3.72,
+    3.3,
     3.84
    ],
    [
-    "propio",
+    "su",
     3.84,
-    4.12
+    3.98
+   ],
+   [
+    "propio",
+    3.98,
+    4.18
    ],
    [
     "aire",
-    4.12,
+    4.18,
     4.46
    ]
   ]
  },
  "winter": {
-  "start": 6,
-  "dur": 7.468,
-  "text": "En invierno, la prendes para no pasar frío. Pero tu respiración suelta vapor de agua, que queda atrapado, toca el vidrio frío… y se empaña.",
-  "heard": "En  invierno,  la  prendes  para  no  pasar  frío  pero  tu  respiración  suelta  vapor  de  agua  que  queda  atrapado,  toca  el  vidrio  frío  y  se  empaña.",
-  "intelligibility": 1.0,
+  "take": "winter_clone_s3.wav",
+  "start": 3,
+  "dur": 7.234,
+  "text": "Error uno: en invierno la prendes por el frío. Pero tu respiración suelta vapor, queda atrapado, toca el vidrio frío… ¡y se empaña!",
+  "heard": "Error 1, en invierno lo aprendes por el frío, pero tu respiración suelta vapor, queda atrapado, toca el vidrio frío y se empaña.",
+  "metrics": {
+   "dur": 7.23,
+   "syl_s": 5.94,
+   "artic_syl_s": 7.04,
+   "pauses": 5,
+   "pause_s": 1.13,
+   "f0_med": 150.0,
+   "f0_sd_st": 5.39,
+   "f0_range_st": 15.21,
+   "word_db_sd": 4.16,
+   "kw_db": 1.85,
+   "kw_st": -1.69,
+   "intelig": 0.995,
+   "f0_pyin": 147,
+   "spk_sim": 0.9939,
+   "score": 6.864
+  },
   "words": [
    [
-    "en",
+    "error",
     0.0,
-    0.1
+    0.22
+   ],
+   [
+    "uno",
+    0.22,
+    0.44
+   ],
+   [
+    "en",
+    0.76,
+    0.86
    ],
    [
     "invierno",
-    0.1,
-    0.5
+    0.86,
+    1.22
    ],
    [
     "la",
-    0.8,
-    0.98
-   ],
-   [
-    "prendes",
-    0.98,
-    1.34
-   ],
-   [
-    "para",
-    1.34,
+    1.22,
     1.48
    ],
    [
-    "no",
+    "prendes",
     1.48,
-    1.66
-   ],
-   [
-    "pasar",
-    1.66,
-    1.92
-   ],
-   [
-    "frio",
-    1.92,
-    2.24
-   ],
-   [
-    "pero",
-    2.24,
-    2.38
-   ],
-   [
-    "tu",
-    2.38,
-    2.54
-   ],
-   [
-    "respiracion",
-    2.54,
-    3.14
-   ],
-   [
-    "suelta",
-    3.14,
-    3.52
-   ],
-   [
-    "vapor",
-    3.52,
-    3.68
-   ],
-   [
-    "de",
-    3.68,
-    3.96
-   ],
-   [
-    "agua",
-    3.96,
-    4.16
-   ],
-   [
-    "que",
-    4.16,
-    4.56
-   ],
-   [
-    "queda",
-    4.56,
-    4.8
-   ],
-   [
-    "atrapado",
-    4.8,
-    5.3
-   ],
-   [
-    "toca",
-    5.5,
-    5.78
-   ],
-   [
-    "el",
-    5.78,
-    6.18
-   ],
-   [
-    "vidrio",
-    6.18,
-    6.48
-   ],
-   [
-    "frio",
-    6.48,
-    6.76
-   ],
-   [
-    "y",
-    6.76,
-    6.84
-   ],
-   [
-    "se",
-    6.84,
-    6.94
-   ],
-   [
-    "empana",
-    6.94,
-    7.32
-   ]
-  ]
- },
- "summer": {
-  "start": 6,
-  "dur": 8.01,
-  "text": "En verano, con el aire acondicionado prendido, la dejas apagada. Y el compresor enfría aire caliente, sin parar. Más esfuerzo, más bencina.",
-  "heard": "En  verano,  con  el  aire  acondicionado  prendido,  la  dejas  apagada,  y  el  compresor  en  fría,  aire  caliente  sin  parar,  más  esfuerzo,  más  vencina.",
-  "intelligibility": 0.933,
-  "words": [
-   [
-    "en",
-    0.0,
-    0.12
-   ],
-   [
-    "verano",
-    0.12,
-    0.46
-   ],
-   [
-    "con",
-    0.64,
-    0.76
-   ],
-   [
-    "el",
-    0.76,
-    0.88
-   ],
-   [
-    "aire",
-    0.88,
-    1.08
-   ],
-   [
-    "acondicionado",
-    1.08,
     1.74
    ],
    [
-    "prendido",
+    "por",
     1.74,
-    2.22
-   ],
-   [
-    "la",
-    2.48,
-    2.6
-   ],
-   [
-    "dejas",
-    2.6,
-    2.86
-   ],
-   [
-    "apagada",
-    2.86,
-    3.46
-   ],
-   [
-    "y",
-    3.54,
-    3.7
+    1.88
    ],
    [
     "el",
-    3.7,
-    3.82
-   ],
-   [
-    "compresor",
-    3.82,
-    4.3
-   ],
-   [
-    "enfria",
-    4.3,
-    4.96
-   ],
-   [
-    "aire",
-    4.96,
-    5.22
-   ],
-   [
-    "caliente",
-    5.22,
-    5.7
-   ],
-   [
-    "sin",
-    5.7,
-    5.92
-   ],
-   [
-    "parar",
-    5.92,
-    6.16
-   ],
-   [
-    "mas",
-    6.5,
-    6.64
-   ],
-   [
-    "esfuerzo",
-    6.64,
-    7.14
-   ],
-   [
-    "mas",
-    7.28,
-    7.4
-   ],
-   [
-    "bencina",
-    7.4,
-    8.01
-   ]
-  ]
- },
- "rule": {
-  "start": 3,
-  "dur": 5.501,
-  "text": "O sea: lo estás usando al revés. Con frío, o lluvia: aire de afuera. Con calor: recirculación.",
-  "heard": "O  sea,  lo  estás  usando  al  revés  con  frío  o  lluvia,  aire  de  afuera,  con  calor,  recirculación.",
-  "intelligibility": 1.0,
-  "words": [
-   [
-    "o",
-    0.0,
-    0.1
-   ],
-   [
-    "sea",
-    0.1,
-    0.34
-   ],
-   [
-    "lo",
-    0.6,
-    0.72
-   ],
-   [
-    "estas",
-    0.72,
-    0.94
-   ],
-   [
-    "usando",
-    0.94,
-    1.3
-   ],
-   [
-    "al",
-    1.3,
-    1.54
-   ],
-   [
-    "reves",
-    1.54,
-    1.86
-   ],
-   [
-    "con",
-    1.86,
+    1.88,
     1.96
    ],
    [
@@ -513,53 +311,337 @@
     2.26
    ],
    [
-    "o",
-    2.26,
-    2.32
+    "pero",
+    2.52,
+    2.62
    ],
    [
-    "lluvia",
-    2.32,
-    2.66
+    "tu",
+    2.62,
+    2.74
    ],
    [
-    "aire",
-    2.9,
-    3.1
-   ],
-   [
-    "de",
-    3.1,
+    "respiracion",
+    2.74,
     3.26
    ],
    [
-    "afuera",
+    "suelta",
     3.26,
     3.62
    ],
    [
-    "con",
-    3.9,
-    4.02
+    "vapor",
+    3.62,
+    3.82
    ],
    [
-    "calor",
-    4.02,
+    "queda",
+    4.18,
     4.32
    ],
    [
+    "atrapado",
+    4.32,
+    4.86
+   ],
+   [
+    "toca",
+    5.08,
+    5.32
+   ],
+   [
+    "el",
+    5.32,
+    5.5
+   ],
+   [
+    "vidrio",
+    5.5,
+    5.8
+   ],
+   [
+    "frio",
+    5.8,
+    6.22
+   ],
+   [
+    "y",
+    6.22,
+    6.56
+   ],
+   [
+    "se",
+    6.56,
+    6.7
+   ],
+   [
+    "empana",
+    6.7,
+    7.14
+   ]
+  ]
+ },
+ "summer": {
+  "take": "summer_clone_s5.wav",
+  "start": 3,
+  "dur": 8.355,
+  "text": "Error dos: en verano, con aire acondicionado, ¡la dejas apagada! Y el compresor enfría aire caliente sin parar. Más esfuerzo… ¡más bencina!",
+  "heard": "Error 2. En verano, con aire acondicionado, la dejas apagada y el compresor en fría aire caliente sin parar. Más esfuerzo, más vencina.",
+  "metrics": {
+   "dur": 8.36,
+   "syl_s": 5.51,
+   "artic_syl_s": 6.1,
+   "pauses": 4,
+   "pause_s": 0.82,
+   "f0_med": 181.0,
+   "f0_sd_st": 5.16,
+   "f0_range_st": 16.51,
+   "word_db_sd": 3.07,
+   "kw_db": 2.02,
+   "kw_st": 4.5,
+   "intelig": 1.0,
+   "f0_pyin": 166,
+   "spk_sim": 0.9927,
+   "score": 7.393
+  },
+  "words": [
+   [
+    "error",
+    0.0,
+    0.28
+   ],
+   [
+    "dos",
+    0.28,
+    0.5
+   ],
+   [
+    "en",
+    0.76,
+    0.94
+   ],
+   [
+    "verano",
+    0.94,
+    1.32
+   ],
+   [
+    "con",
+    1.48,
+    1.62
+   ],
+   [
+    "aire",
+    1.62,
+    1.8
+   ],
+   [
+    "acondicionado",
+    1.8,
+    2.52
+   ],
+   [
+    "la",
+    2.8,
+    2.92
+   ],
+   [
+    "dejas",
+    2.92,
+    3.2
+   ],
+   [
+    "apagada",
+    3.2,
+    3.72
+   ],
+   [
+    "y",
+    3.72,
+    4.04
+   ],
+   [
+    "el",
+    4.04,
+    4.14
+   ],
+   [
+    "compresor",
+    4.14,
+    4.68
+   ],
+   [
+    "enfria",
+    4.68,
+    5.08
+   ],
+   [
+    "aire",
+    5.08,
+    5.3
+   ],
+   [
+    "caliente",
+    5.3,
+    5.68
+   ],
+   [
+    "sin",
+    5.68,
+    5.86
+   ],
+   [
+    "parar",
+    5.86,
+    6.1
+   ],
+   [
+    "mas",
+    6.44,
+    6.72
+   ],
+   [
+    "esfuerzo",
+    6.72,
+    7.26
+   ],
+   [
+    "mas",
+    7.48,
+    7.72
+   ],
+   [
+    "bencina",
+    7.72,
+    8.22
+   ]
+  ]
+ },
+ "rule": {
+  "take": "rule_clone_s7.wav",
+  "start": 3,
+  "dur": 5.743,
+  "text": "O sea… ¡lo estás usando al revés! Frío o lluvia: ¡aire de afuera! Calor: ¡recirculación!",
+  "heard": "O sea, lo estás usando al revés, frío o lluvia, aire de afuera, calor, recirculación.",
+  "metrics": {
+   "dur": 5.74,
+   "syl_s": 5.22,
+   "artic_syl_s": 6.52,
+   "pauses": 5,
+   "pause_s": 1.14,
+   "f0_med": 195.0,
+   "f0_sd_st": 4.35,
+   "f0_range_st": 15.53,
+   "word_db_sd": 3.29,
+   "kw_db": 1.48,
+   "kw_st": -0.06,
+   "intelig": 1.0,
+   "f0_pyin": 167,
+   "spk_sim": 0.9897,
+   "score": 6.797
+  },
+  "words": [
+   [
+    "o",
+    0.0,
+    0.12
+   ],
+   [
+    "sea",
+    0.12,
+    0.36
+   ],
+   [
+    "lo",
+    0.66,
+    0.8
+   ],
+   [
+    "estas",
+    0.8,
+    0.98
+   ],
+   [
+    "usando",
+    0.98,
+    1.28
+   ],
+   [
+    "al",
+    1.28,
+    1.48
+   ],
+   [
+    "reves",
+    1.48,
+    1.86
+   ],
+   [
+    "frio",
+    2.08,
+    2.44
+   ],
+   [
+    "o",
+    2.44,
+    2.56
+   ],
+   [
+    "lluvia",
+    2.56,
+    2.9
+   ],
+   [
+    "aire",
+    3.14,
+    3.4
+   ],
+   [
+    "de",
+    3.4,
+    3.56
+   ],
+   [
+    "afuera",
+    3.56,
+    3.88
+   ],
+   [
+    "calor",
+    4.12,
+    4.4
+   ],
+   [
     "recirculacion",
-    4.64,
-    5.34
+    4.82,
+    5.5
    ]
   ]
  },
  "recipe": {
+  "take": "recipe_clone_s1.wav",
   "start": 3,
-  "dur": 11.357,
-  "text": "¿Y para desempañar al tiro? Uno: modo parabrisas. Dos: aire acondicionado, aunque sea invierno. Tres: la recirculación, apagada. Cuatro: ventilador al máximo, con calor. ¡Listo!",
-  "heard": "y  para  desempañar  al  tiro  1  modo  para  brisas  2  aire  acondicionado  aunque  sea  invierno  3  la  recirculación  apagada  4  ventilador  al  máximo  con  calor  listo",
-  "intelligibility": 0.941,
+  "dur": 9.999,
+  "text": "¿Y para desempañar al tiro? Uno: modo parabrisas. Dos: aire acondicionado, aunque sea invierno. Tres: recirculación apagada. Cuatro: ventilador al máximo. ¡Listo!",
+  "heard": "y para desempañar al tiro. Uno, modo para brisas. Dos, aire acondicionado, aunque sea invierno. Tres, recirculación apagada. Cuatro, ventilador al máximo. Listo.",
+  "metrics": {
+   "dur": 10.0,
+   "syl_s": 5.5,
+   "artic_syl_s": 6.99,
+   "pauses": 10,
+   "pause_s": 2.13,
+   "f0_med": 125.0,
+   "f0_sd_st": 4.78,
+   "f0_range_st": 14.6,
+   "word_db_sd": 3.86,
+   "kw_db": 1.67,
+   "kw_st": 5.07,
+   "intelig": 1.0,
+   "f0_pyin": 115,
+   "spk_sim": 0.9922,
+   "score": 7.509
+  },
   "words": [
    [
     "y",
@@ -569,171 +651,188 @@
    [
     "para",
     0.1,
-    0.24
+    0.22
    ],
    [
     "desempanar",
-    0.24,
-    0.84
+    0.22,
+    0.7
    ],
    [
     "al",
-    0.84,
-    0.98
+    0.7,
+    0.8
    ],
    [
     "tiro",
-    0.98,
-    1.16
+    0.8,
+    0.96
    ],
    [
     "uno",
-    1.16,
-    1.66
+    1.28,
+    1.46
    ],
    [
     "modo",
-    1.66,
-    2.18
+    1.88,
+    2.0
    ],
    [
     "parabrisas",
-    2.18,
-    2.71
+    2.0,
+    2.86
    ],
    [
     "dos",
-    2.71,
-    3.24
+    2.86,
+    3.12
    ],
    [
     "aire",
-    3.24,
-    3.76
+    3.54,
+    3.7
    ],
    [
     "acondicionado",
-    3.76,
-    4.48
+    3.7,
+    4.4
    ],
    [
     "aunque",
-    4.48,
-    5.0
+    4.64,
+    4.78
    ],
    [
     "sea",
-    5.0,
-    5.26
+    4.78,
+    5.04
    ],
    [
     "invierno",
-    5.26,
-    5.72
+    5.04,
+    5.44
    ],
    [
     "tres",
-    5.72,
-    6.24
-   ],
-   [
-    "la",
-    6.24,
-    6.66
+    5.74,
+    6.06
    ],
    [
     "recirculacion",
-    6.66,
-    7.3
+    6.42,
+    6.98
    ],
    [
     "apagada",
-    7.3,
-    7.78
+    6.98,
+    7.42
    ],
    [
     "cuatro",
-    7.78,
-    8.28
+    7.62,
+    8.0
    ],
    [
     "ventilador",
-    8.28,
-    9.18
+    8.3,
+    8.7
    ],
    [
     "al",
-    9.18,
-    9.36
+    8.7,
+    8.84
    ],
    [
     "maximo",
-    9.36,
-    9.74
-   ],
-   [
-    "con",
-    9.74,
-    10.22
-   ],
-   [
-    "calor",
-    10.22,
-    10.52
+    8.84,
+    9.14
    ],
    [
     "listo",
-    10.52,
-    11.28
+    9.5,
+    9.84
    ]
   ]
  },
  "cta": {
+  "take": "cta_clone_s1.wav",
   "start": 3,
-  "dur": 2.483,
-  "text": "¿Lo usabas al revés? Comenta: sí, o no.",
-  "heard": "lo  usabas  al  revés  comenta,  sí  o  no.",
-  "intelligibility": 1.0,
+  "dur": 2.899,
+  "text": "¿Tú lo usabas al revés? Comenta sí o no… y guárdalo.",
+  "heard": "¿Tú lo usabas al revés? Comenta sí o no y guárdalo!",
+  "metrics": {
+   "dur": 2.9,
+   "syl_s": 5.86,
+   "artic_syl_s": 6.97,
+   "pauses": 2,
+   "pause_s": 0.46,
+   "f0_med": 144.0,
+   "f0_sd_st": 4.07,
+   "f0_range_st": 16.14,
+   "word_db_sd": 3.65,
+   "kw_db": 0.72,
+   "kw_st": 2.98,
+   "intelig": 1.0,
+   "f0_pyin": 132,
+   "spk_sim": 0.9894,
+   "score": 7.183
+  },
   "words": [
    [
-    "lo",
+    "tu",
     0.0,
-    0.1
+    0.12
+   ],
+   [
+    "lo",
+    0.12,
+    0.2
    ],
    [
     "usabas",
-    0.1,
-    0.52
+    0.2,
+    0.56
    ],
    [
     "al",
-    0.52,
-    0.7
+    0.56,
+    0.66
    ],
    [
     "reves",
-    0.7,
+    0.66,
     1.0
    ],
    [
     "comenta",
-    1.0,
-    1.4
+    1.22,
+    1.58
    ],
    [
     "si",
-    1.64,
-    1.88
+    1.58,
+    1.8
    ],
    [
     "o",
-    1.88,
-    2.22
+    1.8,
+    1.94
    ],
    [
     "no",
-    2.22,
-    2.34
+    1.94,
+    2.1
+   ],
+   [
+    "y",
+    2.1,
+    2.46
+   ],
+   [
+    "guardalo",
+    2.46,
+    2.82
    ]
   ]
  }
