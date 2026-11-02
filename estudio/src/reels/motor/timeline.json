@@ -1,0 +1,6 @@
+{
+  "_comment": "Reel 03 'Tu motor en cámara lenta'. Velocidad del ciclo en grados por fotograma (30 fps). 600°/fotograma = 3.000 rpm reales. 12°/fotograma = 1/50. Entre puntos: interpolación geométrica. Lo leen el video y scripts/audio_motor.py.",
+  "fps": 30,
+  "speed": [[0, 600], [54, 600], [86, 12], [430, 12], [470, 600], [568, 600], [600, 12], [705, 12]],
+  "beats": { "hook": 0, "slow": 86, "turns": 178, "piston": 268, "trip": 430, "oil": 568, "cta": 640, "total": 705 }
+}

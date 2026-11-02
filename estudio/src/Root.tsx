@@ -5,9 +5,13 @@ import { fontsReady } from "./lib/fonts";
 import { ElChat } from "./reels/chat/ElChat";
 import { T as CHAT } from "./reels/chat/script";
 import { Quiz } from "./reels/quiz/Quiz";
+import { MotorLento } from "./reels/motor/MotorLento";
+import { TL as MOTOR } from "./reels/motor/timeline";
 import { TOTAL as QUIZ_TOTAL } from "./reels/quiz/data";
 import { AsadoClose, AsadoCover, AsadoGuest, GUESTS } from "./carruseles/asado/Asado";
 import { ITEMS, SecretosClose, SecretosCover, SecretosItem } from "./carruseles/secretos/Secretos";
+import { Conductores } from "./imagenes/Conductores";
+import { Explosiones } from "./imagenes/Explosiones";
 
 const fontHandle = delayRender("Cargando fuentes");
 fontsReady.then(() => continueRender(fontHandle));
@@ -19,6 +23,7 @@ export const RemotionRoot: React.FC = () => (
   <>
     <Folder name="Reels">
       <Composition id="R01-ElChat" component={ElChat} durationInFrames={CHAT.total} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="R03-MotorLento" component={MotorLento} durationInFrames={MOTOR.beats.total} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="R02-MitoOVerdad" component={Quiz} durationInFrames={QUIZ_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
     </Folder>
     <Folder name="Carrusel-Asado">
@@ -34,6 +39,10 @@ export const RemotionRoot: React.FC = () => (
         <Still key={i} id={`C02-Secretos-0${i + 2}`} component={SecretosItem} defaultProps={{ i }} {...post} />
       ))}
       <Still id="C02-Secretos-09" component={SecretosClose} {...post} />
+    </Folder>
+    <Folder name="Imagenes">
+      <Still id="I01-Conductores" component={Conductores} {...post} />
+      <Still id="I02-Explosiones" component={Explosiones} {...post} />
     </Folder>
   </>
 );
