@@ -18,3 +18,16 @@
 | Controles estrictos | Cada toma debe quedar a **±1,5 semitonos** del tono de la referencia; se elige la de mayor similitud de timbre con la referencia y cero errores de transcripción. |
 | Mismo ritmo | Un **único** factor de tempo para todo el video (no uno por frase). |
 | Guion e imagen | Sin cambios de contenido (solo la puntuación expresiva de la voz). |
+
+## Resultado medido (v3)
+| Métrica | v2 | v3 |
+|---|---|---|
+| Tono medio por frase (mín.–máx.) | 115–236 Hz | **127–151 Hz** |
+| Dispersión de tono entre frases | 12,3 semitonos (voces distintas) | **3,0 semitonos** (misma voz, variación natural) |
+| Similitud de timbre con la referencia | 0,78–0,93 (contra un promedio) | **0,90–0,94** (contra la voz elegida) |
+| Variación expresiva (desv. tono) | 5,7 st | 4,6 st (expresiva sin cambiar de persona) |
+| Ritmo | ×1,00–×1,30 según la frase | **×1,20 igual en todo el video** (~3,1 palabras/s) |
+| Transcripción del MP4 final | correcta | correcta palabra por palabra (solo b/v en "bencina") |
+| Duración | 50,8 s | 51,7 s |
+
+Extra: se quitó el efecto de "gorgoteo de bencina", que en la mezcla se confundía con una sílaba sobre "casi un estanque".

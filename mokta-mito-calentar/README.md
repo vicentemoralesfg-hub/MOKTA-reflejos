@@ -1,13 +1,13 @@
 # MOKTA · El mito de calentar el auto (Remotion)
 
-Reel vertical 1080×1920 · 30 fps · 50,8 s · H.264 + AAC. **v2**: locución dirigida con emoción por frase (Qwen3-TTS VoiceDesign, voz masculina latinoamericana cálida y enérgica), texto en pantalla sincronizado palabra por palabra, música cinematográfica y efectos 100 % sintetizados. Ver `ANALISIS_v1.md` para el análisis crítico de la v1 y los cambios.
+Reel vertical 1080×1920 · 30 fps · 51,7 s · H.264 + AAC. **v3**: una sola voz de narrador (Qwen3-TTS: diseñada una vez y clonada en todas las frases), texto en pantalla sincronizado palabra por palabra, música cinematográfica y efectos 100 % sintetizados. Análisis: `ANALISIS_v1.md` (v1 → v2) y `ANALISIS_v2_voz.md` (voz v2 → v3).
 
 **Entregables** (`entrega/`)
 
 | Archivo | Qué es |
 |---|---|
-| `MOKTA_MitoCalentarAuto_v2.mp4` | Versión principal: voz + música + efectos |
-| `MOKTA_MitoCalentarAuto_v2_sinvoz.mp4` | Misma imagen, solo música + efectos (para poner voz propia o un audio en tendencia) |
+| `MOKTA_MitoCalentarAuto_v3.mp4` | Versión principal: voz + música + efectos |
+| `MOKTA_MitoCalentarAuto_v3_sinvoz.mp4` | Misma imagen, solo música + efectos (para poner voz propia o un audio en tendencia) |
 | `portada.jpg` | Portada sugerida para el Reel |
 | `texto_publicacion.md` | Descripción, hashtags y fuentes para la publicación |
 
@@ -41,8 +41,9 @@ Cambio visual o sonoro cada 1–2 s, capítulos numerados arriba para dar sensac
 ```bash
 npm i
 python3 scripts/gen_textures.py         # grano de película + escarcha (PNG procedurales)
-python3 scripts/gen_vo.py takes 2       # 2 tomas por frase con Qwen3-TTS VoiceDesign (guion y emociones: scripts/vo_script.json)
-python3 scripts/gen_vo.py build         # elige la mejor toma (Whisper + Resemblyzer + Praat), ajusta ritmo (Rubber Band) → src/timeline.json
+python3 scripts/gen_vo.py design 5     # diseña 5 voces candidatas (Qwen3-TTS VoiceDesign) y fija la referencia
+python3 scripts/gen_vo.py takes 3       # clona esa voz en cada frase (Qwen3-TTS Base), 3 tomas
+python3 scripts/gen_vo.py build         # elige tomas (misma voz ±1,5 st, 0 errores), ritmo global → src/timeline.json
 python3 scripts/gen_audio.py            # música + efectos + mezclas → public/audio/
 npx remotion studio                     # vista previa (composición MitoCalentarAuto + escenas sueltas)
 npx remotion render MitoCalentarAuto out/video_muted.mp4 --muted --codec=h264 --crf=15 --props='{"audio":null}'
@@ -50,8 +51,9 @@ bash scripts/assemble.sh                # normaliza a −14 LUFS y genera entreg
 ```
 
 `gen_vo.py` necesita `pip install qwen-tts faster-whisper resemblyzer praat-parselmouth num2words`, `torch`/`torchaudio` CPU
-de la misma versión (p. ej. 2.9.1) y `rubberband-cli`. Si cambias el texto o la emoción de una frase (`scripts/vo_script.json`),
-borra sus tomas en `public/audio/vo_takes/`, vuelve a correr `gen_vo.py takes` + `build` y luego `gen_audio.py`:
+de la misma versión (p. ej. 2.9.1) y `rubberband-cli`. Si cambias el texto de una frase (`scripts/vo_script.json`), borra sus tomas en
+`public/audio/vo_takes/`, vuelve a correr `gen_vo.py takes` + `build` y luego `gen_audio.py` (la voz de referencia se mantiene
+en `public/audio/vo_ref/ref.wav`, así que la frase nueva sale con la misma voz):
 las escenas se re-sincronizan solas porque buscan cada palabra con `cue()`.
 
 ¿Locución humana? Graba siguiendo `scripts/vo_script.json`, guarda cada frase como `public/audio/vo_takes/<escena>_0.wav`
@@ -63,7 +65,8 @@ En un servidor sin Chrome de Remotion, define `REMOTION_CHROME` con la ruta de u
 
 | Qué | Archivo |
 |---|---|
-| Texto y dirección (emoción) de la locución | `scripts/vo_script.json` |
+| Texto de la locución y descripción de la voz | `scripts/vo_script.json` |
+| Voz de referencia (la única del video) | `public/audio/vo_ref/ref.wav` |
 | Duración de escenas y palabra→fotograma (generado) | `src/timeline.json` |
 | Colores, tipografías, zona segura | `src/config.ts` |
 | Escenas | `src/scenes/S01Hook.tsx` … `S12Cta.tsx` |

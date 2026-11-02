@@ -4,7 +4,7 @@
  "beats": [
   {
    "id": "hook",
-   "duration": 70,
+   "duration": 73,
    "vo": "¿Calientas el auto diez minutos cada mañana?",
    "voAt": 2,
    "words": [
@@ -14,73 +14,73 @@
     },
     {
      "w": "el",
-     "t": 14.6
+     "t": 15.8
     },
     {
      "w": "auto",
-     "t": 17.6
+     "t": 20.0
     },
     {
      "w": "diez",
-     "t": 22.4
+     "t": 25.4
     },
     {
      "w": "minutos",
-     "t": 30.2
+     "t": 32.0
     },
     {
      "w": "cada",
-     "t": 41.6
+     "t": 43.4
     },
     {
      "w": "mañana?",
-     "t": 48.2
+     "t": 49.4
     }
    ]
   },
   {
    "id": "para",
-   "duration": 81,
-   "vo": "Para. Le estás haciendo más daño que bien.",
+   "duration": 78,
+   "vo": "¡Para! Le estás haciendo más daño que bien.",
    "voAt": 3,
    "words": [
     {
-     "w": "Para.",
+     "w": "¡Para!",
      "t": 3.0
     },
     {
      "w": "Le",
-     "t": 22.8
+     "t": 23.4
     },
     {
      "w": "estás",
-     "t": 26.4
+     "t": 28.8
     },
     {
      "w": "haciendo",
-     "t": 31.8
+     "t": 33.6
     },
     {
      "w": "más",
-     "t": 41.4
+     "t": 42.0
     },
     {
      "w": "daño",
-     "t": 48.6
+     "t": 49.8
     },
     {
      "w": "que",
-     "t": 58.8
+     "t": 57.6
     },
     {
      "w": "bien.",
-     "t": 62.4
+     "t": 60.0
     }
    ]
   },
   {
    "id": "teaser",
-   "duration": 90,
+   "duration": 81,
    "vo": "Quédate: te digo cuánto hay que esperar de verdad.",
    "voAt": 3,
    "words": [
@@ -90,41 +90,41 @@
     },
     {
      "w": "Te",
-     "t": 19.8
+     "t": 21.6
     },
     {
      "w": "digo",
-     "t": 23.4
+     "t": 24.6
     },
     {
      "w": "cuánto",
-     "t": 28.8
+     "t": 30.6
     },
     {
      "w": "hay",
-     "t": 42.6
+     "t": 43.8
     },
     {
      "w": "que",
-     "t": 46.8
+     "t": 48.0
     },
     {
      "w": "esperar",
-     "t": 50.4
+     "t": 51.0
     },
     {
      "w": "de",
-     "t": 59.4
+     "t": 57.6
     },
     {
      "w": "verdad.",
-     "t": 67.2
+     "t": 63.6
     }
    ]
   },
   {
    "id": "carburador",
-   "duration": 116,
+   "duration": 109,
    "vo": "Este mito viene de los autos con carburador, que sí necesitaban calor.",
    "voAt": 3,
    "words": [
@@ -134,53 +134,53 @@
     },
     {
      "w": "mito",
-     "t": 10.8
+     "t": 9.0
     },
     {
      "w": "viene",
-     "t": 21.0
+     "t": 18.0
     },
     {
      "w": "de",
-     "t": 26.4
+     "t": 22.8
     },
     {
      "w": "los",
-     "t": 30.6
+     "t": 27.0
     },
     {
      "w": "autos",
-     "t": 33.0
+     "t": 30.0
     },
     {
      "w": "con",
-     "t": 42.0
+     "t": 41.4
     },
     {
      "w": "carburador,",
-     "t": 45.0
+     "t": 44.4
     },
     {
      "w": "que",
-     "t": 69.6
+     "t": 67.2
     },
     {
      "w": "sí",
-     "t": 72.0
+     "t": 70.2
     },
     {
      "w": "necesitaban",
-     "t": 78.6
+     "t": 74.4
     },
     {
      "w": "calor.",
-     "t": 95.4
+     "t": 90.0
     }
    ]
   },
   {
    "id": "inyeccion",
-   "duration": 134,
+   "duration": 143,
    "vo": "Pero hoy, la inyección electrónica ajusta la mezcla sola, con frío o con calor.",
    "voAt": 3,
    "words": [
@@ -190,61 +190,61 @@
     },
     {
      "w": "hoy,",
-     "t": 7.2
+     "t": 12.0
     },
     {
      "w": "la",
-     "t": 21.0
+     "t": 25.2
     },
     {
      "w": "inyección",
-     "t": 24.0
+     "t": 29.4
     },
     {
      "w": "electrónica",
-     "t": 36.0
+     "t": 39.0
     },
     {
      "w": "ajusta",
-     "t": 53.4
+     "t": 54.0
     },
     {
      "w": "la",
-     "t": 63.0
+     "t": 66.0
     },
     {
      "w": "mezcla",
-     "t": 64.8
+     "t": 67.8
     },
     {
      "w": "sola,",
-     "t": 73.8
+     "t": 76.8
     },
     {
      "w": "con",
-     "t": 90.0
+     "t": 93.6
     },
     {
      "w": "frío",
-     "t": 94.8
+     "t": 98.4
     },
     {
      "w": "o",
-     "t": 106.8
+     "t": 109.2
     },
     {
      "w": "con",
-     "t": 110.4
+     "t": 117.6
     },
     {
      "w": "calor.",
-     "t": 114.0
+     "t": 122.4
     }
    ]
   },
   {
    "id": "bencina",
-   "duration": 182,
+   "duration": 186,
    "vo": "En ralentí pasa algo peor: el motor frío inyecta bencina extra, que puede lavar el aceite de los cilindros.",
    "voAt": 3,
    "words": [
@@ -254,7 +254,7 @@
     },
     {
      "w": "ralentí",
-     "t": 6.0
+     "t": 7.8
     },
     {
      "w": "pasa",
@@ -265,64 +265,64 @@
      "t": 27.6
     },
     {
-     "w": "peor,",
-     "t": 35.4
+     "w": "peor.",
+     "t": 36.6
     },
     {
-     "w": "el",
-     "t": 51.0
+     "w": "El",
+     "t": 53.4
     },
     {
      "w": "motor",
-     "t": 54.6
+     "t": 57.0
     },
     {
      "w": "frío",
-     "t": 60.6
+     "t": 63.6
     },
     {
      "w": "inyecta",
-     "t": 72.0
+     "t": 75.0
     },
     {
      "w": "bencina",
-     "t": 85.2
+     "t": 88.2
     },
     {
      "w": "extra,",
-     "t": 99.0
+     "t": 99.6
     },
     {
      "w": "que",
-     "t": 116.4
+     "t": 120.0
     },
     {
      "w": "puede",
-     "t": 119.4
+     "t": 123.0
     },
     {
      "w": "lavar",
-     "t": 125.4
+     "t": 130.2
     },
     {
      "w": "el",
-     "t": 137.4
+     "t": 142.2
     },
     {
      "w": "aceite",
-     "t": 139.8
+     "t": 144.6
     },
     {
      "w": "de",
-     "t": 147.0
-    },
-    {
-     "w": "los",
      "t": 153.0
     },
     {
+     "w": "los",
+     "t": 158.4
+    },
+    {
      "w": "cilindros.",
-     "t": 156.0
+     "t": 161.4
     }
    ]
   },
@@ -338,35 +338,35 @@
     },
     {
      "w": "como",
-     "t": 6.0
+     "t": 9.6
     },
     {
      "w": "detenido",
-     "t": 11.4
+     "t": 14.4
     },
     {
      "w": "se",
-     "t": 25.2
+     "t": 28.2
     },
     {
      "w": "calienta",
-     "t": 28.8
+     "t": 31.2
     },
     {
      "w": "lentísimo,",
-     "t": 40.2
+     "t": 43.2
     },
     {
      "w": "ese",
-     "t": 65.4
+     "t": 66.6
     },
     {
      "w": "desgaste",
-     "t": 72.6
+     "t": 70.8
     },
     {
      "w": "dura",
-     "t": 84.6
+     "t": 84.0
     },
     {
      "w": "mucho",
@@ -374,14 +374,14 @@
     },
     {
      "w": "más.",
-     "t": 100.2
+     "t": 101.4
     }
    ]
   },
   {
    "id": "horas",
-   "duration": 182,
-   "vo": "Diez minutos al día son sesenta horas al año: casi un estanque de bencina, sin moverte ni un metro.",
+   "duration": 169,
+   "vo": "Diez minutos al día son sesenta horas al año: ¡casi un estanque de bencina, sin moverte ni un metro!",
    "voAt": 3,
    "words": [
     {
@@ -390,81 +390,81 @@
     },
     {
      "w": "minutos",
-     "t": 10.2
+     "t": 12.0
     },
     {
      "w": "al",
-     "t": 16.8
+     "t": 18.6
     },
     {
      "w": "día",
-     "t": 23.4
+     "t": 25.2
     },
     {
      "w": "son",
-     "t": 28.2
+     "t": 31.2
     },
     {
      "w": "sesenta",
-     "t": 33.0
+     "t": 36.0
     },
     {
      "w": "horas",
-     "t": 49.2
+     "t": 48.6
     },
     {
      "w": "al",
-     "t": 57.6
+     "t": 54.6
     },
     {
-     "w": "año,",
-     "t": 63.0
+     "w": "año.",
+     "t": 58.8
     },
     {
-     "w": "casi",
-     "t": 75.6
+     "w": "¡Casi",
+     "t": 70.8
     },
     {
      "w": "un",
-     "t": 79.8
+     "t": 78.6
     },
     {
      "w": "estanque",
-     "t": 87.0
+     "t": 83.4
     },
     {
      "w": "de",
-     "t": 99.0
+     "t": 94.2
     },
     {
      "w": "bencina,",
-     "t": 102.0
+     "t": 97.2
     },
     {
      "w": "sin",
-     "t": 121.2
+     "t": 114.6
     },
     {
      "w": "moverte",
-     "t": 126.6
+     "t": 119.4
     },
     {
      "w": "ni",
-     "t": 141.6
+     "t": 132.6
     },
     {
      "w": "un",
-     "t": 154.2
+     "t": 142.2
     },
     {
-     "w": "metro.",
-     "t": 158.4
+     "w": "metro!",
+     "t": 146.4
     }
    ]
   },
   {
    "id": "correcto",
-   "duration": 166,
+   "duration": 165,
    "vo": "¿Lo correcto? Enciéndelo, ponte el cinturón, unos treinta segundos, y sal manejando suave.",
    "voAt": 3,
    "words": [
@@ -474,57 +474,57 @@
     },
     {
      "w": "correcto?",
-     "t": 22.2
+     "t": 7.2
     },
     {
      "w": "Enciéndelo,",
-     "t": 39.0
+     "t": 25.8
     },
     {
      "w": "ponte",
-     "t": 59.4
+     "t": 49.8
     },
     {
      "w": "el",
-     "t": 65.4
+     "t": 58.8
     },
     {
      "w": "cinturón,",
-     "t": 68.4
+     "t": 61.8
     },
     {
      "w": "unos",
-     "t": 87.6
+     "t": 83.4
     },
     {
      "w": "treinta",
-     "t": 91.8
+     "t": 87.6
     },
     {
      "w": "segundos,",
-     "t": 100.8
+     "t": 99.0
     },
     {
      "w": "y",
-     "t": 121.8
+     "t": 119.4
     },
     {
      "w": "sal",
-     "t": 123.6
+     "t": 121.8
     },
     {
      "w": "manejando",
-     "t": 129.0
+     "t": 126.0
     },
     {
      "w": "suave.",
-     "t": 144.0
+     "t": 142.2
     }
    ]
   },
   {
    "id": "suave",
-   "duration": 117,
+   "duration": 140,
    "vo": "Sin acelerones hasta que tome temperatura: andando, se calienta mucho más rápido.",
    "voAt": 3,
    "words": [
@@ -534,53 +534,53 @@
     },
     {
      "w": "acelerones",
-     "t": 7.8
+     "t": 8.4
     },
     {
      "w": "hasta",
-     "t": 20.4
+     "t": 23.4
     },
     {
      "w": "que",
-     "t": 25.8
+     "t": 32.4
     },
     {
      "w": "tome",
-     "t": 31.2
+     "t": 37.2
     },
     {
      "w": "temperatura,",
-     "t": 36.6
+     "t": 43.2
     },
     {
      "w": "andando,",
-     "t": 57.0
+     "t": 66.6
     },
     {
      "w": "se",
-     "t": 75.6
+     "t": 88.8
     },
     {
      "w": "calienta",
-     "t": 78.0
+     "t": 91.8
     },
     {
      "w": "mucho",
-     "t": 89.4
+     "t": 104.4
     },
     {
      "w": "más",
-     "t": 93.6
+     "t": 112.2
     },
     {
      "w": "rápido.",
-     "t": 99.0
+     "t": 118.2
     }
    ]
   },
   {
    "id": "escarcha",
-   "duration": 127,
+   "duration": 146,
    "vo": "Solo espera más si el parabrisas está escarchado: primero ver, después partir.",
    "voAt": 3,
    "words": [
@@ -590,53 +590,53 @@
     },
     {
      "w": "espera",
-     "t": 8.4
+     "t": 15.6
     },
     {
      "w": "más",
-     "t": 15.0
+     "t": 25.2
     },
     {
      "w": "si",
-     "t": 22.8
+     "t": 33.0
     },
     {
      "w": "el",
-     "t": 27.0
+     "t": 37.8
     },
     {
      "w": "parabrisas",
-     "t": 28.2
+     "t": 40.2
     },
     {
      "w": "está",
-     "t": 42.6
+     "t": 55.2
     },
     {
-     "w": "escarchado,",
-     "t": 48.0
+     "w": "escarchado.",
+     "t": 61.8
     },
     {
-     "w": "primero",
-     "t": 70.8
+     "w": "Primero",
+     "t": 84.0
     },
     {
      "w": "ver,",
-     "t": 77.4
+     "t": 93.6
     },
     {
      "w": "después",
-     "t": 92.4
+     "t": 108.6
     },
     {
      "w": "partir.",
-     "t": 99.0
+     "t": 116.4
     }
    ]
   },
   {
    "id": "cta",
-   "duration": 138,
+   "duration": 140,
    "vo": "Y tú, ¿cuántos minutos lo calentabas? Te leo en los comentarios.",
    "voAt": 3,
    "words": [
@@ -646,43 +646,43 @@
     },
     {
      "w": "tú,",
-     "t": 5.4
+     "t": 6.6
     },
     {
      "w": "¿cuántos",
-     "t": 13.2
-    },
-    {
-     "w": "minutos",
      "t": 21.0
     },
     {
+     "w": "minutos",
+     "t": 30.6
+    },
+    {
      "w": "lo",
-     "t": 27.6
+     "t": 37.2
     },
     {
      "w": "calentabas?",
-     "t": 34.8
+     "t": 43.2
     },
     {
      "w": "Te",
-     "t": 57.6
+     "t": 67.2
     },
     {
      "w": "leo",
-     "t": 62.4
+     "t": 70.2
     },
     {
      "w": "en",
-     "t": 69.6
+     "t": 78.0
     },
     {
      "w": "los",
-     "t": 71.4
+     "t": 80.4
     },
     {
      "w": "comentarios.",
-     "t": 73.8
+     "t": 82.8
     }
    ]
   }

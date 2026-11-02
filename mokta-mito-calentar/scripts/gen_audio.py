@@ -558,12 +558,7 @@ for k in range(24):
     place(sfx, tick(1500 + 40 * k, 0.03, 0.1), t60 - 0.13 + k * (0.73 / 24))
 place(sfx, boom(1.2, 70, 30, 0.8), t60 - 0.13 + 0.73)
 tq = cue("horas", "casi", 74)
-for k in range(5):  # gorgoteo de bencina (burbujas)
-    n_b = int(0.12 * SR)
-    ts = np.arange(n_b) / SR
-    f = 300 + 500 * ts / 0.12 + rng.random() * 80
-    bub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-ts / 0.03)
-    place(sfx, bub * 0.18, tq + k * 0.17 + rng.random() * 0.05, pan=-0.2)
+# (sin efecto de gorgoteo: sonaba como una sílaba encima de "casi un estanque")
 tm = cue("horas", "moverte", 102)
 n_e = int(0.2 * SR)
 buzz = np.sign(np.sin(2 * np.pi * 110 * np.arange(n_e) / SR)) * env_exp(n_e, 0.06)

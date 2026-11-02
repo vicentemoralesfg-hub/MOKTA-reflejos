@@ -45,8 +45,8 @@ DEFAULT_TAIL = 5
 MIN_DUR = {"para": 60, "cta": 110}
 MAX_PAUSE = {"para": 0.45, "correcto": 0.32}
 DEFAULT_MAX_PAUSE = 0.25
-TARGET_WPS = 3.1     # ritmo objetivo global (palabras/s): claro pero ágil
-MAX_TEMPO = 1.15     # factor global máximo (igual para todas las frases)
+TARGET_WPS = 3.15    # ritmo objetivo global (palabras/s): claro pero ágil
+MAX_TEMPO = 1.2      # factor global máximo (igual para todas las frases)
 F0_TOL_ST = 1.5      # tolerancia de tono medio respecto de la referencia
 
 
@@ -70,6 +70,18 @@ def wer(ref, hyp):
         for j in range(1, len(h) + 1):
             d[i, j] = min(d[i - 1, j] + 1, d[i, j - 1] + 1, d[i - 1, j - 1] + (r[i - 1] != h[j - 1]))
     return d[len(r), len(h)] / max(1, len(r))
+
+
+def cer(ref, hyp):
+    """Error por caracteres sin espacios: no castiga palabras fusionadas ("enralentí"), sí sílabas extra."""
+    r, h = "".join(norm_words(ref)), "".join(norm_words(hyp))
+    prev = list(range(len(h) + 1))
+    for i in range(1, len(r) + 1):
+        cur = [i] + [0] * len(h)
+        for j in range(1, len(h) + 1):
+            cur[j] = min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (r[i - 1] != h[j - 1]))
+        prev = cur
+    return prev[len(h)] / max(1, len(r))
 
 
 def load(path, sr_out):
@@ -252,19 +264,19 @@ def build():
         a16 = load(os.path.join(TAKES_DIR, f), 16000)
         hyp = meter.text(a16)
         med, sd, hnr = voice_stats(a16)
-        info.append(dict(file=f, bid=bid, k=int(k), wer=wer(SCRIPT["lines"][bid]["text"], hyp), hyp=hyp, med=med, sd=sd, hnr=hnr,
+        info.append(dict(file=f, bid=bid, k=int(k), wer=wer(SCRIPT["lines"][bid]["text"], hyp), cer=cer(SCRIPT["lines"][bid]["text"], hyp), hyp=hyp, med=med, sd=sd, hnr=hnr,
                          sim=float(np.dot(meter.emb(a16), ref_emb)), dt=abs(12 * np.log2(med / ref["f0"])), dur=len(a16) / 16000))
     report, chosen = [], {}
     for b in TL["beats"]:
         cand = [c for c in info if c["bid"] == b["id"]]
-        best_wer = min(c["wer"] for c in cand)
-        ok = [c for c in cand if c["wer"] <= best_wer + 1e-9]
+        best = min(c["cer"] for c in cand)
+        ok = [c for c in cand if c["cer"] <= best + 0.01]
         same = [c for c in ok if c["dt"] <= F0_TOL_ST] or sorted(ok, key=lambda c: c["dt"])[:1]
         pick = max(same, key=lambda c: c["sim"] * 4 + min(c["sd"], 6) * 0.08 + c["hnr"] * 0.02)
         chosen[b["id"]] = pick
         for c in sorted(cand, key=lambda c: c["k"]):
             report.append(
-                f"{b['id']:<11} toma {c['k']} {'◀' if c is pick else ' '} WER {c['wer']:.2f}  timbre {c['sim']:.3f}  "
+                f"{b['id']:<11} toma {c['k']} {'◀' if c is pick else ' '} CER {c['cer']:.3f}  timbre {c['sim']:.3f}  "
                 f"tono {c['med']:.0f} Hz (Δ{c['dt']:.1f} st)  ±{c['sd']:.2f} st  {c['dur']:.2f}s | {c['hyp'].strip()}"
             )
     print("\n".join(report))
@@ -285,7 +297,14 @@ def build():
         r = speech_rms(a)
         target = target or r
         a = a * (target / r)
-        words = meter.text(resample_poly(a, 1, 3).astype(np.float32), prompt=SCRIPT["lines"][b["id"]]["text"], words=True)
+        # tiempos por palabra: con el guion como guía y sin él; se queda la alineación que mejor coincide con el guion
+        a16 = resample_poly(a, 1, 3).astype(np.float32)
+        ref_text = SCRIPT["lines"][b["id"]]["text"]
+        options = [meter.text(a16, prompt=ref_text, words=True), meter.text(a16, words=True)]
+        words = min(options, key=lambda ws: cer(ref_text, " ".join(w["w"] for w in ws)))
+        err = cer(ref_text, " ".join(w["w"] for w in words))
+        if err > 0.08:
+            print(f"  aviso: alineación imperfecta en {b['id']} (CER {err:.2f})")
         lines[b["id"]] = (a, words)
 
     for b in TL["beats"]:
