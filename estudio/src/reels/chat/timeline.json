@@ -1,0 +1,21 @@
+{
+  "_comment": "Reel 01 El chat. Fotogramas a 30 fps. 'reveal' = fotograma en que termina el chat (7,0 s).",
+  "fps": 30,
+  "speedKmh": 100,
+  "msgs": [
+    { "at": 0, "from": "them", "text": "AMIGAAA 😭" },
+    { "at": 0, "from": "them", "text": "no vai a creer lo que pasó en el matri de la Coni" },
+    { "at": 42, "from": "them", "text": "el Seba se paró en pleno brindis 🥂", "typingFrom": 24 },
+    { "at": 76, "from": "them", "text": "y dijo que tenía que confesar algo", "typingFrom": 60 },
+    { "at": 104, "from": "me", "text": "QUÉEEE 😱" },
+    { "at": 119, "from": "me", "text": "cuenta TODO" },
+    { "at": 150, "from": "them", "text": "la Coni se puso a llorar", "typingFrom": 132 },
+    { "at": 178, "from": "them", "text": "y la mamá del Seba agarró el micrófono y", "typingFrom": 164 }
+  ],
+  "finalTypingFrom": 194,
+  "reveal": 210,
+  "crash": 262,
+  "data": 280,
+  "end": 458,
+  "total": 585
+}
