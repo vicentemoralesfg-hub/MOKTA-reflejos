@@ -22,25 +22,25 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Tramos del guion: (texto, pausa después en s). Los planos, golpes y realces se anclan a (tramo, palabra).
 LINES = [
-    ("Te acaban de medir a ciento cuarenta…", 0.18),
-    ("y todavía no ves la patrulla.", 0.4),
-    ("¿Desde qué distancia te puede medir?", 0.25),
-    ("Piensa un número.", 0.35),
-    ("¿Trescientos metros?", 0.3),
-    ("¡Más lejos!", 0.25),
-    ("¿Un kilómetro?", 0.3),
-    ("¡Todavía más!", 0.25),
-    ("¡Hasta casi tres kilómetros!", 0.5),
-    ("A esa distancia, la patrulla ni siquiera es un punto.", 0.3),
-    ("A ciento cuarenta, tardarías más de un minuto en llegar.", 0.35),
+    ("Te acaban de medir a ciento cuarenta…", 0.15),
+    ("y todavía no ves la patrulla.", 0.3),
+    ("¿Desde qué distancia te puede medir?", 0.15),
+    ("Piensa un número.", 0.3),
+    ("¿Trescientos metros?", 0.22),
+    ("¡Más lejos!", 0.2),
+    ("¿Un kilómetro?", 0.22),
+    ("¡Todavía más!", 0.2),
+    ("¡Hasta casi tres kilómetros!", 0.45),
+    ("A esa distancia, la patrulla ni siquiera es un punto.", 0.25),
+    ("A ciento cuarenta, tardarías más de un minuto en llegar.", 0.18),
     ("¿Cómo lo hace?", 0.2),
-    ("Con una pistola láser.", 0.3),
-    ("Un rayo del ancho de una puerta… que apunta a un solo auto: el tuyo.", 0.3),
-    ("Y le basta menos de medio segundo.", 0.4),
-    ("Por eso, cuando la ves…", 0.35),
-    ("ya te midieron.", 0.55),
-    ("Pero ojo: la pistola también saca una foto.", 0.35),
-    ("Y para que se lea tu patente, necesita tenerte a unos doscientos metros.", 0.4),
+    ("Con una pistola láser.", 0.25),
+    ("Un rayo del ancho de una puerta… que apunta a un solo auto: el tuyo.", 0.22),
+    ("Y le basta menos de medio segundo.", 0.32),
+    ("Por eso, cuando la ves…", 0.3),
+    ("ya te midieron.", 0.5),
+    ("Pero ojo: la pistola también saca una foto.", 0.28),
+    ("Y para que se lea tu patente, necesita tenerte a unos doscientos metros.", 0.32),
     ("Entonces… ¿cuándo te pillaron?", 0.25),
     ("¿A los tres kilómetros… o a los doscientos metros?", 0.0),
 ]
@@ -61,6 +61,35 @@ TAKES = [
     (19, 20, "-5%", "+10Hz", "+0%"),   # la pregunta final
 ]
 assert [t[0] for t in TAKES] == [0] + [t[1] + 1 for t in TAKES[:-1]] and TAKES[-1][1] == len(LINES) - 1
+
+# Qwen3-TTS (voz_qwen.py): una persona fija (timbre) y una dirección de emoción por toma.
+# Las instrucciones van en inglés (el modelo las sigue mejor); el texto se genera en español.
+QWEN_PERSONA = (
+    "Male narrator in his mid thirties, native Latin American Spanish speaker with a neutral accent, "
+    "warm and slightly husky baritone, crisp diction, storytelling style of a viral short video: "
+    "talks to the viewer like a friend revealing a secret, confident and intriguing, never robotic."
+)
+QWEN_EMOTION = [
+    "Tense, voice a bit low, as if warning a friend that something just happened without them noticing; "
+    "urgent but clear and NOT rushed, at a measured pace. Make a clear suspenseful pause of about half a "
+    "second after 'cuarenta…', then say 'y todavía no ves la patrulla' lower and slower.",
+    "Curious and inviting; clear rising question, then a playful, challenging 'Piensa un número'.",
+    "A quick guessing game with growing excitement: each question rises, each answer is a punchy exclamation, "
+    "and '¡Todavía más!' is more excited than '¡Más lejos!'.",
+    "The big reveal: astonished and emphatic, slow down and hit 'tres kilómetros' hard.",
+    "Slow, calm and amazed, unhurried, as if picturing the scene in your head; a short pause after "
+    "'A esa distancia', emphasis on 'ni siquiera es un punto'; then calmly 'A ciento cuarenta, tardarías "
+    "más de un minuto en llegar', stressing 'más de un minuto'. Never rushed.",
+    "Intrigued question, then a confident, punchy answer that stresses 'pistola láser'.",
+    "Gripping explanation at a steady pace; stress 'puerta', a small beat before 'el tuyo', and stress 'medio segundo'.",
+    "Dramatic: 'Por eso, cuando la ves…' slower and lower, building suspense; then a clear pause; then "
+    "'ya te midieron' delivered slowly and deliberately, word by word, low and heavy, clearly audible "
+    "(not whispered), like the punchline of a story.",
+    "Conspiratorial twist: lively 'Pero ojo', then clear and informative, stressing 'foto', 'patente' and 'doscientos metros'.",
+    "Provocative closing question to the audience, curious and challenging, inviting them to answer in the comments; "
+    "rise on both options with a short beat between them.",
+]
+assert len(QWEN_EMOTION) == len(TAKES)
 TOKENS = [w for line in LINES for w in line[0].split()]
 _START = [sum(len(l[0].split()) for l in LINES[:i]) for i in range(len(LINES))]
 
@@ -87,13 +116,14 @@ SHOTS = [
     ("mas2", 7, 0),
     ("tresKm", 8, 2),          # «tres»: cámara lenta, destello rojo, 2,9 km
     ("aEsaDistancia", 9, 0),   # vuelve la subjetiva del gancho: «¿LA VES?»
-    ("niUnPunto", 9, 3),       # zoom al horizonte → AQUÍ · 2,9 km
+    ("niUnPunto", 9, 5),       # «ni siquiera es un punto»: zoom al horizonte → AQUÍ · 2,9 km
     ("cientoCuarenta", 10, 0),
-    ("unMinuto", 10, 4),       # contador 0:00 → 1:15
+    ("unMinuto", 10, 3),       # «tardarías más de un minuto»: contador 0:00 → 1:15
     ("comoLoHace", 11, 0),     # aérea: MEDIDO · 140 km/h ¿cómo?
     ("laserPistola", 12, 0),   # el agente apunta: PISTOLA LÁSER
     ("laserPuerta", 13, 0),    # ≈ 1 m
-    ("laserTuyo", 13, 7),      # entre todos los autos, TÚ
+    ("laserTuyo", 13, 7),      # entre todos los autos, el rayo va a uno
+    ("tuyoCerca", 13, 13),     # «el tuyo»: de cerca, el punto rojo en tu auto · TÚ
     ("medioSegundo", 14, 0),   # 0,40 s → 140 km/h
     ("cuandoLaVes", 15, 0),    # subjetiva: ahora sí ves la patrulla
     ("yaTeMidieron", 16, 0),   # destello + MEDIDO hace 1 min
@@ -104,7 +134,7 @@ SHOTS = [
     ("doscientos", 18, 11),    # MIDE 2,9 km / FOTO 200 m
     ("entonces", 19, 0),       # aérea con las dos marcas
     ("teMide", 20, 0),         # el rayo cruza 2,9 km
-    ("pillaron", 20, 4),       # aérea final con MIDE y FOTO (loop)
+    ("pillaron", 20, 5),       # aérea final con MIDE y FOTO (loop)
 ]
 HITS = [
     (0, 0, "hookLock", None),

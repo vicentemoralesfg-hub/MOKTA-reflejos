@@ -1,0 +1,627 @@
+[
+ {
+  "text": "Te",
+  "start": 0.0,
+  "end": 0.1
+ },
+ {
+  "text": "acaban",
+  "start": 0.1,
+  "end": 0.52
+ },
+ {
+  "text": "de",
+  "start": 0.52,
+  "end": 0.62
+ },
+ {
+  "text": "medir",
+  "start": 0.62,
+  "end": 1.12
+ },
+ {
+  "text": "a",
+  "start": 1.12,
+  "end": 1.32
+ },
+ {
+  "text": "ciento",
+  "start": 1.32,
+  "end": 1.6
+ },
+ {
+  "text": "cuarenta…",
+  "start": 1.6,
+  "end": 2.48
+ },
+ {
+  "text": "y",
+  "start": 2.65,
+  "end": 2.86
+ },
+ {
+  "text": "todavía",
+  "start": 2.86,
+  "end": 3.38
+ },
+ {
+  "text": "no",
+  "start": 3.38,
+  "end": 3.7
+ },
+ {
+  "text": "ves",
+  "start": 3.7,
+  "end": 3.94
+ },
+ {
+  "text": "la",
+  "start": 3.94,
+  "end": 4.08
+ },
+ {
+  "text": "patrulla.",
+  "start": 4.08,
+  "end": 4.83
+ },
+ {
+  "text": "¿Desde",
+  "start": 5.23,
+  "end": 5.43
+ },
+ {
+  "text": "qué",
+  "start": 5.43,
+  "end": 5.79
+ },
+ {
+  "text": "distancia",
+  "start": 5.79,
+  "end": 6.47
+ },
+ {
+  "text": "te",
+  "start": 6.47,
+  "end": 6.61
+ },
+ {
+  "text": "puede",
+  "start": 6.61,
+  "end": 6.91
+ },
+ {
+  "text": "medir?",
+  "start": 6.91,
+  "end": 7.57
+ },
+ {
+  "text": "Piensa",
+  "start": 7.8,
+  "end": 8.23
+ },
+ {
+  "text": "un",
+  "start": 8.23,
+  "end": 8.51
+ },
+ {
+  "text": "número.",
+  "start": 8.51,
+  "end": 9.21
+ },
+ {
+  "text": "¿Trescientos",
+  "start": 9.61,
+  "end": 9.95
+ },
+ {
+  "text": "metros?",
+  "start": 9.95,
+  "end": 10.63
+ },
+ {
+  "text": "¡Más",
+  "start": 10.74,
+  "end": 10.89
+ },
+ {
+  "text": "lejos!",
+  "start": 10.89,
+  "end": 11.54
+ },
+ {
+  "text": "¿Un",
+  "start": 11.87,
+  "end": 12.01
+ },
+ {
+  "text": "kilómetro?",
+  "start": 12.01,
+  "end": 12.7
+ },
+ {
+  "text": "¡Todavía",
+  "start": 12.76,
+  "end": 13.27
+ },
+ {
+  "text": "más!",
+  "start": 13.27,
+  "end": 13.96
+ },
+ {
+  "text": "¡Hasta",
+  "start": 14.36,
+  "end": 14.7
+ },
+ {
+  "text": "casi",
+  "start": 14.7,
+  "end": 15.1
+ },
+ {
+  "text": "tres",
+  "start": 15.1,
+  "end": 15.52
+ },
+ {
+  "text": "kilómetros!",
+  "start": 15.52,
+  "end": 16.63
+ },
+ {
+  "text": "A",
+  "start": 17.03,
+  "end": 17.13
+ },
+ {
+  "text": "esa",
+  "start": 17.13,
+  "end": 17.31
+ },
+ {
+  "text": "distancia,",
+  "start": 17.31,
+  "end": 17.95
+ },
+ {
+  "text": "la",
+  "start": 18.41,
+  "end": 18.67
+ },
+ {
+  "text": "patrulla",
+  "start": 18.67,
+  "end": 19.19
+ },
+ {
+  "text": "ni",
+  "start": 19.19,
+  "end": 19.59
+ },
+ {
+  "text": "siquiera",
+  "start": 19.59,
+  "end": 19.97
+ },
+ {
+  "text": "es",
+  "start": 19.97,
+  "end": 20.19
+ },
+ {
+  "text": "un",
+  "start": 20.19,
+  "end": 20.31
+ },
+ {
+  "text": "punto.",
+  "start": 20.31,
+  "end": 21.39
+ },
+ {
+  "text": "A",
+  "start": 21.58,
+  "end": 22.37
+ },
+ {
+  "text": "ciento",
+  "start": 22.37,
+  "end": 22.68
+ },
+ {
+  "text": "cuarenta,",
+  "start": 22.68,
+  "end": 22.99
+ },
+ {
+  "text": "tardarías",
+  "start": 22.99,
+  "end": 24.01
+ },
+ {
+  "text": "más",
+  "start": 24.01,
+  "end": 24.25
+ },
+ {
+  "text": "de",
+  "start": 24.25,
+  "end": 24.43
+ },
+ {
+  "text": "un",
+  "start": 24.43,
+  "end": 24.53
+ },
+ {
+  "text": "minuto",
+  "start": 24.53,
+  "end": 24.89
+ },
+ {
+  "text": "en",
+  "start": 24.89,
+  "end": 24.97
+ },
+ {
+  "text": "llegar.",
+  "start": 24.97,
+  "end": 25.39
+ },
+ {
+  "text": "¿Cómo",
+  "start": 25.79,
+  "end": 25.99
+ },
+ {
+  "text": "lo",
+  "start": 25.99,
+  "end": 26.19
+ },
+ {
+  "text": "hace?",
+  "start": 26.19,
+  "end": 26.85
+ },
+ {
+  "text": "Con",
+  "start": 26.95,
+  "end": 27.11
+ },
+ {
+  "text": "una",
+  "start": 27.11,
+  "end": 27.31
+ },
+ {
+  "text": "pistola",
+  "start": 27.31,
+  "end": 27.99
+ },
+ {
+  "text": "láser.",
+  "start": 27.99,
+  "end": 28.73
+ },
+ {
+  "text": "Un",
+  "start": 29.13,
+  "end": 29.31
+ },
+ {
+  "text": "rayo",
+  "start": 29.31,
+  "end": 29.65
+ },
+ {
+  "text": "del",
+  "start": 29.65,
+  "end": 29.75
+ },
+ {
+  "text": "ancho",
+  "start": 29.75,
+  "end": 30.11
+ },
+ {
+  "text": "de",
+  "start": 30.11,
+  "end": 30.21
+ },
+ {
+  "text": "una",
+  "start": 30.21,
+  "end": 30.31
+ },
+ {
+  "text": "puerta…",
+  "start": 30.31,
+  "end": 30.71
+ },
+ {
+  "text": "que",
+  "start": 30.71,
+  "end": 31.17
+ },
+ {
+  "text": "apunta",
+  "start": 31.17,
+  "end": 31.61
+ },
+ {
+  "text": "a",
+  "start": 31.61,
+  "end": 31.87
+ },
+ {
+  "text": "un",
+  "start": 31.87,
+  "end": 32.01
+ },
+ {
+  "text": "solo",
+  "start": 32.01,
+  "end": 32.33
+ },
+ {
+  "text": "auto:",
+  "start": 32.33,
+  "end": 32.75
+ },
+ {
+  "text": "el",
+  "start": 33.17,
+  "end": 33.37
+ },
+ {
+  "text": "tuyo.",
+  "start": 33.37,
+  "end": 33.9
+ },
+ {
+  "text": "Y",
+  "start": 34.11,
+  "end": 34.21
+ },
+ {
+  "text": "le",
+  "start": 34.21,
+  "end": 34.33
+ },
+ {
+  "text": "basta",
+  "start": 34.33,
+  "end": 34.61
+ },
+ {
+  "text": "menos",
+  "start": 34.61,
+  "end": 34.93
+ },
+ {
+  "text": "de",
+  "start": 34.93,
+  "end": 35.15
+ },
+ {
+  "text": "medio",
+  "start": 35.15,
+  "end": 35.35
+ },
+ {
+  "text": "segundo.",
+  "start": 35.35,
+  "end": 36.02
+ },
+ {
+  "text": "Por",
+  "start": 36.42,
+  "end": 36.52
+ },
+ {
+  "text": "eso,",
+  "start": 36.52,
+  "end": 36.74
+ },
+ {
+  "text": "cuando",
+  "start": 36.94,
+  "end": 37.12
+ },
+ {
+  "text": "la",
+  "start": 37.12,
+  "end": 37.34
+ },
+ {
+  "text": "ves…",
+  "start": 37.34,
+  "end": 37.9
+ },
+ {
+  "text": "ya",
+  "start": 38.14,
+  "end": 38.34
+ },
+ {
+  "text": "te",
+  "start": 38.34,
+  "end": 38.48
+ },
+ {
+  "text": "midieron.",
+  "start": 38.48,
+  "end": 39.36
+ },
+ {
+  "text": "Pero",
+  "start": 39.76,
+  "end": 39.92
+ },
+ {
+  "text": "ojo:",
+  "start": 39.92,
+  "end": 40.3
+ },
+ {
+  "text": "la",
+  "start": 41.08,
+  "end": 41.3
+ },
+ {
+  "text": "pistola",
+  "start": 41.3,
+  "end": 41.82
+ },
+ {
+  "text": "también",
+  "start": 41.82,
+  "end": 42.08
+ },
+ {
+  "text": "saca",
+  "start": 42.08,
+  "end": 42.56
+ },
+ {
+  "text": "una",
+  "start": 42.56,
+  "end": 42.7
+ },
+ {
+  "text": "foto.",
+  "start": 42.7,
+  "end": 43.23
+ },
+ {
+  "text": "Y",
+  "start": 43.41,
+  "end": 43.54
+ },
+ {
+  "text": "para",
+  "start": 43.54,
+  "end": 43.76
+ },
+ {
+  "text": "que",
+  "start": 43.76,
+  "end": 43.92
+ },
+ {
+  "text": "se",
+  "start": 43.92,
+  "end": 44.08
+ },
+ {
+  "text": "lea",
+  "start": 44.08,
+  "end": 44.32
+ },
+ {
+  "text": "tu",
+  "start": 44.32,
+  "end": 44.44
+ },
+ {
+  "text": "patente,",
+  "start": 44.44,
+  "end": 44.92
+ },
+ {
+  "text": "necesita",
+  "start": 45.34,
+  "end": 45.8
+ },
+ {
+  "text": "tenerte",
+  "start": 45.8,
+  "end": 46.5
+ },
+ {
+  "text": "a",
+  "start": 46.5,
+  "end": 46.64
+ },
+ {
+  "text": "unos",
+  "start": 46.64,
+  "end": 46.86
+ },
+ {
+  "text": "doscientos",
+  "start": 46.86,
+  "end": 47.68
+ },
+ {
+  "text": "metros.",
+  "start": 47.68,
+  "end": 48.79
+ },
+ {
+  "text": "Entonces…",
+  "start": 49.19,
+  "end": 49.63
+ },
+ {
+  "text": "¿cuándo",
+  "start": 50.07,
+  "end": 50.51
+ },
+ {
+  "text": "te",
+  "start": 50.51,
+  "end": 50.57
+ },
+ {
+  "text": "pillaron?",
+  "start": 50.57,
+  "end": 51.11
+ },
+ {
+  "text": "¿A",
+  "start": 51.39,
+  "end": 51.49
+ },
+ {
+  "text": "los",
+  "start": 51.49,
+  "end": 51.65
+ },
+ {
+  "text": "tres",
+  "start": 51.65,
+  "end": 51.93
+ },
+ {
+  "text": "kilómetros…",
+  "start": 51.93,
+  "end": 52.59
+ },
+ {
+  "text": "o",
+  "start": 52.59,
+  "end": 53.05
+ },
+ {
+  "text": "a",
+  "start": 53.05,
+  "end": 53.13
+ },
+ {
+  "text": "los",
+  "start": 53.13,
+  "end": 53.31
+ },
+ {
+  "text": "doscientos",
+  "start": 53.31,
+  "end": 53.63
+ },
+ {
+  "text": "metros?",
+  "start": 53.63,
+  "end": 54.55
+ }
+]

@@ -221,7 +221,8 @@ const hook1 = (t: number): ShotFrame => {
   return {
     world: {
       cam: cam(
-        [HERO_X + 2.5 - 0.6 * t, 1.3 + 0.25 * t, z - 8.6 + 2.6 * t],
+        // acercamiento suave: con un gancho de 2,5 s la cámara no puede entrar en el auto
+        [HERO_X + 2.5 - 0.35 * t, 1.3 + 0.15 * t, z - 8.6 + 1.5 * t],
         [HERO_X - 0.2, 0.7, z - 0.8],
         46,
         0.05 - 0.04 * t,
@@ -633,14 +634,34 @@ const laserTuyo = (t: number, d: number): ShotFrame => {
       exposure: 1.45,
       studs: 4,
     },
+    // sin etiqueta: el rayo elige un auto entre todos; el TÚ llega en el plano siguiente (tuyoCerca)
+  };
+};
+
+/** «el tuyo»: de cerca y de costado, el rayo termina en el frente de tu auto; TÚ aparece al instante. */
+const tuyoCerca = (t: number): ShotFrame => {
+  const zh = 150 - V * t;
+  return {
+    world: {
+      cam: cam(
+        [HERO_X - 5.6 + 0.3 * t, 1.35, zh - 6.4],
+        [HERO_X - 0.1, 0.7, zh - 2.0],
+        40,
+      ),
+      cars: [patrol(0), hero(zh, { laserSpot: 1, laserSpotSize: 0.7 })],
+      laser: beam(emitter(0), heroFront(zh), { radiusFar: 0.12, opacity: 0.9 }),
+      fog: [80, 1800],
+      exposure: 1.35,
+      studs: 3,
+    },
     pills: [
       {
-        at: [HERO_X, 1.6, zh],
+        at: [HERO_X, 1.45, zh - 1.6],
         text: "TÚ",
         tone: "red",
         size: "story",
-        leader: 90,
-        ...pop(t, wordIn("laserTuyo", 7) - 0.1), // "tuyo"
+        leader: 80,
+        ...pop(t, 0.06),
       },
     ],
   };
@@ -902,7 +923,7 @@ const tresKm = (t: number, d: number, id: ShotId): ShotFrame => {
 
 const niUnPunto = (t: number, id: ShotId): ShotFrame => {
   // acercamiento continuo hasta que aparece el anillo (la cámara no se queda quieta)
-  const ringT = wordIn(id, 6) - 0.15; // "punto"
+  const ringT = wordIn(id, 4) - 0.15; // "punto"
   const zoom = io(t, 0.05, Math.max(0.95, ringT + 0.1));
   return {
     world: ganchoWorld(0, ganchoCam(0, zoom, zoom)),
@@ -1265,6 +1286,7 @@ export const SHOT_FNS: Record<ShotId, (t: number, d: number) => ShotFrame> = {
   laserPistola: (t, d) => laserPistola(t, d, "laserPistola"),
   laserPuerta,
   laserTuyo,
+  tuyoCerca,
   medioSegundo: (t) => medioSegundo(t, "medioSegundo"),
   desdeDistancia,
   piensaNumero: (t) => piensaNumero(t, "piensaNumero"),
