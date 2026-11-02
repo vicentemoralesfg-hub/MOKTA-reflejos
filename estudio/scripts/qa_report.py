@@ -22,7 +22,7 @@ def probe(p):
 
 
 rows = []
-for p in sorted(glob.glob(os.path.join(C, "*", "*", "*.mp4"))):
+for p in sorted(glob.glob(os.path.join(C, "videos", "*", "*.mp4"))):
     j, v, a = probe(p)
     loud = subprocess.run(["ffmpeg", "-hide_banner", "-i", p, "-af", "ebur128=peak=true", "-f", "null", "-"], capture_output=True, text=True).stderr
     I = re.findall(r"I:\s+(-?[\d.]+) LUFS", loud)[-1]
@@ -37,7 +37,7 @@ for p in sorted(glob.glob(os.path.join(C, "*", "*", "*.mp4"))):
     )
 
 imgs = []
-for p in sorted(glob.glob(os.path.join(C, "*", "*", "*.jpg"))):
+for p in sorted(glob.glob(os.path.join(C, "videos", "*", "*.jpg"))):
     out = subprocess.run(["identify", "-format", "%w×%h %[colorspace]", p], capture_output=True, text=True).stdout
     imgs.append(f"| `{os.path.relpath(p, C)}` | {out} | {os.path.getsize(p)/1e3:.0f} KB |")
 
@@ -51,9 +51,9 @@ H.264 yuv420p, AAC 48 kHz, ≈ −14 LUFS integrados, pico real ≤ −1 dBFS.
 |---|---|---|---|---|---|---|---|---|---|
 """ + "\n".join(rows) + """
 
-Los únicos negros detectados son intencionales (Reel 01: corte a negro tras la revelación, 0,6 s).
+Ningún video tiene fotogramas negros. Voz: Qwen3-TTS (local); cada frase verificada con Whisper.
 
-## Imágenes / láminas
+## Portadas
 | Archivo | Tamaño | Peso |
 |---|---|---|
 """ + "\n".join(imgs) + "\n"

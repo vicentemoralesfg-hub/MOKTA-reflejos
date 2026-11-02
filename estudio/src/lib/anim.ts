@@ -7,7 +7,7 @@ export const BACK_OUT = Easing.bezier(0.34, 1.56, 0.64, 1);
 
 /** 0→1 entre a y b (fotogramas), con easing. */
 export const ramp = (f: number, a: number, b: number, easing = EASE_OUT) =>
-  interpolate(f, [a, b], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing });
+  interpolate(f, [a, Math.max(b, a + 1)], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing });
 
 /** Sube en [a,b], baja en [c,d]. */
 export const inOut = (f: number, a: number, b: number, c: number, d: number) =>

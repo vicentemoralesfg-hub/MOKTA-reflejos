@@ -1,0 +1,44 @@
+{
+ "segments": [
+  {
+   "id": "hook",
+   "text": "Un caballo de verdad puede tener casi quince caballos de fuerza.",
+   "gap": 0.3
+  },
+  {
+   "id": "why",
+   "text": "Entonces, ¿por qué tu auto de cien caballos no tira como cien caballos?",
+   "gap": 0.35
+  },
+  {
+   "id": "watt",
+   "text": "Culpa de James Watt. Para vender sus máquinas a vapor, midió lo que rendía un caballo trabajando todo el día. Eso es un caballo de fuerza.",
+   "gap": 0.35
+  },
+  {
+   "id": "peak",
+   "text": "Pero en un tirón de pocos segundos, un caballo llega a casi quince.",
+   "gap": 0.3
+  },
+  {
+   "id": "bolt",
+   "text": "El velocista Usain Bolt, en su mejor arranque, llega a tres y medio.",
+   "gap": 0.4
+  },
+  {
+   "id": "hilux",
+   "text": "Una Hilux de doscientos cuatro caballos equivale a unos catorce caballos reales a todo galope.",
+   "gap": 0.3
+  },
+  {
+   "id": "chiron",
+   "text": "Y un Bugatti Chiron, de mil quinientos, a cien caballos corriendo a fondo.",
+   "gap": 0.4
+  },
+  {
+   "id": "cta",
+   "text": "¿Cuántos caballos tiene tu auto? Comenta y te decimos a cuántos caballos reales equivale.",
+   "gap": 0.0
+  }
+ ]
+}

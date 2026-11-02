@@ -1,0 +1,44 @@
+{
+ "segments": [
+  {
+   "id": "hook",
+   "text": "¿Lleno? ¿O hasta el clic?",
+   "gap": 0.25
+  },
+  {
+   "id": "warn",
+   "text": "Seguir cargando después del clic le puede hacer daño a tu auto.",
+   "gap": 0.35
+  },
+  {
+   "id": "how",
+   "text": "¿Cómo sabe la pistola que el estanque está lleno? No tiene nada electrónico.",
+   "gap": 0.3
+  },
+  {
+   "id": "hole",
+   "text": "Cerca de la punta tiene un agujerito que aspira aire mientras carga.",
+   "gap": 0.25
+  },
+  {
+   "id": "click",
+   "text": "Cuando la bencina lo tapa, se forma un vacío que suelta un resorte. Ese es el clic.",
+   "gap": 0.4
+  },
+  {
+   "id": "over",
+   "text": "Si sigues echando, la bencina sube hasta el cánister: un filtro de carbón hecho solo para vapores.",
+   "gap": 0.3
+  },
+  {
+   "id": "damage",
+   "text": "Si se moja, se daña: olor a bencina, luz de falla y una reparación que te pudiste ahorrar.",
+   "gap": 0.35
+  },
+  {
+   "id": "cta",
+   "text": "El clic es el límite. ¿Tú eres de los que redondea?",
+   "gap": 0.0
+  }
+ ]
+}

@@ -13,6 +13,10 @@ import { TOTAL as QUIZ_TOTAL } from "./reels/quiz/data";
 import { AsadoClose, AsadoCover, AsadoGuest, GUESTS } from "./carruseles/asado/Asado";
 import { ITEMS, SecretosClose, SecretosCover, SecretosItem } from "./carruseles/secretos/Secretos";
 import { Conductores } from "./imagenes/Conductores";
+import { KM_TOTAL, Kilometros } from "./v2/Kilometros";
+import { Caballos, HP_TOTAL } from "./v2/Caballos";
+import { MOTOR_TOTAL, MotorV2 } from "./v2/MotorV2";
+import { CLIC_TOTAL, ClicV2 } from "./v2/ClicV2";
 import { Explosiones } from "./imagenes/Explosiones";
 
 const fontHandle = delayRender("Cargando fuentes");
@@ -42,6 +46,12 @@ export const RemotionRoot: React.FC = () => (
         <Still key={i} id={`C02-Secretos-0${i + 2}`} component={SecretosItem} defaultProps={{ i }} {...post} />
       ))}
       <Still id="C02-Secretos-09" component={SecretosClose} {...post} />
+    </Folder>
+    <Folder name="V2">
+      <Composition id="V2-Clic" component={ClicV2} durationInFrames={CLIC_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Motor" component={MotorV2} durationInFrames={MOTOR_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Caballos" component={Caballos} durationInFrames={HP_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Kilometros" component={Kilometros} durationInFrames={KM_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
     </Folder>
     <Folder name="Imagenes">
       <Still id="I01-Conductores" component={Conductores} {...post} />

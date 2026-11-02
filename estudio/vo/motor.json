@@ -1,0 +1,10 @@
+{"segments": [
+ {"id": "hook", "text": "A tres mil revoluciones, tu motor hace esto cien veces por segundo.", "gap": 0.35},
+ {"id": "slow", "text": "Vamos a verlo cincuenta veces más lento.", "gap": 0.3},
+ {"id": "strokes", "text": "Cada cilindro aspira aire y bencina, lo comprime, una chispa lo hace explotar, y bota los gases.", "gap": 0.3},
+ {"id": "turns", "text": "Cuatro cilindros turnándose: cien explosiones por segundo.", "gap": 0.35},
+ {"id": "piston", "text": "Y cada pistón frena, se detiene y vuelve a partir cien veces por segundo, con más de quinientas veces la fuerza de gravedad.", "gap": 0.2},
+ {"id": "pilot", "text": "Un piloto de caza aguanta unas nueve.", "gap": 0.45},
+ {"id": "oil", "text": "¿Lo único que evita que se destruya? Una capa de aceite más delgada que un pelo.", "gap": 0.35},
+ {"id": "cta", "text": "¿Cada cuántos kilómetros cambias el tuyo?", "gap": 0.0}
+]}

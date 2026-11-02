@@ -1,0 +1,10 @@
+{"segments": [
+ {"id": "hook", "text": "Un solo auto recorrió más de cinco millones de kilómetros.", "gap": 0.2},
+ {"id": "q", "text": "¿De qué marca crees que es?", "gap": 2.3},
+ {"id": "p3", "text": "Tercer lugar: una Toyota Tundra. Un millón seiscientos mil kilómetros, con su motor original.", "gap": 0.35},
+ {"id": "p2", "text": "Segundo: un Mercedes doscientos cuarenta D, taxi en Grecia. Cuatro millones seiscientos mil. Hoy está en el museo de Mercedes.", "gap": 0.4},
+ {"id": "p1", "text": "Y el récord: un Volvo pe mil ochocientos, del sesenta y seis. Su dueño lo manejó más de cinco millones doscientos mil kilómetros.", "gap": 0.25},
+ {"id": "moon", "text": "Es como ir y volver a la Luna casi siete veces.", "gap": 0.35},
+ {"id": "secret", "text": "¿Su secreto? Cambiar el aceite cada cinco mil kilómetros, sin falta.", "gap": 0.35},
+ {"id": "cta", "text": "¿Cuántos kilómetros tiene el tuyo?", "gap": 0.0}
+]}

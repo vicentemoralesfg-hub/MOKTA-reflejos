@@ -48,3 +48,34 @@ node scripts/carousel.mjs I0  out/img     # I01-Conductores, I02-Explosiones
 | Personajes "motorcitos" | `src/carruseles/asado/Buddy.tsx` |
 | Textos de carruseles | `src/carruseles/*/` |
 | Síntesis de sonidos (pops, golpes, sellos…) | `scripts/sfx.py` |
+
+---
+
+# Entrega 2 · videos con locución (`src/v2/`)
+
+| Video | Composición | Guion de voz | Audio |
+|---|---|---|---|
+| A 3.000 rpm | `V2-Motor` | `vo/motor.json` | `python3 scripts/v2_motor_theta.py && python3 scripts/v2_audio.py motor` |
+| ¿Lleno o hasta el clic? | `V2-Clic` | `vo/clic.json` | `python3 scripts/v2_audio.py clic` |
+| 5 millones de km | `V2-Kilometros` | `vo/km.json` | `python3 scripts/v2_audio.py km` |
+| Caballos de fuerza | `V2-Caballos` | `vo/caballos.json` | `python3 scripts/v2_audio.py caballos` |
+
+## Voz (local, sin servicios pagados)
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install qwen-tts faster-whisper num2words librosa
+python3 scripts/vo_generate.py km caballos motor clic     # clona la voz de vo/narrador_ref.wav frase por frase
+python3 scripts/vo_speed.py km 1.08                        # +8 % de ritmo sin cambiar el tono (reescala los tiempos)
+python3 scripts/vo_patch.py caballos bolt "texto A" "texto B"   # rehace una sola frase (nombres propios)
+```
+- `vo/narrador_ref.wav` se diseñó con **Qwen3-TTS-12Hz-1.7B-VoiceDesign** ("hombre chileno de 35 años, voz grave…")
+  y se clona con **Qwen3-TTS-12Hz-1.7B-Base** (Apache-2.0). Cada frase se valida con faster-whisper; los tiempos de
+  palabra resultantes (`src/vo/*.json`) mueven los cortes del video y los subtítulos.
+- Para cambiar un texto: editar `vo/<pieza>.json`, regenerar esa pieza, aplicar `vo_speed.py` y volver a mezclar el audio.
+
+## Render
+```bash
+npx remotion render V2-Kilometros out/V2_km_raw.mp4 --codec=h264 --crf=15 --muted --props='{"withAudio":false}'
+scripts/finalize.sh out/V2_km_raw.mp4 public/audio/v2-km.wav ../contenido/videos/03_5-millones-de-km/MOKTA_5MillonesDeKm.mp4
+```
+Fotos: `public/fotos/` con sus licencias en `public/fotos/creditos.json`; registro en `src/v2/fotos.ts`.
