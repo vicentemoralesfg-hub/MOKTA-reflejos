@@ -218,7 +218,8 @@ for h in CUES["hits"]:
         for sid, g in [("radarLanza", 1.0), ("radarAncha", 0.75), ("radarMedir", 0.85), ("radarFrente", 0.6)]:
             add(fx, SHOT[sid] + 0.12, ping(g))
     elif kind == "laser":
-        add(fx, w["start"] - 0.1, zap())
+        # el zap entra al terminar la palabra: encima de "láser" la tapaba (auditoría con transcripción de la mezcla)
+        add(fx, w["end"] - 0.02, zap())
     elif kind == "lock":
         add(fx, w["end"] - 0.15, beep())
         add(fx, w["end"] - 0.03, beep(2637))

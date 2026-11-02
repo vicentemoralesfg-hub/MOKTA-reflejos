@@ -80,7 +80,8 @@ QWEN_EMOTION = [
     "Slow, calm and amazed, unhurried, as if picturing the scene in your head; a short pause after "
     "'A esa distancia', emphasis on 'ni siquiera es un punto'; then calmly 'A ciento cuarenta, tardarías "
     "más de un minuto en llegar', stressing 'más de un minuto'. Never rushed.",
-    "Intrigued question, then a confident, punchy answer that stresses 'pistola láser'.",
+    "Intrigued question '¿Cómo lo hace?', then a firm, confident ANSWER (a statement, not a question): "
+    "'Con una pistola láser.' with clearly falling intonation at the end and stress on 'pistola láser'.",
     "Gripping explanation at a steady pace; stress 'puerta', a small beat before 'el tuyo', and stress 'medio segundo'.",
     "Dramatic: 'Por eso, cuando la ves…' slower and lower, building suspense; then a clear pause; then "
     "'ya te midieron' delivered slowly and deliberately, word by word, low and heavy, clearly audible "
