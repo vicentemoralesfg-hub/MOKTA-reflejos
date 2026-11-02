@@ -119,8 +119,9 @@ export const MotorLento: React.FC<{ withAudio?: boolean }> = ({ withAudio = true
       {/* bloque del pistón */}
       <Headline f={f} a={B.piston} b={B.piston + 80} size={84} lines={["CADA PISTÓN FRENA,", "SE DETIENE Y VUELVE", <Y key="y">100 VECES POR SEGUNDO</Y>]} />
       {f >= B.piston + 76 && f < B.trip ? (
-        <div style={{ position: "absolute", top: 230, left: 70, width: CX * 2 - 140, opacity: inOut(f, B.piston + 76, B.piston + 86, B.trip - 8, B.trip) }}>
-          <div style={{ fontFamily: UI, fontWeight: 600, fontSize: 38, color: C.dim, textAlign: "center" }}>Aceleración del pistón (3.000 rpm)</div>
+        <div style={{ position: "absolute", top: 214, left: 70, width: CX * 2 - 140, opacity: inOut(f, B.piston + 76, B.piston + 86, B.trip - 8, B.trip) }}>
+          <div style={{ fontFamily: UI, fontWeight: 600, fontSize: 38, color: C.dim, textAlign: "center" }}>Aceleración máxima del pistón</div>
+          <div style={{ fontFamily: UI, fontWeight: 500, fontSize: 28, color: C.faint, textAlign: "center", marginTop: 2 }}>motor típico de 1,6 L a 3.000 rpm</div>
           <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 190, lineHeight: 1, color: C.yellow, textAlign: "center", scale: String(interpolate(ramp(f, B.piston + 76, B.piston + 90, BACK_OUT), [0, 1], [1.2, 1])) }}>
           ≈ 560 g
           </div>

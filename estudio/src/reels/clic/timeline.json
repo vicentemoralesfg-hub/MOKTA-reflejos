@@ -1,0 +1,5 @@
+{
+  "_comment": "Reel 04 '¿Hasta el clic o redondeas?'. Fotogramas a 30 fps. Lo leen el video y scripts/audio_clic.py.",
+  "fps": 30,
+  "k": { "diagram": 75, "full": 160, "clic": 172, "round": 200, "reach": 300, "check": 330, "verdict": 420, "cta": 500, "total": 585 }
+}

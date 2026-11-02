@@ -6,6 +6,8 @@ import { ElChat } from "./reels/chat/ElChat";
 import { T as CHAT } from "./reels/chat/script";
 import { Quiz } from "./reels/quiz/Quiz";
 import { MotorLento } from "./reels/motor/MotorLento";
+import { Clic } from "./reels/clic/Clic";
+import CLIC from "./reels/clic/timeline.json";
 import { TL as MOTOR } from "./reels/motor/timeline";
 import { TOTAL as QUIZ_TOTAL } from "./reels/quiz/data";
 import { AsadoClose, AsadoCover, AsadoGuest, GUESTS } from "./carruseles/asado/Asado";
@@ -24,6 +26,7 @@ export const RemotionRoot: React.FC = () => (
     <Folder name="Reels">
       <Composition id="R01-ElChat" component={ElChat} durationInFrames={CHAT.total} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="R03-MotorLento" component={MotorLento} durationInFrames={MOTOR.beats.total} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="R04-Clic" component={Clic} durationInFrames={CLIC.k.total} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="R02-MitoOVerdad" component={Quiz} durationInFrames={QUIZ_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
     </Folder>
     <Folder name="Carrusel-Asado">
