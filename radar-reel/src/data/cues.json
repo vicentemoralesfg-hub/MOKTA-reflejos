@@ -19,12 +19,6 @@
       {
         "src": "e",
         "from": 0,
-        "to": 6,
-        "gapAfter": 0.15
-      },
-      {
-        "src": "e",
-        "from": 7,
         "to": 12,
         "gapAfter": 0.3
       },
@@ -109,12 +103,6 @@
       {
         "src": "e",
         "from": 83,
-        "to": 87,
-        "gapAfter": 0.3
-      },
-      {
-        "src": "e",
-        "from": 88,
         "to": 90,
         "gapAfter": 0.5
       },
