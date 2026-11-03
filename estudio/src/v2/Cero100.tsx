@@ -202,7 +202,7 @@ export const Cero100: React.FC<{ withAudio?: boolean }> = ({ withAudio = true })
         f={f}
         top={1290}
         fix={{ byd: "BYD", f40: "F40", cuntach: "Countach", countach: "Countach", corolla: "Corolla" }}
-        merges={[{ from: ["gana", "un", "ferrari"], to: "gana a un Ferrari" }]}
+        merges={[{ from: ["gana", "un", "ferrari"], to: "gana a un Ferrari" }, { from: ["se", "honesto"], to: "Sé honesto" }]}
         hide={(x) => x < S.go.f0 - 2 || x >= S.cta.f0 - 4}
       />
       {withAudio ? <Audio src={staticFile("audio/v2-cero100.wav")} /> : null}

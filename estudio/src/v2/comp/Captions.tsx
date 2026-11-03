@@ -54,6 +54,9 @@ const tidy = (words: VOWord[], merges: { from: string[]; to: string }[]): VOWord
   return out;
 };
 
+/** Grafías que Whisper escribe distinto a como se dicen/escriben en Chile (válidas para todos los reels). */
+const BASE_FIX: Record<string, string> = { benzina: "bencina", click: "clic", vyd: "BYD", byd: "BYD" };
+
 export const Captions: React.FC<{
   vo: VO;
   f: number;
@@ -95,7 +98,7 @@ export const Captions: React.FC<{
       {c.words.map((w, k) => {
         const on = t >= w.s - 0.03 && t < w.e + 0.05;
         const said = t >= w.e;
-        const txt = fix[w.w.toLowerCase().replace(/[^a-záéíóúñü0-9]/gi, "")] ?? w.w;
+        const txt = { ...BASE_FIX, ...fix }[w.w.toLowerCase().replace(/[^a-záéíóúñü0-9]/gi, "")] ?? w.w;
         return (
           <span
             key={k}

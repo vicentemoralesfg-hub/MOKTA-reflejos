@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { Audio } from "@remotion/media";
 import { C, DISPLAY, UI, fmt } from "../brand";
 import { Captions } from "./comp/Captions";
@@ -53,16 +53,11 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
       {/* ===== GANCHO: el precio ===== */}
       {f < qEnd ? (
         <AbsoluteFill style={{ opacity: 1 - ramp(f, qEnd - 5, qEnd) }}>
-          {FOTOS.slr ? (
-            <AbsoluteFill style={{ opacity: 0.35 }}>
-              <Img src={staticFile(FOTOS.slr)} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "blur(28px) brightness(0.5) saturate(0.4)", transform: "scale(1.2)" }} />
-            </AbsoluteFill>
-          ) : null}
-          {/* el auto "tapado": se intuye la silueta, no el modelo; se va antes de que entren las opciones */}
-          {FOTOS.slr && f < S.q.f0 + 4 ? (
-            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", opacity: 1 - ramp(f, S.q.f0 - 10, S.q.f0 - 2) }}>
-              <Img src={staticFile(FOTOS.slr)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "70% 50%", filter: `blur(${12 - 6 * ramp(f, 0, S.q.f0)}px) brightness(0.6) contrast(1.4) saturate(0)`, transform: `scale(${1.25 - 0.1 * ramp(f, 0, S.q.f0)})` }} />
-              <AbsoluteFill style={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 300, color: C.yellow, textShadow: "0 10px 60px rgba(0,0,0,0.8)", scale: String(1 + 0.04 * Math.sin(f / 5)) }}>?</AbsoluteFill>
+          {/* el auto es un misterio: tarjeta cerrada con "?" y un barrido de luz, sin ninguna foto ni silueta */}
+          {f < S.q.f0 + 4 ? (
+            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", background: "linear-gradient(135deg,#12161f,#07090e)", opacity: 1 - ramp(f, S.q.f0 - 10, S.q.f0 - 2) }}>
+              <div style={{ position: "absolute", top: 0, bottom: 0, width: 220, left: `${(f * 14) % 1200 - 300}px`, background: "linear-gradient(90deg, transparent, rgba(255,200,61,0.12), transparent)", transform: "skewX(-18deg)" }} />
+              <AbsoluteFill style={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 320, color: C.yellow, textShadow: "0 10px 60px rgba(0,0,0,0.8)", scale: String(1 + 0.04 * Math.sin(f / 5)) }}>?</AbsoluteFill>
             </div>
           ) : null}
           <div style={{ position: "absolute", top: 250, left: 50, width: CX * 2 - 100, textAlign: "center" }}>
@@ -75,6 +70,7 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
             at={S.q.f0 - 12}
             top={640}
             H={265}
+            blur={9}
             items={OPTS.map((o) => ({ label: o.label, src: o.foto ? FOTOS[o.foto] ?? null : null }))}
             hi={OPTS.map((_, i) => {
               // "ruleta": el resaltado recorre A→B→C→D mientras corre la cuenta regresiva

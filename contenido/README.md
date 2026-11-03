@@ -1,5 +1,27 @@
 # MOKTA · Videos listos para publicar
 
+## Entrega 4 · Voz ElevenLabs en todos los videos
+Se reemplazó la locución de **7 videos** por una sola voz de ElevenLabs (**Bendjy Price**, español chileno, modelo `eleven_v4`),
+sin volver a usar Qwen3 ni otra voz local. Criterio de la voz: la única chilena masculina de la biblioteca descrita como
+natural, clara y de dicción nítida para narración/educativo, que calza con el tono serio y curioso de los videos.
+Cada guion se generó en **una toma** (misma entonación de principio a fin) y se segmentó por frase midiendo tiempos con
+Whisper (solo para medir, no genera voz); subtítulos, cortes y efectos se re-sincronizaron a la nueva locución.
+
+| Video | Carpeta | Nota |
+|---|---|---|
+| Pistola láser (140 km/h) | [`00_pistola-140-kmh`](videos/00_pistola-140-kmh) | Video recibido: imagen intacta, solo audio nuevo |
+| A 3.000 rpm | [`01_motor-a-3000-rpm`](videos/01_motor-a-3000-rpm) | Ciclo del motor re-sincronizado con la voz |
+| ¿Lleno o hasta el clic? | [`02_lleno-o-hasta-el-clic`](videos/02_lleno-o-hasta-el-clic) | |
+| 5 millones de km | [`03_5-millones-de-km`](videos/03_5-millones-de-km) | |
+| ¿Cuál llega primero a 100? | [`06_0-a-100-quien-gana`](videos/06_0-a-100-quien-gana) | "BYD" deletreado para que se pronuncie bien |
+| El auto más vendido | [`07_el-auto-mas-vendido`](videos/07_el-auto-mas-vendido) | |
+| El auto más caro | [`08_el-auto-mas-caro`](videos/08_el-auto-mas-caro) | **Gancho nuevo**: ya no muestra foto ni silueta del auto (tarjeta cerrada con "?") y las 4 opciones aparecen desenfocadas hasta la respuesta |
+
+Quedan con voz Qwen3 (anteriores): *Caballos de fuerza* (04) y *El motor más potente* (05), que no estaban en el pedido.
+
+---
+
+
 ## Entrega 3 · 4 videos nuevos (comparaciones y quiz de autos, con voz)
 Mismo estándar de la entrega 2 (voz, gancho directo desde el fotograma 0, subtítulos palabra a palabra, fotos reales,
 datos con fuente), con **algo cambiando en pantalla cada 1–2 segundos** durante todo el video: contadores, barras que se

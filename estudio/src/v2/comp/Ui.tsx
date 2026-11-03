@@ -110,7 +110,9 @@ export const Options: React.FC<{
   /** 0..1 por opción: resalta la opción que la voz está nombrando */
   hi?: number[];
   H?: number;
-}> = ({ f, at, items, top = 700, correct, revealAt, hi, H = 250 }) => {
+  /** desenfoque (px) de las fotos: para que la imagen no delate la respuesta */
+  blur?: number;
+}> = ({ f, at, items, top = 700, correct, revealAt, hi, H = 250, blur = 0 }) => {
   const W = 425;
   return (
     <div style={{ position: "absolute", top, left: 70, width: W * 2 + 20, display: "grid", gridTemplateColumns: `${W}px ${W}px`, gap: 20 }}>
@@ -135,7 +137,7 @@ export const Options: React.FC<{
               zIndex: h > 0.01 ? 2 : 1,
             }}
           >
-            {it.src ? <Img src={staticFile(it.src)} style={{ width: "100%", height: "100%", objectFit: "cover", filter: `brightness(${0.8 + 0.15 * h})` }} /> : null}
+            {it.src ? <Img src={staticFile(it.src)} style={{ width: "100%", height: "100%", objectFit: "cover", filter: `brightness(${0.8 + 0.15 * h})${blur ? ` blur(${blur}px)` : ""}`, transform: blur ? "scale(1.15)" : undefined }} /> : null}
             {it.sub ? (
               <div style={{ position: "absolute", top: 12, right: 12, padding: "4px 12px", borderRadius: 10, background: "rgba(5,6,10,0.75)", fontFamily: UI, fontWeight: 700, fontSize: 24, color: C.white }}>{it.sub}</div>
             ) : null}
