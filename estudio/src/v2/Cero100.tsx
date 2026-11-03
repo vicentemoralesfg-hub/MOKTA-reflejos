@@ -142,7 +142,7 @@ export const Cero100: React.FC<{ withAudio?: boolean }> = ({ withAudio = true })
                 </div>
                 <div style={{ position: "absolute", left: 245, top: 118, fontFamily: DISPLAY, fontWeight: 700, fontSize: 36, color: C.dim, fontVariantNumeric: "tabular-nums" }}>{Math.round(v)} km/h</div>
                 {done ? (
-                  <div style={{ position: "absolute", left: 735, top: 52, display: "flex", alignItems: "center", gap: 10, scale: String(interpolate(ramp(t * 30, c.t * 30, c.t * 30 + 8, BACK_OUT), [0, 1], [0.5, 1])) }}>
+                  <div style={{ position: "absolute", left: 730, top: 52, display: "flex", alignItems: "center", gap: 10, whiteSpace: "nowrap", scale: String(interpolate(ramp(t * 30, c.t * 30, c.t * 30 + 8, BACK_OUT), [0, 1], [0.5, 1])) }}>
                     <div style={{ width: 62, height: 62, borderRadius: 31, background: winner ? C.green : C.white, color: C.ink, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 40 }}>{rank}°</div>
                     <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 46, color: winner ? C.green : C.white }}>{fmt(c.t, 1)} s</div>
                   </div>
@@ -201,7 +201,8 @@ export const Cero100: React.FC<{ withAudio?: boolean }> = ({ withAudio = true })
         vo={vo}
         f={f}
         top={1290}
-        fix={{ byd: "BYD", f40: "F40", cuntach: "Countach", countach: "Countach" }}
+        fix={{ byd: "BYD", f40: "F40", cuntach: "Countach", countach: "Countach", corolla: "Corolla" }}
+        merges={[{ from: ["gana", "un", "ferrari"], to: "gana a un Ferrari" }]}
         hide={(x) => x < S.go.f0 - 2 || x >= S.cta.f0 - 4}
       />
       {withAudio ? <Audio src={staticFile("audio/v2-cero100.wav")} /> : null}
