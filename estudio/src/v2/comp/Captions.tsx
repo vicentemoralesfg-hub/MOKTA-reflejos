@@ -37,7 +37,9 @@ const tidy = (words: VOWord[], merges: { from: string[]; to: string }[]): VOWord
   for (const w of words) {
     const prev = out[out.length - 1];
     if (prev && /^[.,]\d/.test(w.w) && /\d$/.test(prev.w)) {
-      out[out.length - 1] = { w: prev.w + w.w, s: prev.s, e: w.e };
+      // ",000" es separador de miles (Whisper en inglés) → "4.000"; ",8" es decimal → "3,8"
+      const piece = /^,\d{3}(?!\d)/.test(w.w) ? "." + w.w.slice(1) : w.w;
+      out[out.length - 1] = { w: prev.w + piece, s: prev.s, e: w.e };
     } else out.push({ ...w });
   }
   const key = (x: string) => x.toLowerCase().replace(/[^a-záéíóúñü0-9.]/gi, "");

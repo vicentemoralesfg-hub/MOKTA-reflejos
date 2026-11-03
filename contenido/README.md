@@ -1,4 +1,28 @@
-# MOKTA · Videos listos para publicar (entrega 2)
+# MOKTA · Videos listos para publicar
+
+## Entrega 3 · 4 videos nuevos (comparaciones y quiz de autos, con voz)
+Mismo estándar de la entrega 2 (voz, gancho directo desde el fotograma 0, subtítulos palabra a palabra, fotos reales,
+datos con fuente), con **algo cambiando en pantalla cada 1–2 segundos** durante todo el video: contadores, barras que se
+reescalan, opciones que se iluminan cuando la voz las nombra, carrera en tiempo real, paneos de foto y efectos de sonido
+sincronizados.
+
+| # | Video | Gancho (lo primero que se ve y se escucha) | Qué aporta |
+|---|---|---|---|
+| 05 | [**El motor más potente del mundo**](videos/05_el-motor-mas-potente) | «Tu auto tiene unos 100 caballos. El motor más potente del mundo tiene casi 109.000» | Escalera de potencia Hilux → F1 → Bugatti → camión minero de Codelco → motor de barco; 13,5 m de alto a escala; gira a 102 rpm |
+| 06 | [**¿Cuál llega primero a 100 km/h?**](videos/06_0-a-100-quien-gana) | La pregunta + 4 opciones: Ferrari F40, Countach, Corolla híbrido, BYD Seal | Carrera 0-100 en tiempo real con cronómetro; por qué un eléctrico le gana a un Ferrari (fuerza desde 0 rpm) |
+| 07 | [**El auto más vendido de la historia**](videos/07_el-auto-mas-vendido) | «+50.000.000 vendidos de un solo auto. ¿Cuál es?» | Ranking Modelo T → Escarabajo → Golf → Corolla; uno cada 35 s; 5 vueltas a la Tierra |
+| 08 | [**El auto más caro de la historia**](videos/08_el-auto-mas-caro) | «Este auto se vendió en 135 millones de euros» | Quiz → Mercedes 300 SLR Uhlenhaut; la subasta secreta; el 2° (W196 R de Fangio); = 10.000 autos nuevos |
+
+**Orden sugerido:** 06 (0-100, el más comentable: "¿cuál elegiste?") → 08 (precio récord) → 05 (motor de barco) → 07 (ranking).
+Todos terminan con una pregunta concreta para comentarios.
+
+**Correcciones durante la verificación:** el 2° auto más caro en subasta ya no es el Ferrari 250 GTO (US$51,7 M, 2023)
+sino el Mercedes W196 R (€51,2 M ≈ US$53,9 M, feb. 2025): se regeneró esa frase de la locución y la escena.
+También se cambió "lo usaba para ir a las carreras" por el dato documentado (lo usaba como auto de todos los días).
+
+---
+
+## Entrega 2
 
 Cuatro Reels 1080×1920 con **locución, subtítulos sincronizados palabra a palabra y gancho directo** en el primer segundo.
 Cada carpeta trae el video final, la portada, el texto de publicación, los cálculos y las fuentes.
@@ -11,7 +35,7 @@ Especificaciones medidas en [`QA.md`](QA.md). La primera entrega quedó en [`arc
 | 03 | [**5 millones de km**](videos/03_5-millones-de-km) | «Un solo auto recorrió más de 5 millones de kilómetros» + ¿de qué marca? | Quiz de marcas con cuenta regresiva → ranking real (Toyota, Mercedes, Volvo) → casi 7 viajes a la Luna → el secreto |
 | 04 | [**Caballos de fuerza**](videos/04_caballos-de-fuerza) | «Un caballo de verdad puede tener casi 15 caballos de fuerza» | Por qué un "caballo de fuerza" no es la fuerza de un caballo; Hilux = 14 caballos reales, Bugatti Chiron = 100 |
 
-## Cómo se aplicó la crítica de la primera entrega
+### Cómo se aplicó la crítica de la primera entrega
 - **Ganchos directos:** cada video abre con una situación precisa o un dato llamativo, en pantalla y en voz, desde el fotograma 0.
 - **Voz en todos:** narrador masculino en español latinoamericano diseñado una vez con Qwen3-TTS (VoiceDesign) y clonado
   para todas las frases → misma voz en los 4 videos. Cada frase se verificó transcribiéndola con Whisper; las que no se
@@ -22,7 +46,7 @@ Especificaciones medidas en [`QA.md`](QA.md). La primera entrega quedó en [`arc
   comparaciones visuales (manadas de caballos reales, viajes a la Luna, pistón vs. piloto de caza).
 - **Explicación clara y verificable:** cada cifra tiene su cálculo y fuente en el `copy.md` correspondiente.
 
-## Orden sugerido de publicación
+### Orden sugerido de publicación (entrega 2)
 1. **Caballos de fuerza** — la curiosidad más amplia (le interesa a cualquiera), ideal para abrir.
 2. **5 millones de km** — quiz con marcas reales: genera comentarios ("yo dije Toyota").
 3. **¿Lleno o hasta el clic?** — utilidad + debate; publicarlo un viernes o sábado (día de carga).
@@ -30,5 +54,7 @@ Especificaciones medidas en [`QA.md`](QA.md). La primera entrega quedó en [`arc
 
 ## Créditos y licencias
 - Voz: Qwen3-TTS (Alibaba Qwen, Apache-2.0), generada localmente. Música y efectos: sintetizados (sin licencias de terceros).
-- Fotos: ver "Créditos de imágenes" en cada `copy.md` (CC0, dominio público y Library of Congress sin restricciones).
+- Fotos: ver "Créditos de imágenes" en cada `copy.md` (CC0, dominio público, Library of Congress sin restricciones y,
+  en la entrega 3, CC BY / CC BY-SA de Wikimedia Commons: el crédito al autor va en el texto de la publicación o en los
+  comentarios). Registro completo en `estudio/public/fotos/creditos.json`.
   Las patentes visibles se difuminaron.

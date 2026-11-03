@@ -1,0 +1,44 @@
+{
+ "segments": [
+  {
+   "id": "hook",
+   "text": "¿Cuál de estos cuatro llega primero a cien kilómetros por hora?",
+   "gap": 0.2
+  },
+  {
+   "id": "options",
+   "text": "Un Ferrari efe cuarenta, un Lamborghini Cuntach, un Toyota Corolla, o un bi uai di eléctrico.",
+   "gap": 2.2
+  },
+  {
+   "id": "go",
+   "text": "¡Partieron!",
+   "gap": 4.6
+  },
+  {
+   "id": "result",
+   "text": "Ganó el eléctrico: tres coma ocho segundos. El Ferrari, cuatro coma uno. El Lamborghini, cuatro coma nueve.",
+   "gap": 0.3
+  },
+  {
+   "id": "corolla",
+   "text": "Y el Corolla, nueve coma uno.",
+   "gap": 0.4
+  },
+  {
+   "id": "why",
+   "text": "¿Cómo le gana a un Ferrari? Un motor eléctrico entrega toda su fuerza desde cero. El del efe cuarenta recién llega a su máximo a cuatro mil revoluciones.",
+   "gap": 0.3
+  },
+  {
+   "id": "awd",
+   "text": "Y este tiene dos motores eléctricos: empuja con las cuatro ruedas.",
+   "gap": 0.35
+  },
+  {
+   "id": "cta",
+   "text": "¿Cuál elegiste tú? Sé honesto.",
+   "gap": 0.0
+  }
+ ]
+}

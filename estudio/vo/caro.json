@@ -1,0 +1,44 @@
+{
+ "segments": [
+  {
+   "id": "hook",
+   "text": "Este auto se vendió en ciento treinta y cinco millones de euros.",
+   "gap": 0.2
+  },
+  {
+   "id": "q",
+   "text": "Es el auto más caro de la historia. ¿Sabes cuál es?",
+   "gap": 2.2
+  },
+  {
+   "id": "reveal",
+   "text": "Es este Mercedes-Benz trescientos ese ele erre, de mil novecientos cincuenta y cinco. Solo se fabricaron dos.",
+   "gap": 0.3
+  },
+  {
+   "id": "why",
+   "text": "Es el auto de carreras más dominante de su época, convertido en coupé para su ingeniero jefe, Rudolf Úlenhaut, que lo usaba como su auto de todos los días.",
+   "gap": 0.3
+  },
+  {
+   "id": "auction",
+   "text": "Se subastó en secreto en el museo de Mercedes, en dos mil veintidós, solo con invitados elegidos por la marca.",
+   "gap": 0.35
+  },
+  {
+   "id": "second",
+   "text": "El segundo más caro en subasta también es Mercedes: un Fórmula Uno de mil novecientos cincuenta y cuatro, el modelo con el que Fangio fue campeón. Cincuenta y un millones de euros.",
+   "gap": 0.35
+  },
+  {
+   "id": "compare",
+   "text": "Con lo que costó el Mercedes, podrías comprar unos diez mil autos nuevos.",
+   "gap": 0.35
+  },
+  {
+   "id": "cta",
+   "text": "Si tuvieras ese dinero, ¿qué auto te comprarías?",
+   "gap": 0.0
+  }
+ ]
+}

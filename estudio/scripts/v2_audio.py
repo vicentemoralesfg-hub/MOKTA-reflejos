@@ -291,6 +291,209 @@ def clic():
     finish("clic", voice, music, fx, total)
 
 
+# ------------------------------------------------------------------ entrega 3
+def roll(fx, t0, t1, f0=1800, f1=2600, gain=0.1, n0=22, n1=6):
+    """Clics de contador que se van frenando entre t0 y t1."""
+    t = t0
+    while t < t1:
+        p = (t - t0) / max(1e-3, t1 - t0)
+        place(fx, tick(f0 + (f1 - f0) * p, 0.02, 0.004) * gain, t)
+        t += 1 / (n0 + (n1 - n0) * p)
+
+
+def chime(gain=0.25, f=1318.5):
+    m = int(0.7 * SR)
+    ts = np.arange(m) / SR
+    return (np.sin(2 * np.pi * f * ts) + 0.4 * np.sin(2 * np.pi * f * 1.5 * ts)) * np.exp(-ts / 0.22) * gain
+
+
+def beep(f=880, dur=0.16, gain=0.3):
+    m = int(dur * SR)
+    ts = np.arange(m) / SR
+    return np.sin(2 * np.pi * f * ts) * env(m, 0.005, 0.03) * gain
+
+
+def horn(dur=1.6, gain=0.5):
+    """Bocina de barco: dos notas graves con armónicos."""
+    m = int(dur * SR)
+    x = sum(saw(f0, m) for f0 in (73.4, 110.0)) / 2
+    x = lp(x, 700, 2) * env(m, 0.08, 0.5)
+    return soft_clip(x * 1.6) * gain
+
+
+def phase_osc(freq, harm=(1.0, 0.5, 0.25)):
+    ph = np.cumsum(2 * np.pi * freq / SR)
+    return sum(a * np.sin(ph * (k + 1)) for k, a in enumerate(harm))
+
+
+def ice(dur, T, shifts, lo, hi, gain=0.3):
+    """Motor a combustión acelerando con cambios de marcha (frecuencia de encendido sube y cae en cada cambio)."""
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    edges = [0.0] + list(shifts) + [T]
+    fr_ = np.full(n, lo * 0.6)
+    for a, b in zip(edges[:-1], edges[1:]):
+        m = (ts >= a) & (ts < b)
+        fr_[m] = lo + (hi - lo) * ((ts[m] - a) / (b - a)) ** 0.8
+    after = ts >= T
+    fr_[after] = hi * 0.9 * np.exp(-(ts[after] - T) / 1.5) + lo * 0.6
+    x = phase_osc(fr_, (1.0, 0.7, 0.45, 0.3, 0.2)) + lp(rng.standard_normal(n), 1500) * 0.25
+    x = lp(soft_clip(x * 1.4), 2600)
+    g = env(n, 0.05, 0.6) * np.where(ts < T, 1.0, np.exp(-(ts - T) / 0.8) * 0.7 + 0.3)
+    return x * g * gain
+
+
+def ev_whine(dur, T, gain=0.18):
+    n = int(dur * SR)
+    ts = np.arange(n) / SR
+    fr_ = np.where(ts < T, 260 + 1500 * (ts / T) ** 0.7, 1760 * np.exp(-(ts - T) / 1.2))
+    x = phase_osc(fr_, (1.0, 0.25)) + 0.15 * phase_osc(fr_ * 0.5, (1.0,))
+    g = env(n, 0.05, 0.5) * np.where(ts < T, 1.0, np.exp(-(ts - T) / 0.6))
+    return x * g * gain
+
+
+def options_ticks(fx, vo, seg_id, keys):
+    for k in keys:
+        t = word(vo, seg_id, k, -1)
+        if t >= 0:
+            place(fx, tick(1500, 0.06, 0.02) * 0.35, t)
+
+
+def countdown(fx, t0, t1):
+    for i in range(3):
+        place(fx, tick(1200 + 200 * i, 0.1, 0.03) * 0.5, t0 + i * (t1 - t0) / 3)
+
+
+def potencia():
+    vo, voice = load("potencia")
+    total = vo["duration"] + 1.6
+    n = int(total * SR)
+    fx = np.zeros((n, 2))
+    music = pulse_bed(total, 100, 55.0, [1, 1.189, 1.335, 1.122], bright=800)
+    transitions(vo, fx, 0.16)
+    place(fx, stamp(85) * 0.55, 0.0)
+    h = S(vo, "hook")
+    wM, wC = word(vo, "hook", ["motor"]), word(vo, "hook", ["casi"])
+    place(fx, horn(1.8, 0.35), wM - 0.05)
+    place(fx, riser(h["end"] - wM + 0.1, 150, 900) * 0.22, wM)
+    roll(fx, wM + 0.1, h["end"], gain=0.09)
+    place(fx, thump(0.7, 55, 0.18) * 0.6, h["end"])
+    for k, sid in enumerate(("hilux", "f1", "bugatti", "cat")):
+        t = S(vo, sid)["start"] - 0.13
+        place(fx, thump(0.5, 70 - 4 * k, 0.1) * (0.35 + 0.07 * k), t)
+    b = S(vo, "barco")["start"] - 0.13
+    place(fx, thump(1.0, 45, 0.25) * 0.8, b)
+    place(fx, horn(2.2, 0.4), b + 0.05)
+    place(fx, riser(1.2, 120, 700) * 0.25, S(vo, "size")["start"] + 0.13)
+    place(fx, stamp(80) * 0.45, word(vo, "size", ["piston"]))
+    # gira lento: zumbido rápido (auto) a la izquierda, golpes lentos (barco) a la derecha
+    r0, r1 = S(vo, "rpm")["start"], S(vo, "cta")["start"]
+    m = int((r1 - r0) * SR)
+    buzz = lp(phase_osc(np.full(m, 100.0), (1.0, 0.6, 0.3)), 900) * env(m, 0.2, 0.3) * 0.06
+    place(fx, buzz, r0, pan=-0.6)
+    t = r0 + 0.2
+    while t < r1 - 0.2:
+        place(fx, thump(0.4, 48, 0.12) * 0.35, t, pan=0.6)
+        t += 60 / 102
+    place(fx, stamp(85) * 0.55, S(vo, "cta")["start"])
+    finish("potencia", voice, music, fx, total)
+
+
+def cero100():
+    vo, voice = load("cero100")
+    total = vo["duration"] + 1.6
+    n = int(total * SR)
+    fx = np.zeros((n, 2))
+    music = pulse_bed(total, 118, 61.7, [1, 1.335, 1.189, 1.5], bright=1000)
+    transitions(vo, fx, 0.14)
+    place(fx, stamp(85) * 0.55, 0.0)
+    options_ticks(fx, vo, "options", (["ferrari"], ["lamborghini"], ["toyota"], ["byd", "bi"]))
+    go = S(vo, "go")
+    countdown(fx, S(vo, "options")["end"], go["start"])
+    place(fx, beep(1320, 0.5, 0.32), go["start"])
+    start = go["end"] - 4 / FPS
+    race = 11.0
+    place(fx, ice(race, 4.1, (1.5, 2.9), 120, 420, 0.22)[:, None] * np.array([0.9, 0.6]), start)
+    place(fx, ice(race, 4.9, (1.8, 3.5), 105, 380, 0.2)[:, None] * np.array([0.6, 0.9]), start)
+    hy = lp(phase_osc(np.linspace(85, 150, int(race * SR)), (1.0, 0.5, 0.2)), 900) * env(int(race * SR), 0.2, 1.0) * 0.08
+    place(fx, hy, start)
+    place(fx, ev_whine(race, 3.8, 0.12), start)
+    for T in (3.8, 4.1, 4.9, 9.1):
+        place(fx, chime(0.22 if T == 3.8 else 0.12, 1568 if T == 3.8 else 1175), start + T)
+    a = word(vo, "why", ["electrico"]) - 4 / FPS
+    place(fx, ev_whine(1.6, 0.8, 0.08), a)
+    place(fx, ice(2.0, 1.2, (), 90, 260, 0.12)[:, None] * np.array([1, 1]), a + 14 / FPS)
+    aw = S(vo, "awd")["start"]
+    for i in range(4):
+        place(fx, tick(1400 + 150 * i, 0.06, 0.02) * 0.35, aw + i * 5 / FPS)
+    place(fx, stamp(85) * 0.55, S(vo, "cta")["start"])
+    finish("cero100", voice, music, fx, total)
+
+
+def vendidos():
+    vo, voice = load("vendidos")
+    total = vo["duration"] + 1.6
+    n = int(total * SR)
+    fx = np.zeros((n, 2))
+    music = pulse_bed(total, 108, 58.3, [1, 1.26, 1.5, 1.335], bright=950)
+    transitions(vo, fx, 0.15)
+    place(fx, stamp(85) * 0.55, 0.0)
+    roll(fx, 0.0, S(vo, "hook")["start"] + 50 / FPS, gain=0.09)
+    options_ticks(fx, vo, "options", (["escarabajo"], ["ford", "modelo"], ["golf"], ["corolla"]))
+    countdown(fx, S(vo, "options")["end"], S(vo, "p4")["start"])
+    for k, pid in enumerate(("p4", "p3", "p2", "p1")):
+        t = S(vo, pid)["start"] - 4 / FPS
+        place(fx, thump(0.5, 70 - 5 * k, 0.1) * (0.35 + 0.08 * k), t)
+        roll(fx, t + 0.2, t + 1.4, gain=0.07)
+    p1 = S(vo, "p1")["start"]
+    place(fx, stamp(90) * 0.7, p1 + 0.3)
+    place(fx, chime(0.25), p1 + 0.35)
+    # ritmo: un "clic" por cada vuelta del reloj (un Corolla vendido)
+    p0, p1e = S(vo, "pace")["start"], S(vo, "earth")["start"]
+    t = p0 + 6 / FPS
+    while t < p1e - 0.1:
+        place(fx, tick(2000, 0.05, 0.012) * 0.25, t)
+        t += 36 / FPS
+    e0, e1 = S(vo, "earth")["start"], S(vo, "cta")["start"]
+    place(fx, riser(max(0.5, e1 - e0 - 0.3), 200, 1100) * 0.2, e0)
+    place(fx, stamp(85) * 0.55, e1)
+    finish("vendidos", voice, music, fx, total)
+
+
+def gavel(gain=0.6):
+    m = int(0.25 * SR)
+    ts = np.arange(m) / SR
+    return (hp(rng.standard_normal(m), 1800) * np.exp(-ts / 0.006) * 0.9 + np.sin(2 * np.pi * 420 * ts) * np.exp(-ts / 0.03) + np.sin(2 * np.pi * 160 * ts) * np.exp(-ts / 0.05)) * gain
+
+
+def caro():
+    vo, voice = load("caro")
+    total = vo["duration"] + 1.6
+    n = int(total * SR)
+    fx = np.zeros((n, 2))
+    music = pulse_bed(total, 92, 49.0, [1, 1.189, 0.891, 1.335], hats=False, bright=750)
+    transitions(vo, fx, 0.15)
+    place(fx, stamp(85) * 0.55, 0.0)
+    roll(fx, 0.0, max(1.0, S(vo, "hook")["end"] - 0.2), gain=0.09)
+    place(fx, chime(0.22, 1760), S(vo, "hook")["end"] - 0.1)
+    q = S(vo, "q")
+    place(fx, whoosh(0.4, up=True) * 0.2, q["start"])
+    countdown(fx, q["end"], S(vo, "reveal")["start"])
+    r = S(vo, "reveal")["start"]
+    place(fx, stamp(90) * 0.7, r)
+    place(fx, chime(0.25), r + 0.05)
+    a0 = S(vo, "auction")["start"]
+    for i in range(3):
+        place(fx, gavel(0.45), a0 + 0.1 + i * 0.28)
+    roll(fx, a0 + 0.2, a0 + 1.33, gain=0.07)
+    place(fx, thump(0.5, 62, 0.1) * 0.4, S(vo, "second")["start"])
+    c0, c1 = S(vo, "compare")["start"], S(vo, "cta")["start"]
+    roll(fx, c0, c1 - 8 / FPS, f0=2400, f1=3200, gain=0.05, n0=30, n1=12)
+    place(fx, riser(max(0.5, c1 - c0 - 0.3), 200, 1000) * 0.18, c0)
+    place(fx, stamp(85) * 0.55, c1)
+    finish("caro", voice, music, fx, total)
+
+
 if __name__ == "__main__":
     for nm in sys.argv[1:]:
-        {"km": km, "caballos": caballos, "motor": motor, "clic": clic}[nm]()
+        {"km": km, "caballos": caballos, "motor": motor, "clic": clic, "potencia": potencia, "cero100": cero100, "vendidos": vendidos, "caro": caro}[nm]()

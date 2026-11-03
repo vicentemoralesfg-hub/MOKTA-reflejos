@@ -18,6 +18,10 @@ import { Caballos, HP_TOTAL } from "./v2/Caballos";
 import { MOTOR_TOTAL, MotorV2 } from "./v2/MotorV2";
 import { CLIC_TOTAL, ClicV2 } from "./v2/ClicV2";
 import { Explosiones } from "./imagenes/Explosiones";
+import { POT_TOTAL, Potencia } from "./v2/Potencia";
+import { C100_TOTAL, Cero100 } from "./v2/Cero100";
+import { VEN_TOTAL, Vendidos } from "./v2/Vendidos";
+import { CARO_TOTAL, Caro } from "./v2/Caro";
 
 const fontHandle = delayRender("Cargando fuentes");
 fontsReady.then(() => continueRender(fontHandle));
@@ -52,6 +56,10 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="V2-Motor" component={MotorV2} durationInFrames={MOTOR_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="V2-Caballos" component={Caballos} durationInFrames={HP_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="V2-Kilometros" component={Kilometros} durationInFrames={KM_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Potencia" component={Potencia} durationInFrames={POT_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Cero100" component={Cero100} durationInFrames={C100_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Vendidos" component={Vendidos} durationInFrames={VEN_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V2-Caro" component={Caro} durationInFrames={CARO_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
     </Folder>
     <Folder name="Imagenes">
       <Still id="I01-Conductores" component={Conductores} {...post} />

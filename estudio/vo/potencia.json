@@ -1,0 +1,12 @@
+{"segments": [
+ {"id": "hook", "text": "Tu auto tiene unos cien caballos de fuerza. El motor más potente del mundo tiene casi ciento nueve mil.", "gap": 0.3},
+ {"id": "sube", "text": "Vamos subiendo.", "gap": 0.2},
+ {"id": "hilux", "text": "Una Hilux: doscientos cuatro.", "gap": 0.2},
+ {"id": "f1", "text": "Un Fórmula Uno: cerca de mil.", "gap": 0.2},
+ {"id": "bugatti", "text": "Un Bugatti Chiron: mil quinientos.", "gap": 0.25},
+ {"id": "cat", "text": "Un camión minero Caterpillar siete nueve siete, como los que usa Codelco: cuatro mil caballos, y carga trescientas sesenta toneladas.", "gap": 0.35},
+ {"id": "barco", "text": "Y el rey: el motor de barco Vártsila de catorce cilindros. Ciento nueve mil caballos.", "gap": 0.3},
+ {"id": "size", "text": "Mide trece metros y medio de alto, como un edificio de cuatro pisos, y cada pistón tiene casi un metro de ancho.", "gap": 0.3},
+ {"id": "rpm", "text": "Pero gira lento: solo ciento dos vueltas por minuto.", "gap": 0.35},
+ {"id": "cta", "text": "¿Qué motor quieres que comparemos ahora?", "gap": 0.0}
+]}

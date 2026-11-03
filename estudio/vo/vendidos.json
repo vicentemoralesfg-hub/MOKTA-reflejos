@@ -1,0 +1,11 @@
+{"segments": [
+ {"id": "hook", "text": "Hay un auto del que se han vendido más de cincuenta millones. ¿Cuál crees que es?", "gap": 0.2},
+ {"id": "options", "text": "¿El Escarabajo, el Ford Modelo T, el Golf o el Corolla?", "gap": 2.2},
+ {"id": "p4", "text": "Cuarto: el Ford Modelo T, el auto que motorizó al mundo. Unos quince millones.", "gap": 0.3},
+ {"id": "p3", "text": "Tercero: el Volkswagen Escarabajo. Más de veintiún millones.", "gap": 0.3},
+ {"id": "p2", "text": "Segundo: el Golf. Más de treinta y siete millones.", "gap": 0.35},
+ {"id": "p1", "text": "Y el número uno: el Toyota Corolla. Más de cincuenta millones desde mil novecientos sesenta y seis.", "gap": 0.3},
+ {"id": "pace", "text": "Eso es un Corolla vendido cada treinta y cinco segundos, durante más de medio siglo.", "gap": 0.3},
+ {"id": "earth", "text": "Puestos en fila, le darían cinco vueltas a la Tierra.", "gap": 0.35},
+ {"id": "cta", "text": "¿Tú has tenido alguno de estos cuatro?", "gap": 0.0}
+]}
