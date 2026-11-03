@@ -142,7 +142,7 @@ export const Vendidos: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }
         <AbsoluteFill style={{ opacity: fadeWin(f, S.earth.f0, S.cta.f0, 6, 4) }}>
           {(() => {
             const lf = f - S.earth.f0;
-            const loops = 5 * ramp(lf, 2, Math.max(20, S.cta.f0 - S.earth.f0 - 8));
+            const loops = 5 * ramp(lf, 2, Math.max(20, wordAt(vo, "earth", ["cinco", "5"]) - S.earth.f0 + 4)); // llega a 5 cuando la voz dice "cinco"
             return (
               <>
                 <div style={{ position: "absolute", top: 470, left: CX - 280, width: 560, height: 560, borderRadius: 280, overflow: "hidden", scale: String(1 + 0.04 * Math.sin(lf / 20)) }}>

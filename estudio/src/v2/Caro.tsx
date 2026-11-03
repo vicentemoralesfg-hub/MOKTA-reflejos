@@ -60,8 +60,8 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
           ) : null}
           {/* el auto "tapado": se intuye la silueta, no el modelo; se va antes de que entren las opciones */}
           {FOTOS.slr && f < S.q.f0 + 4 ? (
-            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", opacity: ramp(f, 0, 6) * (1 - ramp(f, S.q.f0 - 4, S.q.f0 + 4)) }}>
-              <Img src={staticFile(FOTOS.slr)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "70% 50%", filter: `blur(${18 - 6 * ramp(f, 0, S.q.f0)}px) brightness(0.35) contrast(1.3) saturate(0)`, transform: `scale(${1.25 - 0.1 * ramp(f, 0, S.q.f0)})` }} />
+            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", opacity: 1 - ramp(f, S.q.f0 - 4, S.q.f0 + 4) }}>
+              <Img src={staticFile(FOTOS.slr)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "70% 50%", filter: `blur(${12 - 6 * ramp(f, 0, S.q.f0)}px) brightness(0.6) contrast(1.4) saturate(0)`, transform: `scale(${1.25 - 0.1 * ramp(f, 0, S.q.f0)})` }} />
               <AbsoluteFill style={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 300, color: C.yellow, textShadow: "0 10px 60px rgba(0,0,0,0.8)", scale: String(1 + 0.04 * Math.sin(f / 5)) }}>?</AbsoluteFill>
             </div>
           ) : null}
@@ -144,7 +144,7 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
       {f >= S.second.f0 - 6 && f < S.compare.f0 ? (
         <AbsoluteFill style={{ opacity: fadeWin(f, S.second.f0, S.compare.f0, 6, 4) }}>
           <div style={{ position: "absolute", top: 250, left: 0, width: CX * 2, textAlign: "center", fontFamily: UI, fontWeight: 800, fontSize: 32, letterSpacing: 8, color: C.dim }}>SEGUNDO MÁS CARO EN SUBASTA</div>
-          <PhotoCard src={FOTOS.w196 ?? null} f={f - S.second.f0} x={70} y={305} w={860} h={450} label="MERCEDES-BENZ W196 R" sub="Fórmula 1 de 1954 · subastado en 2025, en el mismo museo" objectPosition="50% 60%" />
+          <PhotoCard src={FOTOS.w196 ?? null} f={f - S.second.f0} x={70} y={305} w={860} h={450} label="MERCEDES-BENZ W196 R" sub="F1 de 1954 · subastado en 2025 en el mismo museo" objectPosition="50% 60%" />
           {f >= wordAt(vo, "second", ["fangio"]) - 4 ? (
             <div style={{ position: "absolute", top: 325, right: 90, padding: "10px 18px", borderRadius: 14, background: C.yellow, color: C.ink, fontFamily: DISPLAY, fontWeight: 800, fontSize: 36, opacity: ramp(f, wordAt(vo, "second", ["fangio"]) - 4, wordAt(vo, "second", ["fangio"]) + 4), scale: String(interpolate(ramp(f, wordAt(vo, "second", ["fangio"]) - 4, wordAt(vo, "second", ["fangio"]) + 8, BACK_OUT), [0, 1], [0.6, 1])) }}>
               EL MODELO DE FANGIO
@@ -207,7 +207,8 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
         vo={vo}
         f={f}
         top={1290}
-        fix={{ ulenhaut: "Uhlenhaut", slr: "SLR", gto: "GTO", fangio: "Fangio", mercedes: "Mercedes" }}
+        fix={{ ulenhaut: "Uhlenhaut", ullenhout: "Uhlenhaut", ulenhout: "Uhlenhaut", cupe: "coupé", slr: "SLR", gto: "GTO", fangio: "Fangio", mercedes: "Mercedes", formula: "Fórmula" }}
+        merges={[{ from: ["mercedes", "benz"], to: "Mercedes-Benz" }]}
         hide={(x) => x < qEnd - 2 || x >= S.cta.f0 - 4 || (x >= S.compare.f0 - 6 && x < S.cta.f0)}
       />
       {withAudio ? <Audio src={staticFile("audio/v2-caro.wav")} /> : null}

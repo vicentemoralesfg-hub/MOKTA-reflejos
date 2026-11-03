@@ -18,7 +18,8 @@ Todos terminan con una pregunta concreta para comentarios.
 
 **Correcciones durante la verificación:** el 2° auto más caro en subasta ya no es el Ferrari 250 GTO (US$51,7 M, 2023)
 sino el Mercedes W196 R (€51,2 M ≈ US$53,9 M, feb. 2025): se regeneró esa frase de la locución y la escena.
-También se cambió "lo usaba para ir a las carreras" por el dato documentado (lo usaba como auto de todos los días).
+También se cambió "lo usaba para ir a las carreras" por el dato documentado (lo usaba como auto de todos los días),
+y el 0-100 del Countach 25° Aniversario quedó en 4,9 s (dato de fábrica; el "4,7 s" que circula es 0-60 mph).
 
 ---
 
