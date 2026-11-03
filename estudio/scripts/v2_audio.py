@@ -237,18 +237,20 @@ def motor():
     # el motor se atenúa bajo la voz (−8 dB) y queda de fondo durante el aceite y el cierre
     v = np.zeros(n); v[: min(n, len(voice))] = voice[:n]
     env_v = np.convolve(np.abs(v), np.ones(int(0.12 * SR)) / int(0.12 * SR), "same")
-    g = np.where(env_v > 0.02, 10 ** (-8 / 20), 1.0)
+    g = np.where(env_v > 0.012, 10 ** (-19 / 20), 1.0)  # bajo la voz el motor queda ~19 dB abajo (antes −8 dB tapaba la locución)
     g = np.convolve(g, np.ones(int(0.2 * SR)) / int(0.2 * SR), "same")
     oil0 = int(S(vo, "oil")["start"] * SR)
-    g[oil0:] *= np.linspace(1, 0.35, min(int(0.5 * SR), n - oil0)).tolist() + [0.35] * max(0, n - oil0 - int(0.5 * SR))
+    g[oil0:] *= np.linspace(1, 0.5, min(int(0.5 * SR), n - oil0)).tolist() + [0.5] * max(0, n - oil0 - int(0.5 * SR))
     eng = eng * g
-    fx = np.stack([eng, eng * 0.96], 1) + booms
-    transitions(vo, fx, 0.15)
+    booms = booms * g[:, None] ** 0.8
+    fx = np.stack([eng, eng * 0.96], 1) * 0.8 + booms * 0.7
+    transitions(vo, fx, 0.08)
     place(fx, whoosh(0.6, up=False) * 0.35, S(vo, "slow")["start"] - 0.1)
     place(fx, stamp(80) * 0.5, word(vo, "piston", ["quinientas", "500"]))
+    fx = duck(fx, np.pad(voice, (0, max(0, n - len(voice))))[:n], -11)  # todo efecto cede ante la voz
     music = pad(total, [55, 82.5, 110], 500, 1.0, 1.0)
     music = np.stack([music, music * 0.97], 1) * 0.5
-    finish("motor", voice, music, fx, total, music_gain=0.3)
+    finish("motor", voice, music, fx, total, music_gain=0.16)
 
 
 def clic():
