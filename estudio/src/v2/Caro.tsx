@@ -60,7 +60,7 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
           ) : null}
           {/* el auto "tapado": se intuye la silueta, no el modelo; se va antes de que entren las opciones */}
           {FOTOS.slr && f < S.q.f0 + 4 ? (
-            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", opacity: 1 - ramp(f, S.q.f0 - 4, S.q.f0 + 4) }}>
+            <div style={{ position: "absolute", left: 70, top: 640, width: 860, height: 500, borderRadius: 28, overflow: "hidden", border: "2px solid rgba(255,200,61,0.35)", opacity: 1 - ramp(f, S.q.f0 - 10, S.q.f0 - 2) }}>
               <Img src={staticFile(FOTOS.slr)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "70% 50%", filter: `blur(${12 - 6 * ramp(f, 0, S.q.f0)}px) brightness(0.6) contrast(1.4) saturate(0)`, transform: `scale(${1.25 - 0.1 * ramp(f, 0, S.q.f0)})` }} />
               <AbsoluteFill style={{ display: "flex", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 300, color: C.yellow, textShadow: "0 10px 60px rgba(0,0,0,0.8)", scale: String(1 + 0.04 * Math.sin(f / 5)) }}>?</AbsoluteFill>
             </div>
@@ -72,7 +72,7 @@ export const Caro: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
           </div>
           <Options
             f={f}
-            at={S.q.f0}
+            at={S.q.f0 - 12}
             top={640}
             H={265}
             items={OPTS.map((o) => ({ label: o.label, src: o.foto ? FOTOS[o.foto] ?? null : null }))}
