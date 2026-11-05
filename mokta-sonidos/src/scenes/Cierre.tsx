@@ -1,7 +1,7 @@
 import React from "react";
 import { Audio } from "@remotion/media";
-import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { COLORS, FONT_BLOCK, FONT_DISPLAY, RONDAS, archivoVoz } from "../config";
+import { AbsoluteFill, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { COLORS, FONT_BLOCK, FONT_DISPLAY, RONDAS } from "../config";
 import { Fondo } from "../components/Fondo";
 import { pop } from "../lib";
 
@@ -104,9 +104,6 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
       {conAudio ? (
         <>
           <Audio src={staticFile("sfx/whoosh.mp3")} volume={0.5} />
-          <Sequence from={6} layout="none">
-            <Audio src={staticFile(archivoVoz("cierre"))} volume={1} />
-          </Sequence>
         </>
       ) : null}
     </AbsoluteFill>

@@ -39,20 +39,11 @@ TEXTO_REFERENCIA = (
 
 # Frases. La segunda columna es el texto esperado para la verificación con Whisper.
 FRASES = {
-    "gancho": "¿Eres capaz de reconocer un auto... solo por su sonido? ¡Vamos a comprobarlo!",
+    # Solo el gancho y el anuncio de cada ronda: el resto del video habla con imagen y sonido.
+    "gancho": "¿Puedes adivinar el auto... solo por su sonido?",
     "r1_ronda": "¡Ronda uno!",
-    "r1_pregunta": "¿Ferrari... o Lamborghini? ¡Escucha con atención!",
-    "r1_ab": "¿Cuál es? ¿A... o B?",
-    "r1_revela": "¡Era el Lamborghini! ¡Un ve doce brutal!",
     "r2_ronda": "¡Ronda dos!",
-    "r2_pregunta": "¿Mustang... o Nissan ge te erre? ¡Atento a este rugido!",
-    "r2_ab": "¿A... o B? ¡Tú decides!",
-    "r2_revela": "¡Era el Mustang! ¡Puro músculo americano!",
-    "r3_ronda": "¡Última ronda!",
-    "r3_pregunta": "¿Bugatti... o Fórmula Uno? ¡Esta es la más difícil!",
-    "r3_ab": "¿A... o B? ¡Última oportunidad!",
-    "r3_revela": "¡Era el Fórmula Uno! ¡Diecinueve mil revoluciones!",
-    "cierre": "¿Cuántas acertaste? ¡Déjalo en los comentarios!",
+    "r3_ronda": "¡Ronda tres!",
 }
 
 
@@ -115,6 +106,7 @@ def main():
 
     durs_path = RAIZ / "src" / "voz.json"
     duraciones = json.loads(durs_path.read_text()) if durs_path.exists() else {}
+    duraciones = {k: v for k, v in duraciones.items() if k in FRASES}
     claves = [c for c in FRASES if not args.solo or c in args.solo.split(",")]
     informe = {}
     for clave in claves:
@@ -142,7 +134,11 @@ def main():
         print(f"=> {clave}: toma {toma} ({duraciones[clave]}s)", flush=True)
 
     durs_path.write_text(json.dumps(duraciones, indent=2, ensure_ascii=False) + "\n")
-    (VOZ_DIR / "_informe.json").write_text(json.dumps(informe, indent=2, ensure_ascii=False) + "\n")
+    inf_path = VOZ_DIR / "_informe.json"
+    previo = json.loads(inf_path.read_text()) if inf_path.exists() else {}
+    previo = {k: v for k, v in previo.items() if k in FRASES}
+    previo.update(informe)
+    inf_path.write_text(json.dumps(previo, indent=2, ensure_ascii=False) + "\n")
 
 
 if __name__ == "__main__":

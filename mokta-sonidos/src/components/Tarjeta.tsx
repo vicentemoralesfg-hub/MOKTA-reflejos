@@ -38,13 +38,9 @@ export const Tarjeta: React.FC<{
   apagar: number;
   /** pulso mientras suena el motor (0..1) */
   pulso: number;
-  /** dato técnico que aparece al revelar */
-  dato?: string;
-  /** 0→1 aparición del dato */
-  datoVis?: number;
   /** fotograma de la escena, para el leve zoom continuo de la foto */
   frame: number;
-}> = ({ auto, letra, color, circulo, check, apagar, pulso, dato, datoVis = 0, frame }) => {
+}> = ({ auto, letra, color, circulo, check, apagar, pulso, frame }) => {
   const pad = 44;
   const cw = CARD_W + pad * 2;
   const ch = CARD_H + pad * 2;
@@ -199,27 +195,6 @@ export const Tarjeta: React.FC<{
         </div>
       ) : null}
 
-      {/* dato técnico */}
-      {dato && datoVis > 0 ? (
-        <div
-          style={{
-            position: "absolute",
-            left: 26,
-            bottom: 26,
-            padding: "10px 24px 8px",
-            background: COLORS.ink,
-            color: COLORS.white,
-            fontFamily: FONT_BLOCK,
-            fontSize: 40,
-            borderRadius: 999,
-            border: `5px solid ${COLORS.white}`,
-            scale: String(datoVis),
-            transformOrigin: "left center",
-          }}
-        >
-          {dato}
-        </div>
-      ) : null}
     </div>
   );
 };

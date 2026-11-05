@@ -1,7 +1,7 @@
 import React from "react";
 import { Audio } from "@remotion/media";
 import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { COLORS, CUENTA_PASO, FONT_BLOCK, FONT_DISPLAY, Ronda, archivoVoz, tiempos, voz } from "../config";
+import { COLORS, CUENTA_PASO, FONT_BLOCK, FONT_DISPLAY, Ronda, archivoVoz, tiempos, vozRonda } from "../config";
 import { Fondo } from "../components/Fondo";
 import { CARD_H, CARD_W, Tarjeta } from "../components/Tarjeta";
 import { Ecualizador } from "../components/Ecualizador";
@@ -27,7 +27,6 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
   const pulso = sonando ? 0.5 + 0.5 * Math.sin(((f - T.sonido) / 30) * Math.PI * 3) : 0;
   const circulo = ramp(f, T.revela + 1, T.revela + 20);
   const check = pop(f, T.revela + 8, 9, 200);
-  const datoVis = pop(f, T.vozRevela, 12, 200);
   const apagar = ramp(f, T.revela, T.revela + 12);
   const sacudida = shake(f, T.revela, 16, 12);
   const salida = ramp(f, T.fin - 9, T.fin, EASE_IN);
@@ -39,7 +38,7 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
   const numero = 3 - pasoCuenta;
   const popNumero = pop(f, T.cuenta + pasoCuenta * CUENTA_PASO, 8, 260);
   const arco = enCuenta ? ((f - T.cuenta) % CUENTA_PASO) / CUENTA_PASO : 0;
-  const preguntaVis = ramp(f, T.ab - 2, T.ab + 8) * (1 - ramp(f, T.revela, T.revela + 6));
+  const preguntaVis = ramp(f, T.cuenta - 4, T.cuenta + 6) * (1 - ramp(f, T.revela, T.revela + 6));
   const flash = interpolate(f, [T.revela, T.revela + 2, T.revela + 9], [0, 0.6, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -75,8 +74,6 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
           check={esCorrecta ? check : 0}
           apagar={esCorrecta ? 0 : apagar}
           pulso={pulso * 0.7}
-          dato={esCorrecta ? ronda.dato : undefined}
-          datoVis={esCorrecta ? datoVis : 0}
           frame={f}
         />
       </div>
@@ -175,7 +172,7 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
             alignItems: "center",
             gap: 40,
             opacity: preguntaVis,
-            scale: String(0.7 + 0.3 * pop(f, T.ab - 2, 10, 200)),
+            scale: String(0.7 + 0.3 * pop(f, T.cuenta - 4, 10, 200)),
           }}
         >
           <div
@@ -255,13 +252,13 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
               rotate: "-4deg",
             }}
           >
-            {ronda.numero === 3 ? "ÚLTIMA" : "RONDA"}
+            RONDA
           </div>
           <div
             style={{
               marginTop: 10,
               fontFamily: FONT_DISPLAY,
-              fontSize: ronda.numero === 3 ? 260 : 420,
+              fontSize: 420,
               lineHeight: 0.9,
               color: ronda.acento,
               WebkitTextStroke: `12px ${COLORS.ink}`,
@@ -270,7 +267,7 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
               rotate: "-4deg",
             }}
           >
-            {ronda.numero === 3 ? "RONDA" : ronda.numero}
+            {ronda.numero}
           </div>
         </AbsoluteFill>
       ) : null}
@@ -281,31 +278,23 @@ export const RondaEscena: React.FC<{ ronda: Ronda; conAudio?: boolean }> = ({ ro
       {conAudio ? (
         <>
           <Audio src={staticFile("sfx/whoosh.mp3")} volume={0.5} />
-          <Sequence from={T.vozRonda} layout="none">
-            <Audio src={staticFile(archivoVoz(voz(ronda, "ronda")))} />
+          <Sequence from={T.voz} layout="none">
+            <Audio src={staticFile(archivoVoz(vozRonda(ronda)))} />
           </Sequence>
           <Sequence from={T.cartas} layout="none">
             <Audio src={staticFile("sfx/whoosh2.mp3")} volume={0.4} />
           </Sequence>
-          <Sequence from={T.pregunta} layout="none">
-            <Audio src={staticFile(archivoVoz(voz(ronda, "pregunta")))} />
-          </Sequence>
           <Sequence from={T.sonido} durationInFrames={ronda.sonidoFrames} layout="none">
             <Audio src={staticFile(ronda.sonido)} />
-          </Sequence>
-          <Sequence from={T.ab} layout="none">
-            <Audio src={staticFile(archivoVoz(voz(ronda, "ab")))} />
           </Sequence>
           {[0, 1, 2].map((i) => (
             <Sequence key={i} from={T.cuenta + i * CUENTA_PASO} durationInFrames={12} layout="none">
               <Audio src={staticFile("sfx/pop.mp3")} volume={0.9} />
             </Sequence>
           ))}
+          {/* al revelar solo suena el "correcto" (la música se silencia en Video.tsx) */}
           <Sequence from={T.revela} layout="none">
-            <Audio src={staticFile("sfx/check.mp3")} volume={0.85} />
-          </Sequence>
-          <Sequence from={T.vozRevela} layout="none">
-            <Audio src={staticFile(archivoVoz(voz(ronda, "revela")))} />
+            <Audio src={staticFile("sfx/check.mp3")} volume={0.9} />
           </Sequence>
         </>
       ) : null}

@@ -1,16 +1,6 @@
 {
-  "gancho": 5.859,
-  "cierre": 3.102,
+  "gancho": 3.555,
   "r1_ronda": 1.038,
-  "r1_pregunta": 3.859,
-  "r1_ab": 2.206,
-  "r1_revela": 3.225,
   "r2_ronda": 0.971,
-  "r2_pregunta": 4.558,
-  "r2_ab": 2.963,
-  "r2_revela": 2.995,
-  "r3_ronda": 1.193,
-  "r3_pregunta": 4.387,
-  "r3_ab": 3.203,
-  "r3_revela": 3.875
+  "r3_ronda": 1.089
 }

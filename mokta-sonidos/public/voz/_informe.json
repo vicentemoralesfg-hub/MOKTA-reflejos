@@ -2,8 +2,8 @@
   "gancho": {
     "toma": 1,
     "wer": 0.0,
-    "expresividad_st": 5.2,
-    "whisper": "¿Eres capaz de reconocer un auto solo por su sonido?  ¡Vamos a comprobarlo!"
+    "expresividad_st": 3.54,
+    "whisper": "¿Puedes adivinar el auto? ¿Solo por su sonido?"
   },
   "r1_ronda": {
     "toma": 1,
@@ -11,76 +11,16 @@
     "expresividad_st": 8.03,
     "whisper": "RONDA 1"
   },
-  "r1_pregunta": {
-    "toma": 1,
-    "wer": 0.0,
-    "expresividad_st": 6.4,
-    "whisper": "Ferrari o Lamborghini. Escucha con atención."
-  },
-  "r1_ab": {
-    "toma": 0,
-    "wer": 0.0,
-    "expresividad_st": 6.16,
-    "whisper": "¿Cuál es A o B?"
-  },
-  "r1_revela": {
-    "toma": 0,
-    "wer": 0.286,
-    "expresividad_st": 6.43,
-    "whisper": "Era el Lamborghini, un B12 brutal."
-  },
   "r2_ronda": {
     "toma": 1,
     "wer": 0.5,
     "expresividad_st": 5.06,
     "whisper": "RONDA 2"
   },
-  "r2_pregunta": {
-    "toma": 0,
-    "wer": 0.0,
-    "expresividad_st": 5.72,
-    "whisper": "Mustang o Nissan GT-R atento a este rugido."
-  },
-  "r2_ab": {
-    "toma": 0,
-    "wer": 0.0,
-    "expresividad_st": 4.3,
-    "whisper": "a, o b, tú decides."
-  },
-  "r2_revela": {
-    "toma": 1,
-    "wer": 0.0,
-    "expresividad_st": 6.93,
-    "whisper": "Era el Mustang, puro músculo americano."
-  },
   "r3_ronda": {
-    "toma": 1,
-    "wer": 0.0,
-    "expresividad_st": 7.25,
-    "whisper": "ÚLTIMA RONDA"
-  },
-  "r3_pregunta": {
-    "toma": 1,
-    "wer": 0.0,
-    "expresividad_st": 6.49,
-    "whisper": "Bugatti o Fórmula 1, esta es la más difícil."
-  },
-  "r3_ab": {
-    "toma": 0,
-    "wer": 0.0,
-    "expresividad_st": 4.7,
-    "whisper": "A. O B. Última oportunidad."
-  },
-  "r3_revela": {
-    "toma": 1,
-    "wer": 0.286,
-    "expresividad_st": 7.28,
-    "whisper": "Era el fórmula 1. 19.000 revoluciones."
-  },
-  "cierre": {
-    "toma": 0,
-    "wer": 0.0,
-    "expresividad_st": 6.62,
-    "whisper": "¿Cuántas acertaste? Déjalo en los comentarios."
+    "toma": 2,
+    "wer": 0.5,
+    "expresividad_st": 3.74,
+    "whisper": "Ronda 3."
   }
 }

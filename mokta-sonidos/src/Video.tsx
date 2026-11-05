@@ -8,20 +8,27 @@ import { Cierre } from "./scenes/Cierre";
 
 const MUSICA_BASE = 0.16;
 
-/** La música baja casi a cero mientras suena cada motor, para que se escuche limpio. */
+/**
+ * Música solo de fondo en gancho, títulos y cuenta. Se apaga por completo mientras suena
+ * cada motor y durante la revelación, donde solo se escucha el "correcto".
+ */
 const volumenMusica = (f: number) => {
   let v = MUSICA_BASE;
   RONDAS.forEach((r, i) => {
-    const a = inicioRonda(i) + tiempos(r).sonido;
-    const b = inicioRonda(i) + tiempos(r).sonidoFin;
-    const duck = interpolate(f, [a - 8, a, b, b + 10], [0, 1, 1, 0], {
+    const T = tiempos(r);
+    const ini = inicioRonda(i);
+    const motor = interpolate(f, [ini + T.sonido - 10, ini + T.sonido, ini + T.sonidoFin, ini + T.sonidoFin + 10], [0, 1, 1, 0], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     });
-    v = Math.min(v, MUSICA_BASE * (1 - duck * 0.94));
+    const revela = interpolate(f, [ini + T.revela - 6, ini + T.revela, ini + T.fin - 4, ini + T.fin + 8], [0, 1, 1, 0], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+    v = Math.min(v, MUSICA_BASE * (1 - Math.max(motor, revela)));
   });
   const fadeIn = interpolate(f, [0, 12], [0.4, 1], { extrapolateRight: "clamp" });
-  const fadeOut = interpolate(f, [TOTAL - 40, TOTAL - 2], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const fadeOut = interpolate(f, [TOTAL - 30, TOTAL - 2], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return v * fadeIn * fadeOut;
 };
 

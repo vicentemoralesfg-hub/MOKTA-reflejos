@@ -44,8 +44,6 @@ export type Ronda = {
   a: Auto;
   b: Auto;
   correcta: Opcion;
-  /** dato breve que aparece al revelar */
-  dato: string;
   sonido: string; // public/autos
   sonidoFrames: number; // duración del clip del motor
   acento: string;
@@ -58,9 +56,8 @@ export const RONDAS: Ronda[] = [
     a: { nombre: "FERRARI", imagen: "img/ferrari.jpg", encuadre: "50% 62%" },
     b: { nombre: "LAMBORGHINI", imagen: "img/lamborghini.jpg", encuadre: "50% 60%" },
     correcta: "B",
-    dato: "V12 · 770 CV",
     sonido: "autos/ronda1_lamborghini.wav",
-    sonidoFrames: 213,
+    sonidoFrames: 225,
     acento: COLORS.pink,
     acento2: COLORS.yellow,
   },
@@ -69,9 +66,8 @@ export const RONDAS: Ronda[] = [
     a: { nombre: "FORD MUSTANG", imagen: "img/mustang.jpg", encuadre: "50% 58%" },
     b: { nombre: "NISSAN GT-R", imagen: "img/gtr.jpg", encuadre: "50% 66%" },
     correcta: "A",
-    dato: "V8 · 760 CV",
     sonido: "autos/ronda2_mustang.wav",
-    sonidoFrames: 202,
+    sonidoFrames: 225,
     acento: COLORS.cyan,
     acento2: COLORS.orange,
   },
@@ -80,40 +76,35 @@ export const RONDAS: Ronda[] = [
     a: { nombre: "BUGATTI", imagen: "img/bugatti.jpg", encuadre: "50% 70%" },
     b: { nombre: "FÓRMULA 1", imagen: "img/f1.jpg", encuadre: "46% 60%", zoom: 1.55 },
     correcta: "B",
-    dato: "V10 · 19.000 RPM",
     sonido: "autos/ronda3_f1.wav",
-    sonidoFrames: 213,
+    sonidoFrames: 222,
     acento: COLORS.violet,
     acento2: COLORS.lime,
   },
 ];
 
-export const voz = (r: Ronda, parte: "ronda" | "pregunta" | "ab" | "revela") =>
-  `r${r.numero}_${parte}` as ClaveVoz;
+export const vozRonda = (r: Ronda) => `r${r.numero}_ronda` as ClaveVoz;
 
-// ---- Estructura de cada ronda (fotogramas locales), guiada por la voz ----
+// ---- Estructura de cada ronda (fotogramas locales) ----
+// La voz solo anuncia "¡Ronda N!". Después: motor completo, cuenta 3-2-1 y el "correcto".
 export const CUENTA_PASO = 30; // 1 s por número: da tiempo a pensar
 
 export const tiempos = (r: Ronda) => {
-  const vozRonda = 4;
-  const titulo = Math.max(40, vozRonda + dVoz(voz(r, "ronda")) + 6); // fin del título a pantalla completa
+  const voz = 3;
+  const titulo = Math.max(36, voz + dVoz(vozRonda(r)) + 4); // fin del título a pantalla completa
   const cartas = titulo - 8; // entran las tarjetas
-  const pregunta = cartas + 16; // "¿Ferrari o Lamborghini? ¡Escucha!"
-  const sonido = pregunta + dVoz(voz(r, "pregunta")) + 10;
+  const sonido = cartas + 22; // con las tarjetas ya asentadas
   const sonidoFin = sonido + r.sonidoFrames;
-  const ab = sonidoFin + 8; // "¿A o B?"
-  // la cuenta 3 · 2 · 1 arranca mientras la voz pregunta, termina ~1 s después de ella
-  const cuenta = Math.max(ab + 12, ab + dVoz(voz(r, "ab")) - CUENTA_PASO * 2);
+  const cuenta = sonidoFin + 6; // "¿A O B?" + 3 · 2 · 1
   const revela = cuenta + CUENTA_PASO * 3;
-  const vozRevela = revela + 16; // "¡Era el ...!"
-  const fin = Math.max(revela + 80, vozRevela + dVoz(voz(r, "revela")) + 16);
-  return { vozRonda, titulo, cartas, pregunta, sonido, sonidoFin, ab, cuenta, revela, vozRevela, fin };
+  const fin = revela + 62; // ~2 s para ver la respuesta con el sonido de correcto
+  return { voz, titulo, cartas, sonido, sonidoFin, cuenta, revela, fin };
 };
 
 export const rondaDuracion = (r: Ronda) => tiempos(r).fin;
 
-export const HOOK_DURACION = 8 + dVoz("gancho") + 18;
-export const CTA_DURACION = 6 + dVoz("cierre") + 40;
+export const HOOK_DURACION = 6 + dVoz("gancho") + 14;
+export const CTA_DURACION = 75;
 
 export const inicioRonda = (i: number) =>
   HOOK_DURACION + RONDAS.slice(0, i).reduce((s, r) => s + rondaDuracion(r), 0);
