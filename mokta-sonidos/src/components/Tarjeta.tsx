@@ -38,7 +38,13 @@ export const Tarjeta: React.FC<{
   apagar: number;
   /** pulso mientras suena el motor (0..1) */
   pulso: number;
-}> = ({ auto, letra, color, circulo, check, apagar, pulso }) => {
+  /** dato técnico que aparece al revelar */
+  dato?: string;
+  /** 0→1 aparición del dato */
+  datoVis?: number;
+  /** fotograma de la escena, para el leve zoom continuo de la foto */
+  frame: number;
+}> = ({ auto, letra, color, circulo, check, apagar, pulso, dato, datoVis = 0, frame }) => {
   const pad = 44;
   const cw = CARD_W + pad * 2;
   const ch = CARD_H + pad * 2;
@@ -51,10 +57,11 @@ export const Tarjeta: React.FC<{
           inset: 0,
           borderRadius: 40,
           overflow: "hidden",
-          border: `8px solid ${COLORS.white}`,
-          boxShadow: `16px 16px 0 ${color}, 0 0 ${40 + pulso * 50}px ${color}${pulso > 0.01 ? "AA" : "00"}`,
-          filter: `grayscale(${apagar}) brightness(${1 - apagar * 0.55})`,
-          background: COLORS.night,
+          border: `9px solid ${COLORS.ink}`,
+          boxShadow: `18px 18px 0 ${color}, 0 0 ${30 + pulso * 60}px ${color}${pulso > 0.01 ? "CC" : "00"}`,
+          filter: `grayscale(${apagar}) brightness(${1 - apagar * 0.25}) contrast(${1 - apagar * 0.2})`,
+          opacity: 1 - apagar * 0.35,
+          background: COLORS.ink,
         }}
       >
         <Img
@@ -64,7 +71,7 @@ export const Tarjeta: React.FC<{
             height: "100%",
             objectFit: "cover",
             objectPosition: auto.encuadre,
-            scale: String((auto.zoom ?? 1) * (1.04 + pulso * 0.03)),
+            scale: String((auto.zoom ?? 1) * (1.03 + frame * 0.00025 + pulso * 0.03)),
             transformOrigin: auto.encuadre,
           }}
         />
@@ -73,7 +80,7 @@ export const Tarjeta: React.FC<{
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.65) 100%)",
+            background: "linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%)",
           }}
         />
         {/* nombre */}
@@ -90,6 +97,7 @@ export const Tarjeta: React.FC<{
             letterSpacing: 1,
             transform: "skewX(-10deg)",
             borderRadius: 10,
+            border: `5px solid ${COLORS.ink}`,
             boxShadow: `6px 6px 0 ${color}`,
           }}
         >
@@ -105,19 +113,24 @@ export const Tarjeta: React.FC<{
           viewBox={`0 0 ${cw} ${ch}`}
           style={{ position: "absolute", left: -pad, top: -pad, overflow: "visible", rotate: "-1.5deg" }}
         >
-          <path
-            d={trazoCirculo(cw - 24, ch - 24)}
-            transform="translate(12 12)"
-            fill="none"
-            stroke={COLORS.lime}
-            strokeWidth={22}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            pathLength={1}
-            strokeDasharray="1 1"
-            strokeDashoffset={1 - circulo}
-            style={{ filter: `drop-shadow(0 0 18px ${COLORS.lime})` }}
-          />
+          {[
+            { c: COLORS.ink, w: 34 },
+            { c: COLORS.lime, w: 20 },
+          ].map((t) => (
+            <path
+              key={t.c}
+              d={trazoCirculo(cw - 24, ch - 24)}
+              transform="translate(12 12)"
+              fill="none"
+              stroke={t.c}
+              strokeWidth={t.w}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              pathLength={1}
+              strokeDasharray="1 1"
+              strokeDashoffset={1 - circulo}
+            />
+          ))}
         </svg>
       ) : null}
 
@@ -131,18 +144,20 @@ export const Tarjeta: React.FC<{
           height: 150,
           borderRadius: 75,
           background: color,
-          border: `8px solid ${COLORS.white}`,
+          border: `9px solid ${COLORS.ink}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontFamily: FONT_DISPLAY,
           fontSize: 104,
-          color: COLORS.ink,
+          color: COLORS.white,
+          WebkitTextStroke: `6px ${COLORS.ink}`,
+          paintOrder: "stroke fill",
           lineHeight: 1,
           paddingTop: 6,
-          boxShadow: `0 10px 0 rgba(0,0,0,0.35)`,
+          boxShadow: `0 10px 0 ${COLORS.ink}`,
           rotate: "-8deg",
-          filter: `grayscale(${apagar}) brightness(${1 - apagar * 0.4})`,
+          filter: `grayscale(${apagar})`,
         }}
       >
         {letra}
@@ -159,21 +174,21 @@ export const Tarjeta: React.FC<{
             height: 190,
             borderRadius: 95,
             background: COLORS.lime,
-            border: `10px solid ${COLORS.white}`,
+            border: `10px solid ${COLORS.ink}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             scale: String(check),
             rotate: `${interpolate(check, [0, 1], [-40, 8])}deg`,
-            boxShadow: `0 0 50px ${COLORS.lime}`,
+            boxShadow: `0 10px 0 ${COLORS.ink}`,
           }}
         >
           <svg width={110} height={110} viewBox="0 0 100 100">
             <path
               d="M18 54 L42 76 L84 26"
               fill="none"
-              stroke={COLORS.ink}
-              strokeWidth={16}
+              stroke={COLORS.white}
+              strokeWidth={17}
               strokeLinecap="round"
               strokeLinejoin="round"
               pathLength={1}
@@ -181,6 +196,28 @@ export const Tarjeta: React.FC<{
               strokeDashoffset={1 - Math.min(1, check * 1.2)}
             />
           </svg>
+        </div>
+      ) : null}
+
+      {/* dato técnico */}
+      {dato && datoVis > 0 ? (
+        <div
+          style={{
+            position: "absolute",
+            left: 26,
+            bottom: 26,
+            padding: "10px 24px 8px",
+            background: COLORS.ink,
+            color: COLORS.white,
+            fontFamily: FONT_BLOCK,
+            fontSize: 40,
+            borderRadius: 999,
+            border: `5px solid ${COLORS.white}`,
+            scale: String(datoVis),
+            transformOrigin: "left center",
+          }}
+        >
+          {dato}
         </div>
       ) : null}
     </div>

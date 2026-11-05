@@ -1,7 +1,7 @@
 import React from "react";
 import { Audio } from "@remotion/media";
 import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { COLORS, FONT_BLOCK, FONT_DISPLAY, RONDAS } from "../config";
+import { COLORS, FONT_BLOCK, FONT_DISPLAY, RONDAS, archivoVoz } from "../config";
 import { Fondo } from "../components/Fondo";
 import { pop } from "../lib";
 
@@ -26,18 +26,18 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
                   height: 210,
                   borderRadius: 40,
                   background: r.acento,
-                  border: `8px solid ${COLORS.white}`,
+                  border: `8px solid ${COLORS.ink}`,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                   scale: String(p),
                   rotate: `${(i - 1) * 6}deg`,
-                  boxShadow: `0 12px 0 rgba(0,0,0,0.35)`,
+                  boxShadow: `0 12px 0 ${COLORS.ink}`,
                 }}
               >
-                <div style={{ fontFamily: FONT_BLOCK, fontSize: 34, color: COLORS.ink }}>RONDA {r.numero}</div>
-                <div style={{ fontFamily: FONT_DISPLAY, fontSize: 120, lineHeight: 1, color: COLORS.ink }}>
+                <div style={{ fontFamily: FONT_BLOCK, fontSize: 34, color: COLORS.white }}>RONDA {r.numero}</div>
+                <div style={{ fontFamily: FONT_DISPLAY, fontSize: 120, lineHeight: 1, color: COLORS.white, WebkitTextStroke: `6px ${COLORS.ink}`, paintOrder: "stroke fill" }}>
                   {r.correcta}
                 </div>
               </div>
@@ -49,7 +49,7 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
             fontFamily: FONT_DISPLAY,
             fontSize: 150,
             lineHeight: 0.95,
-            color: COLORS.white,
+            color: COLORS.ink,
             textAlign: "center",
             letterSpacing: 2,
             textShadow: `10px 10px 0 ${COLORS.pink}`,
@@ -60,7 +60,7 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
         >
           ¿CUÁNTAS
           <br />
-          <span style={{ color: COLORS.yellow, textShadow: `10px 10px 0 ${COLORS.violet}` }}>ACERTASTE?</span>
+          <span style={{ color: COLORS.yellow, WebkitTextStroke: `10px ${COLORS.ink}`, paintOrder: "stroke fill", textShadow: `10px 10px 0 ${COLORS.ink}` }}>ACERTASTE?</span>
         </div>
         <div
           style={{
@@ -70,6 +70,7 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
             gap: 18,
             padding: "16px 40px 14px",
             background: COLORS.white,
+            border: `6px solid ${COLORS.ink}`,
             borderRadius: 999,
             fontFamily: FONT_BLOCK,
             fontSize: 54,
@@ -93,7 +94,7 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
           fontFamily: FONT_DISPLAY,
           fontSize: 46,
           letterSpacing: 14,
-          color: "rgba(255,255,255,0.7)",
+          color: "rgba(26,18,64,0.55)",
           opacity: pop(f, 44, 14, 160),
         }}
       >
@@ -103,8 +104,8 @@ export const Cierre: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
       {conAudio ? (
         <>
           <Audio src={staticFile("sfx/whoosh.mp3")} volume={0.5} />
-          <Sequence from={4} layout="none">
-            <Audio src={staticFile("voz/cta.wav")} volume={1} />
+          <Sequence from={6} layout="none">
+            <Audio src={staticFile(archivoVoz("cierre"))} volume={1} />
           </Sequence>
         </>
       ) : null}

@@ -1,28 +1,19 @@
 import React from "react";
 import { Audio } from "@remotion/media";
 import { AbsoluteFill, Sequence, interpolate, staticFile } from "remotion";
-import {
-  CTA_DURACION,
-  HOOK_DURACION,
-  R_SONIDO_IN,
-  RONDAS,
-  TOTAL,
-  inicioRonda,
-  rondaDuracion,
-  sonidoFin,
-} from "./config";
+import { CTA_DURACION, HOOK_DURACION, RONDAS, TOTAL, inicioRonda, rondaDuracion, tiempos } from "./config";
 import { Gancho } from "./scenes/Gancho";
 import { RondaEscena } from "./scenes/RondaEscena";
 import { Cierre } from "./scenes/Cierre";
 
-const MUSICA_BASE = 0.2;
+const MUSICA_BASE = 0.16;
 
 /** La música baja casi a cero mientras suena cada motor, para que se escuche limpio. */
 const volumenMusica = (f: number) => {
   let v = MUSICA_BASE;
   RONDAS.forEach((r, i) => {
-    const a = inicioRonda(i) + R_SONIDO_IN;
-    const b = inicioRonda(i) + sonidoFin(r);
+    const a = inicioRonda(i) + tiempos(r).sonido;
+    const b = inicioRonda(i) + tiempos(r).sonidoFin;
     const duck = interpolate(f, [a - 8, a, b, b + 10], [0, 1, 1, 0], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",

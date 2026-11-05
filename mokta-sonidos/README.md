@@ -1,9 +1,10 @@
 # MOKTA · ¿Qué auto es? (Remotion)
 
-Reel vertical 1080×1920 · 30 fps · H.264 + AAC · ≈41,5 s.
+Reel vertical 1080×1920 · 30 fps · H.264 + AAC · ≈76 s · fondo claro.
 
-Juego de 3 rondas: aparecen dos autos (A y B), suena un motor real y el espectador elige.
-Cuenta 3‑2‑1, se encierra la opción correcta con un trazo a mano + check y suena el "correct".
+Juego de 3 rondas: aparecen dos autos (A y B), la voz presenta la ronda, suena ~7 s de motor real
+(con barra de tiempo), cuenta 3‑2‑1 de un segundo por número, se encierra la opción correcta con un trazo
+a mano + check ("correct") y la voz revela la respuesta junto a un dato técnico.
 
 | Ronda | A | B | Suena | Respuesta |
 |---|---|---|---|---|
@@ -31,13 +32,36 @@ Sin descarga de Chrome (servidor): `REMOTION_CHROME=/ruta/a/chrome-headless-shel
 | Fondo animado | `src/components/Fondo.tsx` |
 | Gancho / Ronda / Cierre | `src/scenes/` |
 | Música y su atenuación mientras suena cada motor | `src/Video.tsx` |
+| Frases de la voz | `scripts/generar_voz.py` → `public/voz/` + `src/voz.json` |
 
-## Voz (ElevenLabs, mínimo de créditos)
+### Ritmo de cada ronda (≈21–23 s)
 
-Una sola generación (1 toma, 138 créditos, voz "Mauricio Viral", `eleven_multilingual_v2`) con todas las frases
-separadas por pausas; luego se cortó por silencios en `public/voz/`:
-`hook` · `ronda1` · `ronda2` · `ronda3` · `ab` ("¿A o B?", reutilizada en las 3 rondas) · `cta`.
-ElevenLabs se usó solo para la voz.
+Título "RONDA N" (voz) → entran A y B → la voz presenta ("¿Ferrari… o Lamborghini? ¡Escucha con atención!")
+→ **≈7 s de motor** con ecualizador y barra de tiempo, música apagada → "¿A o B?" + **cuenta 3‑2‑1 de 1 s por
+número** → trazo que encierra la respuesta + check → la voz revela ("¡Era el Lamborghini!") y aparece el dato
+técnico.
+
+## Voz (Qwen3-TTS, código abierto — sin ElevenLabs)
+
+Motor: **Qwen3-TTS** (Alibaba Qwen, Apache 2.0), corriendo local en CPU. Flujo "diseñar y clonar":
+
+1. **Diseño de la voz** con `Qwen3-TTS-12Hz-1.7B-VoiceDesign` a partir de una descripción en texto
+   (locutor latinoamericano de motor/concurso, entusiasta, ritmo pausado). Se probaron 5 descripciones y se
+   eligió la que sonó realmente grave y masculina (110–210 Hz), más pausada (≈5,3 sílabas/s) y con más
+   variación de entonación. Esa toma es `public/voz/_referencia.wav`.
+2. **Todas las frases** se generan con `Qwen3-TTS-12Hz-1.7B-Base` clonando esa referencia (misma voz en todo
+   el video). 2 tomas por frase; se elige automáticamente la que Whisper transcribe correctamente y tiene más
+   expresividad. Resultado de cada frase en `public/voz/_informe.json`.
+3. Las duraciones quedan en `src/voz.json` y el video acomoda sus tiempos a ellas.
+
+```bash
+pip install qwen-tts faster-whisper librosa soundfile        # + sox del sistema
+huggingface-cli download Qwen/Qwen3-TTS-12Hz-1.7B-Base --local-dir modelos/Qwen3-TTS-12Hz-1.7B-Base
+python scripts/generar_voz.py --modelos modelos               # todas las frases
+python scripts/generar_voz.py --modelos modelos --solo r2_revela   # rehacer una sola
+```
+
+Para cambiar lo que dice la voz: edita `FRASES` en `scripts/generar_voz.py` y vuelve a ejecutarlo.
 
 ## Créditos de material externo
 

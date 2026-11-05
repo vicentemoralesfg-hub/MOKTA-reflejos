@@ -1,7 +1,7 @@
 import React from "react";
 import { Audio } from "@remotion/media";
 import { AbsoluteFill, Img, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { COLORS, FONT_BLOCK, FONT_DISPLAY, HOOK_DURACION, RONDAS } from "../config";
+import { COLORS, FONT_BLOCK, FONT_DISPLAY, HOOK_DURACION, RONDAS, archivoVoz } from "../config";
 import { Fondo } from "../components/Fondo";
 import { EASE_IN, pop, ramp, shake } from "../lib";
 
@@ -18,10 +18,10 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
 
   return (
     <AbsoluteFill>
-      <Fondo acento={COLORS.violet} acento2={COLORS.pink} velocidad={2} />
+      <Fondo acento={COLORS.pink} acento2={COLORS.yellow} velocidad={2} />
 
       {/* mosaico inclinado de los 6 autos */}
-      <AbsoluteFill style={{ rotate: "-12deg", scale: "1.35", opacity: 0.55 * (1 - salida) }}>
+      <AbsoluteFill style={{ rotate: "-12deg", scale: "1.35", opacity: 0.9 * (1 - salida) }}>
         {[0, 1, 2].map((fila) => (
           <div
             key={fila}
@@ -42,7 +42,8 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
                   height: 520,
                   borderRadius: 30,
                   overflow: "hidden",
-                  border: `6px solid ${i % 2 ? COLORS.cyan : COLORS.pink}`,
+                  border: `8px solid ${COLORS.ink}`,
+                  boxShadow: `12px 12px 0 ${i % 2 ? COLORS.cyan : COLORS.pink}`,
                 }}
               >
                 <Img
@@ -54,7 +55,7 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
           </div>
         ))}
       </AbsoluteFill>
-      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(11,8,32,0.2), rgba(11,8,32,0.75) 45%, rgba(11,8,32,0.2))" }} />
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(255,247,236,0.1), rgba(255,247,236,0.88) 32%, rgba(255,247,236,0.88) 66%, rgba(255,247,236,0.1))" }} />
 
       <AbsoluteFill
         style={{
@@ -69,12 +70,12 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
             fontFamily: FONT_DISPLAY,
             fontSize: 210,
             lineHeight: 0.92,
-            color: COLORS.white,
+            color: COLORS.ink,
             textAlign: "center",
             letterSpacing: 3,
             scale: String(interpolate(titulo, [0, 1], [3, 1])),
             opacity: Math.min(1, titulo * 2),
-            textShadow: `10px 10px 0 ${COLORS.pink}, 20px 20px 0 ${COLORS.violet}`,
+            textShadow: `10px 10px 0 ${COLORS.pink}, 20px 20px 0 ${COLORS.cyan}`,
             rotate: "-5deg",
           }}
         >
@@ -86,9 +87,9 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
             fontSize: 300,
             lineHeight: 0.92,
             color: COLORS.yellow,
-            WebkitTextStroke: `10px ${COLORS.ink}`,
+            WebkitTextStroke: `12px ${COLORS.ink}`,
             paintOrder: "stroke fill",
-            textShadow: `14px 14px 0 ${COLORS.cyan}`,
+            textShadow: `14px 14px 0 ${COLORS.ink}`,
             scale: String(interpolate(linea2, [0, 1], [0, 1])),
             rotate: "-5deg",
           }}
@@ -103,11 +104,12 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
             gap: 20,
             padding: "16px 36px 14px",
             background: COLORS.cyan,
+            border: `6px solid ${COLORS.ink}`,
             borderRadius: 999,
             fontFamily: FONT_BLOCK,
             fontSize: 50,
             color: COLORS.ink,
-            boxShadow: `8px 8px 0 ${COLORS.pink}`,
+            boxShadow: `8px 8px 0 ${COLORS.ink}`,
             scale: String(chip),
             rotate: "2deg",
           }}
@@ -126,8 +128,8 @@ export const Gancho: React.FC<{ conAudio?: boolean }> = ({ conAudio = true }) =>
           <Sequence from={6} layout="none">
             <Audio src={staticFile("sfx/hit.mp3")} volume={0.6} />
           </Sequence>
-          <Sequence from={4} layout="none">
-            <Audio src={staticFile("voz/hook.wav")} volume={1} />
+          <Sequence from={8} layout="none">
+            <Audio src={staticFile(archivoVoz("gancho"))} volume={1} />
           </Sequence>
         </>
       ) : null}

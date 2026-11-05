@@ -13,7 +13,9 @@ export const Ecualizador: React.FC<{
   activo: boolean;
   color: string;
   color2: string;
-}> = ({ src, frame, activo, color, color2 }) => {
+  /** 0→1 cuánto del clip ya sonó */
+  progreso: number;
+}> = ({ src, frame, activo, color, color2, progreso }) => {
   const audioData = useAudioData(staticFile(src));
   let valores: number[] = new Array(BARRAS).fill(0);
   if (audioData && activo && frame >= 0) {
@@ -31,12 +33,26 @@ export const Ecualizador: React.FC<{
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 34 }}>
       {/* parlante */}
-      <svg width={120} height={120} viewBox="0 0 100 100" style={{ filter: `drop-shadow(0 0 16px ${color})` }}>
-        <path d="M14 38 H32 L56 18 V82 L32 62 H14 Z" fill={COLORS.white} />
+      <svg width={120} height={120} viewBox="0 0 100 100">
+        <path d="M14 38 H32 L56 18 V82 L32 62 H14 Z" fill={COLORS.ink} />
         <path d="M66 34 Q76 50 66 66" stroke={color} strokeWidth={8} fill="none" strokeLinecap="round" />
         <path d="M76 24 Q92 50 76 76" stroke={color2} strokeWidth={8} fill="none" strokeLinecap="round" />
       </svg>
       <div style={{ position: "relative", width: total, height: 170, display: "flex", alignItems: "center", gap: sep }}>
+        {/* barra de tiempo restante de escucha */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            bottom: -26,
+            width: total,
+            height: 12,
+            borderRadius: 6,
+            background: "rgba(26,18,64,0.15)",
+          }}
+        >
+          <div style={{ width: `${progreso * 100}%`, height: "100%", borderRadius: 6, background: COLORS.ink }} />
+        </div>
         {valores.map((v, i) => (
           <div
             key={i}
@@ -45,7 +61,7 @@ export const Ecualizador: React.FC<{
               height: 14 + v * 156,
               borderRadius: 8,
               background: `linear-gradient(180deg, ${color2}, ${color})`,
-              boxShadow: v > 0.3 ? `0 0 14px ${color}` : "none",
+              border: `3px solid ${COLORS.ink}`,
             }}
           />
         ))}
