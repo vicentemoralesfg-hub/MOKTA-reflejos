@@ -7,7 +7,10 @@ import { pathToFileURL } from "node:url";
 
 const root = path.dirname(new URL(import.meta.url).pathname);
 const filter = process.argv[2] || "";
-const files = fs.readdirSync(path.join(root, "posts")).filter((f) => f.endsWith(".mjs") && f.includes(filter)).sort();
+// POSTS=posts-lote-02 OUT=out-lote-02 node render.mjs  → segundo lote
+const POSTS = process.env.POSTS || "posts";
+const OUT = process.env.OUT || "out";
+const files = fs.readdirSync(path.join(root, POSTS)).filter((f) => f.endsWith(".mjs") && f.includes(filter)).sort();
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 2 });
@@ -16,10 +19,10 @@ page.on("console", (m) => { if (m.type() === "error") console.log("  console:", 
 page.on("requestfailed", (r) => console.log("  FALTA:", r.url()));
 
 for (const f of files) {
-  const mod = await import(pathToFileURL(path.join(root, "posts", f)).href + "?t=" + Date.now());
+  const mod = await import(pathToFileURL(path.join(root, POSTS, f)).href + "?t=" + Date.now());
   const posts = Array.isArray(mod.default) ? mod.default : [mod.default];
   for (const post of posts) {
-    const dir = path.join(root, "out", post.id);
+    const dir = path.join(root, OUT, post.id);
     fs.mkdirSync(dir, { recursive: true });
     for (const [i, html] of post.slides.entries()) {
       const n = String(i + 1).padStart(2, "0");

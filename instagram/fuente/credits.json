@@ -130,5 +130,95 @@
   "commons": "File:2018_Ford_Ranger_(PX)_XLT_4WD_4-door_utility_(2018-10-22)_01.jpg",
   "user": null,
   "width": 9999
+ },
+ "raptor": {
+  "file": "src/raptor.jpg",
+  "commons": "File:2021_Ford_F-150_Raptor,_front.jpg",
+  "user": "Kevauto",
+  "width": 4444
+ },
+ "ram1500": {
+  "file": "src/ram1500.jpg",
+  "commons": "File:2025_Ram_1500.jpg",
+  "user": "Ontariocarguy07",
+  "width": 1524
+ },
+ "l200": {
+  "file": "src/l200.jpg",
+  "commons": "File:Mitsubishi_Triton_Double_Cab_GSR_'24_(1).jpg",
+  "user": "Oq10pass",
+  "width": 3637
+ },
+ "navara": {
+  "file": "src/navara.jpg",
+  "commons": "File:2022_Nissan_Navara_2.3d_XE_(Chile)_front_view.jpg",
+  "user": null,
+  "width": 9999
+ },
+ "sportage5": {
+  "file": "src/sportage5.jpg",
+  "commons": "File:2025_Kia_Sportage_SX_front.jpg",
+  "user": "LuvsMG481",
+  "width": 6002
+ },
+ "tucson": {
+  "file": "src/tucson.jpg",
+  "commons": "File:Hyundai_Tucson_1.6_T-GDI_PHEV_Trend_(IV,_Facelift)_–_f_15022025.jpg",
+  "user": "M 93",
+  "width": 5734
+ },
+ "swift": {
+  "file": "src/swift.jpg",
+  "commons": "File:Suzuki_Swift_(2024)_hybrid_DSC_6076.jpg",
+  "user": "Alexander-93",
+  "width": 4038
+ },
+ "crv": {
+  "file": "src/crv.jpg",
+  "commons": "File:2019_Honda_CR-V_EX_i-VTEC_1.5.jpg",
+  "user": "Vauxford",
+  "width": 4670
+ },
+ "rav4xa30": {
+  "file": "src/rav4xa30.jpg",
+  "commons": "File:Toyota_RAV4_(III,_2._Facelift)_–_f_30012025.jpg",
+  "user": "M 93",
+  "width": 5625
+ },
+ "cruze": {
+  "file": "src/cruze.jpg",
+  "commons": "File:2011_Chevrolet_Cruze_LS,_front_left,_09-28-2024.jpg",
+  "user": "MercurySable99",
+  "width": 4556
+ },
+ "p308": {
+  "file": "src/p308.jpg",
+  "commons": "File:2012_Peugeot_308_(T7_MY12)_Allure_5-door_hatchback_(2015-07-09)_01.jpg",
+  "user": null,
+  "width": 9999
+ },
+ "golf6": {
+  "file": "src/golf6.jpg",
+  "commons": "File:VW_Golf_(VI)_front_20110115.jpg",
+  "user": "M 93",
+  "width": 2434
+ },
+ "prius": {
+  "file": "src/prius.jpg",
+  "commons": "File:Toyota_Prius_2.0_HEV_Limited_(V)_–_f_18112022.jpg",
+  "user": "M 93",
+  "width": 4048
+ },
+ "dolphin": {
+  "file": "src/dolphin.jpg",
+  "commons": "File:BYD_Dolphin_IAA_2023_1X7A0634.jpg",
+  "user": "Alexander-93",
+  "width": 4578
+ },
+ "ramrho": {
+  "file": "src/ramrho.jpg",
+  "commons": "File:2026_Ram_1500_RHO_in_Diamond_Black_Crystal_Pearl,_front_right,_2026-05-03.jpg",
+  "user": "Elise240SX",
+  "width": 5095
  }
 }

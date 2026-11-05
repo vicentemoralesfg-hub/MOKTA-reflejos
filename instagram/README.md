@@ -1,5 +1,14 @@
 # MOKTA Cars · Contenido para Instagram
 
+| Lote | Carpeta | Contenido |
+|---|---|---|
+| **01** | `publicaciones/` (este README) | 24 publicaciones · 55 imágenes |
+| **02** | [`lote-02/`](lote-02/README.md) | 26 publicaciones · 55 imágenes, temas nuevos |
+
+Las fotos recortadas de ambos lotes están en `recortes-transparentes/` y el código editable, en `fuente/`.
+
+## Lote 01
+
 **24 publicaciones · 55 imágenes · 1080 × 1350 px (4:5) · PNG listo para subir**
 
 Cada diapositiva de los carruseles es una imagen independiente (`01.png`, `02.png`…). Súbelas en orden.
