@@ -3,3 +3,5 @@ out/
 build/
 assets/vo_raw/
 assets/work/
+public/audio/stems/
+out_render.log

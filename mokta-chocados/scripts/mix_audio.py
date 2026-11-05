@@ -124,7 +124,7 @@ a, b = int((hook_drop - 0.35) * SR), int(hook_drop * SR)
 music[a:b] *= np.linspace(1, 0, b - a)
 # final: fundido en los últimos 1,5 s
 music[-int(1.5 * SR):] *= np.linspace(1, 0, int(1.5 * SR))
-music *= 0.16
+music *= 0.26
 
 # --- ducking de música bajo la voz
 env = np.abs(vo)
@@ -151,7 +151,7 @@ st = np.tanh(st * 1.1) / np.tanh(1.1)  # limitador suave
 st *= 0.95 / (np.abs(st).max() + 1e-9)
 out = os.path.join(ROOT, "public", "audio")
 os.makedirs(os.path.join(out, "stems"), exist_ok=True)
-wavfile.write(os.path.join(out, "soundtrack.wav"), SR, st.astype(np.float32))
+wavfile.write(os.path.join(out, "soundtrack.wav"), SR, (np.clip(st, -1, 1) * 32767).astype(np.int16))
 for name, x in (("voz", vo), ("efectos", sfx), ("musica", music)):
     wavfile.write(os.path.join(out, "stems", f"{name}.wav"), SR, x.astype(np.float32))
 print(f"soundtrack.wav  {N/SR:.2f}s  ({TOTAL_F} fotogramas)")

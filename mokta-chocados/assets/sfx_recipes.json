@@ -147,7 +147,1659 @@
     "reverb": 0.2
    },
    "raw": "{\"duration\": 1.0, \"layers\": [{\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.05, \"attack\": 0.001, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 1500, \"cutoff_end\": 1500, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.9, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 6000, \"cutoff_end\": 9000, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0.4, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0.5}, {\"source\": \"sine\", \"freq_start\": 3000, \"freq_end\": 7000, \"start\": 0, \"length\": 0.8, \"attack\": 0.002, \"decay\": 0.6, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.3, \"drive\": 0.2, \"repeat\": 12, \"repeat_every\": 0.05, \"jitter\": 0.8}], \"reverb\": 0.2}"
+  },
+  "whoosh": {
+   "prompt": "fast cinematic swoosh transition, 0.45 s. Layers: noise band-passed with cutoff sweeping from 400 Hz up to 3500 Hz, slow attack (0.15 s) and quick decay; a softer pink noise low-passed sweep underneath.",
+   "recipe": {
+    "duration": 0.45,
+    "layers": [
+     {
+      "source": "noise",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.45,
+      "attack": 0.15,
+      "decay": 0.1,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 400,
+       "cutoff_end": 3500,
+       "q": 1.2
+      },
+      "gain": 0.7,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "pink",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.45,
+      "attack": 0.15,
+      "decay": 0.1,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 350,
+       "cutoff_end": 3500,
+       "q": 1.5
+      },
+      "gain": 0.4,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 0.45, \"layers\": [{\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.45, \"attack\": 0.15, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 400, \"cutoff_end\": 3500, \"q\": 1.2}, \"gain\": 0.7, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"pink\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.45, \"attack\": 0.15, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 350, \"cutoff_end\": 3500, \"q\": 1.5}, \"gain\": 0.4, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.1}"
+  },
+  "whoosh_long": {
+   "prompt": "slow reverse-style whoosh rising into a cut, 0.9 s. Layers: noise band-passed sweeping 200 Hz up to 5000 Hz with long attack (0.7 s) and very short decay; a sine rising 80 Hz to 300 Hz with long attack.",
+   "recipe": {
+    "duration": 0.9,
+    "layers": [
+     {
+      "source": "noise",
+      "freq_start": 200,
+      "freq_end": 5000,
+      "start": 0,
+      "length": 0.9,
+      "attack": 0.7,
+      "decay": 0.1,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 200,
+       "cutoff_end": 5000,
+       "q": 1.5
+      },
+      "gain": 0.7,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0.3
+     },
+     {
+      "source": "sine",
+      "freq_start": 80,
+      "freq_end": 300,
+      "start": 0,
+      "length": 0.9,
+      "attack": 0.7,
+      "decay": 0.1,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 0.9, \"layers\": [{\"source\": \"noise\", \"freq_start\": 200, \"freq_end\": 5000, \"start\": 0, \"length\": 0.9, \"attack\": 0.7, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 200, \"cutoff_end\": 5000, \"q\": 1.5}, \"gain\": 0.7, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0.3}, {\"source\": \"sine\", \"freq_start\": 80, \"freq_end\": 300, \"start\": 0, \"length\": 0.9, \"attack\": 0.7, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.2}"
+  },
+  "riser": {
+   "prompt": "tension riser, 1.6 s. Layers: saw wave rising 110 Hz to 880 Hz low-passed opening 800 to 6000 Hz with long attack; noise high-passed rising cutoff 1000 to 8000 Hz with long attack; both end abruptly.",
+   "recipe": {
+    "duration": 1.6,
+    "layers": [
+     {
+      "source": "saw",
+      "freq_start": 110,
+      "freq_end": 880,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 800,
+       "cutoff_end": 6000,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 1000,
+      "freq_end": 8000,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 100,
+       "cutoff_end": 800,
+       "q": 0.7
+      },
+      "gain": 0.5,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 1.6, \"layers\": [{\"source\": \"saw\", \"freq_start\": 110, \"freq_end\": 880, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 800, \"cutoff_end\": 6000, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 1000, \"freq_end\": 8000, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 100, \"cutoff_end\": 800, \"q\": 0.7}, \"gain\": 0.5, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.2}"
+  },
+  "boom": {
+   "prompt": "cinematic sub bass drop boom for a big reveal, 1.4 s. Layers: sine sweeping 90 Hz down to 32 Hz long decay with drive; brown noise low-passed at 200 Hz short; a click transient for punch; reverb 0.3.",
+   "recipe": {
+    "duration": 1.4,
+    "layers": [
+     {
+      "source": "sine",
+      "freq_start": 90,
+      "freq_end": 32,
+      "start": 0,
+      "length": 1.2,
+      "attack": 0.003,
+      "decay": 1.0,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0.6,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "brown",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.8,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 200,
+       "cutoff_end": 150,
+       "q": 0.7
+      },
+      "gain": 0.7,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0.05,
+      "length": 0.03,
+      "attack": 0.0005,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 1500,
+       "cutoff_end": 1500,
+       "q": 0.7
+      },
+      "gain": 0.4,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0.05,
+      "jitter": 0.5
+     }
+    ],
+    "reverb": 0.3
+   },
+   "raw": "{\"duration\": 1.4, \"layers\": [{\"source\": \"sine\", \"freq_start\": 90, \"freq_end\": 32, \"start\": 0, \"length\": 1.2, \"attack\": 0.003, \"decay\": 1.0, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0.6, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"brown\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.8, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 200, \"cutoff_end\": 150, \"q\": 0.7}, \"gain\": 0.7, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0.05, \"length\": 0.03, \"attack\": 0.0005, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 1500, \"cutoff_end\": 1500, \"q\": 0.7}, \"gain\": 0.4, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0.05, \"jitter\": 0.5}], \"reverb\": 0.3}"
+  },
+  "cash": {
+   "prompt": "cash register ka-ching, bright and happy, 0.8 s. Layers: a mechanical click and short noise burst (band-pass 2000 Hz) at start; then at 0.08 s two bell tones (sine) at 2637 Hz and 3520 Hz with long decay 0.6 s; light reverb.",
+   "recipe": {
+    "duration": 0.8,
+    "layers": [
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.08,
+      "attack": 0.001,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 2000,
+       "cutoff_end": 2000,
+       "q": 0.7
+      },
+      "gain": 0.7,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "sine",
+      "freq_start": 2637,
+      "freq_end": 2637,
+      "start": 0.08,
+      "length": 0.4,
+      "attack": 0.002,
+      "decay": 0.6,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "sine",
+      "freq_start": 3520,
+      "freq_end": 3520,
+      "start": 0.08,
+      "length": 0.4,
+      "attack": 0.002,
+      "decay": 0.6,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 0.8, \"layers\": [{\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.08, \"attack\": 0.001, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 2000, \"cutoff_end\": 2000, \"q\": 0.7}, \"gain\": 0.7, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"sine\", \"freq_start\": 2637, \"freq_end\": 2637, \"start\": 0.08, \"length\": 0.4, \"attack\": 0.002, \"decay\": 0.6, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"sine\", \"freq_start\": 3520, \"freq_end\": 3520, \"start\": 0.08, \"length\": 0.4, \"attack\": 0.002, \"decay\": 0.6, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.2}"
+  },
+  "alarm": {
+   "prompt": "danger warning buzzer, 0.9 s. Layers: square wave at 440 Hz pulsing (repeat 4 times every 0.22 s, length 0.14 s) low-passed at 3000 Hz; a second square at 554 Hz pulsing in the same rhythm, quieter.",
+   "recipe": {
+    "duration": 0.9,
+    "layers": [
+     {
+      "source": "square",
+      "freq_start": 440,
+      "freq_end": 440,
+      "start": 0,
+      "length": 0.14,
+      "attack": 0.002,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 3000,
+       "cutoff_end": 3000,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0,
+      "repeat": 4,
+      "repeat_every": 0.22,
+      "jitter": 0
+     },
+     {
+      "source": "square",
+      "freq_start": 554,
+      "freq_end": 554,
+      "start": 0.06,
+      "length": 0.14,
+      "attack": 0.002,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 3000,
+       "cutoff_end": 3000,
+       "q": 0.7
+      },
+      "gain": 0.5,
+      "drive": 0,
+      "repeat": 4,
+      "repeat_every": 0.22,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 0.9, \"layers\": [{\"source\": \"square\", \"freq_start\": 440, \"freq_end\": 440, \"start\": 0, \"length\": 0.14, \"attack\": 0.002, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 3000, \"cutoff_end\": 3000, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 4, \"repeat_every\": 0.22, \"jitter\": 0}, {\"source\": \"square\", \"freq_start\": 554, \"freq_end\": 554, \"start\": 0.06, \"length\": 0.14, \"attack\": 0.002, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 3000, \"cutoff_end\": 3000, \"q\": 0.7}, \"gain\": 0.5, \"drive\": 0, \"repeat\": 4, \"repeat_every\": 0.22, \"jitter\": 0}], \"reverb\": 0.2}"
+  },
+  "scan": {
+   "prompt": "digital x-ray scanner sweep, 1.2 s. Layers: sine sweeping 300 Hz up to 1800 Hz with fm modulation (ratio 3, index 2); a soft triangle hum at 120 Hz; high-passed noise shimmer at 6000 Hz quiet.",
+   "recipe": {
+    "duration": 1.2,
+    "layers": [
+     {
+      "source": "fm",
+      "freq_start": 300,
+      "freq_end": 1800,
+      "fm_ratio": 3,
+      "fm_index": 2,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.002,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 1000,
+       "cutoff_end": 1500,
+       "q": 1.2
+      },
+      "gain": 0.7,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "triangle",
+      "freq_start": 120,
+      "freq_end": 120,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.002,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.5,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.002,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 6000,
+       "cutoff_end": 6000,
+       "q": 0.7
+      },
+      "gain": 0.2,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 1.2, \"layers\": [{\"source\": \"fm\", \"freq_start\": 300, \"freq_end\": 1800, \"fm_ratio\": 3, \"fm_index\": 2, \"start\": 0, \"length\": 1.0, \"attack\": 0.002, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 1000, \"cutoff_end\": 1500, \"q\": 1.2}, \"gain\": 0.7, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"triangle\", \"freq_start\": 120, \"freq_end\": 120, \"start\": 0, \"length\": 1.0, \"attack\": 0.002, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.5, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 1.0, \"attack\": 0.002, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 6000, \"cutoff_end\": 6000, \"q\": 0.7}, \"gain\": 0.2, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.1}"
+  },
+  "beep": {
+   "prompt": "short UI confirmation beep, 0.15 s. Layers: sine at 1760 Hz with very fast attack and 0.12 s decay; a quieter sine at 2640 Hz.",
+   "recipe": {
+    "duration": 0.15,
+    "layers": [
+     {
+      "source": "sine",
+      "freq_start": 1760,
+      "freq_end": 1760,
+      "start": 0,
+      "length": 0.12,
+      "attack": 0.001,
+      "decay": 0.08,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "sine",
+      "freq_start": 2640,
+      "freq_end": 2640,
+      "start": 0.03,
+      "length": 0.09,
+      "attack": 0.0005,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.4,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.05
+   },
+   "raw": "{\"duration\": 0.15, \"layers\": [{\"source\": \"sine\", \"freq_start\": 1760, \"freq_end\": 1760, \"start\": 0, \"length\": 0.12, \"attack\": 0.001, \"decay\": 0.08, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"sine\", \"freq_start\": 2640, \"freq_end\": 2640, \"start\": 0.03, \"length\": 0.09, \"attack\": 0.0005, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.4, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.05}"
+  },
+  "pop": {
+   "prompt": "short bubbly UI pop for text appearing, 0.12 s. Layers: sine sweeping 300 Hz up to 900 Hz very short; a click transient.",
+   "recipe": {
+    "duration": 0.12,
+    "layers": [
+     {
+      "source": "sine",
+      "freq_start": 300,
+      "freq_end": 900,
+      "start": 0,
+      "length": 0.06,
+      "attack": 0.001,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0.02,
+      "length": 0.02,
+      "attack": 0.001,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 1500,
+       "cutoff_end": 1500,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 0.12, \"layers\": [{\"source\": \"sine\", \"freq_start\": 300, \"freq_end\": 900, \"start\": 0, \"length\": 0.06, \"attack\": 0.001, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0.02, \"length\": 0.02, \"attack\": 0.001, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 1500, \"cutoff_end\": 1500, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.1}"
+  },
+  "airbag": {
+   "prompt": "airbag deploying, 0.9 s. Layers: explosive click and noise burst band-passed 800-2500 Hz with drive, very short; a low thump sine 100 Hz down to 50 Hz; then air hiss: noise high-passed at 4000 Hz from 0.05 s lasting 0.7 s decaying.",
+   "recipe": {
+    "duration": 0.9,
+    "layers": [
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.05,
+      "attack": 0.001,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 800,
+       "cutoff_end": 2500,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0.3
+     },
+     {
+      "source": "sine",
+      "freq_start": 100,
+      "freq_end": 50,
+      "start": 0,
+      "length": 0.7,
+      "attack": 0.005,
+      "decay": 0.3,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0.05,
+      "length": 0.7,
+      "attack": 0.002,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 4000,
+       "cutoff_end": 4000,
+       "q": 0.7
+      },
+      "gain": 0.4,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0.2
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 0.9, \"layers\": [{\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.05, \"attack\": 0.001, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 800, \"cutoff_end\": 2500, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0.3}, {\"source\": \"sine\", \"freq_start\": 100, \"freq_end\": 50, \"start\": 0, \"length\": 0.7, \"attack\": 0.005, \"decay\": 0.3, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0.05, \"length\": 0.7, \"attack\": 0.002, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 4000, \"cutoff_end\": 4000, \"q\": 0.7}, \"gain\": 0.4, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0.2}], \"reverb\": 0.2}"
+  },
+  "water": {
+   "prompt": "water flooding and bubbling, 1.5 s. Layers: brown noise low-passed at 600 Hz for the whole duration (rushing water); bubbles: sine sweeping 300 Hz up to 900 Hz very short (0.04 s) repeated 18 times every 0.07 s with high jitter.",
+   "recipe": {
+    "duration": 1.5,
+    "layers": [
+     {
+      "source": "brown",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 1.5,
+      "attack": 0.005,
+      "decay": 1.0,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 600,
+       "cutoff_end": 600,
+       "q": 0.7
+      },
+      "gain": 0.7,
+      "drive": 0.3,
+      "repeat": 18,
+      "repeat_every": 0.07,
+      "jitter": 0.8
+     },
+     {
+      "source": "sine",
+      "freq_start": 300,
+      "freq_end": 900,
+      "start": 0,
+      "length": 0.04,
+      "attack": 0.001,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0.3
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 1.5, \"layers\": [{\"source\": \"brown\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 1.5, \"attack\": 0.005, \"decay\": 1.0, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 600, \"cutoff_end\": 600, \"q\": 0.7}, \"gain\": 0.7, \"drive\": 0.3, \"repeat\": 18, \"repeat_every\": 0.07, \"jitter\": 0.8}, {\"source\": \"sine\", \"freq_start\": 300, \"freq_end\": 900, \"start\": 0, \"length\": 0.04, \"attack\": 0.001, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0.3}], \"reverb\": 0.2}"
+  },
+  "zap": {
+   "prompt": "electrical short circuit spark, 0.6 s. Layers: crackle: click source repeated 14 times every 0.035 s with high jitter, high-passed at 2000 Hz; a buzzing saw at 120 Hz with drive, band-passed 1500 Hz, short.",
+   "recipe": {
+    "duration": 0.6,
+    "layers": [
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.035,
+      "attack": 0.001,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 2000,
+       "cutoff_end": 2000,
+       "q": 0.7
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 14,
+      "repeat_every": 0.035,
+      "jitter": 0.8
+     },
+     {
+      "source": "saw",
+      "freq_start": 120,
+      "freq_end": 120,
+      "start": 0,
+      "length": 0.6,
+      "attack": 0.003,
+      "decay": 0.4,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 1500,
+       "cutoff_end": 1500,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 0.6, \"layers\": [{\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.035, \"attack\": 0.001, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 2000, \"cutoff_end\": 2000, \"q\": 0.7}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 14, \"repeat_every\": 0.035, \"jitter\": 0.8}, {\"source\": \"saw\", \"freq_start\": 120, \"freq_end\": 120, \"start\": 0, \"length\": 0.6, \"attack\": 0.003, \"decay\": 0.4, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 1500, \"cutoff_end\": 1500, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.1}"
+  },
+  "creak": {
+   "prompt": "metal frame bending and creaking under stress, 1.2 s. Layers: saw wave sweeping 70 Hz to 55 Hz band-passed at 900 Hz with high q 6 and drive; fm tone 180 Hz to 140 Hz (ratio 1.41, index 4) slow attack; noise band-passed 2000 Hz quiet.",
+   "recipe": {
+    "duration": 1.2,
+    "layers": [
+     {
+      "source": "saw",
+      "freq_start": 70,
+      "freq_end": 55,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.5,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 900,
+       "cutoff_end": 900,
+       "q": 6
+      },
+      "gain": 0.8,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "fm",
+      "freq_start": 180,
+      "freq_end": 140,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.01,
+      "decay": 0.8,
+      "curve": "exp",
+      "fm_ratio": 1.41,
+      "fm_index": 4,
+      "gain": 0.6,
+      "drive": 0.3,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.4,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 2000,
+       "cutoff_end": 2000,
+       "q": 0.7
+      },
+      "gain": 0.2,
+      "drive": 0.1,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.15
+   },
+   "raw": "{\"duration\": 1.2, \"layers\": [{\"source\": \"saw\", \"freq_start\": 70, \"freq_end\": 55, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.5, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 900, \"cutoff_end\": 900, \"q\": 6}, \"gain\": 0.8, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"fm\", \"freq_start\": 180, \"freq_end\": 140, \"start\": 0, \"length\": 1.0, \"attack\": 0.01, \"decay\": 0.8, \"curve\": \"exp\", \"fm_ratio\": 1.41, \"fm_index\": 4, \"gain\": 0.6, \"drive\": 0.3, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.4, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 2000, \"cutoff_end\": 2000, \"q\": 0.7}, \"gain\": 0.2, \"drive\": 0.1, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.15}"
+  },
+  "stamp": {
+   "prompt": "heavy rubber stamp hitting a table, punchy, 0.3 s. Layers: sine sweeping 160 Hz down to 60 Hz short with drive; noise burst low-passed 1500 Hz very short; click transient.",
+   "recipe": {
+    "duration": 0.3,
+    "layers": [
+     {
+      "source": "sine",
+      "freq_start": 160,
+      "freq_end": 60,
+      "start": 0,
+      "length": 0.15,
+      "attack": 0.001,
+      "decay": 0.05,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0.5,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.05,
+      "attack": 0.001,
+      "decay": 0.1,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 1500,
+       "cutoff_end": 1000,
+       "q": 1.2
+      },
+      "gain": 0.6,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0.02,
+      "length": 0.01,
+      "attack": 0.0005,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 1000,
+       "cutoff_end": 1000,
+       "q": 0.7
+      },
+      "gain": 0.4,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 0.3, \"layers\": [{\"source\": \"sine\", \"freq_start\": 160, \"freq_end\": 60, \"start\": 0, \"length\": 0.15, \"attack\": 0.001, \"decay\": 0.05, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0.5, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.05, \"attack\": 0.001, \"decay\": 0.1, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 1500, \"cutoff_end\": 1000, \"q\": 1.2}, \"gain\": 0.6, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0.02, \"length\": 0.01, \"attack\": 0.0005, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 1000, \"cutoff_end\": 1000, \"q\": 0.7}, \"gain\": 0.4, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.1}"
+  },
+  "tick": {
+   "prompt": "tiny mechanical counter tick, 0.05 s. Layers: click transient high-passed at 3000 Hz; a very short sine at 4000 Hz.",
+   "recipe": {
+    "duration": 0.05,
+    "layers": [
+     {
+      "source": "click",
+      "freq_start": 0,
+      "freq_end": 0,
+      "start": 0,
+      "length": 0.03,
+      "attack": 0.0005,
+      "decay": 0.02,
+      "curve": "exp",
+      "filter": {
+       "type": "highpass",
+       "cutoff_start": 3000,
+       "cutoff_end": 3000,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "sine",
+      "freq_start": 4000,
+      "freq_end": 4000,
+      "start": 0.01,
+      "length": 0.04,
+      "attack": 0.001,
+      "decay": 0.03,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.5,
+      "drive": 0,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.05
+   },
+   "raw": "{\"duration\": 0.05, \"layers\": [{\"source\": \"click\", \"freq_start\": 0, \"freq_end\": 0, \"start\": 0, \"length\": 0.03, \"attack\": 0.0005, \"decay\": 0.02, \"curve\": \"exp\", \"filter\": {\"type\": \"highpass\", \"cutoff_start\": 3000, \"cutoff_end\": 3000, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"sine\", \"freq_start\": 4000, \"freq_end\": 4000, \"start\": 0.01, \"length\": 0.04, \"attack\": 0.001, \"decay\": 0.03, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.5, \"drive\": 0, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}], \"reverb\": 0.05}"
+  },
+  "error": {
+   "prompt": "negative buzzer, wrong answer, 0.5 s. Layers: two square waves at 220 Hz and 233 Hz sweeping down 15 percent, low-passed 2500 Hz, played twice (repeat 2, every 0.2 s).",
+   "recipe": {
+    "duration": 0.5,
+    "layers": [
+     {
+      "source": "square",
+      "freq_start": 220,
+      "freq_end": 220,
+      "start": 0,
+      "length": 0.4,
+      "attack": 0.002,
+      "decay": 0.3,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 2500,
+       "cutoff_end": 2500,
+       "q": 0.7
+      },
+      "gain": 0.8,
+      "drive": 0,
+      "repeat": 2,
+      "repeat_every": 0.2,
+      "jitter": 0
+     },
+     {
+      "source": "square",
+      "freq_start": 233,
+      "freq_end": 233,
+      "start": 0.05,
+      "length": 0.4,
+      "attack": 0.002,
+      "decay": 0.3,
+      "curve": "exp",
+      "filter": {
+       "type": "lowpass",
+       "cutoff_start": 2500,
+       "cutoff_end": 2500,
+       "q": 0.7
+      },
+      "gain": 0.7,
+      "drive": 0,
+      "repeat": 2,
+      "repeat_every": 0.2,
+      "jitter": 0
+     }
+    ],
+    "reverb": 0.1
+   },
+   "raw": "{\"duration\": 0.5, \"layers\": [{\"source\": \"square\", \"freq_start\": 220, \"freq_end\": 220, \"start\": 0, \"length\": 0.4, \"attack\": 0.002, \"decay\": 0.3, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 2500, \"cutoff_end\": 2500, \"q\": 0.7}, \"gain\": 0.8, \"drive\": 0, \"repeat\": 2, \"repeat_every\": 0.2, \"jitter\": 0}, {\"source\": \"square\", \"freq_start\": 233, \"freq_end\": 233, \"start\": 0.05, \"length\": 0.4, \"attack\": 0.002, \"decay\": 0.3, \"curve\": \"exp\", \"filter\": {\"type\": \"lowpass\", \"cutoff_start\": 2500, \"cutoff_end\": 2500, \"q\": 0.7}, \"gain\": 0.7, \"drive\": 0, \"repeat\": 2, \"repeat_every\": 0.2, \"jitter\": 0}], \"reverb\": 0.1}"
   }
  },
- "music": null
+ "music": {
+  "prompt": "Design a 16-step pattern (one bar of 4/4, steps are 16th notes) for a modern, energetic\nsocial-media explainer track about cars: punchy electronic / trap-pop, minor key, driving but not busy.\nMusical rules: kick on the downbeats (steps 0 and 8) plus one or two syncopated kicks; snare or clap only on the\nbackbeats (steps 4 and 12); closed hats on most 8th or 16th notes; one open hat near the end of the bar; the bass\nfollows the kick using root, fifth (7) and minor seventh (10) or octave (12); four chords as minor-key triads\n(for example i, VI, III, VII = [0,3,7], [8,12,15], [3,7,10], [10,14,17]).\nReturn ONLY JSON:\n{\"bpm\": 124, \"key_root_hz\": number,\n \"kick\": [16 values 0/1], \"snare\": [16 values 0/1], \"hat\": [16 values 0/1], \"open_hat\": [16 values 0/1],\n \"bass\": [16 values: semitone offset from root or null for rest],\n \"chords\": [4 arrays of semitone offsets, one chord per beat-group of 4 steps],\n \"lead\": [16 values: semitone offset or null]}",
+  "pattern": {
+   "bpm": 124,
+   "key_root_hz": 261.63,
+   "kick": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "snare": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "hat": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "open_hat": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "bass": [
+    null,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    7,
+    0,
+    10,
+    0,
+    0,
+    0,
+    12
+   ],
+   "chords": [
+    [
+     0,
+     3,
+     7
+    ],
+    [
+     8,
+     12,
+     15
+    ],
+    [
+     3,
+     7,
+     10
+    ],
+    [
+     10,
+     14,
+     17
+    ]
+   ],
+   "lead": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    10
+   ]
+  },
+  "raw": "{\n  \"bpm\": 124,\n  \"key_root_hz\": 261.63,\n  \"kick\": [\n    1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1\n  ],\n  \"snare\": [\n    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0\n  ],\n  \"hat\": [\n    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1\n  ],\n  \"open_hat\": [\n    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1\n  ],\n  \"bass\": [\n    null, 0, 3, 0, 0, 0, 0, 0, 0, 7, 0, 10, 0, 0, 0, 12\n  ],\n  \"chords\": [\n    [0, 3, 7],\n    [8, 12, 15],\n    [3, 7, 10],\n    [10, 14, 17]\n  ],\n  \"lead\": [\n    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 10\n  ]\n}",
+  "score": 10.0,
+  "selection": "mejor de 3 candidatas generadas por Qwen3 según las reglas del prompt",
+  "candidates": [
+   {
+    "score": 8.0,
+    "pattern": {
+     "bpm": 124,
+     "key_root_hz": 261.63,
+     "kick": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "snare": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     "hat": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+     ],
+     "open_hat": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "bass": [
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0
+     ],
+     "chords": [
+      [
+       0,
+       3,
+       7
+      ],
+      [
+       8,
+       11,
+       14
+      ],
+      [
+       3,
+       7,
+       10
+      ],
+      [
+       10,
+       14,
+       17
+      ]
+     ],
+     "lead": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   },
+   {
+    "score": 8.0,
+    "pattern": {
+     "bpm": 124,
+     "key_root_hz": 261.63,
+     "kick": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "snare": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     "hat": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+     ],
+     "open_hat": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "bass": [
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0,
+      null,
+      0,
+      5,
+      0
+     ],
+     "chords": [
+      [
+       0,
+       3,
+       7
+      ],
+      [
+       8,
+       12,
+       15
+      ],
+      [
+       3,
+       7,
+       10
+      ],
+      [
+       10,
+       14,
+       17
+      ]
+     ],
+     "lead": [
+      null,
+      null,
+      2,
+      null,
+      null,
+      2,
+      null,
+      null,
+      null,
+      null,
+      2,
+      null,
+      null,
+      2,
+      null,
+      null
+     ]
+    }
+   },
+   {
+    "score": 10.0,
+    "pattern": {
+     "bpm": 124,
+     "key_root_hz": 261.63,
+     "kick": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "snare": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     "hat": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "open_hat": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "bass": [
+      null,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      10,
+      0,
+      0,
+      0,
+      12
+     ],
+     "chords": [
+      [
+       0,
+       3,
+       7
+      ],
+      [
+       8,
+       12,
+       15
+      ],
+      [
+       3,
+       7,
+       10
+      ],
+      [
+       10,
+       14,
+       17
+      ]
+     ],
+     "lead": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      10
+     ]
+    }
+   }
+  ],
+  "model": "Qwen/Qwen3-4B-Instruct-2507"
+ },
+ "music_v1_descartada": {
+  "prompt": "Design a 16-step pattern (one bar of 4/4 at 124 BPM) for a modern, energetic social-media\nexplainer track about cars (trap/electronic hybrid). Return ONLY JSON:\n{\"bpm\": 124, \"key_root_hz\": number,\n \"kick\": [16 values 0/1], \"snare\": [16 values 0/1], \"hat\": [16 values 0/1], \"open_hat\": [16 values 0/1],\n \"bass\": [16 values: semitone offset from root or null for rest],\n \"chords\": [4 arrays of semitone offsets, one chord per beat-group of 4 steps],\n \"lead\": [16 values: semitone offset or null]}",
+  "pattern": {
+   "bpm": 124,
+   "key_root_hz": 261.63,
+   "kick": [
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "snare": [
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1
+   ],
+   "hat": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "open_hat": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "bass": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "chords": [
+    [
+     0,
+     2,
+     4,
+     6
+    ],
+    [
+     1,
+     3,
+     5,
+     7
+    ],
+    [
+     2,
+     4,
+     6,
+     0
+    ],
+    [
+     3,
+     5,
+     7,
+     1
+    ]
+   ],
+   "lead": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ]
+  },
+  "raw": "```json\n{\n  \"bpm\": 124,\n  \"key_root_hz\": 261.63,\n  \"kick\": [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],\n  \"snare\": [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],\n  \"hat\": [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],\n  \"open_hat\": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\n  \"bass\": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\n  \"chords\": [\n    [0, 2, 4, 6],\n    [1, 3, 5, 7],\n    [2, 4, 6, 0],\n    [3, 5, 7, 1]\n  ],\n  \"lead\": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]\n}\n```"
+ },
+ "model_sounds": "Qwen/Qwen3-1.7B"
 }

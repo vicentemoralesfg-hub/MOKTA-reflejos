@@ -75,8 +75,13 @@ EXAMPLE_OUT = json.dumps({"duration": 0.5, "layers": [
    "filter": {"type": "bandpass", "cutoff_start": 1800, "cutoff_end": 900, "q": 1.2}, "gain": 0.5, "drive": 0, "repeat": 3, "repeat_every": 0.05, "jitter": 0.4}],
   "reverb": 0.15})
 
-MUSIC_PROMPT = """Design a 16-step pattern (one bar of 4/4 at 124 BPM) for a modern, energetic social-media
-explainer track about cars (trap/electronic hybrid). Return ONLY JSON:
+MUSIC_PROMPT = """Design a 16-step pattern (one bar of 4/4, steps are 16th notes) for a modern, energetic
+social-media explainer track about cars: punchy electronic / trap-pop, minor key, driving but not busy.
+Musical rules: kick on the downbeats (steps 0 and 8) plus one or two syncopated kicks; snare or clap only on the
+backbeats (steps 4 and 12); closed hats on most 8th or 16th notes; one open hat near the end of the bar; the bass
+follows the kick using root, fifth (7) and minor seventh (10) or octave (12); four chords as minor-key triads
+(for example i, VI, III, VII = [0,3,7], [8,12,15], [3,7,10], [10,14,17]).
+Return ONLY JSON:
 {"bpm": 124, "key_root_hz": number,
  "kick": [16 values 0/1], "snare": [16 values 0/1], "hat": [16 values 0/1], "open_hat": [16 values 0/1],
  "bass": [16 values: semitone offset from root or null for rest],

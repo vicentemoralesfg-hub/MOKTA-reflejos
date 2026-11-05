@@ -26,9 +26,11 @@ Cifras ilustrativas en CLP (se indica en pantalla); varían según modelo, año,
   `scripts/process_vo.py` elige la toma, recorta pausas largas y acelera ×1,10 sin cambiar el tono → `public/audio/vo/`.
   Los tiempos por palabra (Whisper local) se alinean al guion exacto con `scripts/build_words.py` → `src/data/vo.json`
   (subtítulos y sincronía de todas las animaciones).
-- **Efectos y música:** diseñados por **Qwen3** (`Qwen/Qwen3-1.7B`, pesos abiertos, ejecutado localmente).
-  `scripts/qwen_sfx_design.py` pide a Qwen3 una *receta de síntesis* en JSON para cada efecto (capas, barridos de frecuencia,
-  envolventes, filtros, saturación, repeticiones) y el patrón de la base musical; quedan en `assets/sfx_recipes.json`.
+- **Efectos y música:** diseñados por **Qwen3** (pesos abiertos, ejecutado localmente en CPU).
+  `scripts/qwen_sfx_design.py` pide a `Qwen/Qwen3-1.7B` una *receta de síntesis* en JSON para cada uno de los 18 efectos
+  (capas, barridos de frecuencia, envolventes, filtros, saturación, repeticiones).
+  `scripts/qwen_music_pick.py` pide a `Qwen/Qwen3-4B-Instruct-2507` varios patrones de batería/bajo/acordes y guarda el que
+  mejor cumple las reglas del prompt. Todo queda en `assets/sfx_recipes.json`.
   `scripts/render_sfx.py` sintetiza esas recetas (valores acotados a rangos seguros) → `public/audio/sfx/`.
 - **Mezcla:** `scripts/mix_audio.py` coloca voz, efectos (`src/data/sfx.json`) y música con *ducking* bajo la voz → `public/audio/soundtrack.wav`.
   `scripts/assemble.sh` normaliza a −14 LUFS / −1 dBTP.
@@ -38,6 +40,7 @@ Cifras ilustrativas en CLP (se indica en pantalla); varían según modelo, año,
 ```bash
 npm i
 npx remotion studio                          # vista previa (composición AutosChocados + escenas sueltas)
+python3 scripts/qwen_sfx_design.py <modelo>  # (opcional) volver a diseñar efectos con Qwen3
 python3 scripts/render_sfx.py                # si cambian las recetas
 python3 scripts/mix_audio.py                 # si cambian tiempos o efectos
 ./scripts/render_chunks.sh                   # render por bloques, reanudable (CONC=3 CH=150)
