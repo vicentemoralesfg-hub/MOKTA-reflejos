@@ -35,3 +35,6 @@ export const rnd = (i: number) => {
 
 /** Formato pesos chilenos: $1.550.000 */
 export const clp = (n: number) => "$" + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+/** Destello: 0 antes de a, salta a `peak` en a y decae a 0 en d fotogramas. */
+export const flashAt = (f: number, a: number, d = 6, peak = 0.6) => (f < a || f > a + d ? 0 : peak * (1 - (f - a) / d));

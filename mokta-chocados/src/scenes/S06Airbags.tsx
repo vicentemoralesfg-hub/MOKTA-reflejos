@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { BACK, EASE_OUT, clp, pop, ramp, shake } from "../anim";
+import { BACK, EASE_OUT, clp, pop, ramp, shake, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Cam, Stage } from "../components/Stage";
@@ -46,7 +46,7 @@ export const S06Airbags: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Background zone="red" cy={34} flash={interpolate(f, [tAir + 2, tAir + 7], [0.8, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+      <Background zone="red" cy={34} flash={flashAt(f, tAir + 2, (tAir + 7) - (tAir + 2), 0.8)} />
       <ZoneBadge at={0} color={C.red} title="AIRBAGS" sub="Desplegados = alerta" icon={<Icon name="airbag" size={44} />} />
       <AbsoluteFill style={{ translate: `${sh.x}px ${sh.y}px` }}>
         <Stage cam={cam} car={{ id: "ab-car", paint: WHITE, t: f, xray: ramp(f, tAir + 8, tAir + 16) * 0.85, airbag: deploy, frontCrush: 0.2, bumperCrack: 1, parts }}>

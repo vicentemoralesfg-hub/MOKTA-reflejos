@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { EASE_IN_OUT, EASE_OUT, pop, ramp, shake } from "../anim";
+import { EASE_IN_OUT, EASE_OUT, pop, ramp, shake, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Stage, ZoneOverlay } from "../components/Stage";
@@ -41,10 +41,10 @@ export const S02Setup: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Background zone="intro" cy={45} flash={interpolate(f, [tDonde, tDonde + 6], [0.6, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+      <Background zone="intro" cy={45} flash={flashAt(f, tDonde, (tDonde + 6) - (tDonde), 0.6)} />
       <AbsoluteFill style={{ translate: `${sh.x}px ${sh.y}px` }}>
         {/* gráfico de plata */}
-        <div style={{ position: "absolute", left: 90, top: 230, width: 900, height: 470, opacity: 1 - graphOut, translate: `0px ${-graphOut * 80}px` }}>
+        <div style={{ position: "absolute", left: 90, top: 230, width: 900, height: 470, opacity: (1 - graphOut) * Math.min(1, up * 4), translate: `0px ${-graphOut * 80}px` }}>
           <svg width={960} height={470} style={{ overflow: "visible" }}>
             <g stroke="rgba(255,255,255,0.15)" strokeWidth={2}>
               {[0, 1, 2, 3, 4].map((i) => (

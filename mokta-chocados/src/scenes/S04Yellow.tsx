@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { EASE_IN, EASE_IN_OUT, EASE_OUT, pop, ramp, rnd, shake } from "../anim";
+import { EASE_IN, EASE_IN_OUT, EASE_OUT, pop, ramp, rnd, shake, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Cam, Stage, mapPt } from "../components/Stage";
@@ -62,7 +62,7 @@ export const S04Yellow: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Background zone="yellow" cy={40} flash={interpolate(f, [hit, hit + 5], [0.85, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} speed={f < hit ? 3 : 0.6} />
+      <Background zone="yellow" cy={40} flash={flashAt(f, hit, (hit + 5) - (hit), 0.85)} speed={f < hit ? 3 : 0.6} />
       <ZoneBadge at={0} color={C.yellow} title="ZONA AMARILLA" sub="Precaución" icon={<Icon name="warn" size={44} />} />
       <AbsoluteFill style={{ translate: `${sh.x + sh2.x + sh3.x}px ${sh.y + sh2.y + sh3.y}px` }}>
         {/* muro */}

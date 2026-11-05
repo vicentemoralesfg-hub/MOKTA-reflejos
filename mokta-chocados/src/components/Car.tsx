@@ -390,7 +390,7 @@ export const Car: React.FC<CarProps> = ({
               {[
                 [300, 296, 40], [480, 292, 52], [700, 296, 36], [880, 290, 30], [120, 294, 34], [560, 286, 28],
               ].map(([x, y, r], i) => (
-                <ellipse key={i} cx={x} cy={y} rx={r * (0.6 + 0.4 * corrosion)} ry={r * 0.45 * (0.6 + 0.4 * corrosion)} fill={`url(#${g("rust")})`} />
+                <ellipse key={i} cx={x} cy={y - 8} rx={r * 1.4 * (0.6 + 0.4 * corrosion)} ry={r * 0.7 * (0.6 + 0.4 * corrosion)} fill={`url(#${g("rust")})`} />
               ))}
             </g>
           )}

@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { EASE_IN_OUT, EASE_OUT, pop, ramp, rnd } from "../anim";
+import { EASE_IN_OUT, EASE_OUT, pop, ramp, rnd, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Cam, Stage, mapPt } from "../components/Stage";
@@ -38,7 +38,7 @@ export const S03Green: React.FC = () => {
   const greenCage = { color: C.green, glow: 0.8 };
   return (
     <AbsoluteFill>
-      <Background zone="green" cy={36} flash={interpolate(f, [tPlata, tPlata + 6], [0.5, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+      <Background zone="green" cy={36} flash={flashAt(f, tPlata, (tPlata + 6) - (tPlata), 0.5)} />
       <ZoneBadge at={0} color={C.green} title="ZONA VERDE" sub="Oportunidad" icon={<Icon name="bolt" size={44} />} />
 
       {/* auto dañado (fondo) y reparado (recortado por el barrido) */}

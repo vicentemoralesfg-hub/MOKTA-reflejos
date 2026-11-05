@@ -91,7 +91,7 @@ export const Ficha: React.FC<{ at: number; rows: { label: string; level: Level; 
         const a = at + 6 + i * 5;
         return (
           <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 18, height: 54 }}>
-            <div style={{ width: 250, fontFamily: FONT_DISPLAY, fontWeight: 700, fontSize: 38, color: "#fff", letterSpacing: 1 }}>{r.label}</div>
+            <div style={{ width: 235, whiteSpace: "nowrap", fontFamily: FONT_DISPLAY, fontWeight: 700, fontSize: 36, color: "#fff", letterSpacing: 1 }}>{r.label}</div>
             <div style={{ display: "flex", gap: 8, flex: 1 }}>
               {[1, 2, 3, 4, 5].map((k) => {
                 const on = k <= r.level ? ramp(f, a + k * 1.5, a + k * 1.5 + 5) : 0;
@@ -113,11 +113,12 @@ export const Ficha: React.FC<{ at: number; rows: { label: string; level: Level; 
             </div>
             <div
               style={{
-                width: 150,
+                width: 215,
                 textAlign: "right",
+                whiteSpace: "nowrap",
                 fontFamily: FONT_DISPLAY,
                 fontWeight: 800,
-                fontSize: 36,
+                fontSize: 34,
                 color: LV_COLOR[r.level],
                 opacity: ramp(f, a + 8, a + 12),
               }}
@@ -292,7 +293,7 @@ export const Counter: React.FC<{ from: number; to: number; a: number; b: number;
   format = clp,
 }) => {
   const f = useCurrentFrame();
-  const v = interpolate(f, [a, b], [from, to], { ...clamp, easing: EASE_OUT });
+  const v = Math.round(interpolate(f, [a, b], [from, to], { ...clamp, easing: EASE_OUT }) / 10000) * 10000;
   return <span style={{ fontVariantNumeric: "tabular-nums", ...style }}>{prefix + format(v)}</span>;
 };
 

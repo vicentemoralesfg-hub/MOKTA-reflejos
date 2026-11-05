@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { EASE_IN_OUT, EASE_OUT, ramp, shake } from "../anim";
+import { EASE_IN_OUT, EASE_OUT, ramp, shake, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Cam, Stage, mapPt } from "../components/Stage";
@@ -44,7 +44,7 @@ export const S05Red: React.FC = () => {
 
   return (
     <AbsoluteFill>
-      <Background zone="red" cy={40} flash={interpolate(f, [tMisma, tMisma + 5], [0.5, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+      <Background zone="red" cy={40} flash={flashAt(f, tMisma, (tMisma + 5) - (tMisma), 0.5)} />
       <ZoneBadge at={0} color={C.red} title="ZONA ROJA" sub="Peligro" icon={<Icon name="skull" size={44} />} />
       <AbsoluteFill style={{ translate: `${sh.x + sh2.x}px ${sh.y + sh2.y}px` }}>
         <Stage
@@ -71,7 +71,7 @@ export const S05Red: React.FC = () => {
         >
           {/* alfombra del maletero que se levanta */}
           {f < tPilar && (
-            <g transform={`rotate(${-carpet * 62} 226 274)`} opacity={xray}>
+            <g transform={`rotate(${carpet * 62} 226 274)`} opacity={xray}>
               <rect x={52} y={266} width={174} height={12} rx={4} fill="#3A3F4B" stroke="#9AA3B5" strokeWidth={2} />
               {[0, 1, 2, 3, 4, 5, 6].map((i) => (
                 <line key={i} x1={62 + i * 24} y1={268} x2={70 + i * 24} y2={276} stroke="#666E80" strokeWidth={2} />

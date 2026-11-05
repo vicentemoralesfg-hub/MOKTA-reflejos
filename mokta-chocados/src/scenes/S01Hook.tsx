@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { EASE_OUT, pop, ramp, rnd, shake } from "../anim";
+import { EASE_OUT, pop, ramp, rnd, shake, flashAt } from "../anim";
 import { Background } from "../components/Background";
 import { Captions } from "../components/Captions";
 import { Stage } from "../components/Stage";
@@ -37,8 +37,8 @@ const Label: React.FC<{ text: string; color: string; p: number; x: number; y: nu
       left: x,
       top: y,
       rotate: `${rot}deg`,
-      scale: interpolate(p, [0, 1], [2.2, 1]),
-      opacity: Math.min(1, p * 3),
+      scale: 1 + 0.28 * Math.max(0, Math.sin(Math.min(1, p) * Math.PI)),
+      opacity: 1,
       padding: "8px 26px",
       background: color,
       color: dark ? C.ink : "#fff",
@@ -83,7 +83,7 @@ export const S01Hook: React.FC = () => {
   const tOro = at(ID, "oro");
   const tImp = at(ID, "impecable");
   const tVolar = at(ID, "volar");
-  const sh0 = shake(f, 0, 26, 12);
+  const sh0 = shake(f, 1, 22, 12);
   const sh1 = shake(f, tVolar + 4, 30, 14);
   const sx = sh0.x + sh1.x;
   const sy = sh0.y + sh1.y;
@@ -91,12 +91,12 @@ export const S01Hook: React.FC = () => {
   const zoomOut = interpolate(f, [tVolar, tVolar + 18], [1, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_OUT });
   // destello de rayos X sobre el auto "impecable" (adelanto del giro final)
   const glitch = (f >= tVolar + 2 && f < tVolar + 5) || (f >= tVolar + 8 && f < tVolar + 10) ? 1 : 0;
-  const drive = interpolate(f, [0, 12], [-260, 0], { extrapolateRight: "clamp", easing: EASE_OUT });
-  const drive2 = interpolate(f, [0, 12], [260, 0], { extrapolateRight: "clamp", easing: EASE_OUT });
+  const drive = interpolate(f, [0, 10], [-70, 0], { extrapolateRight: "clamp", easing: EASE_OUT });
+  const drive2 = interpolate(f, [0, 10], [70, 0], { extrapolateRight: "clamp", easing: EASE_OUT });
 
   return (
     <AbsoluteFill>
-      <Background zone="intro" flash={interpolate(f, [0, 5], [0.9, 0], { extrapolateRight: "clamp" }) + interpolate(f, [tVolar + 3, tVolar + 9], [0.8, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+      <Background zone="intro" flash={flashAt(f, 1, 5, 0.55) + flashAt(f, tVolar + 3, (tVolar + 9) - (tVolar + 3), 0.8)} />
       <AbsoluteFill style={{ translate: `${sx}px ${sy}px`, scale: zoomOut }}>
         {/* tarjeta superior: el "feo" */}
         <Card top={200} color={gold > 0 ? C.gold : C.red} glow={gold} f={f}>
@@ -114,9 +114,11 @@ export const S01Hook: React.FC = () => {
                 <div key={i} style={{ position: "absolute", left: x, top: y, width: 44, height: 44, borderRadius: 99, background: `radial-gradient(circle at 35% 35%, #FFF3B0, ${C.gold} 55%, #B07800)`, boxShadow: `0 0 20px ${C.gold}`, opacity: interpolate(life, [0, 30], [1, 0], { extrapolateRight: "clamp" }), rotate: `${life * 20}deg` }} />
               );
             })}
-          <Price x={640} y={30} p={ramp(f, 4, 12)} />
-          <Label text="PARECE BASURA" color={C.red} dark={false} p={pop(f, tBasura - 2, 8)} x={40} y={34} />
-          {gold > 0 && <Label text="¿VALE ORO?" color={C.gold} p={pop(f, tOro, 8)} x={300} y={430} rot={3} />}
+          <Price x={640} y={30} p={1} />
+          <Label text="PARECE BASURA" color={C.red} dark={false} p={ramp(f, tBasura - 2, tBasura + 8)} x={40} y={34} />
+          {gold > 0 && (
+            <div style={{ position: "absolute", left: 300, top: 430, rotate: "3deg", scale: interpolate(pop(f, tOro, 8), [0, 1], [2.2, 1]), padding: "8px 26px", background: C.gold, color: C.ink, fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 70, borderRadius: 12, boxShadow: `0 0 30px ${C.gold}` }}>¿VALE ORO?</div>
+          )}
         </Card>
 
         {/* VS */}
@@ -148,8 +150,8 @@ export const S01Hook: React.FC = () => {
               </svg>
             );
           })}
-          <Price x={640} y={30} p={ramp(f, 6, 14)} />
-          <Label text="IMPECABLE" color={C.cyan} p={pop(f, tImp - 2, 8)} x={40} y={34} rot={3} />
+          <Price x={640} y={30} p={1} />
+          <Label text="IMPECABLE" color={C.cyan} p={ramp(f, tImp - 2, tImp + 8)} x={40} y={34} rot={3} />
           {glitch > 0 && (
             <div style={{ position: "absolute", left: 360, top: 420, fontFamily: FONT_UI, fontWeight: 800, fontSize: 40, color: C.red, letterSpacing: 6, display: "flex", alignItems: "center", gap: 10 }}>
               <Icon name="warn" color={C.red} size={44} /> ¿SEGURO?
