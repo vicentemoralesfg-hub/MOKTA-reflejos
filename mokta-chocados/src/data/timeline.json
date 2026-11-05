@@ -1,0 +1,17 @@
+{
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {"id": "s01", "voStart": 0.10, "tail": 0.20},
+    {"id": "s02", "voStart": 0.15, "tail": 0.25},
+    {"id": "s03", "voStart": 0.20, "tail": 0.35},
+    {"id": "s04", "voStart": 0.20, "tail": 0.35},
+    {"id": "s05", "voStart": 0.20, "tail": 0.35},
+    {"id": "s06", "voStart": 0.15, "tail": 0.30},
+    {"id": "s07", "voStart": 0.20, "tail": 0.35},
+    {"id": "s08", "voStart": 0.25, "tail": 0.90},
+    {"id": "s09", "voStart": 0.15, "tail": 0.30},
+    {"id": "s10", "voStart": 0.15, "tail": 2.20}
+  ]
+}
