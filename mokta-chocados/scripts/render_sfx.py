@@ -84,6 +84,9 @@ def layer(L, total):
     n = max(16, int(length * SR))
     f0 = num(L.get("freq_start"), 200, 20, 16000)
     f1 = num(L.get("freq_end"), f0, 20, 16000)
+    # tonos infrasónicos/inaudibles en parlantes de teléfono: se suben por octavas
+    while min(f0, f1) < 35:
+        f0, f1 = f0 * 2, f1 * 2
     if src in ("sine", "square", "saw", "triangle", "fm"):
         ph = sweep_phase(f0, f1, n)
         if src == "sine":
