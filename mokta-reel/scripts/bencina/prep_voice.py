@@ -2,7 +2,7 @@
 """
 MOKTA · Marcador de bencina — preparación de la locución.
 
-Entrada:  public/bencina/voz_original.mp3      (ElevenLabs, voz "David C - Viral Storytelling", eleven_v4)
+Entrada:  public/bencina/voz_original.mp3      (ElevenLabs, voz "Fer - Chileno, relajado y natural" (Tm8bVnJtlhPQUOb8KzSd), eleven_v4)
           scripts/bencina/words_original.json  (alineación por palabra de ElevenLabs Scribe)
 Salida:   public/bencina/voz.wav               (48 kHz, tempo ×TEMPO sin cambio de tono, EQ suave)
           src/bencina/data/words.json          (palabras con fotograma de inicio/fin ya re-escalados)
@@ -14,7 +14,7 @@ import os
 import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TEMPO = 1.15      # más dinámico para Reels; rubberband conserva el tono
+TEMPO = 1.10      # voz chilena ya ágil; leve aceleración sin cambio de tono
 FPS = 30
 LEAD_S = 0.0      # la voz arranca en el primer fotograma (gancho inmediato)
 

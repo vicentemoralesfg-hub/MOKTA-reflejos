@@ -61,7 +61,9 @@ public/audio         soundtrack.wav + stems (ambiente, música, efectos)
 
 # MOKTA · ¿Por qué los últimos km de bencina se van más rápido? (`MoktaBencina`)
 
-Reel vertical 1080×1920 · 30 fps · 60,4 s · locución ElevenLabs (voz "David C – Viral Storytelling", `eleven_v4`).
+Reel vertical 1080×1920 · 30 fps · 62 s · v2: locución ElevenLabs (voz "Fer – Chileno, relajado y natural", `Tm8bVnJtlhPQUOb8KzSd`, `eleven_v4`, 1 toma).
+
+**v2 — hibridación real:** el gancho y el planteamiento ocurren dentro de una cabina: toma real de conducción nocturna en el parabrisas (CC0, ver `public/bencina/real/CREDITOS.md`), tablero, volante, autotest de agujas al encender y zoom al marcador mientras baja la bencina. Desde "El secreto" pasa a los gráficos animados; el cierre vuelve a la cabina (el video empalma en bucle).
 
 Gancho: *"¿Por qué los últimos kilómetros de bencina parecen desaparecer mucho más rápido? No es tu imaginación."*
 
@@ -69,7 +71,7 @@ Gancho: *"¿Por qué los últimos kilómetros de bencina parecen desaparecer muc
 
 ```bash
 npm i
-python3 scripts/bencina/prep_voice.py   # voz_original.mp3 → voz.wav (×1,15 sin cambiar tono) + words.json
+python3 scripts/bencina/prep_voice.py   # voz_original.mp3 → voz.wav (×1,10 sin cambiar tono) + words.json
 python3 scripts/bencina/gen_audio.py    # música + efectos + mezcla → public/bencina/soundtrack.wav
 npx remotion studio                     # vista previa (composición MoktaBencina)
 npx remotion render src/index.ts MoktaBencina out/bencina_video.mp4 --codec=h264 --crf=16 --muted --props='{"withAudio":false}'
@@ -95,7 +97,7 @@ src/bencina/
   tankModel.ts         geometría del estanque, volumen por altura, flotador, curva de la aguja
   theme.ts             colores, tipografías, easing
   components/          Gauge (marcador), Tank (corte del estanque, flotador, brazo, resistencia, bomba), Common (fondo, subtítulos, chips)
-  scenes/              Intro (gancho, planteamiento, secreto) · Mechanism (cómo funciona, razones 1 y 2) · Outro (razón 3, conclusión, consejo, CTA)
+  scenes/              Cockpit (cabina real: gancho, planteamiento, CTA) · Intro (secreto) · Mechanism (cómo funciona, razones 1 y 2) · Outro (razón 3, conclusión, consejo, CTA)
 scripts/bencina/       prep_voice.py · gen_audio.py · assemble.sh · stills.mjs (fotogramas de revisión)
 public/bencina/        voz_original.mp3 · voz.wav · soundtrack.wav · stems/
 ```
@@ -114,4 +116,4 @@ public/bencina/        voz_original.mp3 · voz.wav · soundtrack.wav · stems/
 10. **CTA** — "¿Hasta dónde dejas bajar la aguja?" (½ · ¼ · reserva) → comentarios.
 
 Las cifras (50 L, 600 km, 10 % de reserva) son un **modelo ilustrativo**; cada auto tiene su forma de estanque y su calibración.
-Música y efectos 100 % sintetizados en `gen_audio.py` (sin licencias de terceros).
+Música y efectos 100 % sintetizados en `gen_audio.py` por modelado físico (llave al contacto, relé, motores paso a paso de las agujas, bomba de bencina, swoosh metálico, rodado, autos que pasan) con espacialización binaural (ITD + sombra de cabeza). Sin ElevenLabs para efectos.

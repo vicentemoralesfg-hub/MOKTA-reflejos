@@ -2,9 +2,10 @@ import React from "react";
 import { AbsoluteFill, staticFile, useCurrentFrame } from "remotion";
 import { Audio } from "@remotion/media";
 import { Background, Brand, Captions, SceneIn } from "./components/Common";
-import { Hook, Secret, Setup } from "./scenes/Intro";
+import { Secret } from "./scenes/Intro";
+import { CtaReal, HookReal, SetupReal } from "./scenes/Cockpit";
 import { Mechanism, Reason1, Reason2 } from "./scenes/Mechanism";
-import { Cta, Payoff, Reason3, Tip } from "./scenes/Outro";
+import { Payoff, Reason3, Tip } from "./scenes/Outro";
 import { shake } from "./theme";
 import { SCENES, SceneId, cue } from "./timing";
 
@@ -18,9 +19,9 @@ const HITS = ["stamp", "crash", "altura", "r1", "r2", "r3", "warn"] as const;
 const render = (id: SceneId, from: number) => {
   switch (id) {
     case "hook":
-      return <Hook />;
+      return <HookReal />;
     case "setup":
-      return <Setup />;
+      return <SetupReal />;
     case "secret":
       return <Secret from={from} />;
     case "mechanism":
@@ -36,7 +37,7 @@ const render = (id: SceneId, from: number) => {
     case "tip":
       return <Tip from={from} />;
     case "cta":
-      return <Cta />;
+      return <CtaReal from={from} />;
   }
 };
 

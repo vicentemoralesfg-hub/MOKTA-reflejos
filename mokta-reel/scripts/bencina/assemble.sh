@@ -7,7 +7,7 @@ OUT=${2:-out/MOKTA_Bencina_UltimosKm_v1.mp4}
 MEAS=$(ffmpeg -hide_banner -nostats -i public/bencina/soundtrack.wav -af loudnorm=I=-14:TP=-1.0:LRA=9:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p')
 get() { echo "$MEAS" | python3 -c "import json,sys; print(json.load(sys.stdin)['$1'])"; }
 ffmpeg -v error -y -i public/bencina/soundtrack.wav \
-  -af "loudnorm=I=-14:TP=-1.0:LRA=9:measured_I=$(get input_i):measured_TP=$(get input_tp):measured_LRA=$(get input_lra):measured_thresh=$(get input_thresh):offset=$(get target_offset):linear=true" \
+  -af "loudnorm=I=-14:TP=-1.0:LRA=9:measured_I=$(get input_i):measured_TP=$(get input_tp):measured_LRA=$(get input_lra):measured_thresh=$(get input_thresh):offset=$(get target_offset):linear=true,alimiter=limit=0.86:attack=2:release=60:level=false" \
   -ar 48000 out/bencina_audio_norm.wav
 ffmpeg -v error -y -i "$IN_V" -i out/bencina_audio_norm.wav \
   -map 0:v -map 1:a -c:v libx264 -preset slow -crf 17 -profile:v high -level 4.2 \

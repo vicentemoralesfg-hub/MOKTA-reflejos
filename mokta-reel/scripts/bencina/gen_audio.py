@@ -9,7 +9,7 @@ Escribe:
   public/bencina/soundtrack.wav        voz + música + efectos (48 kHz estéreo)
   public/bencina/stems/{voz,musica,efectos}.wav
 
-Música y efectos 100 % sintetizados aquí (sin samples de terceros → libres de licencias).
+Música y efectos 100 % sintetizados aquí por modelado físico (llave, relé, bomba, motores paso a paso, metal, rodado) (sin samples de terceros → libres de licencias).
 La música se agacha (ducking) bajo la voz.
 """
 import json
@@ -388,20 +388,162 @@ def sweep(dur, f0, f1, gain=1.0):
     return x * env(n, 0.08, 0.15) * gain
 
 
-# arranque inmediato (primer fotograma con golpe grave suave, sin tapar la voz)
-place(sfx, boom(0.9, 0.35), 0.0)
-place(sfx, blip(1800, 0.06, 0.18), 0.0)
+f2s = lambda f: f / FPS  # noqa: E731
 
-# transiciones de escena
-for sid, a, b in scenes[1:]:
-    place(sfx, whoosh(0.4, up=True, gain=0.32), a - 0.24, pan=0.2)
+
+# ======================================================= efectos mecánicos (modelado físico)
+def place3d(buf, x, at, az=0.0, gain=1.0, dist=1.0):
+    """Espacialización binaural simple: ITD (≤0,65 ms) + sombra de la cabeza en el oído lejano.
+    az: -1 izquierda … +1 derecha. Admite az variable en el tiempo (array)."""
+    n = len(x)
+    azv = np.full(n, az) if np.isscalar(az) else np.interp(np.linspace(0, 1, n), np.linspace(0, 1, len(az)), az)
+    itd = 0.00065 * azv * SR
+    idx_ = np.arange(n)
+    near = x
+    far_l = np.interp(idx_ - np.clip(itd, 0, None), idx_, x, left=0)   # oído izquierdo retrasado si la fuente está a la derecha
+    far_r = np.interp(idx_ + np.clip(itd, None, 0), idx_, x, left=0)
+    shadow = filt(sos_lp(1800), x)
+    l = np.where(azv > 0, (1 - 0.55 * azv) * far_l + 0.55 * azv * filt(sos_lp(1800), far_l), near * (1 - 0.15 * azv))
+    r = np.where(azv < 0, (1 + 0.55 * azv) * far_r - 0.55 * azv * filt(sos_lp(1800), far_r), near * (1 + 0.15 * azv))
+    del shadow
+    st = np.stack([l, r], 1) * gain / max(0.4, dist)
+    place(buf, st, at)
+
+
+def resonances(n, modes, exc):
+    """Banco de resonadores (metal): modos (f, decaimiento_s, amp) excitados por exc."""
+    t = ts(n)
+    out = np.zeros(n)
+    for f, d, a in modes:
+        ir = np.sin(2 * np.pi * f * t) * np.exp(-t / d) * a
+        out += signal.fftconvolve(exc, ir)[:n]
+    return out
+
+
+def key_turn(gain=1.0):
+    """Llave al contacto: roce del paletón + dos clics secos del cilindro + 'clunk' del relé."""
+    n = int(0.55 * SR)
+    exc = np.zeros(n)
+    t = ts(n)
+    scrape = filt(sos_bp(2500, 9000), noise(int(0.06 * SR))) * np.linspace(0.2, 1, int(0.06 * SR)) * 0.25
+    exc[: len(scrape)] += scrape
+    for at, a in ((0.075, 1.0), (0.19, 0.8)):
+        i = int(at * SR)
+        exc[i:i + 40] += noise(40) * a
+    metal = resonances(n, [(3150, 0.012, 1), (4870, 0.009, 0.7), (7420, 0.006, 0.5), (9800, 0.004, 0.3)], exc)
+    clunk = np.zeros(n)
+    i = int(0.26 * SR)
+    m = int(0.12 * SR)
+    tt = ts(m)
+    clunk[i:i + m] = (np.sin(2 * np.pi * 160 * tt) * np.exp(-tt / 0.02) + filt(sos_bp(600, 2400), noise(m)) * np.exp(-tt / 0.006) * 0.6)
+    return (metal * 0.5 + clunk * 0.7 + exc * 0.15) * gain
+
+
+def relay(gain=1.0):
+    n = int(0.08 * SR)
+    t = ts(n)
+    exc = np.zeros(n)
+    exc[:30] = noise(30)
+    x = resonances(n, [(2300, 0.006, 1), (5200, 0.004, 0.6)], exc) + np.sin(2 * np.pi * 190 * t) * np.exp(-t / 0.012) * 0.6
+    return x * gain
+
+
+def stepper(dur, gain=1.0):
+    """Motor paso a paso de la aguja: zumbido granular fino (como en los tableros reales)."""
+    n = int(dur * SR)
+    t = ts(n)
+    rate = 900 + 400 * np.sin(np.pi * t / max(dur, 1e-3))
+    ph = np.cumsum(rate) / SR
+    grains = (np.sin(2 * np.pi * ph) > 0.92).astype(float)
+    x = filt(sos_bp(700, 4200), grains + 0.15 * noise(n))
+    return x * env(n, 0.02, 0.05) * gain
+
+
+def fuel_pump(dur, gain=1.0, prime=False):
+    """Bomba eléctrica sumergida: motor (~145 Hz + armónicos), silbido de 2,6 kHz, apagado por el estanque."""
+    n = int(dur * SR)
+    t = ts(n)
+    spin = 1 - (np.exp(-t / 0.15) if prime else 0) * 0.6
+    f0 = 145 * spin * (1 + 0.004 * np.sin(2 * np.pi * 6 * t))
+    ph = 2 * np.pi * np.cumsum(f0) / SR
+    motor = sum(np.sin(k * ph) / k ** 1.1 for k in range(1, 9))
+    whine = np.sin(2 * np.pi * np.cumsum(2600 * spin) / SR) * 0.18
+    flutter = filt(sos_bp(300, 1200), noise(n)) * 0.25
+    x = filt(sos_lp(3200), motor * 0.5 + whine + flutter)
+    return x * env(n, 0.12 if prime else 0.35, 0.3) * gain
+
+
+def metal_swoosh(dur=0.5, gain=1.0):
+    """Swoosh metálico: ráfaga de aire filtrada + resonancias tipo lámina (filtro peine)."""
+    n = int(dur * SR)
+    air = whoosh(dur, up=True, gain=1.0)
+    d = int(SR / 1180)
+    comb = air.copy()
+    for k in range(1, 6):
+        comb[k * d:] += air[: n - k * d] * (0.72 ** k)
+    ring = resonances(n, [(1180, 0.08, 0.4), (2950, 0.05, 0.3), (4610, 0.03, 0.2)], air * 0.05)
+    return (air * 0.6 + filt(sos_hp(900), comb) * 0.35 + ring) * gain
+
+
+def road_bed(dur, gain=1.0, seed=3):
+    """Interior en marcha: rodado (marrón grave), motor estable, viento en la carrocería."""
+    g = np.random.default_rng(seed)
+    n = int(dur * SR)
+    t = ts(n)
+    out = np.zeros((n, 2))
+    for ch in range(2):
+        b = np.cumsum(g.standard_normal(n))
+        b = filt(sos_hp(25), b)
+        b /= np.std(b) + 1e-9
+        tire = filt(sos_lp(420), b) * 0.8
+        wind = filt(sos_bp(700, 3200), g.standard_normal(n)) * 0.12 * (1 + 0.3 * np.sin(2 * np.pi * (0.23 + 0.07 * ch) * t))
+        out[:, ch] = tire + wind
+    eng = sum(np.sin(2 * np.pi * 38 * k * t + k) / k ** 1.3 for k in range(1, 7))
+    out += filt(sos_lp(500), eng)[:, None] * 0.35
+    return out * env(n, 0.05, 0.6)[:, None] * gain
+
+
+def passby(dur=1.8, gain=1.0):
+    n = int(dur * SR)
+    t = ts(n) - dur * 0.55
+    w = filt(sos_bp(250, 3000), noise(n))
+    amp = 1 / (1 + (t * 7) ** 2)
+    return w * amp * gain
+
+
+# --- arranque: llave, relé, autotest del tablero, cebado de la bomba
+place3d(sfx, key_turn(0.9), 0.0, az=0.35)
+place3d(sfx, relay(0.5), f2s(3), az=0.1)
+place3d(sfx, stepper(f2s(20), 0.25), f2s(4), az=0.15)
+place3d(sfx, fuel_pump(1.6, 0.16, prime=True), 0.08, az=-0.05, dist=1.6)
+
+# --- ambiente de cabina en las escenas "reales" (gancho, planteamiento, cierre)
+road_a, road_b = 0.0, S["secret"][0] + 0.25
+bed = road_bed(road_b - road_a, 0.09)
+place(sfx, bed, road_a)
+cta_t = S["cta"][0]
+place(sfx, road_bed(TOTAL - cta_t, 0.09, seed=9), cta_t)
+for at, a0, a1 in ((f2s(30), 0.9, -0.9), (S["setup"][0] + 1.6, -0.9, 0.9), (cta_t + 1.0, 0.9, -0.9)):
+    place3d(sfx, passby(1.8, 0.22), at, az=np.linspace(a0, a1, 64))
+
+# --- bomba de bencina: cuando se menciona el estanque y en el consejo
+place3d(sfx, fuel_pump(cue("lblFloat") - S["mechanism"][0] + 1.2, 0.11), S["mechanism"][0], az=0.4, dist=1.3)
+place3d(sfx, fuel_pump(cue("heat") - cue("pump") + 1.2, 0.16), cue("pump") - 0.3, az=0.0)
+
+# --- swoosh metálico en cada transición (la fuente cruza de izquierda a derecha)
+for k, (sid, a, b) in enumerate(scenes[1:]):
+    sweep_az = np.linspace(-0.9, 0.9, 64) if k % 2 == 0 else np.linspace(0.9, -0.9, 64)
+    place3d(sfx, metal_swoosh(0.5, 0.42), a - 0.3, az=sweep_az)
+
+# --- motores paso a paso de la aguja en cada movimiento
+for a_, b_ in (("hookDive", "hookDiveEnd"), ("refill", "refillEnd"), ("half", "halfEnd"), ("crash", "crashEnd"), ("toEmpty", "toEmptyEnd")):
+    place3d(sfx, stepper(cue(b_) - cue(a_), 0.22), cue(a_), az=0.2)
 
 # golpes
 for nm, g in (("stamp", 1.0), ("crash", 1.0), ("altura", 0.9), ("r1", 0.75), ("r2", 0.75), ("r3", 0.75), ("warn", 0.8)):
     place(sfx, boom(1.2, g), cue(nm))
 
 # testigo de reserva (mismos instantes que el video)
-f2s = lambda f: f / FPS  # noqa: E731
 dive, dive_end = cue("hookDive"), cue("hookDiveEnd")
 place(sfx, chime(0.3), dive + (dive_end - dive) * 0.62)
 crash, crash_end = cue("crash"), cue("crashEnd")
@@ -435,7 +577,7 @@ place(sfx, liquid(cue("heat") + f2s(18) - tip_a, 0.3, False), tip_a)
 for nm in ("lblFloat", "lblArm", "lblRes", "maxLine", "blindZone", "noMove", "lblPiso", "lblEje", "lblEscape", "narrow",
            "sliceTop", "sliceBottom", "sameLiter", "moreNeedle", "calib", "holdTop", "reserve", "sameRate", "pump",
            "cooling", "opt1", "opt2", "opt3"):
-    place(sfx, pop(0.32), cue(nm), pan=float(rng.uniform(-0.3, 0.3)))
+    place3d(sfx, relay(0.35) + pop(0.12)[: int(0.08 * SR)], cue(nm), az=float(rng.uniform(-0.5, 0.5)))
 place(sfx, pop(0.35), f2s(W(37) - 3))  # "LITROS"
 place(sfx, whoosh(0.22, up=False, gain=0.45), cue("strike") - 0.05)  # tachado
 place(sfx, whoosh(0.16, up=True, gain=0.4), cue("boxX") - 0.03, pan=-0.3)

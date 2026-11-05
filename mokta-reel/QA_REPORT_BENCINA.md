@@ -31,3 +31,19 @@ Texto dentro de márgenes seguros de Reels (subtítulos en y≈1390–1500, nada
 - Cifras (50 L, 600 km, reserva 10 %) = modelo ilustrativo; la forma del estanque está exagerada a propósito para que se lea en pantalla.
 - Música y efectos sintetizados (sin licencias de terceros).
 - Fotogramas 790–839 re-renderizados tras ocultar un "−0 L" transitorio y empalmados (PSNR 57 dB fuera del tramo, sin salto).
+
+---
+
+# v2 — Hibridación real (`entregables/MOKTA_Bencina_UltimosKm_v2.mp4`)
+
+| Criterio | Resultado |
+|---|---|
+| Resolución / FPS / fotogramas | 1080×1920 · 30 fps · 1859 ✔ |
+| Duración | 61,97 s ✔ |
+| Sonoridad | −14,0 LUFS, pico −1,1 dBFS (limitador añadido en `assemble.sh`) ✔ |
+| Fotogramas negros | 0 ✔ |
+
+- Voz: ElevenLabs `eleven_v4`, "Fer – Chileno, relajado y natural" (Tm8bVnJtlhPQUOb8KzSd), **1 toma** (1.076 créditos); alineación por palabra con Scribe (0 créditos); ×1,10 sin cambio de tono.
+- Toma real: conducción nocturna CC0 (Wikimedia Commons) en el parabrisas; cabina, autotest de agujas, zoom al marcador. Gráficos animados desde "El secreto"; el cierre vuelve a la cabina y empalma en bucle.
+- Efectos: modelado físico local con espacialización binaural (llave, relé, motores paso a paso, bomba de bencina, swoosh metálico en cada transición, rodado, autos que pasan). No se usó ElevenLabs para efectos.
+- No disponible en este entorno: Qwen (sin API key; los espacios públicos de Hugging Face rechazan uso anónimo por cuota) ni Wan (no alcanzaban los créditos de ElevenLabs: 4.545 requeridos, 2.840 disponibles).
