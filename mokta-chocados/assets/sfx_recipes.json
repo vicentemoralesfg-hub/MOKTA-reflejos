@@ -1,0 +1,80 @@
+{
+ "model": "/tmp/claude-0/-home-user-MOKTA-reflejos/6e718d4c-1f7a-55a2-ad49-51f0cb02d2d3/scratchpad/models/Qwen3-1.7B",
+ "generated": "2026-11-05 05:57",
+ "sounds": {
+  "impact": {
+   "prompt": "violent car crash impact, 1.2 s. Layers: a heavy low sine thump sweeping 130 Hz down to 45 Hz with strong drive; a loud noise crunch band-passed sweeping 3000 Hz down to 900 Hz; metallic debris: noise band-passed around 4500 Hz repeated 8 times every 0.06 s with high jitter.",
+   "recipe": {
+    "duration": 1.2,
+    "layers": [
+     {
+      "source": "sine",
+      "freq_start": 130,
+      "freq_end": 45,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.003,
+      "decay": 0.8,
+      "curve": "exp",
+      "filter": {
+       "type": "none",
+       "cutoff_start": 0,
+       "cutoff_end": 0,
+       "q": 0.7
+      },
+      "gain": 0.9,
+      "drive": 0.6,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 3000,
+      "freq_end": 900,
+      "start": 0,
+      "length": 1.0,
+      "attack": 0.005,
+      "decay": 0.9,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 3000,
+       "cutoff_end": 900,
+       "q": 1.2
+      },
+      "gain": 0.8,
+      "drive": 0.4,
+      "repeat": 1,
+      "repeat_every": 0,
+      "jitter": 0
+     },
+     {
+      "source": "noise",
+      "freq_start": 4500,
+      "freq_end": 4500,
+      "start": 0,
+      "length": 0.9,
+      "attack": 0.004,
+      "decay": 0.8,
+      "curve": "exp",
+      "filter": {
+       "type": "bandpass",
+       "cutoff_start": 4500,
+       "cutoff_end": 4500,
+       "q": 1.5
+      },
+      "gain": 0.7,
+      "drive": 0.5,
+      "repeat": 8,
+      "repeat_every": 0.06,
+      "jitter": 0.8
+     }
+    ],
+    "reverb": 0.2
+   },
+   "raw": "{\"duration\": 1.2, \"layers\": [{\"source\": \"sine\", \"freq_start\": 130, \"freq_end\": 45, \"start\": 0, \"length\": 1.0, \"attack\": 0.003, \"decay\": 0.8, \"curve\": \"exp\", \"filter\": {\"type\": \"none\", \"cutoff_start\": 0, \"cutoff_end\": 0, \"q\": 0.7}, \"gain\": 0.9, \"drive\": 0.6, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 3000, \"freq_end\": 900, \"start\": 0, \"length\": 1.0, \"attack\": 0.005, \"decay\": 0.9, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 3000, \"cutoff_end\": 900, \"q\": 1.2}, \"gain\": 0.8, \"drive\": 0.4, \"repeat\": 1, \"repeat_every\": 0, \"jitter\": 0}, {\"source\": \"noise\", \"freq_start\": 4500, \"freq_end\": 4500, \"start\": 0, \"length\": 0.9, \"attack\": 0.004, \"decay\": 0.8, \"curve\": \"exp\", \"filter\": {\"type\": \"bandpass\", \"cutoff_start\": 4500, \"cutoff_end\": 4500, \"q\": 1.5}, \"gain\": 0.7, \"drive\": 0.5, \"repeat\": 8, \"repeat_every\": 0.06, \"jitter\": 0.8}], \"reverb\": 0.2}"
+  }
+ },
+ "music": null
+}
