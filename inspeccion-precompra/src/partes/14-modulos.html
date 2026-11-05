@@ -1,0 +1,78 @@
+<section class="chapter" id="c14">
+  <div class="ch-head">
+    <div class="ch-num">14</div>
+    <div class="ch-t"><span class="fase">Módulos complementarios</span><h2>Por tipo de vehículo</h2><p>Se agregan a la inspección estándar según motorización, tracción, uso u origen. Un mismo auto puede requerir varios módulos (ej. camioneta diésel 4x4 ex-flota).</p></div>
+    <div class="ch-meta"><span class="chip">+10 a +30 min</span></div>
+  </div>
+
+  <h3>A · Diésel</h3>
+  <ck>
+    Arranque en frío diésel :: Esperar que se apague el testigo de precalentamiento; arrancar. :: Arranca al primer intento con poco humo. :: Varios intentos, humo blanco/gris prolongado (bujías de precalentamiento, inyectores, compresión). :: r
+    Inyectores :: Escuchar el golpeteo en ralentí; ralentí parejo. Si es posible, prueba de retorno en taller. :: Golpeteo uniforme característico. :: Golpeteo irregular, ralentí que tiembla, humo negro, olor a gasoil en habitáculo. :: r
+    Turbo :: Con motor apagado y frío, si el ducto es accesible sin herramientas, observar aceite en mangueras de intercooler. Prueba de empuje en ruta. :: Mangueras secas o con película mínima. :: Aceite abundante en mangueras/intercooler, humo azul, pérdida de potencia. :: r
+    Filtro de partículas (DPF) :: Testigo, códigos y preguntar por uso (ciudad/carretera) y regeneraciones. :: Sin testigo ni códigos; uso mixto. :: Testigo DPF, regeneraciones constantes, DPF "anulado" o vaciado (problemas en revisión de gases y legales). :: r
+    EGR y admisión :: Códigos, respuesta a bajas RPM. :: Sin códigos. :: EGR anulada, pérdida de potencia, humo negro. :: y
+    AdBlue / urea (si aplica) :: Nivel, testigos, mensajes de autonomía restante. :: Sin mensajes. :: Mensaje de falla de AdBlue (puede impedir arrancar tras X km). Sistema anulado: alerta legal. :: r
+    Reprogramación de ECU :: Preguntar; ver si hay módulos adicionales conectados a sensores. :: Programación de fábrica. :: "Chip" o reprogramación: mayor desgaste de embrague, turbo y caja; puede afectar garantía y revisión técnica. :: y
+    Volante bimasa :: Ver prueba de ruta (cap. 12). :: Silencioso. :: Traqueteo al apagar. :: r
+  </ck>
+
+  <h3>B · Híbridos (HEV / PHEV)</h3>
+  <ck>
+    Estado "READY" y transición :: Encender: debe indicar READY. En ruta, observar la transición eléctrico ↔ motor. :: Transición suave, motor parte y se detiene sin tirones. :: Motor que nunca se apaga, tirones, testigo de sistema híbrido. :: r
+    Salud de batería HV (SOH) :: Escáner/app compatible: SOH, diferencia de voltaje entre módulos, temperaturas. :: SOH alto para la edad; módulos balanceados. :: Módulos desbalanceados, SOH bajo, códigos P0A80: reemplazo de batería (muy costoso). :: k
+    Ventilación de batería :: Ubicar la toma de aire de la batería (bajo/junto al asiento trasero) y revisar que no esté tapada. :: Rejilla limpia. :: Rejilla tapada con polvo o pelos: batería que se recalienta. :: y
+    Carga en marcha :: Observar indicador de energía; frenar suave para ver regeneración. :: Carga y descarga visibles; frenado regenerativo suave. :: Batería que se descarga rápido o no regenera. :: r
+    PHEV: carga externa :: Conectar a un cargador (si hay) y verificar que inicia carga; autonomía eléctrica mostrada vs. nominal. :: Carga normal; autonomía razonable para la edad. :: No carga, autonomía muy reducida, cable de carga ausente. :: r
+    Garantía de batería :: Pedir documentación de garantía y si es transferible. :: Garantía vigente y transferible. :: Vencida o anulada (intervenciones fuera de red). :: y
+  </ck>
+
+  <h3>C · Eléctricos (BEV)</h3>
+  <ck>
+    SOH de batería :: App/escáner compatible o menú del auto; foto del dato. Comparar autonomía al 100 % con la nominal. :: SOH ≥ 85–90 % en autos de pocos años. :: SOH bajo para su edad; celdas desbalanceadas; caída brusca de autonomía. :: k
+    Carga AC :: Conectar a cargador AC (domiciliario o público): inicia carga, potencia según especificación. :: Carga sin errores. :: Error de carga, puerto dañado, traba que no cierra. :: r
+    Carga rápida DC (si se puede) :: Probar en cargador público o pedir historial; consultar si se usó mayormente carga rápida. :: Acepta carga rápida a potencia esperada. :: Limita potencia de carga (batería degradada o con fallas térmicas). :: y
+    Cables y accesorios :: Cable de carga de emergencia, adaptadores, wallbox incluido o no. :: Completo. :: Sin cable (costo relevante). :: y
+    Ruidos y reducción :: En ruta, escuchar zumbidos de motor/reducción y golpes al acelerar/soltar. :: Silencioso salvo zumbido leve. :: Golpes o zumbidos fuertes en la transmisión. :: r
+    Desgaste de neumáticos y frenos :: Los EV desgastan más neumáticos (peso/torque) y menos frenos; discos traseros suelen oxidarse por poco uso. :: Según edad. :: Discos muy oxidados (frenos que casi no trabajan); neumáticos agotados. :: y
+    Garantía y software :: Garantía de batería (en muchas marcas 8 años) vigente y transferible; actualizaciones de software y recalls. :: Vigente y al día. :: Garantía no transferible; recalls de batería pendientes. :: r
+  </ck>
+  <div class="box warn"><span class="bt">Seguridad en híbridos y eléctricos</span><p>Los cables de alto voltaje son <b>naranjos</b>. No se tocan, no se desconectan y no se manipulan conectores. La inspección es visual, por software y en ruta. Daño visible en cables naranjos o en la carcasa de la batería = <b>STOP</b> hasta revisión en servicio técnico.</p></div>
+
+  <h3>D · 4x4 y AWD</h3>
+  <ck>
+    Engranar 4H y 4L :: Solo sobre superficie suelta (tierra, ripio) o recta a baja velocidad: engranar 4H, luego 4L según manual. Mirar testigos. :: Engrana, testigos encienden y apagan correctamente. :: No engrana, testigo parpadeando, ruidos fuertes. Nunca girar cerrado en 4x4 sobre asfalto seco. :: r
+    Caja de transferencia y diferenciales :: Fugas, ruidos en ruta, bloqueo de diferencial si tiene. :: Sin fugas ni zumbidos. :: Zumbido, fugas, bloqueo que no actúa. :: r
+    Señales de uso fuera de camino extremo :: Rayones en protectores, barro en chasis, winche, suspensión levantada, snorkel, neumáticos de barro. :: Uso ocasional. :: Uso extremo: golpes en chasis, suspensión y diferenciales. :: y
+    Neumáticos iguales :: En AWD, las 4 ruedas misma marca y desgaste. :: Iguales. :: Diferencias: daño en acoples y diferenciales. :: r
+  </ck>
+
+  <h3>E · Camionetas de trabajo y furgones</h3>
+  <ck>
+    Ballestas y suspensión trasera :: Mirar hojas de ballesta, gemelos, bujes, altura trasera sin carga. :: Altura correcta, hojas completas. :: Hojas quebradas o agregadas, caída trasera: sobrecarga habitual. :: r
+    Tolva o zona de carga :: Golpes, óxido, deformación, cubre pick-up. :: Desgaste acorde al uso. :: Tolva deformada, óxido perforante. :: y
+    Chasis :: Revisar largueros en la zona del eje trasero y enganche. :: Rectos. :: Chasis doblado o reforzado por sobrecarga. :: k
+    Embrague y tren motriz :: Prueba de patinaje en subida. :: Sin patinaje. :: Embrague agotado por carga/arrastre. :: r
+  </ck>
+
+  <h3>F · Conversión GNC / GLP</h3>
+  <ck>
+    Documentación :: Certificado de conversión y anotación correspondiente. :: Completa. :: Sin certificado: problema en revisión técnica y seguro. :: k
+    Cilindro :: Fecha de fabricación, revisión vigente, fijación, golpes, óxido. :: Vigente y bien fijado. :: Cilindro vencido, mal fijado o con daños. :: k
+    Funcionamiento :: Probar en ambos combustibles y el cambio entre ellos. :: Funciona en ambos sin tirones. :: Fallas, olor a gas, pérdida de potencia marcada. :: k
+    Impacto en motor :: Uso prolongado a gas exige más a válvulas y asientos. :: Compresión correcta. :: Ralentí inestable, tic de válvulas. :: r
+  </ck>
+
+  <h3>G · Por origen y uso</h3>
+  <div class="g3">
+    <div class="card"><h4>Ex-taxi, colectivo o app</h4><p>Kilometraje real muy alto (40.000–80.000 km/año), interior gastado, asiento trasero desgastado, perforaciones de taxímetro/letrero, color repintado. No es STOP automático, pero el precio debe reflejarlo y hay que revisar caja, suspensión y motor con más exigencia.</p></div>
+    <div class="card"><h4>Ex-rent a car o flota</h4><p>Mantenciones suelen estar al día (pedirlas), pero muchos conductores distintos. Revisar embrague, caja, golpes menores y reparaciones rápidas de carrocería. El informe de historial suele mostrar el dueño empresa.</p></div>
+    <div class="card"><h4>Remate de aseguradora / pérdida total</h4><p>Auto declarado siniestrado y reparado. Exigir fotos del siniestro y facturas de reparación. Revisión estructural máxima. Valor de reventa muy inferior: si no se informa, es <b>STOP</b> por ocultamiento.</p></div>
+    <div class="card"><h4>Automotora o consignación</h4><p>Confirmar quién es el dueño real (consignación: el titular es un tercero). Pedir garantía por escrito, qué cubre y por cuánto tiempo. Revisar gastos de transferencia y "gastos administrativos" ocultos.</p></div>
+    <div class="card"><h4>Zona franca</h4><p>Vehículos internados por zona franca tienen restricciones para circular fuera de la zona y requieren regularización y pago de impuestos. Verificar en el padrón/CAV. Sin regularización: <b>STOP</b>.</p></div>
+    <div class="card"><h4>Modificados / tuning</h4><p>Suspensión rebajada, escape libre, reprogramación, llantas mayores, luces no homologadas. Riesgo en revisión técnica, seguro y desgaste. Preguntar si conserva las piezas originales.</p></div>
+    <div class="card"><h4>Convertibles</h4><p>Ciclar la capota completa 2 veces: motores, sellos, filtraciones, luneta. Revisar humedad en alfombras y maleta. Reparaciones de capota son costosas.</p></div>
+    <div class="card"><h4>Alto kilometraje (&gt; 200.000 km)</h4><p>No descartar por km: decide el mantenimiento documentado. Exigir prueba de compresión o blow-by en taller, revisar consumo de aceite y la historia de distribución, embrague y suspensión.</p></div>
+    <div class="card"><h4>Clásicos y colección</h4><p>Prioridad en óxido estructural, originalidad (números de motor/chasis), disponibilidad de repuestos y documentación. Recomendar especialista de la marca adicional a esta inspección.</p></div>
+  </div>
+</section>

@@ -1,0 +1,52 @@
+<section class="chapter" id="c13">
+  <div class="ch-head">
+    <div class="ch-num">13</div>
+    <div class="ch-t"><span class="fase">Fase 8 · Cierre técnico</span><h2>Post-ruta y escáner OBD2</h2><p>Con el motor a temperatura aparecen fugas, ruidos y códigos que en frío no estaban. El escáner confirma lo que vimos… y lo que alguien intentó esconder.</p></div>
+    <div class="ch-meta"><span class="chip">10 min</span><span class="chip">Conector OBD bajo el tablero</span></div>
+  </div>
+
+  <h3>Al volver de la ruta <small>motor en marcha, sobre piso limpio</small></h3>
+  <ck>
+    Fugas en caliente :: Dejar 3–5 min en ralentí sobre un sector limpio, revisar suelo y vano motor con linterna. :: Sin goteos (salvo agua del A/C). :: Goteo nuevo de aceite, refrigerante o ATF. :: r
+    Olores :: Rodear el auto y oler en vano motor y ruedas. :: Sin olores fuertes. :: Aceite quemado (cae en escape), refrigerante dulce, embrague quemado, frenos recalentados en una sola rueda. :: y
+    Temperatura de ruedas :: Termómetro IR en cada llanta/disco tras la ruta. :: Temperaturas similares por eje. :: Una rueda mucho más caliente: cáliper agripado o rodamiento. :: y
+    Ventiladores y ralentí caliente :: Esperar con A/C encendido. :: Ventilador se activa; ralentí estable. :: Ventilador no parte; ralentí inestable con A/C. :: r
+    Re-arranque en caliente :: Apagar 2–3 min y volver a arrancar. :: Arranca inmediatamente. :: Cuesta arrancar en caliente (sensores, inyección, motor de partida). :: y
+    Nivel de aceite tras la ruta :: Apagar, esperar 5 min y medir. :: Igual al inicial. :: Bajó notoriamente (consumo o fuga). :: r
+  </ck>
+
+  <h3>Escáner OBD2 <small>todo auto bencinero desde ≈ 2000 y diésel desde ≈ 2004 lo tienen</small></h3>
+  <div class="g2">
+    <div>
+      <ol class="small">
+        <li><b>Conectar</b> con contacto en ON (motor apagado) y luego en marcha.</li>
+        <li><b>Leer códigos</b> en todas las categorías: activos (confirmados), pendientes y permanentes. Si el escáner lo permite, leer también módulos de ABS, airbag (SRS), caja y carrocería.</li>
+        <li><b>Monitores de preparación (readiness):</b> anotar cuántos están "listos" y cuáles "no listos".</li>
+        <li><b>Datos en vivo:</b> temperatura de refrigerante, RPM, ajustes de combustible (fuel trims), voltaje, temperatura de ATF si aparece.</li>
+        <li><b>Kilometraje en módulos:</b> algunos autos guardan km en la ECU, caja o ABS; compararlo con el tablero. Anotar también "distancia desde que se borraron códigos".</li>
+        <li><b>Captura de pantalla</b> de cada resultado para el informe. <b>Nunca borrar códigos</b> del auto del vendedor.</li>
+      </ol>
+    </div>
+    <div class="box dark" style="margin-top:0"><span class="bt">Códigos borrados: la trampa más común</span>
+      <p>Borrar códigos apaga el check engine… pero también <b>reinicia los monitores de preparación a "no listo"</b>. Un auto que se usa normalmente tiene casi todos los monitores listos.</p>
+      <p>Si encuentras <b>varios monitores "no listos"</b> y <b>poca distancia desde el borrado</b> (pocos km), alguien borró códigos o desconectó la batería recientemente. Pregunta por qué y súbelo a <b>Alerta</b>. El problema volverá en días.</p>
+    </div>
+  </div>
+
+  <table class="tb">
+    <thead><tr><th style="width:18%">Familia de códigos</th><th>Ejemplos frecuentes</th><th>Lectura e implicancia</th><th style="width:11%">Nivel</th></tr></thead>
+    <tbody>
+      <tr><td>P0300–P0312</td><td>Fallo de encendido aleatorio o por cilindro</td><td>Bujía, bobina o inyector (barato) hasta compresión baja (caro). Hacer prueba de compresión en taller si persiste.</td><td><span class="pill r">Alerta</span></td></tr>
+      <tr><td>P0420 / P0430</td><td>Eficiencia del catalizador bajo el umbral</td><td>Catalizador agotado o falso; puede venir de quemar aceite. Riesgo en revisión de gases.</td><td><span class="pill r">Alerta</span></td></tr>
+      <tr><td>P0171 / P0174</td><td>Mezcla pobre</td><td>Entrada de aire falsa, sensor MAF, presión de combustible.</td><td><span class="pill y">Precaución</span></td></tr>
+      <tr><td>P0128 / P0217</td><td>Termostato / sobretemperatura</td><td>Termostato abierto (barato) o sobrecalentamiento (revisar culata).</td><td><span class="pill y">Precaución</span> / <span class="pill k">STOP</span></td></tr>
+      <tr><td>P0700–P0799</td><td>Transmisión automática</td><td>Solenoides, sensores de velocidad, patinaje, temperatura de ATF. Siempre relevante.</td><td><span class="pill r">Alerta</span></td></tr>
+      <tr><td>P0010–P0019 / P0016</td><td>Sincronización árbol de levas / cigüeñal</td><td>Cadena estirada, variador de levas: asociado al cascabeleo en frío.</td><td><span class="pill r">Alerta</span></td></tr>
+      <tr><td>P2002 / P2463 / P0401</td><td>DPF / hollín / EGR (diésel)</td><td>Filtro saturado o EGR tapada; uso urbano excesivo.</td><td><span class="pill r">Alerta</span></td></tr>
+      <tr><td>P0A80 y P0Axx</td><td>Batería híbrida / sistema híbrido</td><td>Celdas degradadas o falla del inversor (cap. 14).</td><td><span class="pill k">STOP</span></td></tr>
+      <tr><td>Bxxxx (SRS)</td><td>Airbag, pretensores, sensor de impacto</td><td>Airbag desconectado, resistencia puesta o choque. Seguridad comprometida.</td><td><span class="pill k">STOP</span></td></tr>
+      <tr><td>Cxxxx</td><td>ABS, ESP, sensores de rueda</td><td>Sensor de rueda (barato) o módulo ABS (caro).</td><td><span class="pill y">Precaución</span></td></tr>
+      <tr><td>Uxxxx</td><td>Comunicación entre módulos</td><td>Cableado dañado, módulo con falla, posible daño por agua.</td><td><span class="pill r">Alerta</span></td></tr>
+    </tbody>
+  </table>
+</section>
