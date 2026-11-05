@@ -1,5 +1,22 @@
 # MOKTA · Videos listos para publicar
 
+## Entrega 5 · Rediseño visual (sin voz nueva, 0 créditos de ElevenLabs)
+Misma locución ElevenLabs, acelerada ×1,1 (atempo, mismo tono). Imagen rehecha con un sistema gráfico nuevo
+(`estudio/src/v3/kit.tsx`): paleta propia por video, brillos (glow), sombras profundas, tarjetas 3D con reflejo,
+partículas, grano de película, aurora animada, cámara con golpes de zoom, barridos de color entre escenas, textos que se
+"decodifican" como código de sistema y subtítulos con la palabra activa resaltada en color.
+
+| Video | Paleta / idea visual | Lo nuevo |
+|---|---|---|
+| [¿Lleno o hasta el clic?](videos/02_lleno-o-hasta-el-clic) | Azul marino + cian/verde neón (bencina OK) + naranja/rojo (peligro) | Gancho con tipeo de sistema + zoom-in + pulso de luz; pistola metálica 2.5D con brillos y partículas de bencina; **cámara continua** desde el interior del tubo hasta revelar estanque y cánister (sin cortes); el exceso y el cánister se tiñen de rojo |
+| [¿Cuál llega primero a 100?](videos/06_0-a-100-quien-gana) | Violeta + magenta / cian / lima, piso de grilla en movimiento | Autos que avanzan por pistas de neón con estela, cronómetro digital, rayos de velocidad, curva de fuerza con relleno luminoso |
+| [5 millones de km](videos/03_5-millones-de-km) | Azul noche + ámbar de odómetro + cian | Carretera en perspectiva, odómetros con glow, tarjetas 3D, trayectorias animadas a la Luna, gota de aceite cada 5.000 km |
+| [El más vendido](videos/07_el-auto-mas-vendido) | Morado + naranja / rosa / turquesa | Números gigantes de fondo, confeti en el n.º 1, reloj que va apilando Corollas, órbitas de colores alrededor de la Tierra |
+| [El más caro](videos/08_el-auto-mas-caro) | Negro + oro metálico + esmeralda | Caja fuerte con dial girando (el auto sigue oculto), opciones desenfocadas, cifras en oro, grilla de 10.000 autos en perspectiva |
+
+---
+
+
 ## Entrega 4 · Voz ElevenLabs en todos los videos
 Se reemplazó la locución de **7 videos** por una sola voz de ElevenLabs (**Bendjy Price**, español chileno, modelo `eleven_v4`),
 sin volver a usar Qwen3 ni otra voz local. Criterio de la voz: la única chilena masculina de la biblioteca descrita como

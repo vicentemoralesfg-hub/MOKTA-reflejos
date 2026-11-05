@@ -22,6 +22,11 @@ import { POT_TOTAL, Potencia } from "./v2/Potencia";
 import { C100_TOTAL, Cero100 } from "./v2/Cero100";
 import { VEN_TOTAL, Vendidos } from "./v2/Vendidos";
 import { CARO_TOTAL, Caro } from "./v2/Caro";
+import { CLIC3_TOTAL, ClicV3 } from "./v3/ClicV3";
+import { C100V3_TOTAL, Cero100V3 } from "./v3/Cero100V3";
+import { KMV3_TOTAL, KmV3 } from "./v3/KmV3";
+import { VENV3_TOTAL, VendidosV3 } from "./v3/VendidosV3";
+import { CAROV3_TOTAL, CaroV3 } from "./v3/CaroV3";
 
 const fontHandle = delayRender("Cargando fuentes");
 fontsReady.then(() => continueRender(fontHandle));
@@ -60,6 +65,11 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="V2-Cero100" component={Cero100} durationInFrames={C100_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="V2-Vendidos" component={Vendidos} durationInFrames={VEN_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
       <Composition id="V2-Caro" component={Caro} durationInFrames={CARO_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V3-Clic" component={ClicV3} durationInFrames={CLIC3_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V3-Cero100" component={Cero100V3} durationInFrames={C100V3_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V3-Km" component={KmV3} durationInFrames={KMV3_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V3-Vendidos" component={VendidosV3} durationInFrames={VENV3_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
+      <Composition id="V3-Caro" component={CaroV3} durationInFrames={CAROV3_TOTAL} defaultProps={{ withAudio: true }} {...reel} />
     </Folder>
     <Folder name="Imagenes">
       <Still id="I01-Conductores" component={Conductores} {...post} />

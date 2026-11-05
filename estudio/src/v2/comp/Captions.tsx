@@ -64,7 +64,11 @@ export const Captions: React.FC<{
   merges?: { from: string[]; to: string }[];
   top?: number;
   hide?: (f: number) => boolean;
-}> = ({ vo, f, fix = {}, merges = [], top = 1250, hide }) => {
+  /** v3: color de la palabra activa y estilo "pill" (palabra activa sobre fondo de color) */
+  accent?: string;
+  ink?: string;
+  pill?: boolean;
+}> = ({ vo, f, fix = {}, merges = [], top = 1250, hide, accent = C.yellow, ink = "#05070D", pill = false }) => {
   if (hide && hide(f)) return null;
   const t = f / 30;
   const chunks = vo.segments.flatMap((s) => chunkWords(tidy(s.words, merges)));
@@ -103,11 +107,17 @@ export const Captions: React.FC<{
           <span
             key={k}
             style={{
-              color: on ? C.yellow : C.white,
+              color: on ? (pill ? ink : accent) : C.white,
               opacity: on || said ? 1 : 0.9,
-              WebkitTextStroke: "10px rgba(0,0,0,0.85)",
+              WebkitTextStroke: on && pill ? undefined : "10px rgba(0,0,0,0.85)",
               paintOrder: "stroke fill",
-              textShadow: "0 6px 18px rgba(0,0,0,0.6)",
+              textShadow: on && pill ? undefined : "0 6px 18px rgba(0,0,0,0.6)",
+              background: on && pill ? accent : undefined,
+              borderRadius: on && pill ? 14 : undefined,
+              padding: on && pill ? "0 12px" : undefined,
+              boxShadow: on && pill ? `0 0 30px ${accent}` : undefined,
+              transform: on && pill ? "rotate(-2deg) scale(1.06)" : undefined,
+              display: "inline-block",
             }}
           >
             {txt}
