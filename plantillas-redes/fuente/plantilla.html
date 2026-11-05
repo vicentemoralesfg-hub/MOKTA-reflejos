@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>MOKTA · Plantilla</title>
+<style>
+  @font-face { font-family: "Barlow Condensed"; font-weight: 700; src: url("../../mokta-reel/public/fonts/barlow-condensed-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Barlow Condensed"; font-weight: 800; src: url("../../mokta-reel/public/fonts/barlow-condensed-latin-800-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 400; src: url("../../mokta-reel/public/fonts/inter-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 500; src: url("../../mokta-reel/public/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 600; src: url("../../mokta-reel/public/fonts/inter-latin-600-normal.woff2") format("woff2"); }
+
+  :root { --rojo: #E2080C; }
+  .blanco { --fondo: #FFFFFF; --tinta: #0B0B0B; --suave: #6E6E6E; --linea: #E4E4E4; --foto: #EDEDED; --fototxt: #A8A8A8; }
+  .negro  { --fondo: #0B0B0B; --tinta: #FFFFFF; --suave: #9C9C9C; --linea: #2A2A2A; --foto: #1C1C1C; --fototxt: #555555; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; }
+  .lienzo { position: relative; width: 1080px; overflow: hidden; background: var(--fondo); color: var(--tinta);
+            font-family: "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+  .post  { height: 1350px; }
+  .story { height: 1920px; }
+
+  .logo { display: block; position: absolute; }
+  .abs  { position: absolute; }
+
+  /* Etiqueta: línea roja + texto espaciado (igual que "C A R S" del logo) */
+  .etiqueta { display: flex; align-items: center; gap: 22px; font-weight: 600; font-size: 24px;
+              letter-spacing: .42em; text-transform: uppercase; color: var(--tinta); }
+  .etiqueta::before { content: ""; width: 64px; height: 5px; background: var(--rojo); }
+
+  .etiqueta.sin-linea { color: var(--rojo); }
+  .etiqueta.sin-linea::before { display: none; }
+  .barra { width: 96px; height: 8px; background: var(--rojo); }
+  .titulo { font-family: "Barlow Condensed", sans-serif; font-weight: 800; text-transform: uppercase;
+            line-height: .9; letter-spacing: .005em; color: var(--tinta); }
+  .texto { font-weight: 400; line-height: 1.42; color: var(--suave); }
+
+  .pie { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--linea);
+         font-weight: 500; font-size: 26px; color: var(--tinta); }
+  .pie .der { color: var(--suave); font-weight: 400; }
+
+  .foto { position: absolute; background: var(--foto); display: flex; align-items: center; justify-content: center; }
+  .logo, .abs { z-index: 1; }
+  /* Sin ejemplo: el área de foto queda transparente (PNG con hueco para poner la foto debajo) */
+  .hueco .lienzo { background: transparent; }
+  .hueco .foto { z-index: 0; background: transparent; box-shadow: 0 0 0 4000px var(--fondo); }
+  .foto span { font-weight: 600; font-size: 22px; letter-spacing: .42em; color: var(--fototxt); }
+</style>
+</head>
+<body>
+<div id="raiz"></div>
+<script>
+  // Parámetros: ?formato=post|story&tipo=foto|aviso|base&color=blanco|negro&ejemplo=1
+  const q = new URLSearchParams(location.search);
+  const formato = q.get("formato") || "post";
+  const tipo    = q.get("tipo")    || "aviso";
+  const color   = q.get("color")   || "blanco";
+  const ejemplo = q.get("ejemplo") === "1";
+
+  const USUARIO = q.get("usuario") || "@moktacars";
+  const LOGO = `../logo/mokta-logo-${color === "negro" ? "blanco" : "negro"}.png`;
+  const RATIO = 2541 / 543; // proporción del logo
+
+  // Textos de ejemplo (solo se muestran con ejemplo=1)
+  const T = {
+    post: {
+      aviso: { etiqueta: "Aviso", titulo: "Horario especial<br>este feriado", texto: "Este viernes atendemos de 10:00 a 14:00 hrs. Escríbenos por mensaje directo para coordinar tu visita.", pieDer: "Más info por DM" },
+      foto:  { titulo: "¿93, 95 o 97?", texto: "Qué bencina necesita realmente tu auto" },
+    },
+    story: {
+      aviso: { etiqueta: "Aviso", titulo: "Horario<br>especial<br>este feriado", texto: "Este viernes atendemos de 10:00 a 14:00 hrs. Escríbenos por mensaje directo para coordinar tu visita.", pieDer: "Más info por DM" },
+      foto:  { etiqueta: "Nuevo reel", titulo: "Cosas que te hacen<br>perder plata", texto: "Parte 1 · Ya disponible en el perfil" },
+    },
+  };
+  if (!ejemplo && tipo === "foto") document.body.classList.add("hueco");
+  const t = (T[formato] && T[formato][tipo]) || {};
+
+  const logo = (x, y, w) => `<img class="logo" src="${LOGO}" style="left:${x}px;top:${y}px;width:${w}px;height:${(w / RATIO).toFixed(1)}px">`;
+  const foto = (x, y, w, h) => `<div class="foto" data-hueco="1" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px">${ejemplo ? "<span>FOTO</span>" : ""}</div>`;
+  const pie = (x, y, w, der) => `<div class="pie abs" style="left:${x}px;top:${y}px;width:${w}px;padding-top:30px"><span>${USUARIO}</span><span class="der">${der || ""}</span></div>`;
+
+  let html = "";
+
+  if (formato === "post") {
+    const M = 90; // margen
+    if (tipo === "aviso") {
+      html += logo(M, M, 300);
+      html += `<div class="etiqueta abs" style="right:${M}px;top:${M + 16}px">${ejemplo ? t.etiqueta : "Aviso"}</div>`;
+      if (ejemplo) html += `
+        <div class="abs" style="left:${M}px;top:400px;width:${1080 - 2 * M}px">
+          <div class="barra"></div>
+          <div class="titulo" style="font-size:132px;margin-top:44px">${t.titulo}</div>
+          <div class="texto" style="font-size:34px;margin-top:44px;max-width:820px">${t.texto}</div>
+        </div>`;
+      html += pie(M, 1350 - M - 62, 1080 - 2 * M, ejemplo ? t.pieDer : "");
+    }
+    if (tipo === "foto") {
+      html += foto(0, 0, 1080, 1030);
+      html += `<div class="abs" style="left:0;top:1030px;width:${1080 * 0.58}px;height:8px;background:var(--rojo)"></div>`;
+      if (ejemplo) html += `
+        <div class="abs" style="left:${M - 20}px;top:1100px;width:620px">
+          <div class="titulo" style="font-size:84px">${t.titulo}</div>
+          <div class="texto" style="font-size:30px;margin-top:16px">${t.texto}</div>
+        </div>`;
+      html += logo(1080 - (M - 20) - 290, 1350 - (M - 20) - 62, 290);
+    }
+    if (tipo === "base") {
+      html += logo((1080 - 340) / 2, 1350 - M - 72, 340);
+      html += `<div class="abs" style="left:${M}px;top:${M}px;width:${1080 - 2 * M}px;height:1px;background:var(--linea)"></div>`;
+      html += `<div class="abs" style="left:${M}px;top:${M - 3}px;width:96px;height:7px;background:var(--rojo)"></div>`;
+    }
+  }
+
+  if (formato === "story") {
+    // Zonas seguras de Instagram: ~250 px arriba y ~340 px abajo quedan tapados por la interfaz.
+    const M = 80, TOP = 250, BOT = 1920 - 340;
+    if (tipo === "aviso") {
+      html += logo(M, TOP, 300);
+      html += `<div class="etiqueta abs" style="right:${M}px;top:${TOP + 16}px">${ejemplo ? t.etiqueta : "Aviso"}</div>`;
+      if (ejemplo) html += `
+        <div class="abs" style="left:${M}px;top:620px;width:${1080 - 2 * M}px">
+          <div class="barra"></div>
+          <div class="titulo" style="font-size:156px;margin-top:50px">${t.titulo}</div>
+          <div class="texto" style="font-size:40px;margin-top:52px;max-width:860px">${t.texto}</div>
+        </div>`;
+      html += pie(M, BOT - 62, 1080 - 2 * M, ejemplo ? t.pieDer : "");
+    }
+    if (tipo === "foto") {
+      html += logo((1080 - 340) / 2, TOP - 30, 340);
+      html += foto(M, 420, 1080 - 2 * M, 900);
+      html += `<div class="abs" style="left:${M}px;top:1320px;width:${(1080 - 2 * M) * 0.58}px;height:8px;background:var(--rojo)"></div>`;
+      if (ejemplo) html += `
+        <div class="abs" style="left:${M}px;top:1374px;width:${1080 - 2 * M}px">
+          <div class="etiqueta sin-linea" style="font-size:22px">${t.etiqueta}</div>
+          <div class="titulo" style="font-size:88px;margin-top:22px">${t.titulo}</div>
+          <div class="texto" style="font-size:30px;margin-top:14px">${t.texto}</div>
+        </div>`;
+    }
+    if (tipo === "base") {
+      html += logo((1080 - 360) / 2, TOP, 360);
+      html += `<div class="abs" style="left:${(1080 - 96) / 2}px;top:${BOT - 4}px;width:96px;height:7px;background:var(--rojo)"></div>`;
+      html += `<div class="abs" style="left:0;top:${BOT + 30}px;width:1080px;text-align:center;font-weight:500;font-size:26px;letter-spacing:.06em">${USUARIO}</div>`;
+    }
+  }
+
+  document.getElementById("raiz").innerHTML = `<div class="lienzo ${formato} ${color}">${html}</div>`;
+</script>
+</body>
+</html>
