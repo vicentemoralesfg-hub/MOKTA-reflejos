@@ -1,0 +1,5 @@
+node_modules
+out
+build
+# se regeneran con scripts/mix_audio.py
+public/audio/stems
