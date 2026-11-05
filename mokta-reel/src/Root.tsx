@@ -6,6 +6,8 @@ import { MoktaReel } from "./MoktaReel";
 import { Hook } from "./scenes/Hook";
 import { RoundScene } from "./scenes/RoundScene";
 import { Cta, Reveal } from "./scenes/Outro";
+import { BencinaReel } from "./bencina/BencinaReel";
+import { TOTAL as BENCINA_TOTAL } from "./bencina/timing";
 
 const fontHandle = delayRender("Cargando fuentes");
 fontsReady.then(() => continueRender(fontHandle));
@@ -14,6 +16,7 @@ const common = { fps: FPS, width: WIDTH, height: HEIGHT };
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition id="MoktaBencina" component={BencinaReel} durationInFrames={BENCINA_TOTAL} defaultProps={{ withAudio: true }} {...common} />
     <Composition id="MoktaReflejos" component={MoktaReel} durationInFrames={TOTAL_DURATION} defaultProps={{ withAudio: true }} {...common} />
     <Folder name="Escenas">
       <Composition id="Gancho" component={Hook} durationInFrames={HOOK_DURATION} {...common} />

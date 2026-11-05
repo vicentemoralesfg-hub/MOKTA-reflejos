@@ -1,0 +1,957 @@
+{
+ "fps": 30,
+ "tempo": 1.15,
+ "voiceFrames": 1761.39,
+ "words": [
+  {
+   "text": "¿Por",
+   "start": 2.97,
+   "end": 4.17
+  },
+  {
+   "text": "qué",
+   "start": 5.22,
+   "end": 6.26
+  },
+  {
+   "text": "los",
+   "start": 8.35,
+   "end": 10.43
+  },
+  {
+   "text": "últimos",
+   "start": 12.52,
+   "end": 20.87
+  },
+  {
+   "text": "kilómetros",
+   "start": 22.96,
+   "end": 35.48
+  },
+  {
+   "text": "de",
+   "start": 36.52,
+   "end": 37.57
+  },
+  {
+   "text": "bencina",
+   "start": 38.61,
+   "end": 50.09
+  },
+  {
+   "text": "parecen",
+   "start": 54.26,
+   "end": 64.7
+  },
+  {
+   "text": "desaparecer",
+   "start": 66.78,
+   "end": 81.39
+  },
+  {
+   "text": "mucho",
+   "start": 83.48,
+   "end": 91.83
+  },
+  {
+   "text": "más",
+   "start": 92.87,
+   "end": 96.0
+  },
+  {
+   "text": "rápido?",
+   "start": 98.09,
+   "end": 113.74
+  },
+  {
+   "text": "No",
+   "start": 121.04,
+   "end": 125.22
+  },
+  {
+   "text": "es",
+   "start": 127.3,
+   "end": 131.48
+  },
+  {
+   "text": "tu",
+   "start": 133.57,
+   "end": 135.65
+  },
+  {
+   "text": "imaginación.",
+   "start": 140.87,
+   "end": 162.78
+  },
+  {
+   "text": "Llenas",
+   "start": 168.7,
+   "end": 175.3
+  },
+  {
+   "text": "el",
+   "start": 176.35,
+   "end": 177.39
+  },
+  {
+   "text": "estanque…",
+   "start": 179.48,
+   "end": 197.22
+  },
+  {
+   "text": "y",
+   "start": 198.26,
+   "end": 200.35
+  },
+  {
+   "text": "la",
+   "start": 202.43,
+   "end": 203.48
+  },
+  {
+   "text": "aguja",
+   "start": 204.52,
+   "end": 212.87
+  },
+  {
+   "text": "no",
+   "start": 217.04,
+   "end": 219.13
+  },
+  {
+   "text": "se",
+   "start": 221.22,
+   "end": 225.39
+  },
+  {
+   "text": "mueve.",
+   "start": 227.48,
+   "end": 245.56
+  },
+  {
+   "text": "Pasas",
+   "start": 246.97,
+   "end": 252.52
+  },
+  {
+   "text": "la",
+   "start": 253.57,
+   "end": 254.61
+  },
+  {
+   "text": "mitad…",
+   "start": 257.74,
+   "end": 272.01
+  },
+  {
+   "text": "y",
+   "start": 272.69,
+   "end": 273.39
+  },
+  {
+   "text": "se",
+   "start": 277.57,
+   "end": 279.65
+  },
+  {
+   "text": "desploma.",
+   "start": 282.78,
+   "end": 306.08
+  },
+  {
+   "text": "El",
+   "start": 307.49,
+   "end": 308.87
+  },
+  {
+   "text": "secreto:",
+   "start": 310.96,
+   "end": 328.36
+  },
+  {
+   "text": "tu",
+   "start": 329.03,
+   "end": 329.74
+  },
+  {
+   "text": "marcador",
+   "start": 331.83,
+   "end": 344.35
+  },
+  {
+   "text": "no",
+   "start": 346.43,
+   "end": 348.52
+  },
+  {
+   "text": "mide",
+   "start": 352.7,
+   "end": 358.96
+  },
+  {
+   "text": "litros.",
+   "start": 361.04,
+   "end": 378.78
+  },
+  {
+   "text": "Mide",
+   "start": 379.83,
+   "end": 390.26
+  },
+  {
+   "text": "ALTURA.",
+   "start": 392.35,
+   "end": 416.35
+  },
+  {
+   "text": "Adentro",
+   "start": 417.39,
+   "end": 423.65
+  },
+  {
+   "text": "del",
+   "start": 425.74,
+   "end": 427.83
+  },
+  {
+   "text": "estanque",
+   "start": 430.96,
+   "end": 442.43
+  },
+  {
+   "text": "hay",
+   "start": 444.52,
+   "end": 446.61
+  },
+  {
+   "text": "un",
+   "start": 448.7,
+   "end": 450.78
+  },
+  {
+   "text": "flotador,",
+   "start": 451.83,
+   "end": 470.27
+  },
+  {
+   "text": "con",
+   "start": 470.95,
+   "end": 471.65
+  },
+  {
+   "text": "un",
+   "start": 473.74,
+   "end": 475.83
+  },
+  {
+   "text": "brazo",
+   "start": 476.87,
+   "end": 485.22
+  },
+  {
+   "text": "que",
+   "start": 486.26,
+   "end": 488.35
+  },
+  {
+   "text": "se",
+   "start": 489.39,
+   "end": 490.43
+  },
+  {
+   "text": "desliza",
+   "start": 492.52,
+   "end": 502.96
+  },
+  {
+   "text": "sobre",
+   "start": 505.04,
+   "end": 511.3
+  },
+  {
+   "text": "una",
+   "start": 513.39,
+   "end": 515.48
+  },
+  {
+   "text": "resistencia.",
+   "start": 517.57,
+   "end": 543.31
+  },
+  {
+   "text": "Baja",
+   "start": 543.99,
+   "end": 548.87
+  },
+  {
+   "text": "la",
+   "start": 549.91,
+   "end": 550.96
+  },
+  {
+   "text": "bencina,",
+   "start": 552.0,
+   "end": 570.78
+  },
+  {
+   "text": "baja",
+   "start": 571.83,
+   "end": 576.0
+  },
+  {
+   "text": "el",
+   "start": 578.09,
+   "end": 580.17
+  },
+  {
+   "text": "flotador,",
+   "start": 581.22,
+   "end": 599.66
+  },
+  {
+   "text": "cambia",
+   "start": 600.34,
+   "end": 607.3
+  },
+  {
+   "text": "la",
+   "start": 608.35,
+   "end": 609.39
+  },
+  {
+   "text": "señal…",
+   "start": 611.48,
+   "end": 626.79
+  },
+  {
+   "text": "y",
+   "start": 627.47,
+   "end": 628.17
+  },
+  {
+   "text": "se",
+   "start": 630.26,
+   "end": 634.43
+  },
+  {
+   "text": "mueve",
+   "start": 636.52,
+   "end": 642.78
+  },
+  {
+   "text": "la",
+   "start": 644.87,
+   "end": 645.91
+  },
+  {
+   "text": "aguja.",
+   "start": 646.96,
+   "end": 668.87
+  },
+  {
+   "text": "Uno:",
+   "start": 669.91,
+   "end": 685.23
+  },
+  {
+   "text": "si",
+   "start": 685.9,
+   "end": 686.61
+  },
+  {
+   "text": "llenas",
+   "start": 687.65,
+   "end": 694.96
+  },
+  {
+   "text": "hasta",
+   "start": 696.34,
+   "end": 699.13
+  },
+  {
+   "text": "el",
+   "start": 701.22,
+   "end": 703.3
+  },
+  {
+   "text": "tope,",
+   "start": 706.43,
+   "end": 716.87
+  },
+  {
+   "text": "la",
+   "start": 717.91,
+   "end": 720.0
+  },
+  {
+   "text": "bencina",
+   "start": 722.09,
+   "end": 730.43
+  },
+  {
+   "text": "queda",
+   "start": 733.57,
+   "end": 736.7
+  },
+  {
+   "text": "por",
+   "start": 738.78,
+   "end": 740.87
+  },
+  {
+   "text": "encima",
+   "start": 745.04,
+   "end": 753.39
+  },
+  {
+   "text": "del",
+   "start": 756.52,
+   "end": 759.65
+  },
+  {
+   "text": "máximo",
+   "start": 760.7,
+   "end": 770.09
+  },
+  {
+   "text": "del",
+   "start": 772.17,
+   "end": 774.26
+  },
+  {
+   "text": "flotador.",
+   "start": 775.3,
+   "end": 796.51
+  },
+  {
+   "text": "Los",
+   "start": 797.92,
+   "end": 799.3
+  },
+  {
+   "text": "primeros",
+   "start": 802.43,
+   "end": 807.65
+  },
+  {
+   "text": "litros",
+   "start": 809.74,
+   "end": 816.0
+  },
+  {
+   "text": "se",
+   "start": 818.09,
+   "end": 820.17
+  },
+  {
+   "text": "van…",
+   "start": 826.43,
+   "end": 834.08
+  },
+  {
+   "text": "y",
+   "start": 835.49,
+   "end": 836.87
+  },
+  {
+   "text": "la",
+   "start": 837.91,
+   "end": 838.96
+  },
+  {
+   "text": "aguja",
+   "start": 841.04,
+   "end": 851.48
+  },
+  {
+   "text": "ni",
+   "start": 853.57,
+   "end": 855.65
+  },
+  {
+   "text": "se",
+   "start": 857.74,
+   "end": 859.83
+  },
+  {
+   "text": "entera.",
+   "start": 865.04,
+   "end": 881.74
+  },
+  {
+   "text": "Dos:",
+   "start": 882.78,
+   "end": 900.18
+  },
+  {
+   "text": "el",
+   "start": 900.86,
+   "end": 901.57
+  },
+  {
+   "text": "estanque",
+   "start": 903.65,
+   "end": 918.26
+  },
+  {
+   "text": "no",
+   "start": 920.35,
+   "end": 922.43
+  },
+  {
+   "text": "es",
+   "start": 924.52,
+   "end": 928.7
+  },
+  {
+   "text": "una",
+   "start": 930.78,
+   "end": 934.96
+  },
+  {
+   "text": "caja.",
+   "start": 937.04,
+   "end": 950.27
+  },
+  {
+   "text": "Se",
+   "start": 950.95,
+   "end": 951.65
+  },
+  {
+   "text": "amolda",
+   "start": 953.74,
+   "end": 961.38
+  },
+  {
+   "text": "al",
+   "start": 962.79,
+   "end": 964.17
+  },
+  {
+   "text": "piso",
+   "start": 965.22,
+   "end": 970.43
+  },
+  {
+   "text": "del",
+   "start": 972.52,
+   "end": 974.61
+  },
+  {
+   "text": "auto,",
+   "start": 976.7,
+   "end": 990.6
+  },
+  {
+   "text": "al",
+   "start": 992.01,
+   "end": 993.39
+  },
+  {
+   "text": "eje",
+   "start": 995.48,
+   "end": 1005.91
+  },
+  {
+   "text": "y",
+   "start": 1006.62,
+   "end": 1007.3
+  },
+  {
+   "text": "al",
+   "start": 1008.0,
+   "end": 1010.09
+  },
+  {
+   "text": "escape,",
+   "start": 1019.48,
+   "end": 1029.57
+  },
+  {
+   "text": "y",
+   "start": 1030.25,
+   "end": 1030.96
+  },
+  {
+   "text": "muchas",
+   "start": 1033.04,
+   "end": 1039.3
+  },
+  {
+   "text": "veces",
+   "start": 1041.39,
+   "end": 1049.74
+  },
+  {
+   "text": "es",
+   "start": 1051.83,
+   "end": 1058.09
+  },
+  {
+   "text": "más",
+   "start": 1059.13,
+   "end": 1062.26
+  },
+  {
+   "text": "angosto",
+   "start": 1064.35,
+   "end": 1074.78
+  },
+  {
+   "text": "abajo.",
+   "start": 1076.87,
+   "end": 1094.61
+  },
+  {
+   "text": "Ahí,",
+   "start": 1095.65,
+   "end": 1107.13
+  },
+  {
+   "text": "cada",
+   "start": 1108.17,
+   "end": 1114.43
+  },
+  {
+   "text": "litro",
+   "start": 1117.57,
+   "end": 1122.78
+  },
+  {
+   "text": "baja",
+   "start": 1124.87,
+   "end": 1133.22
+  },
+  {
+   "text": "mucho",
+   "start": 1135.3,
+   "end": 1143.65
+  },
+  {
+   "text": "más",
+   "start": 1144.7,
+   "end": 1149.91
+  },
+  {
+   "text": "el",
+   "start": 1150.96,
+   "end": 1152.0
+  },
+  {
+   "text": "nivel.",
+   "start": 1160.35,
+   "end": 1169.4
+  },
+  {
+   "text": "Mismo",
+   "start": 1170.08,
+   "end": 1174.96
+  },
+  {
+   "text": "litro…",
+   "start": 1177.04,
+   "end": 1194.78
+  },
+  {
+   "text": "más",
+   "start": 1195.83,
+   "end": 1200.0
+  },
+  {
+   "text": "aguja.",
+   "start": 1202.09,
+   "end": 1221.57
+  },
+  {
+   "text": "Tres:",
+   "start": 1222.25,
+   "end": 1240.36
+  },
+  {
+   "text": "los",
+   "start": 1241.03,
+   "end": 1241.74
+  },
+  {
+   "text": "fabricantes",
+   "start": 1243.83,
+   "end": 1258.43
+  },
+  {
+   "text": "la",
+   "start": 1259.48,
+   "end": 1260.52
+  },
+  {
+   "text": "calibran",
+   "start": 1262.61,
+   "end": 1273.04
+  },
+  {
+   "text": "así",
+   "start": 1276.17,
+   "end": 1280.35
+  },
+  {
+   "text": "a",
+   "start": 1281.39,
+   "end": 1283.48
+  },
+  {
+   "text": "propósito.",
+   "start": 1286.61,
+   "end": 1307.48
+  },
+  {
+   "text": "Aguanta",
+   "start": 1308.52,
+   "end": 1318.96
+  },
+  {
+   "text": "arriba…",
+   "start": 1320.0,
+   "end": 1334.27
+  },
+  {
+   "text": "y",
+   "start": 1334.95,
+   "end": 1335.65
+  },
+  {
+   "text": "marca",
+   "start": 1337.74,
+   "end": 1344.0
+  },
+  {
+   "text": "vacío",
+   "start": 1346.09,
+   "end": 1356.52
+  },
+  {
+   "text": "cuando",
+   "start": 1357.57,
+   "end": 1362.78
+  },
+  {
+   "text": "todavía",
+   "start": 1364.87,
+   "end": 1379.48
+  },
+  {
+   "text": "queda",
+   "start": 1381.57,
+   "end": 1385.74
+  },
+  {
+   "text": "reserva.",
+   "start": 1387.83,
+   "end": 1407.31
+  },
+  {
+   "text": "O",
+   "start": 1407.99,
+   "end": 1408.7
+  },
+  {
+   "text": "sea:",
+   "start": 1410.78,
+   "end": 1424.01
+  },
+  {
+   "text": "tu",
+   "start": 1424.69,
+   "end": 1425.39
+  },
+  {
+   "text": "auto",
+   "start": 1427.48,
+   "end": 1435.83
+  },
+  {
+   "text": "no",
+   "start": 1437.91,
+   "end": 1442.09
+  },
+  {
+   "text": "gasta",
+   "start": 1443.13,
+   "end": 1452.52
+  },
+  {
+   "text": "más",
+   "start": 1453.57,
+   "end": 1458.78
+  },
+  {
+   "text": "al",
+   "start": 1459.83,
+   "end": 1460.87
+  },
+  {
+   "text": "final.",
+   "start": 1462.96,
+   "end": 1478.61
+  },
+  {
+   "text": "Gasta",
+   "start": 1479.65,
+   "end": 1485.91
+  },
+  {
+   "text": "igual.",
+   "start": 1488.0,
+   "end": 1501.57
+  },
+  {
+   "text": "Lo",
+   "start": 1502.61,
+   "end": 1504.7
+  },
+  {
+   "text": "que",
+   "start": 1506.78,
+   "end": 1508.87
+  },
+  {
+   "text": "cambia",
+   "start": 1510.96,
+   "end": 1523.48
+  },
+  {
+   "text": "es",
+   "start": 1525.57,
+   "end": 1529.74
+  },
+  {
+   "text": "la",
+   "start": 1530.78,
+   "end": 1531.83
+  },
+  {
+   "text": "aguja.",
+   "start": 1533.91,
+   "end": 1550.9
+  },
+  {
+   "text": "Eso",
+   "start": 1552.7,
+   "end": 1558.96
+  },
+  {
+   "text": "sí:",
+   "start": 1560.0,
+   "end": 1572.52
+  },
+  {
+   "text": "no",
+   "start": 1573.57,
+   "end": 1577.74
+  },
+  {
+   "text": "andes",
+   "start": 1579.83,
+   "end": 1586.09
+  },
+  {
+   "text": "en",
+   "start": 1588.17,
+   "end": 1590.26
+  },
+  {
+   "text": "reserva.",
+   "start": 1593.39,
+   "end": 1609.75
+  },
+  {
+   "text": "La",
+   "start": 1610.43,
+   "end": 1611.13
+  },
+  {
+   "text": "bomba",
+   "start": 1613.22,
+   "end": 1619.48
+  },
+  {
+   "text": "se",
+   "start": 1620.52,
+   "end": 1621.57
+  },
+  {
+   "text": "enfría",
+   "start": 1623.65,
+   "end": 1634.09
+  },
+  {
+   "text": "con",
+   "start": 1636.17,
+   "end": 1638.26
+  },
+  {
+   "text": "la",
+   "start": 1640.35,
+   "end": 1642.43
+  },
+  {
+   "text": "misma",
+   "start": 1644.52,
+   "end": 1652.87
+  },
+  {
+   "text": "bencina.",
+   "start": 1653.91,
+   "end": 1676.87
+  },
+  {
+   "text": "¿Y",
+   "start": 1679.3,
+   "end": 1680.0
+  },
+  {
+   "text": "tú,",
+   "start": 1682.09,
+   "end": 1695.31
+  },
+  {
+   "text": "hasta",
+   "start": 1695.99,
+   "end": 1702.96
+  },
+  {
+   "text": "dónde",
+   "start": 1704.0,
+   "end": 1709.22
+  },
+  {
+   "text": "dejas",
+   "start": 1711.3,
+   "end": 1717.57
+  },
+  {
+   "text": "bajar",
+   "start": 1718.61,
+   "end": 1725.91
+  },
+  {
+   "text": "la",
+   "start": 1726.96,
+   "end": 1728.0
+  },
+  {
+   "text": "aguja?",
+   "start": 1730.09,
+   "end": 1747.49
+  },
+  {
+   "text": "Te",
+   "start": 1748.17,
+   "end": 1748.87
+  },
+  {
+   "text": "leo.",
+   "start": 1750.96,
+   "end": 1763.48
+  }
+ ]
+}
