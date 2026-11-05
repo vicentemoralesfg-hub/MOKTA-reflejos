@@ -6,7 +6,7 @@ Prepara la locución para ritmo de reel y recalcula los tiempos de cada palabra.
 2. Acelera la voz ×TEMPO conservando el tono (ffmpeg atempo).
 3. Lleva cada palabra de la transcripción a la nueva línea de tiempo y escribe src/vo.json.
 
-Entrada: source/locucion_toma1.mp3 (ElevenLabs, voz l1zE9xgNpUTaQCZzpNJa) + source/locucion_toma1_palabras.json (Scribe)
+Entrada: source/locucion_v2_toma1.mp3 (ElevenLabs, voz l1zE9xgNpUTaQCZzpNJa) + source/locucion_v2_toma1_palabras.json (Scribe)
 Salida:  public/vo/voz.wav (48 kHz mono) + src/vo.json
 """
 import json
@@ -17,8 +17,8 @@ import sys
 import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(ROOT, "source", "locucion_toma1.mp3")
-WORDS = os.path.join(ROOT, "source", "locucion_toma1_palabras.json")
+SRC = os.path.join(ROOT, "source", "locucion_v2_toma1.mp3")
+WORDS = os.path.join(ROOT, "source", "locucion_v2_toma1_palabras.json")
 OUT_WAV = os.path.join(ROOT, "public", "vo", "voz.wav")
 OUT_JSON = os.path.join(ROOT, "src", "vo.json")
 
@@ -30,9 +30,12 @@ DEFAULT_KEEP = 0.17
 # Pausas con intención (palabra anterior → segundos de silencio a conservar)
 KEEP_AFTER = {
     "personas.": 0.22,
-    "parte.": 0.2,
-    "pista...": 0.34,
-    "viste.": 0.42,
+    "peligroso:": 0.16,
+    "carril...": 0.34,
+    "viste.": 0.36,
+    "pasa?": 0.2,
+    "perdido.": 0.16,
+    "completo.": 0.24,
     "segundos.": 0.22,
     "nunca.": 0.24,
     "hombro.": 0.22,
@@ -73,7 +76,7 @@ def main():
     words = [w for w in json.load(open(WORDS))["words"] if w["type"] == "word" and not w["text"].startswith("[")]
 
     # Corrección manual del tramo "95%" (Scribe lo comprime; medido en la envolvente de energía)
-    fix = {"95%": (4.08, 5.46), "de": (5.50, 5.60), "las": (5.62, 5.84), "personas.": (5.88, 6.72)}
+    fix = {"95%": (4.16, 5.60), "de": (5.63, 5.72), "las": (5.74, 5.94), "personas.": (6.0, 6.8)}
     for i, w in enumerate(words):
         if w["text"] in fix and 3.5 < w["start"] < 6.5:
             w["start"], w["end"] = fix[w["text"]]

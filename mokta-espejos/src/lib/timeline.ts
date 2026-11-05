@@ -12,7 +12,7 @@ export const VO_DURATION = vo.durationS;
 
 /** Pequeño margen para que la voz no empiece en el fotograma 0 exacto. */
 export const VO_OFFSET = 0.05;
-export const TAIL_S = 1.7;
+export const TAIL_S = 1.2;
 export const TOTAL_FRAMES = Math.ceil((VO_OFFSET + VO_DURATION + TAIL_S) * FPS);
 
 const norm = (s: string) =>
@@ -52,30 +52,31 @@ export const endOf = (phrase: string, occurrence = 1): number => {
 export const T = {
   hook: 0,
   pct: at("95%"),
+  danger: at("Y ese error"),
+  change: at("te cambias de carril"),
+  crash: at("chocas"),
+  neverSaw: at("nunca viste"),
+  how: at("Cómo pasa"),
   waste: at("Ese pedazo"),
   wasteWord: at("espacio perdido"),
-  stays: at("tu auto no se va"),
-  overlap: at("Con el espejo así"),
-  sameAs: at("ves casi lo mismo"),
+  overlap: at("El espejo mira"),
   central: at("retrovisor central"),
-  sides: at("Y a los costados"),
-  blind: at("puntos ciegos"),
-  fits: at("Ahí cabe"),
-  change: at("Te cambias"),
-  missed: at("y no lo viste"),
+  sides: at("y a tu lado"),
+  blind: at("punto ciego"),
+  fits: at("donde cabe"),
   fix: at("La solución"),
   tenSec: at("10 segundos"),
   step1: at("Apoya la cabeza"),
   window: at("ventana"),
   openLeft: at("y abre el espejo"),
   barely: at("apenas veas"),
-  step2: at("Ahora inclínate"),
+  step2: at("Luego inclínate"),
   center: at("centro"),
   sameRight: at("y haz lo mismo"),
   back: at("Vuelve a tu posición"),
   vanish: at("desaparece"),
-  appears: at("y aparece la pista"),
-  result: at("Resultado"),
+  appears: at("y aparece el carril"),
+  result: at("Ahora el auto"),
   overtakes: at("el auto que te adelanta"),
   rear: at("retrovisor", 2),
   toMirror: at("al espejo"),
@@ -84,6 +85,5 @@ export const T = {
   still: at("Igual"),
   shoulder: at("mira sobre tu hombro"),
   cta: at("Mándale esto"),
-  ctaMirror: at("en el espejo"),
   end: VO_OFFSET + VO_DURATION,
 };

@@ -5,33 +5,45 @@ import { COLORS, FPS } from "./config";
 import { T, TOTAL_FRAMES, VO_OFFSET, at } from "./lib/timeline";
 import { CaptionBand, Captions } from "./components/Captions";
 import { Flash } from "./components/Ui";
-import { MirrorHook, MirrorResult } from "./scenes/MirrorScenes";
-import { TopDownScene } from "./scenes/TopDownScene";
+import { MirrorResult, MirrorWaste } from "./scenes/MirrorScenes";
+import { CRASH_AT, REWIND_A, TopDownScene } from "./scenes/TopDownScene";
+import { HookScene } from "./scenes/HookScene";
 import { CtaCard, FixCard } from "./scenes/Cards";
 
 /** Inicio de la escena del espejo grande (después de que la cabeza vuelve a su posición). */
 export const BACK_END = T.back + 0.7;
 
 /** Cortes de escena (s). */
-const CUTS = [T.overlap, T.fix, T.step1, BACK_END, T.result, T.cta];
+const CUTS = [T.danger, T.waste, T.overlap, T.fix, T.step1, BACK_END, T.result, T.cta];
 
 type Cue = { at: number; src: string; volume: number };
 const ERROR_AT = at("error");
 const CUES: Cue[] = [
-  { at: 0, src: "sfx/impacto.wav", volume: 0.45 },
+  // gancho
+  { at: 0, src: "sfx/impacto.wav", volume: 0.5 },
   { at: ERROR_AT, src: "sfx/error.wav", volume: 0.32 },
-  { at: T.pct, src: "sfx/impacto.wav", volume: 0.55 },
-  { at: T.waste - 0.05, src: "sfx/whoosh.wav", volume: 0.45 },
-  { at: T.wasteWord, src: "sfx/error.wav", volume: 0.4 },
-  { at: T.stays + 0.42, src: "sfx/pop.wav", volume: 0.6 },
+  { at: T.pct, src: "sfx/impacto.wav", volume: 0.6 },
+  // consecuencia: cambio de carril y choque
+  { at: T.danger - 0.12, src: "sfx/whoosh.wav", volume: 0.55 },
+  { at: T.danger + 0.2, src: "sfx/pop.wav", volume: 0.35 },
+  { at: T.danger + 0.6, src: "sfx/acierto.wav", volume: 0.25 },
+  { at: T.change - 0.25, src: "sfx/intermitente.wav", volume: 0.55 },
+  { at: CRASH_AT - 0.03, src: "sfx/choque.wav", volume: 0.85 },
+  { at: CRASH_AT - 0.02, src: "sfx/impacto.wav", volume: 0.6 },
+  { at: CRASH_AT + 0.3, src: "sfx/bocina.wav", volume: 0.45 },
+  { at: REWIND_A - 0.05, src: "sfx/rebobinado.wav", volume: 0.6 },
+  // por qué pasa
+  { at: T.waste - 0.08, src: "sfx/whoosh2.wav", volume: 0.45 },
+  { at: T.waste + 0.25, src: "sfx/pop.wav", volume: 0.4 },
+  { at: T.wasteWord, src: "sfx/error.wav", volume: 0.42 },
   { at: T.overlap - 0.12, src: "sfx/whoosh.wav", volume: 0.55 },
-  { at: T.overlap + 0.2, src: "sfx/pop.wav", volume: 0.35 },
-  { at: T.overlap + 0.35, src: "sfx/pop.wav", volume: 0.35 },
+  { at: T.overlap + 0.15, src: "sfx/pop.wav", volume: 0.35 },
+  { at: T.overlap + 0.3, src: "sfx/pop.wav", volume: 0.35 },
   { at: T.central - 0.1, src: "sfx/pop.wav", volume: 0.45 },
   { at: T.blind, src: "sfx/error.wav", volume: 0.5 },
   { at: T.fits - 0.2, src: "sfx/whoosh2.wav", volume: 0.45 },
-  { at: T.missed - 0.12, src: "sfx/bocina.wav", volume: 0.7 },
-  { at: T.missed, src: "sfx/impacto.wav", volume: 0.55 },
+  { at: T.fits + 0.55, src: "sfx/pop.wav", volume: 0.4 },
+  // solución
   { at: T.fix - 0.1, src: "sfx/whoosh.wav", volume: 0.55 },
   { at: T.tenSec - 0.05, src: "sfx/impacto.wav", volume: 0.45 },
   { at: T.step1 - 0.1, src: "sfx/whoosh2.wav", volume: 0.4 },
@@ -44,26 +56,29 @@ const CUES: Cue[] = [
   { at: BACK_END - 0.1, src: "sfx/whoosh.wav", volume: 0.5 },
   { at: T.vanish, src: "sfx/whoosh2.wav", volume: 0.4 },
   { at: T.appears + 0.55, src: "sfx/acierto.wav", volume: 0.5 },
+  // resultado
   { at: T.result - 0.1, src: "sfx/whoosh.wav", volume: 0.5 },
   { at: T.result + 0.75, src: "sfx/acierto.wav", volume: 0.45 },
   { at: T.rear - 0.1, src: "sfx/pop.wav", volume: 0.42 },
-  { at: T.toMirror, src: "sfx/pop.wav", volume: 0.42 },
+  { at: T.toMirror + 0.15, src: "sfx/pop.wav", volume: 0.42 },
   { at: T.toView, src: "sfx/pop.wav", volume: 0.42 },
   { at: T.never, src: "sfx/acierto.wav", volume: 0.42 },
   { at: T.still - 0.05, src: "sfx/whoosh2.wav", volume: 0.4 },
-  { at: T.still + 0.3, src: "sfx/pop.wav", volume: 0.4 },
+  { at: T.still + 0.3, src: "sfx/intermitente.wav", volume: 0.4 },
   { at: T.shoulder, src: "sfx/pop.wav", volume: 0.45 },
+  // cierre
   { at: T.cta - 0.1, src: "sfx/whoosh.wav", volume: 0.55 },
   { at: T.cta + 0.15, src: "sfx/pop.wav", volume: 0.45 },
   { at: T.cta + 0.5, src: "sfx/whoosh2.wav", volume: 0.35 },
   { at: T.end + 0.05, src: "sfx/impacto.wav", volume: 0.4 },
 ];
 
+
 const musicVolume = (f: number) => {
   const t = f / FPS;
   const base = 0.2;
   const fadeIn = interpolate(t, [0, 0.08], [0, 1], { extrapolateRight: "clamp" });
-  const dip = interpolate(t, [T.missed + 0.25, T.missed + 0.5, T.fix - 0.1, T.fix], [1, 0.15, 0.15, 1], {
+  const dip = interpolate(t, [CRASH_AT, CRASH_AT + 0.15, T.waste - 0.1, T.waste + 0.1], [1, 0.12, 0.12, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -77,7 +92,9 @@ export const Reel: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
   const t = frame / FPS;
 
   let scene: React.ReactNode;
-  if (t < T.overlap) scene = <MirrorHook t={t} />;
+  if (t < T.danger) scene = <HookScene t={t} />;
+  else if (t < T.waste) scene = <TopDownScene t={t} />;
+  else if (t < T.overlap) scene = <MirrorWaste t={t} />;
   else if (t < T.fix) scene = <TopDownScene t={t} />;
   else if (t < T.step1) scene = <FixCard t={t} />;
   else if (t < BACK_END) scene = <TopDownScene t={t} />;
@@ -85,7 +102,7 @@ export const Reel: React.FC<{ withAudio?: boolean }> = ({ withAudio = true }) =>
   else if (t < T.cta) scene = <TopDownScene t={t} />;
   else scene = <CtaCard t={t} />;
 
-  const hideCaptions = (tt: number) => (tt >= T.fix && tt < T.step1) || tt >= T.end + 0.1;
+  const hideCaptions = (tt: number) => tt < T.danger || (tt >= T.fix && tt < T.step1) || tt >= T.end + 0.1;
 
   return (
     <AbsoluteFill style={{ background: COLORS.ink }}>

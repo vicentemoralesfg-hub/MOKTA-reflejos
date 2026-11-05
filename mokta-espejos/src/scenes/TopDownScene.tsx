@@ -29,54 +29,97 @@ const panOf = (v: number) =>
     extrapolateRight: "clamp",
   });
 
-/** Escena 1: el error (de T.overlap a T.fix). */
-const phaseError = (t: number) => {
-  const camIn: Camera = { ax: 540, ay: 760, fx: 540, fy: 980, s: 1.8 };
-  const camLane: Camera = { ax: 540, ay: 700, fx: 450, fy: 1080, s: 1.0 };
-  let cam = lerpCam(camIn, camE, ramp(t, T.overlap, T.overlap + 0.8, EASE_OUT));
-  cam = { ...cam, s: cam.s * interpolate(t, [T.overlap + 0.8, T.fits], [1, 1.04], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) };
-  cam = lerpCam(cam, camLane, ramp(t, T.change - 0.1, T.missed + 0.2, EASE_IN_OUT));
+/** Choque: tiempos del choque y del rebobinado. */
+export const CRASH_AT = T.crash + 0.02;
+export const REWIND_A = T.how - 0.15;
+export const REWIND_B = T.waste - 0.04;
+const THREAT_Y = 1150;
+const CONTACT = { x: 355, y: 1050 };
 
-  const threatY = interpolate(t, [T.fits - 0.15, T.fits + 0.85], [2200, 1225], {
+/** Escena 1: la consecuencia (de T.danger a T.waste): cambio de carril, choque y rebobinado. */
+const phaseCrash = (t: number) => {
+  // Tiempo efectivo: avanza normal y, durante el rebobinado, vuelve atrás rápido.
+  const te =
+    t < REWIND_A
+      ? t
+      : interpolate(t, [REWIND_A, REWIND_B], [REWIND_A, T.change - 0.3], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: EASE_IN_OUT,
+        });
+  const camA: Camera = { ax: 540, ay: 900, fx: 520, fy: 1050, s: 1.3 };
+  const camB: Camera = { ax: 540, ay: 880, fx: 460, fy: 1060, s: 1.08 };
+  let cam = lerpCam(camA, camB, ramp(t, T.danger, T.danger + 0.7, EASE_OUT));
+  cam = { ...cam, s: cam.s * interpolate(te, [T.change, CRASH_AT], [1, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_IN_OUT }) };
+  const sh = shake(t, CRASH_AT, 0.7, 34);
+  cam = { ...cam, ax: cam.ax + sh.x, ay: cam.ay + sh.y };
+
+  const ourDx = kf(te, [
+    [T.change + 0.1, 0],
+    [CRASH_AT, -128],
+    [CRASH_AT + 0.35, -112],
+  ]);
+  const ourRot = kf(te, [
+    [T.change + 0.1, 0],
+    [T.change + 0.6, -10],
+    [CRASH_AT, -10],
+    [CRASH_AT + 0.35, -4],
+  ]);
+  const threatDx = kf(te, [
+    [CRASH_AT, 0],
+    [CRASH_AT + 0.35, -18],
+  ]);
+  const threatRot = kf(te, [
+    [CRASH_AT, 0],
+    [CRASH_AT + 0.35, 6],
+  ]);
+  const blinking = te > T.change - 0.25 && te < CRASH_AT;
+  const blinkL = blinking && Math.floor((te - T.change) / 0.33) % 2 === 0 ? 1 : 0;
+  return {
+    cam,
+    te,
+    props: {
+      vL: 0,
+      vR: 0,
+      conesOpacity: 0.55,
+      ourDx,
+      ourRot,
+      blinkL,
+      brake: te >= CRASH_AT ? 1 : 0,
+      cars: [
+        { id: "far", x: LANES[2], y: 300 - ((te - T.danger) * 80) % 700, color: "#3E7BD6" },
+        { id: "threat", x: LANES[0] + threatDx, y: THREAT_Y, rot: threatRot, color: COLORS.threat },
+      ],
+    },
+  };
+};
+
+/** Escena 2: por qué pasa (de T.overlap a T.fix). */
+const phaseWhy = (t: number) => {
+  const camIn: Camera = { ax: 540, ay: 760, fx: 540, fy: 980, s: 1.8 };
+  let cam = lerpCam(camIn, camE, ramp(t, T.overlap, T.overlap + 0.7, EASE_OUT));
+  cam = { ...cam, s: cam.s * interpolate(t, [T.overlap + 0.7, T.fix], [1, 1.08], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) };
+  const threatY = interpolate(t, [T.fits - 0.2, T.fits + 0.6], [2200, THREAT_Y], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: EASE_OUT,
   });
-  const ourDx = kf(t, [
-    [T.change + 0.1, 0],
-    [T.missed + 0.05, -76],
-    [T.missed + 0.5, -36],
-    [T.fix, -30],
-  ]);
-  const ourRot = kf(t, [
-    [T.change + 0.1, 0],
-    [T.change + 0.7, -9],
-    [T.missed + 0.05, -7],
-    [T.missed + 0.5, 5],
-    [T.fix, 2],
-  ]);
-  const sh = shake(t, T.missed, 0.6, 26);
-  cam = { ...cam, ax: cam.ax + sh.x, ay: cam.ay + sh.y };
-  const coneFade = 1 - 0.35 * ramp(t, T.fits, T.fits + 0.4) - 0.45 * ramp(t, T.change, T.change + 0.3);
   return {
     cam,
     props: {
       vL: 0,
       vR: 0,
-      conesOpacity: coneFade,
-      sideOpacityL: ramp(t, T.overlap + 0.2, T.overlap + 0.5),
-      sideOpacityR: ramp(t, T.overlap + 0.35, T.overlap + 0.65),
+      conesOpacity: 1 - 0.3 * ramp(t, T.fits, T.fits + 0.4),
+      sideOpacityL: ramp(t, T.overlap + 0.15, T.overlap + 0.45),
+      sideOpacityR: ramp(t, T.overlap + 0.3, T.overlap + 0.6),
       rearOpacity: ramp(t, T.central - 0.15, T.central + 0.15),
       highlightRear: ramp(t, T.central - 0.15, T.central + 0.15) * (1 - ramp(t, T.sides, T.sides + 0.3)),
-      overlap: ramp(t, T.central + 0.25, T.central + 0.55) * (1 - 0.6 * ramp(t, T.blind - 0.2, T.blind + 0.2)),
-      blindZones: ramp(t, T.blind - 0.05, T.blind + 0.3) * (1 - 0.45 * ramp(t, T.change, T.change + 0.4)),
+      overlap: ramp(t, T.central + 0.2, T.central + 0.5) * (1 - 0.6 * ramp(t, T.blind - 0.2, T.blind + 0.2)),
+      blindZones: ramp(t, T.blind - 0.05, T.blind + 0.3),
       blindPulse: pulse(t, 0.6),
-      ourDx,
-      ourRot,
-      brake: ramp(t, T.missed, T.missed + 0.05) * (1 - ramp(t, T.fix - 0.3, T.fix)),
       cars: [
         { id: "far", x: LANES[2], y: 140 - ((t - T.overlap) * 60) % 600, color: "#3E7BD6" },
-        ...(t >= T.fits - 0.2 ? [{ id: "threat", x: LANES[0], y: threatY, color: COLORS.threat }] : []),
+        ...(t >= T.fits - 0.25 ? [{ id: "threat", x: LANES[0], y: threatY, color: COLORS.threat }] : []),
       ],
     },
   };
@@ -175,47 +218,119 @@ const phaseShoulder = (t: number) => {
   };
 };
 
+/** Efecto de rebobinado: líneas de VHS y ◀◀. */
+const RewindOverlay: React.FC<{ t: number }> = ({ t }) => {
+  const bands = Array.from({ length: 7 }).map((_, i) => {
+    const seed = Math.sin(Math.floor(t * 30) * 7.13 + i * 3.7) * 1000;
+    const r = seed - Math.floor(seed);
+    return { y: r * 1920, h: 6 + r * 40, o: 0.08 + r * 0.18 };
+  });
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <AbsoluteFill style={{ background: "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 6px)" }} />
+      {bands.map((b, i) => (
+        <div key={i} style={{ position: "absolute", left: 0, right: 0, top: b.y, height: b.h, background: `rgba(255,255,255,${b.o})` }} />
+      ))}
+      <div
+        style={{
+          position: "absolute",
+          left: 90,
+          top: 190,
+          display: "flex",
+          alignItems: "center",
+          gap: 18,
+          fontFamily: FONT_DISPLAY,
+          fontWeight: 800,
+          fontSize: 84,
+          color: COLORS.white,
+          textShadow: "4px 0 0 rgba(255,59,59,0.7), -4px 0 0 rgba(127,211,255,0.7)",
+          opacity: Math.floor(t * 6) % 2 === 0 ? 1 : 0.75,
+        }}
+      >
+        <svg width={110} height={70} viewBox="0 0 110 70">
+          <polygon points="55,0 55,70 0,35" fill={COLORS.white} />
+          <polygon points="110,0 110,70 55,35" fill={COLORS.white} />
+        </svg>
+        REBOBINA
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 export const TopDownScene: React.FC<{ t: number }> = ({ t }) => {
   let content: React.ReactNode = null;
 
-  if (t < T.fix) {
-    const { cam, props } = phaseError(t);
-    const threat = worldToScreen(cam, LANES[0], 1225);
-    const ourS = worldToScreen(cam, OUR.x - 70, 1000);
-    const bangK = popIn(t, T.missed, T.fix - 0.1, 0.25);
+  if (t < T.waste) {
+    const { cam, props, te } = phaseCrash(t);
+    const hit = worldToScreen(cam, CONTACT.x, CONTACT.y);
+    const crashed = te >= CRASH_AT;
+    const burst = crashed && t < REWIND_A ? interpolate(t, [CRASH_AT, CRASH_AT + 0.18, CRASH_AT + 0.35], [0, 1.25, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+    const rewinding = t >= REWIND_A;
+    const insetK = popIn(t, T.danger + 0.15, REWIND_A - 0.05, 0.3);
+    const threatS = worldToScreen(cam, LANES[0], THREAT_Y);
+    content = (
+      <>
+        <AbsoluteFill style={{ filter: rewinding ? "saturate(0.35) contrast(1.15) brightness(0.9)" : undefined }}>
+          <TopDown t={te} cam={cam} {...props} />
+        </AbsoluteFill>
+        {/* lo que muestra tu espejo: nada */}
+        {insetK > 0 ? (
+          <div style={{ position: "absolute", left: 250, top: 175, transformOrigin: "50% 0%", transform: `scale(${0.7 + 0.3 * insetK})`, opacity: Math.min(1, insetK * 1.5) }}>
+            <SideMirror t={te} pan={0} width={580} bodyAlert={crashed ? 1 : 0} tilt={-3} />
+            <div style={{ position: "absolute", left: -10, top: -26 }}>
+              <Pill t={t} from={T.danger + 0.2} x={0} y={0} color={COLORS.white} text="TU ESPEJO" size={40} anchor="left" dark />
+            </div>
+          </div>
+        ) : null}
+        <Pill t={t} from={T.danger + 0.6} until={CRASH_AT - 0.02} x={540} y={600} color={COLORS.green} text="CARRIL LIBRE" icon="check" size={50} />
+        <Pill t={t} from={CRASH_AT + 0.05} until={REWIND_A - 0.05} x={540} y={600} color={COLORS.red} text="NO ESTABA LIBRE" icon="x" size={50} />
+        <Pill t={t} from={T.change + 0.3} until={CRASH_AT - 0.05} x={threatS.x} y={threatS.y + 200} color={COLORS.threat} text="NO LO VES" size={42} dark />
+        {burst > 0 ? (
+          <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0 }}>
+            <g transform={`translate(${hit.x} ${hit.y}) scale(${burst}) rotate(${(t - CRASH_AT) * 20})`}>
+              <polygon
+                points={Array.from({ length: 24 })
+                  .map((_, i) => {
+                    const r = i % 2 === 0 ? 150 : 70;
+                    const a = (i / 24) * Math.PI * 2;
+                    return `${Math.cos(a) * r},${Math.sin(a) * r}`;
+                  })
+                  .join(" ")}
+                fill={COLORS.yellow}
+                stroke={COLORS.red}
+                strokeWidth={10}
+                strokeLinejoin="round"
+              />
+            </g>
+            <text
+              x={hit.x}
+              y={hit.y + 26}
+              textAnchor="middle"
+              fontFamily={FONT_DISPLAY}
+              fontWeight={800}
+              fontSize={78 * Math.min(1, burst)}
+              fill={COLORS.red}
+            >
+              ¡PUM!
+            </text>
+          </svg>
+        ) : null}
+        <Flash t={t} at={CRASH_AT} color={COLORS.red} max={0.5} dur={0.45} />
+        {crashed && !rewinding ? (
+          <AbsoluteFill style={{ boxShadow: `inset 0 0 180px ${COLORS.red}`, opacity: 0.8 * (0.6 + 0.4 * pulse(t, 0.4)) }} />
+        ) : null}
+        {rewinding ? <RewindOverlay t={t} /> : null}
+      </>
+    );
+  } else if (t < T.fix) {
+    const { cam, props } = phaseWhy(t);
+    const threat = worldToScreen(cam, LANES[0], THREAT_Y);
     content = (
       <>
         <TopDown t={t} cam={cam} {...props} />
-        <TopTitle t={t} from={T.central + 0.25} until={T.sides + 0.05} text="VEN CASI LO MISMO" color={COLORS.yellow} y={200} />
-        <TopTitle t={t} from={T.blind - 0.05} until={T.fits - 0.1} text="2 PUNTOS CIEGOS" color={COLORS.red} y={200} />
-        <Pill t={t} from={T.fits + 0.7} until={T.change + 0.1} x={threat.x} y={threat.y - 165} color={COLORS.threat} text="¿LO VES?" size={50} dark />
-        {bangK > 0 ? (
-          <div
-            style={{
-              position: "absolute",
-              left: (threat.x + ourS.x) / 2 - 90,
-              top: (threat.y + ourS.y) / 2 - 140,
-              width: 180,
-              height: 180,
-              borderRadius: 90,
-              background: COLORS.red,
-              color: COLORS.white,
-              fontFamily: FONT_DISPLAY,
-              fontWeight: 800,
-              fontSize: 150,
-              lineHeight: "180px",
-              textAlign: "center",
-              transform: `scale(${bangK * (1 + 0.06 * pulse(t, 0.35))})`,
-              boxShadow: `0 0 60px ${COLORS.red}`,
-            }}
-          >
-            !
-          </div>
-        ) : null}
-        <Flash t={t} at={T.missed} color={COLORS.red} max={0.45} dur={0.5} />
-        {t > T.missed ? (
-          <AbsoluteFill style={{ boxShadow: `inset 0 0 160px ${COLORS.red}`, opacity: 0.7 * (1 - ramp(t, T.fix - 0.3, T.fix)) * (0.6 + 0.4 * pulse(t, 0.4)) }} />
-        ) : null}
+        <TopTitle t={t} from={T.central + 0.2} until={T.sides + 0.05} text="VEN CASI LO MISMO" color={COLORS.yellow} y={200} />
+        <TopTitle t={t} from={T.blind - 0.05} until={T.fix} text="PUNTO CIEGO" color={COLORS.red} y={200} />
+        <Pill t={t} from={T.fits + 0.55} x={threat.x + 10} y={threat.y - 190} color={COLORS.threat} text="INVISIBLE EN TU ESPEJO" size={42} dark />
       </>
     );
   } else if (t < T.result) {
