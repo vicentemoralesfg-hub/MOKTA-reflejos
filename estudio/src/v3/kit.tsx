@@ -326,7 +326,7 @@ export const Card3D: React.FC<{
   const tiltX = rx * (1 - e) * 2 + Math.cos(f / 50) * 2;
   const sweep = interpolate(f, [4, 34], [-60, 160], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_IN_OUT });
   return (
-    <div style={{ position: "absolute", left: x, top: y, width: w, height: h, perspective: 1600, opacity: Math.min(1, e * 1.6) }}>
+    <div style={{ position: "absolute", left: x, top: y, width: w, height: h, perspective: 1600, opacity: Math.min(1, e * 3) }}>
       <div
         style={{
           position: "absolute",

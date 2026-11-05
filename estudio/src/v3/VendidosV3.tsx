@@ -97,7 +97,7 @@ export const VendidosV3: React.FC<{ withAudio?: boolean }> = ({ withAudio = true
                   {/* número gigante detrás */}
                   <div style={{ position: "absolute", top: 120, right: 30, fontFamily: DISPLAY, fontWeight: 800, fontSize: 620, lineHeight: 1, color: alpha(cur.col, 0.16), transform: `translateX(${80 * (1 - ramp(lf, 0, 14, EASE_OUT))}px)` }}>{cur.pos}</div>
                   <div style={{ position: "absolute", top: 228, left: 0, width: 1080, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: 6, color: cur.col, textShadow: glow(cur.col, 0.5) }}>{top ? "★ EL MÁS VENDIDO DE LA HISTORIA ★" : `PUESTO ${cur.pos}`}</div>
-                  <Card3D src={FOTOS[cur.foto] ?? null} f={lf} x={70} y={285} w={940} h={480} enter={ramp(lf, 0, 14, EASE_OUT)} rim={cur.col} label={cur.name} sub={cur.sub} ry={-14}>
+                  <Card3D src={FOTOS[cur.foto] ?? null} f={lf} x={70} y={285} w={940} h={480} enter={ramp(lf, 0, 9, EASE_OUT)} rim={cur.col} label={cur.name} sub={cur.sub} ry={-14}>
                     {top ? (
                       <div style={{ position: "absolute", top: 20, right: 20, transform: `scale(${interpolate(ramp(lf, 40, 52, BACK_OUT), [0, 1], [0.2, 1])})`, opacity: ramp(lf, 40, 46) }}>
                         <Chip c="#3DFF9A" solid size={30}>RESPUESTA D ✓</Chip>
@@ -202,6 +202,9 @@ export const VendidosV3: React.FC<{ withAudio?: boolean }> = ({ withAudio = true
         <Flash f={f} at={-4} color={TH.a1} d={18} y={420} />
         <Flash f={f} at={S.p1.f0 + 36} color={TH.a1} d={20} y={640} />
         <Wipe f={f} at={qEnd} />
+        <Wipe f={f} at={S.p3.f0 - 4} d={12} c1={TH.hot} c2={TH.a2} />
+        <Wipe f={f} at={S.p2.f0 - 4} d={12} c1={TH.a2} c2={TH.a1} />
+        <Wipe f={f} at={S.p1.f0 - 4} d={12} c1={TH.a1} c2="#FFE14D" />
         <Wipe f={f} at={S.pace.f0} c1={TH.a2} c2={TH.hot} />
         <Wipe f={f} at={S.earth.f0} c1={TH.hot} c2={TH.a1} />
 
