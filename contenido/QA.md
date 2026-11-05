@@ -8,7 +8,7 @@ H.264 yuv420p, AAC 48 kHz, ≈ −14 LUFS integrados, pico real ≤ −1 dBFS.
 |---|---|---|---|---|---|---|---|---|---|
 | `videos/00_pistola-140-kmh/MOKTA_PistolaLaser.mp4` | 1080×1920 | 30 | 47.77 s | h264 High yuv420p | aac 48 kHz | -14.1 LUFS | -1.9 dBFS | ninguno | 30.9 MB |
 | `videos/01_motor-a-3000-rpm/MOKTA_Motor3000rpm.mp4` | 1080×1920 | 30 | 43.07 s | h264 High yuvj420p | aac 48 kHz | -14.1 LUFS | -1.8 dBFS | ninguno | 12.7 MB |
-| `videos/02_lleno-o-hasta-el-clic/MOKTA_LlenoOHastaElClic.mp4` | 1080×1920 | 30 | 37.57 s | h264 High yuv420p | aac 48 kHz | -14.1 LUFS | -0.6 dBFS | ninguno | 23.6 MB |
+| `videos/02_lleno-o-hasta-el-clic/MOKTA_LlenoOHastaElClic.mp4` | 1080×1920 | 30 | 37.57 s | h264 High yuv420p | aac 48 kHz | -14.2 LUFS | -1.8 dBFS | ninguno | 23.6 MB |
 | `videos/03_5-millones-de-km/MOKTA_5MillonesDeKm.mp4` | 1080×1920 | 30 | 45.67 s | h264 High yuv420p | aac 48 kHz | -14.2 LUFS | -1.8 dBFS | ninguno | 38.8 MB |
 | `videos/04_caballos-de-fuerza/MOKTA_CaballosDeFuerza.mp4` | 1080×1920 | 30 | 43.93 s | h264 High yuv420p | aac 48 kHz | -14.1 LUFS | -1.8 dBFS | ninguno | 34.0 MB |
 | `videos/05_el-motor-mas-potente/MOKTA_MotorMasPotente.mp4` | 1080×1920 | 30 | 43.73 s | h264 High yuv420p | aac 48 kHz | -14.1 LUFS | -1.8 dBFS | ninguno | 16.5 MB |
