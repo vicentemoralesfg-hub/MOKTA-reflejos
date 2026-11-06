@@ -1,0 +1,159 @@
+{
+  "fps": 30,
+  "hook": {
+    "duration": 165
+  },
+  "cta": {
+    "duration": 210
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "level": "FÁCIL",
+      "answer": "V8",
+      "options": [
+        "3 EN LÍNEA",
+        "V8",
+        "4 EN LÍNEA",
+        "BÓXER"
+      ],
+      "correct": 1,
+      "car": "Ford Mustang GT",
+      "spec": "5.0 L · V8 atmosférico",
+      "img": "img/r1_car.jpg",
+      "engineImg": "img/r1_engine.jpg",
+      "intro": 26,
+      "listen": 105,
+      "countdown": 90,
+      "gap": 6,
+      "reveal": 75
+    },
+    {
+      "id": "r2",
+      "level": "FÁCIL",
+      "answer": "BÓXER",
+      "options": [
+        "V8",
+        "4 EN LÍNEA",
+        "V6",
+        "BÓXER"
+      ],
+      "correct": 3,
+      "car": "Subaru WRX STI",
+      "spec": "4 cilindros opuestos · turbo",
+      "img": "img/r2_car.jpg",
+      "engineImg": "img/r2_engine.jpg",
+      "intro": 26,
+      "listen": 110,
+      "countdown": 90,
+      "gap": 6,
+      "reveal": 75
+    },
+    {
+      "id": "r3",
+      "level": "MEDIO",
+      "answer": "3 EN LÍNEA",
+      "options": [
+        "3 EN LÍNEA",
+        "4 EN LÍNEA",
+        "V6",
+        "5 EN LÍNEA"
+      ],
+      "correct": 0,
+      "car": "Volkswagen up! GTI",
+      "spec": "1.0 L · 3 cilindros turbo",
+      "img": "img/r3_car.jpg",
+      "engineImg": "img/r3_engine.jpg",
+      "intro": 26,
+      "listen": 120,
+      "countdown": 90,
+      "gap": 6,
+      "reveal": 75
+    },
+    {
+      "id": "r4",
+      "level": "MEDIO",
+      "answer": "5 EN LÍNEA",
+      "options": [
+        "V6",
+        "V8",
+        "5 EN LÍNEA",
+        "6 EN LÍNEA"
+      ],
+      "correct": 2,
+      "car": "Audi RS3",
+      "spec": "2.5 L · 5 cilindros turbo",
+      "img": "img/r4_car.jpg",
+      "engineImg": "img/r4_engine.jpg",
+      "intro": 26,
+      "listen": 125,
+      "countdown": 90,
+      "gap": 6,
+      "reveal": 78
+    },
+    {
+      "id": "r5",
+      "level": "DIFÍCIL",
+      "answer": "6 EN LÍNEA",
+      "options": [
+        "5 EN LÍNEA",
+        "V6",
+        "V10",
+        "6 EN LÍNEA"
+      ],
+      "correct": 3,
+      "car": "BMW Z4 M Coupé",
+      "spec": "3.2 L · 6 en línea atmosférico",
+      "img": "img/r5_car.jpg",
+      "engineImg": "img/r5_engine.jpg",
+      "intro": 26,
+      "listen": 130,
+      "countdown": 90,
+      "gap": 8,
+      "reveal": 78
+    },
+    {
+      "id": "r6",
+      "level": "EXPERTO",
+      "answer": "V12",
+      "options": [
+        "V8",
+        "V12",
+        "V10",
+        "6 EN LÍNEA"
+      ],
+      "correct": 1,
+      "car": "Ferrari F50",
+      "spec": "4.7 L · V12 derivado de la F1",
+      "img": "img/r6_car.jpg",
+      "engineImg": "img/r6_engine.jpg",
+      "intro": 26,
+      "listen": 135,
+      "countdown": 90,
+      "gap": 8,
+      "reveal": 80
+    },
+    {
+      "id": "r7",
+      "level": "LOCURA",
+      "final": true,
+      "answer": "V10",
+      "options": [
+        "V8",
+        "V12",
+        "V10",
+        "BÓXER"
+      ],
+      "correct": 2,
+      "car": "Porsche Carrera GT",
+      "spec": "5.7 L · V10 atmosférico · nacido para Le Mans",
+      "img": "img/r7_car.jpg",
+      "engineImg": "img/r7_engine.jpg",
+      "intro": 44,
+      "listen": 165,
+      "countdown": 90,
+      "gap": 12,
+      "reveal": 120
+    }
+  ]
+}

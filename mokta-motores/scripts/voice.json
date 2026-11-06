@@ -1,0 +1,16 @@
+{
+  "source": "assets/voice/vo_take1.mp3",
+  "note": "ElevenLabs · voz 'Richard - Dinámica y versátil' · eleven_multilingual_v2 · una sola toma; tramos verificados con transcripción local.",
+  "lines": {
+    "hookA": [0.0, 2.74],
+    "hookB": [2.88, 4.54],
+    "r1": [4.74, 5.46],
+    "r2": [5.58, 6.36],
+    "r3": [6.50, 7.30],
+    "r4": [7.46, 8.28],
+    "r5": [8.40, 9.34],
+    "r6": [9.48, 10.36],
+    "r7": [10.40, 11.24],
+    "cta": [11.28, 15.0]
+  }
+}
